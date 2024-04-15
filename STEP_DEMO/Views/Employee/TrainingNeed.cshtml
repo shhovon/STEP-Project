@@ -1,0 +1,69 @@
+﻿@model STEP_DEMO.Models.tblTraining_Need
+
+<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
+</head>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h3>Add Training Need</h3>
+    <hr />
+    <br />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    <div class="form-group">
+        <label for="" class="control-label col-md-2">Title</label>
+
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="" class="control-label col-md-2">By When</label>
+
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.By_When, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.By_When, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2" style="white-space: nowrap;">
+            <label class="control-label">How to Train</label>
+        </div>
+        <div class="col-md-10">
+            <div class="dropdown-container">
+                @Html.DropDownList("TrainingType", new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "On The Job", Value = "1", Selected=false},
+                    new SelectListItem { Text = "Coaching", Value = "2"},
+                    new SelectListItem { Text = "Out Sourced", Value = "3"}
+                }, "Select Training Type", new { @class = "form-control custom-select" })
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label for="" class="control-label col-md-2">Status</label>
+
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Add" class="btn btn-primary submit-btn" />
+        </div>
+    </div>
+</div>
+}
+

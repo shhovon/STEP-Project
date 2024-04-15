@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EMP_EVALUATIONModelStoreContainer" CdmEntityContainer="EMP_EVALUATIONEntities">
+    <EntitySetMapping Name="KPIs">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.KPI">
+        <MappingFragment StoreEntitySet="KPI">
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
+          <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+          <ScalarProperty Name="KPI1" ColumnName="KPI" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="KRAs">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.KRA">
+        <MappingFragment StoreEntitySet="KRA">
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+          <ScalarProperty Name="KRA1" ColumnName="KRA" />
+          <ScalarProperty Name="RegId" ColumnName="RegId" />
+          <ScalarProperty Name="Section_Name" ColumnName="Section_Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="STEPs">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.STEP">
+        <MappingFragment StoreEntitySet="STEP">
+          <ScalarProperty Name="YsnUpdate" ColumnName="YsnUpdate" />
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
+          <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+          <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
+          <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+          <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
+          <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
+          <ScalarProperty Name="Supervisor_Comment" ColumnName="Supervisor_Comment" />
+          <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
+          <ScalarProperty Name="HOD_Comment" ColumnName="HOD_Comment" />
+          <ScalarProperty Name="HOD_Propose_Promotion" ColumnName="HOD_Propose_Promotion" />
+          <ScalarProperty Name="HOD_Propose_Incr" ColumnName="HOD_Propose_Incr" />
+          <ScalarProperty Name="Final_Comment" ColumnName="Final_Comment" />
+          <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
+          <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
+          <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblRoles">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblRole">
+        <MappingFragment StoreEntitySet="tblRole">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Menus" ColumnName="Menus" />
+          <ScalarProperty Name="YSNActive" ColumnName="YSNActive" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblSpecial_Factor">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblSpecial_Factor">
+        <MappingFragment StoreEntitySet="tblSpecial_Factor">
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Reg_Id" ColumnName="Reg_Id" />
+          <ScalarProperty Name="Session_Id" ColumnName="Session_Id" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblTraining_Need">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblTraining_Need">
+        <MappingFragment StoreEntitySet="tblTraining_Need">
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Reg_Id" ColumnName="Reg_Id" />
+          <ScalarProperty Name="Session_Id" ColumnName="Session_Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="By_When" ColumnName="By_When" />
+          <ScalarProperty Name="Train_Type" ColumnName="Train_Type" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Train_Id" ColumnName="Train_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUser_LogInfo">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblUser_LogInfo">
+        <MappingFragment StoreEntitySet="tblUser_LogInfo">
+          <ScalarProperty Name="RegId" ColumnName="RegId" />
+          <ScalarProperty Name="login_time" ColumnName="login_time" />
+          <ScalarProperty Name="login_Mac" ColumnName="login_Mac" />
+          <ScalarProperty Name="logout__time" ColumnName="logout__time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUser_Registration">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblUser_Registration">
+        <MappingFragment StoreEntitySet="tblUser_Registration">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="RegId" ColumnName="RegId" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="DeptHead" ColumnName="DeptHead" />
+          <ScalarProperty Name="ReportSuper" ColumnName="ReportSuper" />
+          <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
+          <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
+          <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+          <ScalarProperty Name="EmailID2" ColumnName="EmailID2" />
+          <ScalarProperty Name="MobileNoPerson" ColumnName="MobileNoPerson" />
+          <ScalarProperty Name="MobileNoHome" ColumnName="MobileNoHome" />
+          <ScalarProperty Name="PhoneExt" ColumnName="PhoneExt" />
+          <ScalarProperty Name="Picture" ColumnName="Picture" />
+          <ScalarProperty Name="Role" ColumnName="Role" />
+          <ScalarProperty Name="Registerd" ColumnName="Registerd" />
+          <ScalarProperty Name="LoginReq" ColumnName="LoginReq" />
+          <ScalarProperty Name="YsnActive" ColumnName="YsnActive" />
+          <ScalarProperty Name="last_login_date" ColumnName="last_login_date" />
+          <ScalarProperty Name="last_login_Mac" ColumnName="last_login_Mac" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Company_Information">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.Company_Information">
+        <MappingFragment StoreEntitySet="Company_Information">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Basic" ColumnName="Basic" />
+          <ScalarProperty Name="BasicM" ColumnName="BasicM" />
+          <ScalarProperty Name="HRent" ColumnName="HRent" />
+          <ScalarProperty Name="WBASIC" ColumnName="WBASIC" />
+          <ScalarProperty Name="WHRent" ColumnName="WHRent" />
+          <ScalarProperty Name="HRentM" ColumnName="HRentM" />
+          <ScalarProperty Name="FoodPay" ColumnName="FoodPay" />
+          <ScalarProperty Name="FoodPayM" ColumnName="FoodPayM" />
+          <ScalarProperty Name="Bonus" ColumnName="Bonus" />
+          <ScalarProperty Name="BonusM" ColumnName="BonusM" />
+          <ScalarProperty Name="PFund" ColumnName="PFund" />
+          <ScalarProperty Name="PFundM" ColumnName="PFundM" />
+          <ScalarProperty Name="NZN" ColumnName="NZN" />
+          <ScalarProperty Name="Medical" ColumnName="Medical" />
+          <ScalarProperty Name="WMedical" ColumnName="WMedical" />
+          <ScalarProperty Name="NameBangla" ColumnName="NameBangla" />
+          <ScalarProperty Name="AddressBangla" ColumnName="AddressBangla" />
+          <ScalarProperty Name="SignedBy" ColumnName="SignedBy" />
+          <ScalarProperty Name="EmpImageLocation" ColumnName="EmpImageLocation" />
+          <ScalarProperty Name="ServerName" ColumnName="ServerName" />
+          <ScalarProperty Name="DBName" ColumnName="DBName" />
+          <ScalarProperty Name="DBPrefix" ColumnName="DBPrefix" />
+          <ScalarProperty Name="IsClose" ColumnName="IsClose" />
+          <ScalarProperty Name="ReportPath" ColumnName="ReportPath" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employee_Information">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.Employee_Information">
+        <MappingFragment StoreEntitySet="Employee_Information">
+          <ScalarProperty Name="RegId" ColumnName="RegId" />
+          <ScalarProperty Name="ComID" ColumnName="ComID" />
+          <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="FathersName" ColumnName="FathersName" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="Religion" ColumnName="Religion" />
+          <ScalarProperty Name="PreAddress" ColumnName="PreAddress" />
+          <ScalarProperty Name="PerAddress" ColumnName="PerAddress" />
+          <ScalarProperty Name="NID" ColumnName="NID" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="District" ColumnName="District" />
+          <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="Section" ColumnName="Section" />
+          <ScalarProperty Name="Designation" ColumnName="Designation" />
+          <ScalarProperty Name="DesigAddi" ColumnName="DesigAddi" />
+          <ScalarProperty Name="WStatus" ColumnName="WStatus" />
+          <ScalarProperty Name="MLeft" ColumnName="MLeft" />
+          <ScalarProperty Name="MLeave" ColumnName="MLeave" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMenus">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblMenu">
+        <MappingFragment StoreEntitySet="tblMenu">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Main_Menu_Id" ColumnName="Main_Menu_Id" />
+          <ScalarProperty Name="Menu_Name" ColumnName="Menu_Name" />
+          <ScalarProperty Name="Menu_URL" ColumnName="Menu_URL" />
+          <ScalarProperty Name="Menu_Icon" ColumnName="Menu_Icon" />
+          <ScalarProperty Name="YsnActive" ColumnName="YsnActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="prc_UserMenu" FunctionName="EMP_EVALUATIONModel.Store.prc_UserMenu">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.prc_UserMenu_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Main_Menu_Id" ColumnName="Main_Menu_Id" />
+          <ScalarProperty Name="Menu_Name" ColumnName="Menu_Name" />
+          <ScalarProperty Name="Menu_URL" ColumnName="Menu_URL" />
+          <ScalarProperty Name="Menu_Icon" ColumnName="Menu_Icon" />
+          <ScalarProperty Name="YsnActive" ColumnName="YsnActive" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="View_StepDetails">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.View_StepDetails">
+        <MappingFragment StoreEntitySet="View_StepDetails">
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
+          <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
+          <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
+          <ScalarProperty Name="Final_Comment" ColumnName="Final_Comment" />
+          <ScalarProperty Name="HOD_Propose_Incr" ColumnName="HOD_Propose_Incr" />
+          <ScalarProperty Name="HOD_Propose_Promotion" ColumnName="HOD_Propose_Promotion" />
+          <ScalarProperty Name="HOD_Comment" ColumnName="HOD_Comment" />
+          <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
+          <ScalarProperty Name="Supervisor_Comment" ColumnName="Supervisor_Comment" />
+          <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
+          <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
+          <ScalarProperty Name="KPI_Enty" ColumnName="KPI_Enty" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+          <ScalarProperty Name="TaxPeriod" ColumnName="TaxPeriod" />
+          <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+          <ScalarProperty Name="KPI" ColumnName="KPI" />
+          <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
+          <ScalarProperty Name="KRA" ColumnName="KRA" />
+          <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+          <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="New_Tax_Period">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.New_Tax_Period">
+        <MappingFragment StoreEntitySet="New_Tax_Period">
+          <ScalarProperty Name="KPI_Enty" ColumnName="KPI_Enty" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+          <ScalarProperty Name="TaxPeriod" ColumnName="TaxPeriod" />
+          <ScalarProperty Name="TaxPerID" ColumnName="TaxPerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="prc_GetEmployeeListByDeptHead" FunctionName="EMP_EVALUATIONModel.Store.prc_GetEmployeeListByDeptHead">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.prc_GetEmployeeListByDeptHead_Result">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="Section" ColumnName="Section" />
+          <ScalarProperty Name="Designation" ColumnName="Designation" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prc_GetKraKpiOutcomeData" FunctionName="EMP_EVALUATIONModel.Store.prc_GetKraKpiOutcomeData" />
+    <FunctionImportMapping FunctionImportName="fnSplitString" FunctionName="EMP_EVALUATIONModel.Store.fnSplitString" />
+    <FunctionImportMapping FunctionImportName="prc_UpdateOutcomeMarks" FunctionName="EMP_EVALUATIONModel.Store.prc_UpdateOutcomeMarks" />
+  </EntityContainerMapping>
+</Mapping>

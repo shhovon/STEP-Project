@@ -1,0 +1,1123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EMP_EVALUATIONModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMP_EVALUATION.dbo.Company_Information' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Company_Information">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Address" />
+            <PropertyRef Name="BasicM" />
+            <PropertyRef Name="HRentM" />
+            <PropertyRef Name="FoodPayM" />
+            <PropertyRef Name="BonusM" />
+            <PropertyRef Name="PFundM" />
+            <PropertyRef Name="NZN" />
+            <PropertyRef Name="IsClose" />
+          </Key>
+          <Property Name="ID" Type="tinyint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="15" />
+          <Property Name="Basic" Type="real" />
+          <Property Name="BasicM" Type="bit" Nullable="false" />
+          <Property Name="HRent" Type="real" />
+          <Property Name="WBASIC" Type="real" />
+          <Property Name="WHRent" Type="real" />
+          <Property Name="HRentM" Type="bit" Nullable="false" />
+          <Property Name="FoodPay" Type="real" />
+          <Property Name="FoodPayM" Type="bit" Nullable="false" />
+          <Property Name="Bonus" Type="real" />
+          <Property Name="BonusM" Type="bit" Nullable="false" />
+          <Property Name="PFund" Type="real" />
+          <Property Name="PFundM" Type="bit" Nullable="false" />
+          <Property Name="NZN" Type="bit" Nullable="false" />
+          <Property Name="Medical" Type="real" />
+          <Property Name="WMedical" Type="real" />
+          <Property Name="NameBangla" Type="nvarchar" MaxLength="50" />
+          <Property Name="AddressBangla" Type="varchar" MaxLength="100" />
+          <Property Name="SignedBy" Type="varchar" MaxLength="50" />
+          <Property Name="EmpImageLocation" Type="varchar" MaxLength="100" />
+          <Property Name="ServerName" Type="varchar" MaxLength="20" />
+          <Property Name="DBName" Type="varchar" MaxLength="20" />
+          <Property Name="DBPrefix" Type="varchar" MaxLength="25" />
+          <Property Name="IsClose" Type="tinyint" Nullable="false" />
+          <Property Name="ReportPath" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMP_EVALUATION.dbo.Employee_Information' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Employee_Information">
+          <Key>
+            <PropertyRef Name="RegId" />
+            <PropertyRef Name="ComID" />
+            <PropertyRef Name="EmployeeCode" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="District" />
+            <PropertyRef Name="JoiningDate" />
+            <PropertyRef Name="Department" />
+            <PropertyRef Name="Section" />
+            <PropertyRef Name="Designation" />
+            <PropertyRef Name="MLeft" />
+            <PropertyRef Name="MLeave" />
+          </Key>
+          <Property Name="RegId" Type="bigint" Nullable="false" />
+          <Property Name="ComID" Type="tinyint" Nullable="false" />
+          <Property Name="EmployeeCode" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="FathersName" Type="nvarchar" MaxLength="300" />
+          <Property Name="BirthDate" Type="smalldatetime" />
+          <Property Name="Religion" Type="nvarchar" MaxLength="15" />
+          <Property Name="PreAddress" Type="nvarchar" MaxLength="455" />
+          <Property Name="PerAddress" Type="nvarchar" MaxLength="455" />
+          <Property Name="NID" Type="nvarchar" MaxLength="25" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="District" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="JoiningDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="Department" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Section" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Designation" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DesigAddi" Type="nvarchar" MaxLength="50" />
+          <Property Name="WStatus" Type="nvarchar" MaxLength="1" />
+          <Property Name="MLeft" Type="bit" Nullable="false" />
+          <Property Name="MLeave" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KPI">
+          <Key>
+            <PropertyRef Name="KPI_ID" />
+          </Key>
+          <Property Name="KPI_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KRA_ID" Type="int" />
+          <Property Name="KPI" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Created_date" Type="datetime" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+          <Property Name="Updated_date" Type="datetime" />
+          <Property Name="Updated_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="KRA">
+          <Key>
+            <PropertyRef Name="KRA_ID" />
+          </Key>
+          <Property Name="KRA_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KRA" Type="nvarchar" MaxLength="2000" />
+          <Property Name="RegId" Type="int" />
+          <Property Name="Section_Name" Type="nvarchar" MaxLength="150" />
+          <Property Name="Created_date" Type="datetime" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+          <Property Name="Updated_date" Type="datetime" />
+          <Property Name="Updated_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMP_EVALUATION.dbo.New_Tax_Period' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="New_Tax_Period">
+          <Key>
+            <PropertyRef Name="TaxPerID" />
+            <PropertyRef Name="TaxPeriod" />
+            <PropertyRef Name="BeginDate" />
+            <PropertyRef Name="EndDate" />
+          </Key>
+          <Property Name="TaxPerID" Type="smallint" Nullable="false" />
+          <Property Name="TaxPeriod" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="BeginDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="EndDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="KPI_Enty" Type="bit" />
+        </EntityType>
+        <EntityType Name="STEP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REG_ID" Type="int" />
+          <Property Name="KRA_ID" Type="int" />
+          <Property Name="KPI_ID" Type="int" />
+          <Property Name="SESSION_ID" Type="int" />
+          <Property Name="KPI_OUTCOME" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Marks_Achieved" Type="int" />
+          <Property Name="Supervisor_Comment" Type="nvarchar" MaxLength="4000" />
+          <Property Name="User_Comment" Type="nvarchar" MaxLength="4000" />
+          <Property Name="HOD_Comment" Type="nvarchar" MaxLength="4000" />
+          <Property Name="HOD_Propose_Promotion" Type="nvarchar" MaxLength="200" />
+          <Property Name="HOD_Propose_Incr" Type="int" />
+          <Property Name="Final_Comment" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Final_Propose_Promotion" Type="nvarchar" MaxLength="200" />
+          <Property Name="Final_Propose_Incr" Type="int" />
+          <Property Name="Effect_Date" Type="smalldatetime" />
+          <Property Name="Created_date" Type="datetime" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+          <Property Name="Updated_date" Type="datetime" />
+          <Property Name="Updated_by" Type="varchar" MaxLength="50" />
+          <Property Name="YsnUpdate" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMP_EVALUATION.dbo.tblMenu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tblMenu">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Main_Menu_Id" Type="varchar" MaxLength="50" />
+          <Property Name="Menu_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Menu_URL" Type="varchar" MaxLength="50" />
+          <Property Name="Menu_Icon" Type="varchar" MaxLength="50" />
+          <Property Name="YsnActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tblRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="Menus" Type="nvarchar" MaxLength="500" />
+          <Property Name="YSNActive" Type="bit" />
+          <Property Name="Created_date" Type="datetime" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+          <Property Name="Updated_date" Type="datetime" />
+          <Property Name="Updated_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblSpecial_Factor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Reg_Id" Type="int" />
+          <Property Name="Session_Id" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Created_date" Type="datetime" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+          <Property Name="Updated_date" Type="datetime" />
+          <Property Name="Updated_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblTraining_Need">
+          <Key>
+            <PropertyRef Name="Train_Id" />
+          </Key>
+          <Property Name="Train_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Reg_Id" Type="int" />
+          <Property Name="Session_Id" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" />
+          <Property Name="By_When" Type="smalldatetime" />
+          <Property Name="Train_Type" Type="nvarchar" MaxLength="150" />
+          <Property Name="Status" Type="nvarchar" MaxLength="150" />
+          <Property Name="Created_date" Type="datetime" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+          <Property Name="Updated_date" Type="datetime" />
+          <Property Name="Updated_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblUser_LogInfo">
+          <Key>
+            <PropertyRef Name="RegId" />
+            <PropertyRef Name="login_time" />
+          </Key>
+          <Property Name="RegId" Type="int" Nullable="false" />
+          <Property Name="login_time" Type="datetime" Nullable="false" />
+          <Property Name="login_Mac" Type="varchar" MaxLength="200" />
+          <Property Name="logout__time" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblUser_Registration">
+          <Key>
+            <PropertyRef Name="RegId" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegId" Type="int" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="500" />
+          <Property Name="DeptHead" Type="int" />
+          <Property Name="ReportSuper" Type="int" />
+          <Property Name="DateofBirth" Type="date" />
+          <Property Name="BloodGroup" Type="nvarchar" MaxLength="5" />
+          <Property Name="EmailID" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailID2" Type="varchar" MaxLength="50" />
+          <Property Name="MobileNoPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="MobileNoHome" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhoneExt" Type="nvarchar" MaxLength="50" />
+          <Property Name="Picture" Type="nvarchar" MaxLength="50" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Registerd" Type="bit" Nullable="false" />
+          <Property Name="LoginReq" Type="int" />
+          <Property Name="YsnActive" Type="bit" Nullable="false" />
+          <Property Name="last_login_date" Type="datetime" />
+          <Property Name="last_login_Mac" Type="varchar" MaxLength="200" />
+          <Property Name="Created_date" Type="datetime" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+          <Property Name="Updated_date" Type="datetime" />
+          <Property Name="Updated_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_StepDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="TaxPeriod" />
+            <PropertyRef Name="BeginDate" />
+            <PropertyRef Name="EndDate" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="REG_ID" Type="int" />
+          <Property Name="KRA_ID" Type="int" />
+          <Property Name="KRA" Type="nvarchar" MaxLength="2000" />
+          <Property Name="KPI_ID" Type="int" />
+          <Property Name="KPI" Type="nvarchar" MaxLength="2000" />
+          <Property Name="SESSION_ID" Type="int" />
+          <Property Name="TaxPeriod" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="BeginDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="EndDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="KPI_Enty" Type="bit" />
+          <Property Name="KPI_OUTCOME" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Marks_Achieved" Type="int" />
+          <Property Name="Supervisor_Comment" Type="nvarchar" MaxLength="4000" />
+          <Property Name="User_Comment" Type="nvarchar" MaxLength="4000" />
+          <Property Name="HOD_Comment" Type="nvarchar" MaxLength="4000" />
+          <Property Name="HOD_Propose_Promotion" Type="nvarchar" MaxLength="200" />
+          <Property Name="HOD_Propose_Incr" Type="int" />
+          <Property Name="Final_Comment" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Final_Propose_Promotion" Type="nvarchar" MaxLength="200" />
+          <Property Name="Final_Propose_Incr" Type="int" />
+          <Property Name="Effect_Date" Type="smalldatetime" />
+          <Property Name="Created_date" Type="datetime" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+          <Property Name="Updated_date" Type="datetime" />
+          <Property Name="Updated_by" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_KPI_KRA">
+          <End Role="KRA" Type="Self.KRA" Multiplicity="0..1" />
+          <End Role="KPI" Type="Self.KPI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KRA">
+              <PropertyRef Name="KRA_ID" />
+            </Principal>
+            <Dependent Role="KPI">
+              <PropertyRef Name="KRA_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_KRA_tblUser_Registration">
+          <End Role="tblUser_Registration" Type="Self.tblUser_Registration" Multiplicity="0..1" />
+          <End Role="KRA" Type="Self.KRA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser_Registration">
+              <PropertyRef Name="RegId" />
+            </Principal>
+            <Dependent Role="KRA">
+              <PropertyRef Name="RegId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fnSplitString" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="string" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="delimiter" Type="char" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="splitdata" Type="nvarchar(max)" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="prc_GetEmployeeListByDeptHead" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DeptHeadValue" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prc_GetKraKpiOutcomeData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="DeptHeadValue" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prc_UpdateOutcomeMarks" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="KpiOutcome" Type="nvarchar" Mode="In" />
+          <Parameter Name="RegId" Type="int" Mode="In" />
+          <Parameter Name="MarksAchieved" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prc_UserMenu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegId" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="EMP_EVALUATIONModelStoreContainer">
+          <EntitySet Name="KPI" EntityType="Self.KPI" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KRA" EntityType="Self.KRA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STEP" EntityType="Self.STEP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRole" EntityType="Self.tblRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSpecial_Factor" EntityType="Self.tblSpecial_Factor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTraining_Need" EntityType="Self.tblTraining_Need" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUser_LogInfo" EntityType="Self.tblUser_LogInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUser_Registration" EntityType="Self.tblUser_Registration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company_Information" EntityType="Self.Company_Information" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Company_Information].[ID] AS [ID], 
+    [Company_Information].[Name] AS [Name], 
+    [Company_Information].[Address] AS [Address], 
+    [Company_Information].[Password] AS [Password], 
+    [Company_Information].[Basic] AS [Basic], 
+    [Company_Information].[BasicM] AS [BasicM], 
+    [Company_Information].[HRent] AS [HRent], 
+    [Company_Information].[WBASIC] AS [WBASIC], 
+    [Company_Information].[WHRent] AS [WHRent], 
+    [Company_Information].[HRentM] AS [HRentM], 
+    [Company_Information].[FoodPay] AS [FoodPay], 
+    [Company_Information].[FoodPayM] AS [FoodPayM], 
+    [Company_Information].[Bonus] AS [Bonus], 
+    [Company_Information].[BonusM] AS [BonusM], 
+    [Company_Information].[PFund] AS [PFund], 
+    [Company_Information].[PFundM] AS [PFundM], 
+    [Company_Information].[NZN] AS [NZN], 
+    [Company_Information].[Medical] AS [Medical], 
+    [Company_Information].[WMedical] AS [WMedical], 
+    [Company_Information].[NameBangla] AS [NameBangla], 
+    [Company_Information].[AddressBangla] AS [AddressBangla], 
+    [Company_Information].[SignedBy] AS [SignedBy], 
+    [Company_Information].[EmpImageLocation] AS [EmpImageLocation], 
+    [Company_Information].[ServerName] AS [ServerName], 
+    [Company_Information].[DBName] AS [DBName], 
+    [Company_Information].[DBPrefix] AS [DBPrefix], 
+    [Company_Information].[IsClose] AS [IsClose], 
+    [Company_Information].[ReportPath] AS [ReportPath]
+    FROM [dbo].[Company_Information] AS [Company_Information]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Employee_Information" EntityType="Self.Employee_Information" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Employee_Information].[RegId] AS [RegId], 
+    [Employee_Information].[ComID] AS [ComID], 
+    [Employee_Information].[EmployeeCode] AS [EmployeeCode], 
+    [Employee_Information].[Name] AS [Name], 
+    [Employee_Information].[FathersName] AS [FathersName], 
+    [Employee_Information].[BirthDate] AS [BirthDate], 
+    [Employee_Information].[Religion] AS [Religion], 
+    [Employee_Information].[PreAddress] AS [PreAddress], 
+    [Employee_Information].[PerAddress] AS [PerAddress], 
+    [Employee_Information].[NID] AS [NID], 
+    [Employee_Information].[Phone] AS [Phone], 
+    [Employee_Information].[District] AS [District], 
+    [Employee_Information].[JoiningDate] AS [JoiningDate], 
+    [Employee_Information].[Department] AS [Department], 
+    [Employee_Information].[Section] AS [Section], 
+    [Employee_Information].[Designation] AS [Designation], 
+    [Employee_Information].[DesigAddi] AS [DesigAddi], 
+    [Employee_Information].[WStatus] AS [WStatus], 
+    [Employee_Information].[MLeft] AS [MLeft], 
+    [Employee_Information].[MLeave] AS [MLeave]
+    FROM [dbo].[Employee_Information] AS [Employee_Information]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="New_Tax_Period" EntityType="Self.New_Tax_Period" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [New_Tax_Period].[TaxPerID] AS [TaxPerID], 
+    [New_Tax_Period].[TaxPeriod] AS [TaxPeriod], 
+    [New_Tax_Period].[BeginDate] AS [BeginDate], 
+    [New_Tax_Period].[EndDate] AS [EndDate], 
+    [New_Tax_Period].[KPI_Enty] AS [KPI_Enty]
+    FROM [dbo].[New_Tax_Period] AS [New_Tax_Period]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="tblMenu" EntityType="Self.tblMenu" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tblMenu].[ID] AS [ID], 
+    [tblMenu].[Main_Menu_Id] AS [Main_Menu_Id], 
+    [tblMenu].[Menu_Name] AS [Menu_Name], 
+    [tblMenu].[Menu_URL] AS [Menu_URL], 
+    [tblMenu].[Menu_Icon] AS [Menu_Icon], 
+    [tblMenu].[YsnActive] AS [YsnActive]
+    FROM [dbo].[tblMenu] AS [tblMenu]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_StepDetails" EntityType="Self.View_StepDetails" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_StepDetails].[ID] AS [ID], 
+    [View_StepDetails].[REG_ID] AS [REG_ID], 
+    [View_StepDetails].[KRA_ID] AS [KRA_ID], 
+    [View_StepDetails].[KRA] AS [KRA], 
+    [View_StepDetails].[KPI_ID] AS [KPI_ID], 
+    [View_StepDetails].[KPI] AS [KPI], 
+    [View_StepDetails].[SESSION_ID] AS [SESSION_ID], 
+    [View_StepDetails].[TaxPeriod] AS [TaxPeriod], 
+    [View_StepDetails].[BeginDate] AS [BeginDate], 
+    [View_StepDetails].[EndDate] AS [EndDate], 
+    [View_StepDetails].[KPI_Enty] AS [KPI_Enty], 
+    [View_StepDetails].[KPI_OUTCOME] AS [KPI_OUTCOME], 
+    [View_StepDetails].[Marks_Achieved] AS [Marks_Achieved], 
+    [View_StepDetails].[Supervisor_Comment] AS [Supervisor_Comment], 
+    [View_StepDetails].[User_Comment] AS [User_Comment], 
+    [View_StepDetails].[HOD_Comment] AS [HOD_Comment], 
+    [View_StepDetails].[HOD_Propose_Promotion] AS [HOD_Propose_Promotion], 
+    [View_StepDetails].[HOD_Propose_Incr] AS [HOD_Propose_Incr], 
+    [View_StepDetails].[Final_Comment] AS [Final_Comment], 
+    [View_StepDetails].[Final_Propose_Promotion] AS [Final_Propose_Promotion], 
+    [View_StepDetails].[Final_Propose_Incr] AS [Final_Propose_Incr], 
+    [View_StepDetails].[Effect_Date] AS [Effect_Date], 
+    [View_StepDetails].[Created_date] AS [Created_date], 
+    [View_StepDetails].[Created_By] AS [Created_By], 
+    [View_StepDetails].[Updated_date] AS [Updated_date], 
+    [View_StepDetails].[Updated_by] AS [Updated_by]
+    FROM [dbo].[View_StepDetails] AS [View_StepDetails]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_KPI_KRA" Association="Self.FK_KPI_KRA">
+            <End Role="KRA" EntitySet="KRA" />
+            <End Role="KPI" EntitySet="KPI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_KRA_tblUser_Registration" Association="Self.FK_KRA_tblUser_Registration">
+            <End Role="tblUser_Registration" EntitySet="tblUser_Registration" />
+            <End Role="KRA" EntitySet="KRA" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EMP_EVALUATIONModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="KPI">
+          <Key>
+            <PropertyRef Name="KPI_ID" />
+          </Key>
+          <Property Name="KPI_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KRA_ID" Type="Int32" />
+          <Property Name="KPI1" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="KRA" Relationship="Self.FK_KPI_KRA" FromRole="KPI" ToRole="KRA" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="KRA">
+          <Key>
+            <PropertyRef Name="KRA_ID" />
+          </Key>
+          <Property Name="KRA_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KRA1" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="RegId" Type="Int32" />
+          <Property Name="Section_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="KPIs" Relationship="Self.FK_KPI_KRA" FromRole="KRA" ToRole="KPI" />
+          <NavigationProperty Name="tblUser_Registration" Relationship="Self.FK_KRA_tblUser_Registration" FromRole="KRA" ToRole="tblUser_Registration" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="STEP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="REG_ID" Type="Int32" />
+          <Property Name="KRA_ID" Type="Int32" />
+          <Property Name="KPI_ID" Type="Int32" />
+          <Property Name="SESSION_ID" Type="Int32" />
+          <Property Name="KPI_OUTCOME" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Marks_Achieved" Type="Int32" />
+          <Property Name="Supervisor_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="User_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="HOD_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="HOD_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HOD_Propose_Incr" Type="Int32" />
+          <Property Name="Final_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Final_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Final_Propose_Incr" Type="Int32" />
+          <Property Name="Effect_Date" Type="DateTime" Precision="0" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="YsnUpdate" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tblRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Menus" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="YSNActive" Type="Boolean" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tblSpecial_Factor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Reg_Id" Type="Int32" />
+          <Property Name="Session_Id" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tblTraining_Need">
+          <Key>
+            <PropertyRef Name="Train_Id" />
+          </Key>
+          <Property Name="Reg_Id" Type="Int32" />
+          <Property Name="Session_Id" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="By_When" Type="DateTime" Precision="0" />
+          <Property Name="Train_Type" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Train_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tblUser_LogInfo">
+          <Key>
+            <PropertyRef Name="RegId" />
+            <PropertyRef Name="login_time" />
+          </Key>
+          <Property Name="RegId" Type="Int32" Nullable="false" />
+          <Property Name="login_time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="login_Mac" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="logout__time" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tblUser_Registration">
+          <Key>
+            <PropertyRef Name="RegId" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RegId" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DeptHead" Type="Int32" />
+          <Property Name="ReportSuper" Type="Int32" />
+          <Property Name="DateofBirth" Type="DateTime" Precision="0" />
+          <Property Name="BloodGroup" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="EmailID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailID2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNoPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNoHome" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneExt" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Picture" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Registerd" Type="Boolean" Nullable="false" />
+          <Property Name="LoginReq" Type="Int32" />
+          <Property Name="YsnActive" Type="Boolean" Nullable="false" />
+          <Property Name="last_login_date" Type="DateTime" Precision="3" />
+          <Property Name="last_login_Mac" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="KRAs" Relationship="Self.FK_KRA_tblUser_Registration" FromRole="tblUser_Registration" ToRole="KRA" />
+        </EntityType>
+        <EntityType Name="Company_Information">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Address" />
+            <PropertyRef Name="BasicM" />
+            <PropertyRef Name="HRentM" />
+            <PropertyRef Name="FoodPayM" />
+            <PropertyRef Name="BonusM" />
+            <PropertyRef Name="PFundM" />
+            <PropertyRef Name="NZN" />
+            <PropertyRef Name="IsClose" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Basic" Type="Single" />
+          <Property Name="BasicM" Type="Boolean" Nullable="false" />
+          <Property Name="HRent" Type="Single" />
+          <Property Name="WBASIC" Type="Single" />
+          <Property Name="WHRent" Type="Single" />
+          <Property Name="HRentM" Type="Boolean" Nullable="false" />
+          <Property Name="FoodPay" Type="Single" />
+          <Property Name="FoodPayM" Type="Boolean" Nullable="false" />
+          <Property Name="Bonus" Type="Single" />
+          <Property Name="BonusM" Type="Boolean" Nullable="false" />
+          <Property Name="PFund" Type="Single" />
+          <Property Name="PFundM" Type="Boolean" Nullable="false" />
+          <Property Name="NZN" Type="Boolean" Nullable="false" />
+          <Property Name="Medical" Type="Single" />
+          <Property Name="WMedical" Type="Single" />
+          <Property Name="NameBangla" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AddressBangla" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SignedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmpImageLocation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ServerName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DBName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DBPrefix" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="IsClose" Type="Byte" Nullable="false" />
+          <Property Name="ReportPath" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Employee_Information">
+          <Key>
+            <PropertyRef Name="RegId" />
+            <PropertyRef Name="ComID" />
+            <PropertyRef Name="EmployeeCode" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="District" />
+            <PropertyRef Name="JoiningDate" />
+            <PropertyRef Name="Department" />
+            <PropertyRef Name="Section" />
+            <PropertyRef Name="Designation" />
+            <PropertyRef Name="MLeft" />
+            <PropertyRef Name="MLeave" />
+          </Key>
+          <Property Name="RegId" Type="Int64" Nullable="false" />
+          <Property Name="ComID" Type="Byte" Nullable="false" />
+          <Property Name="EmployeeCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FathersName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="Religion" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="PreAddress" Type="String" MaxLength="455" FixedLength="false" Unicode="true" />
+          <Property Name="PerAddress" Type="String" MaxLength="455" FixedLength="false" Unicode="true" />
+          <Property Name="NID" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="District" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="JoiningDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Section" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Designation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DesigAddi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="MLeft" Type="Boolean" Nullable="false" />
+          <Property Name="MLeave" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblMenu">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Main_Menu_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Menu_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Menu_URL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Menu_Icon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="YsnActive" Type="Boolean" />
+        </EntityType>
+        <Association Name="FK_KPI_KRA">
+          <End Role="KRA" Type="Self.KRA" Multiplicity="0..1" />
+          <End Role="KPI" Type="Self.KPI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KRA">
+              <PropertyRef Name="KRA_ID" />
+            </Principal>
+            <Dependent Role="KPI">
+              <PropertyRef Name="KRA_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_KRA_tblUser_Registration">
+          <End Role="tblUser_Registration" Type="Self.tblUser_Registration" Multiplicity="0..1" />
+          <End Role="KRA" Type="Self.KRA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser_Registration">
+              <PropertyRef Name="RegId" />
+            </Principal>
+            <Dependent Role="KRA">
+              <PropertyRef Name="RegId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EMP_EVALUATIONEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="KPIs" EntityType="Self.KPI" />
+          <EntitySet Name="KRAs" EntityType="Self.KRA" />
+          <EntitySet Name="STEPs" EntityType="Self.STEP" />
+          <EntitySet Name="tblRoles" EntityType="Self.tblRole" />
+          <EntitySet Name="tblSpecial_Factor" EntityType="Self.tblSpecial_Factor" />
+          <EntitySet Name="tblTraining_Need" EntityType="Self.tblTraining_Need" />
+          <EntitySet Name="tblUser_LogInfo" EntityType="Self.tblUser_LogInfo" />
+          <EntitySet Name="tblUser_Registration" EntityType="Self.tblUser_Registration" />
+          <EntitySet Name="Company_Information" EntityType="Self.Company_Information" />
+          <EntitySet Name="Employee_Information" EntityType="Self.Employee_Information" />
+          <EntitySet Name="tblMenus" EntityType="Self.tblMenu" />
+          <AssociationSet Name="FK_KPI_KRA" Association="Self.FK_KPI_KRA">
+            <End Role="KRA" EntitySet="KRAs" />
+            <End Role="KPI" EntitySet="KPIs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_KRA_tblUser_Registration" Association="Self.FK_KRA_tblUser_Registration">
+            <End Role="tblUser_Registration" EntitySet="tblUser_Registration" />
+            <End Role="KRA" EntitySet="KRAs" />
+          </AssociationSet>
+          <FunctionImport Name="prc_UserMenu" ReturnType="Collection(EMP_EVALUATIONModel.prc_UserMenu_Result)">
+          <Parameter Name="RegId" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="View_StepDetails" EntityType="EMP_EVALUATIONModel.View_StepDetails" />
+          <EntitySet Name="New_Tax_Period" EntityType="EMP_EVALUATIONModel.New_Tax_Period" />
+          <FunctionImport Name="prc_GetEmployeeListByDeptHead" ReturnType="Collection(EMP_EVALUATIONModel.prc_GetEmployeeListByDeptHead_Result)">
+          <Parameter Name="DeptHeadValue" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetKraKpiOutcomeData">
+            <Parameter Name="EmployeeCode" Mode="In" Type="String" />
+            <Parameter Name="DeptHeadValue" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="fnSplitString" IsComposable="true" ReturnType="Collection(String)">
+            <Parameter Name="string" Mode="In" Type="String" />
+            <Parameter Name="delimiter" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prc_UpdateOutcomeMarks">
+            <Parameter Name="KpiOutcome" Mode="In" Type="String" />
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="MarksAchieved" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="prc_UserMenu_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Main_Menu_Id" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Menu_Name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Menu_URL" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Menu_Icon" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="YsnActive" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="View_StepDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="TaxPeriod" />
+            <PropertyRef Name="BeginDate" />
+            <PropertyRef Name="EndDate" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="REG_ID" Type="Int32" />
+          <Property Name="KRA_ID" Type="Int32" />
+          <Property Name="KRA" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="KPI_ID" Type="Int32" />
+          <Property Name="KPI" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="SESSION_ID" Type="Int32" />
+          <Property Name="TaxPeriod" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="BeginDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="KPI_Enty" Type="Boolean" />
+          <Property Name="KPI_OUTCOME" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Marks_Achieved" Type="Int32" />
+          <Property Name="Supervisor_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="User_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="HOD_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="HOD_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HOD_Propose_Incr" Type="Int32" />
+          <Property Name="Final_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Final_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Final_Propose_Incr" Type="Int32" />
+          <Property Name="Effect_Date" Type="DateTime" Precision="0" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="New_Tax_Period">
+          <Key>
+            <PropertyRef Name="TaxPerID" />
+            <PropertyRef Name="TaxPeriod" />
+            <PropertyRef Name="BeginDate" />
+            <PropertyRef Name="EndDate" />
+          </Key>
+          <Property Name="TaxPerID" Type="Int16" Nullable="false" />
+          <Property Name="TaxPeriod" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="BeginDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="KPI_Enty" Type="Boolean" />
+        </EntityType>
+        <ComplexType Name="prc_GetEmployeeListByDeptHead_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EMP_EVALUATIONModelStoreContainer" CdmEntityContainer="EMP_EVALUATIONEntities">
+          <EntitySetMapping Name="KPIs">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.KPI">
+              <MappingFragment StoreEntitySet="KPI">
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
+                <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+                <ScalarProperty Name="KPI1" ColumnName="KPI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KRAs">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.KRA">
+              <MappingFragment StoreEntitySet="KRA">
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+                <ScalarProperty Name="KRA1" ColumnName="KRA" />
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="Section_Name" ColumnName="Section_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STEPs">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.STEP">
+              <MappingFragment StoreEntitySet="STEP">
+                <ScalarProperty Name="YsnUpdate" ColumnName="YsnUpdate" />
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
+                <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+                <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
+                <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+                <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
+                <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
+                <ScalarProperty Name="Supervisor_Comment" ColumnName="Supervisor_Comment" />
+                <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
+                <ScalarProperty Name="HOD_Comment" ColumnName="HOD_Comment" />
+                <ScalarProperty Name="HOD_Propose_Promotion" ColumnName="HOD_Propose_Promotion" />
+                <ScalarProperty Name="HOD_Propose_Incr" ColumnName="HOD_Propose_Incr" />
+                <ScalarProperty Name="Final_Comment" ColumnName="Final_Comment" />
+                <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
+                <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
+                <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRoles">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblRole">
+              <MappingFragment StoreEntitySet="tblRole">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Menus" ColumnName="Menus" />
+                <ScalarProperty Name="YSNActive" ColumnName="YSNActive" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSpecial_Factor">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblSpecial_Factor">
+              <MappingFragment StoreEntitySet="tblSpecial_Factor">
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="Reg_Id" ColumnName="Reg_Id" />
+                <ScalarProperty Name="Session_Id" ColumnName="Session_Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTraining_Need">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblTraining_Need">
+              <MappingFragment StoreEntitySet="tblTraining_Need">
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="Reg_Id" ColumnName="Reg_Id" />
+                <ScalarProperty Name="Session_Id" ColumnName="Session_Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="By_When" ColumnName="By_When" />
+                <ScalarProperty Name="Train_Type" ColumnName="Train_Type" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Train_Id" ColumnName="Train_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUser_LogInfo">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblUser_LogInfo">
+              <MappingFragment StoreEntitySet="tblUser_LogInfo">
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="login_time" ColumnName="login_time" />
+                <ScalarProperty Name="login_Mac" ColumnName="login_Mac" />
+                <ScalarProperty Name="logout__time" ColumnName="logout__time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUser_Registration">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblUser_Registration">
+              <MappingFragment StoreEntitySet="tblUser_Registration">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="DeptHead" ColumnName="DeptHead" />
+                <ScalarProperty Name="ReportSuper" ColumnName="ReportSuper" />
+                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
+                <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="EmailID2" ColumnName="EmailID2" />
+                <ScalarProperty Name="MobileNoPerson" ColumnName="MobileNoPerson" />
+                <ScalarProperty Name="MobileNoHome" ColumnName="MobileNoHome" />
+                <ScalarProperty Name="PhoneExt" ColumnName="PhoneExt" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Registerd" ColumnName="Registerd" />
+                <ScalarProperty Name="LoginReq" ColumnName="LoginReq" />
+                <ScalarProperty Name="YsnActive" ColumnName="YsnActive" />
+                <ScalarProperty Name="last_login_date" ColumnName="last_login_date" />
+                <ScalarProperty Name="last_login_Mac" ColumnName="last_login_Mac" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Company_Information">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.Company_Information">
+              <MappingFragment StoreEntitySet="Company_Information">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Basic" ColumnName="Basic" />
+                <ScalarProperty Name="BasicM" ColumnName="BasicM" />
+                <ScalarProperty Name="HRent" ColumnName="HRent" />
+                <ScalarProperty Name="WBASIC" ColumnName="WBASIC" />
+                <ScalarProperty Name="WHRent" ColumnName="WHRent" />
+                <ScalarProperty Name="HRentM" ColumnName="HRentM" />
+                <ScalarProperty Name="FoodPay" ColumnName="FoodPay" />
+                <ScalarProperty Name="FoodPayM" ColumnName="FoodPayM" />
+                <ScalarProperty Name="Bonus" ColumnName="Bonus" />
+                <ScalarProperty Name="BonusM" ColumnName="BonusM" />
+                <ScalarProperty Name="PFund" ColumnName="PFund" />
+                <ScalarProperty Name="PFundM" ColumnName="PFundM" />
+                <ScalarProperty Name="NZN" ColumnName="NZN" />
+                <ScalarProperty Name="Medical" ColumnName="Medical" />
+                <ScalarProperty Name="WMedical" ColumnName="WMedical" />
+                <ScalarProperty Name="NameBangla" ColumnName="NameBangla" />
+                <ScalarProperty Name="AddressBangla" ColumnName="AddressBangla" />
+                <ScalarProperty Name="SignedBy" ColumnName="SignedBy" />
+                <ScalarProperty Name="EmpImageLocation" ColumnName="EmpImageLocation" />
+                <ScalarProperty Name="ServerName" ColumnName="ServerName" />
+                <ScalarProperty Name="DBName" ColumnName="DBName" />
+                <ScalarProperty Name="DBPrefix" ColumnName="DBPrefix" />
+                <ScalarProperty Name="IsClose" ColumnName="IsClose" />
+                <ScalarProperty Name="ReportPath" ColumnName="ReportPath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee_Information">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.Employee_Information">
+              <MappingFragment StoreEntitySet="Employee_Information">
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="ComID" ColumnName="ComID" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FathersName" ColumnName="FathersName" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Religion" ColumnName="Religion" />
+                <ScalarProperty Name="PreAddress" ColumnName="PreAddress" />
+                <ScalarProperty Name="PerAddress" ColumnName="PerAddress" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="DesigAddi" ColumnName="DesigAddi" />
+                <ScalarProperty Name="WStatus" ColumnName="WStatus" />
+                <ScalarProperty Name="MLeft" ColumnName="MLeft" />
+                <ScalarProperty Name="MLeave" ColumnName="MLeave" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblMenus">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblMenu">
+              <MappingFragment StoreEntitySet="tblMenu">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Main_Menu_Id" ColumnName="Main_Menu_Id" />
+                <ScalarProperty Name="Menu_Name" ColumnName="Menu_Name" />
+                <ScalarProperty Name="Menu_URL" ColumnName="Menu_URL" />
+                <ScalarProperty Name="Menu_Icon" ColumnName="Menu_Icon" />
+                <ScalarProperty Name="YsnActive" ColumnName="YsnActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="prc_UserMenu" FunctionName="EMP_EVALUATIONModel.Store.prc_UserMenu">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.prc_UserMenu_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Main_Menu_Id" ColumnName="Main_Menu_Id" />
+                <ScalarProperty Name="Menu_Name" ColumnName="Menu_Name" />
+                <ScalarProperty Name="Menu_URL" ColumnName="Menu_URL" />
+                <ScalarProperty Name="Menu_Icon" ColumnName="Menu_Icon" />
+                <ScalarProperty Name="YsnActive" ColumnName="YsnActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="View_StepDetails">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.View_StepDetails">
+              <MappingFragment StoreEntitySet="View_StepDetails">
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
+                <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
+                <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
+                <ScalarProperty Name="Final_Comment" ColumnName="Final_Comment" />
+                <ScalarProperty Name="HOD_Propose_Incr" ColumnName="HOD_Propose_Incr" />
+                <ScalarProperty Name="HOD_Propose_Promotion" ColumnName="HOD_Propose_Promotion" />
+                <ScalarProperty Name="HOD_Comment" ColumnName="HOD_Comment" />
+                <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
+                <ScalarProperty Name="Supervisor_Comment" ColumnName="Supervisor_Comment" />
+                <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
+                <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
+                <ScalarProperty Name="KPI_Enty" ColumnName="KPI_Enty" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+                <ScalarProperty Name="TaxPeriod" ColumnName="TaxPeriod" />
+                <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+                <ScalarProperty Name="KPI" ColumnName="KPI" />
+                <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
+                <ScalarProperty Name="KRA" ColumnName="KRA" />
+                <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+                <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="New_Tax_Period">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.New_Tax_Period">
+              <MappingFragment StoreEntitySet="New_Tax_Period">
+                <ScalarProperty Name="KPI_Enty" ColumnName="KPI_Enty" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+                <ScalarProperty Name="TaxPeriod" ColumnName="TaxPeriod" />
+                <ScalarProperty Name="TaxPerID" ColumnName="TaxPerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetEmployeeListByDeptHead" FunctionName="EMP_EVALUATIONModel.Store.prc_GetEmployeeListByDeptHead">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.prc_GetEmployeeListByDeptHead_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetKraKpiOutcomeData" FunctionName="EMP_EVALUATIONModel.Store.prc_GetKraKpiOutcomeData" />
+          <FunctionImportMapping FunctionImportName="fnSplitString" FunctionName="EMP_EVALUATIONModel.Store.fnSplitString" />
+          <FunctionImportMapping FunctionImportName="prc_UpdateOutcomeMarks" FunctionName="EMP_EVALUATIONModel.Store.prc_UpdateOutcomeMarks" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

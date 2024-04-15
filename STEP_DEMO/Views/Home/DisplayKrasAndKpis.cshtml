@@ -1,0 +1,216 @@
+﻿@model List<KraKpiOutcomeModel>
+
+@{
+    var sessionIds = ViewBag.SessionIds as List<string>;
+}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
+</head>
+<style>
+    td { /*design for selectedItemsTable table*/
+        font-size: 12px !important;
+        max-width: 200px !important;
+        overflow: hidden !important;
+        /*text-overflow: ellipsis;*/ /* Display ... for overflowed text */
+        white-space: normal !important;
+    }
+
+    .dropdown-container .form-control.custom-select option {
+        width: 100% !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+    }
+</style>
+
+
+<!-- modal button -->
+<button style="float:right;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+    NEW
+</button>
+<br />
+
+<!-- modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add Outcome</h4>
+                <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- form content -->
+                @using (Html.BeginForm("InsertKpiOutcomes", "Home", FormMethod.Post, new { id = "outcomeForm" }))
+                {
+                    <div class="dropdown-container">
+                        <label class="dropdown-label" for="selectedKRA">Select KRA:</label>
+                        <br />
+                        @Html.DropDownList("selectedKRA", new SelectList(Model.Select(x => x.KRA).Distinct()), new { @class = "form-control custom-select" })
+                    </div>
+
+                    <div class="dropdown-container">
+                        <label class="dropdown-label" for="selectedKPI">Select KPI:</label>
+                        <br />
+                        <div id="kpiDropdown" class="form-control"></div>
+                    </div>
+
+                    <div class="outcome-field">
+                        <label class="dropdown-label" for="kpiOutcome">KPI Outcome:</label>
+                        <br />
+                        <div id="kpiOutcomeFields" class="form-control"></div>
+                    </div>
+
+                    <input type="submit" value="Add" class="submit-btn" />
+                }
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    @foreach (var id in ViewBag.SessionIds)
+    {
+        <div class="dropdown-container">
+            <label class="dropdown-label" for="taxPeriodDropdown">Choose Session:</label>
+            <br />
+            <select id="taxPeriodDropdown" class="form-control custom-select">
+                @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
+                {
+                    <option value="@taxPeriod">@taxPeriod</option>
+                }
+            </select>
+        </div>
+    }
+</div>
+
+
+<div id="selectedInfo">
+    <table id="selectedItemsTable" class="table">
+        <thead>
+            <tr>
+                <th>Selected KRA</th>
+                <th>Selected KPI</th>
+                <th>KPI Outcome</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.KRA</td>
+                    <td>@item.KPI</td>
+                    <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
+                    <td style="text-align: center; vertical-align: middle !important;">
+                        <form action="@Url.Action("DeleteRow", "Home")" method="post">
+                            <input type="hidden" name="kra" value="@item.KRA" />
+                            <input type="hidden" name="kpi" value="@item.KPI" />
+                            <input type="hidden" name="kpiOutcome" value="@item.KPI_OUTCOME" />
+                            <button class="btn btn-danger" type="submit">
+                                <i class="ti-trash">
+
+                                </i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+@section scripts {
+    <script>
+        $(function () {
+            $('#selectedKRA').change(function () {
+                var selectedKRA = $(this).val();
+                var kraKpiData = @Html.Raw(Json.Encode(Model));
+
+                // filter KPI based on selected KRA
+                var filteredKPIs = kraKpiData.filter(function (item) {
+                    return item.KRA === selectedKRA;
+                });
+
+                // KPI dropdown list
+@*                var kpiDropdown = '<label for="selectedKPI">KPI List: </label>';*@
+                var kpiDropdown = '<select id="selectedKPI" name="selectedKPI">';
+                filteredKPIs.forEach(function (item) {
+                    kpiDropdown += '<option value= "' + item.KPI + '">' + item.KPI + '</option>';
+                });
+                kpiDropdown += '</select>';
+
+                $('#kpiDropdown').html(kpiDropdown);
+
+                $('#selectedKPI').trigger('change');
+            });
+
+            // change event for dynamically generated KPI dropdown
+            $(document).on('change', '#selectedKPI', function () {
+                var selectedKPI = $(this).val();
+
+                $('#kpiOutcomeFields').empty();
+                $('#kpiOutcomeFields').append('<div><label></label><input type="text" name="kpiOutcomes" /></div>');
+            });
+
+            // save selected info
+@*            $('#saveSelectedInfo').click(function () {
+                var selectedKRA = $('#selectedKRA').val();
+                var selectedKPI = $('#selectedKPI').val();
+                var selectedKPIOutcome = $('input[name="kpiOutcomes"]').val();*@
+
+                // update the selected information
+@*                $('#selectedKRAInfo').text(selectedKRA);
+                $('#selectedKPIInfo').text(selectedKPI);
+                $('#selectedKPIOutcomeInfo').text(selectedKPIOutcome);*@
+
+                var tableBody = document.querySelector("#selectedItemsTable tbody");
+                var newRow = document.createElement("tr");
+                newRow.innerHTML = `
+                <td>${selectedKRA}</td>
+                <td>${selectedKPI}</td>
+                <td>${selectedKPIOutcome}</td>
+        `;
+                tableBody.appendChild(newRow);
+            });
+
+@*        modal validation*@
+
+        $(function () {
+
+            $('#outcomeForm').submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: formData,
+                    success: function (response) {
+                        $('#myModal .modal-body').html('<div class="alert alert-success">Outcome added successfully!</div>');
+                        $('#myModal .modal-footer').html('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+                    },
+                    error: function (xhr, status, error) {
+                        $('#myModal .modal-body').html('<div class="alert alert-danger">Could not add outcome!</div>');
+                        $('#myModal .modal-footer').html('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+                    }
+                });
+            });
+            // reload page when modal is closed
+            $('#myModal').on('hidden.bs.modal', function () {
+                if ($('#myModal .alert-success').length) {
+                    window.location.reload();
+                }
+            });
+        });
+    </script>
+}
