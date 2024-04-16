@@ -53,6 +53,20 @@ namespace STEP_DEMO.Controllers
                 {
                     using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
                     {
+                            string employeeID = Request.Form["employeeCode"];
+
+                            // insert marks history
+                            tblMarksEntryHistory logEntry = new tblMarksEntryHistory
+                            {
+                                SupervisorID = deptHeadValue,
+                                EmployeeID = employeeID,
+                                UpdateTime = DateTime.Now,
+                                UserIP = GetIPAddress(),
+
+                            };
+                            db.tblMarksEntryHistories.Add(logEntry);
+                            db.SaveChanges();
+
                         var employeeCodeParam = new SqlParameter("@EmployeeCode", employeeCode);
                         var deptHeadValueParam = new SqlParameter("@DeptHeadValue", deptHeadValue);
 
@@ -72,22 +86,6 @@ namespace STEP_DEMO.Controllers
         {
             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
             {
-
-                int regId;
-                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
-                {
-                    // insert marks history
-                    tblMarksEntryHistory logEntry = new tblMarksEntryHistory
-                    {
-                        SupervisorID = regId,
-                        UpdateTime = DateTime.Now,
-                        UserIP = GetIPAddress(),
-
-                    };
-                    db.tblMarksEntryHistories.Add(logEntry);
-                    db.SaveChanges();
-                }
-
                 if (outcomes != null && marks != null)
                 {
                     foreach (var outcome in outcomes)

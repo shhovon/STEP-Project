@@ -18,5 +18,6 @@ namespace STEP_DEMO.Models
         public Nullable<int> SupervisorID { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public string UserIP { get; set; }
+        public string EmployeeID { get; set; }
     }
 }

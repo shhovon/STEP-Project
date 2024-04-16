@@ -160,6 +160,7 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.New_Tax_Period' does not have a
           <Property Name="SupervisorID" Type="int" />
           <Property Name="UpdateTime" Type="datetime" />
           <Property Name="UserIP" Type="varchar" MaxLength="20" />
+          <Property Name="EmployeeID" Type="varchar" MaxLength="20" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EMP_EVALUATION.dbo.tblMenu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -611,6 +612,7 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <Property Name="SupervisorID" Type="Int32" />
           <Property Name="UpdateTime" Type="DateTime" Precision="3" />
           <Property Name="UserIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tblRole">
           <Key>
@@ -1031,6 +1033,7 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
                 <ScalarProperty Name="SupervisorID" ColumnName="SupervisorID" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="UserIP" ColumnName="UserIP" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
