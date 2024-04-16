@@ -15,33 +15,6 @@ namespace STEP_DEMO.Controllers
         {
             return View();
         }
-
-        /* public ActionResult ViewEmpList()
-         {
-             List<EmployeeViewModel> employees = new List<EmployeeViewModel>();
-
-             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-             {
-                 int deptHeadValue;
-                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
-                 {
-                     employees = (from empInfo in db.Employee_Information
-                                  join reg in db.tblUser_Registration on empInfo.RegId equals reg.RegId
-                                  where reg.DeptHead == deptHeadValue || reg.ReportSuper == deptHeadValue
-                                  select new EmployeeViewModel
-                                  {
-                                      Name = empInfo.Name,
-                                      EmployeeCode = empInfo.EmployeeCode,
-                                      Department = empInfo.Department,
-                                      Section = empInfo.Section,
-                                      Designation = empInfo.Designation
-                                  }).ToList();
-                 }
-             }
-
-             return View(employees);
-         }
- */
         public List<EmployeeViewModel> GetEmployeeListByDeptHead(int deptHeadValue)
         {
             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())

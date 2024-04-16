@@ -87,6 +87,7 @@ namespace STEP_DEMO.Controllers
                     db.tblMarksEntryHistories.Add(logEntry);
                     db.SaveChanges();
                 }
+
                 if (outcomes != null && marks != null)
                 {
                     foreach (var outcome in outcomes)
