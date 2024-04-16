@@ -173,6 +173,9 @@
     <Compile Include="Models\Employee_Information.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\fnSplitString_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\HomeData.cs" />
     <Compile Include="Models\KPI.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -209,6 +212,9 @@
     <Compile Include="Models\prc_GetEmployeeListByDeptHead_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\prc_GetKraKpiOutcomeData_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\prc_UserMenu_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -228,10 +234,16 @@
     <Compile Include="Models\tblTraining_Need.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tblUserLogHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tblUser_LogInfo.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblUser_Registration.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\View_.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\View_StepDetails.cs">
@@ -1687,13 +1699,6 @@
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\css\maps\vertical-layout-light\style.css.map" />
     <Content Include="Content\fonts\Manrope\Manrope-Bold.eot" />
     <Content Include="Content\fonts\Manrope\Manrope-Bold.ttf" />
@@ -2020,6 +2025,13 @@
     <Content Include="Content\vendors\tinymce\readme.md" />
     <Content Include="Content\vendors\tinymce\skins\ui\oxide-dark\fonts\tinymce-mobile.woff" />
     <Content Include="Content\vendors\tinymce\skins\ui\oxide\fonts\tinymce-mobile.woff" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\Controllers\LoginController.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

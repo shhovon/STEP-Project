@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="EMP_EVALUATIONModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <ComplexType Name="fnSplitString_Result">
+    <Property Name="splitdata" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </ComplexType>
   <EntityType Name="KPI">
     <Key>
       <PropertyRef Name="KPI_ID" />
@@ -7,11 +10,11 @@
     <Property Name="KPI_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="KRA_ID" Type="Int32" />
     <Property Name="KPI1" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="KRA" Relationship="Self.FK_KPI_KRA" FromRole="KPI" ToRole="KRA" />
     <Property Name="Created_date" Type="DateTime" Precision="3" />
     <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Updated_date" Type="DateTime" Precision="3" />
     <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="KRA" Relationship="Self.FK_KPI_KRA" FromRole="KPI" ToRole="KRA" />
   </EntityType>
   <EntityType Name="KRA">
     <Key>
@@ -21,17 +24,18 @@
     <Property Name="KRA1" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
     <Property Name="RegId" Type="Int32" />
     <Property Name="Section_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="KPIs" Relationship="Self.FK_KPI_KRA" FromRole="KRA" ToRole="KPI" />
-    <NavigationProperty Name="tblUser_Registration" Relationship="Self.FK_KRA_tblUser_Registration" FromRole="KRA" ToRole="tblUser_Registration" />
     <Property Name="Created_date" Type="DateTime" Precision="3" />
     <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Updated_date" Type="DateTime" Precision="3" />
     <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="KPIs" Relationship="Self.FK_KPI_KRA" FromRole="KRA" ToRole="KPI" />
+    <NavigationProperty Name="tblUser_Registration" Relationship="Self.FK_KRA_tblUser_Registration" FromRole="KRA" ToRole="tblUser_Registration" />
   </EntityType>
   <EntityType Name="STEP">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="REG_ID" Type="Int32" />
     <Property Name="KRA_ID" Type="Int32" />
     <Property Name="KPI_ID" Type="Int32" />
@@ -47,7 +51,6 @@
     <Property Name="Final_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="Final_Propose_Incr" Type="Int32" />
     <Property Name="Effect_Date" Type="DateTime" Precision="0" />
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Created_date" Type="DateTime" Precision="3" />
     <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Updated_date" Type="DateTime" Precision="3" />
@@ -72,10 +75,10 @@
     <Key>
       <PropertyRef Name="ID" />
     </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Reg_Id" Type="Int32" />
     <Property Name="Session_Id" Type="Int32" />
     <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Created_date" Type="DateTime" Precision="3" />
     <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Updated_date" Type="DateTime" Precision="3" />
@@ -85,13 +88,13 @@
     <Key>
       <PropertyRef Name="Train_Id" />
     </Key>
+    <Property Name="Train_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Reg_Id" Type="Int32" />
     <Property Name="Session_Id" Type="Int32" />
     <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="By_When" Type="DateTime" Precision="0" />
     <Property Name="Train_Type" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
     <Property Name="Status" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-    <Property Name="Train_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Created_date" Type="DateTime" Precision="3" />
     <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Updated_date" Type="DateTime" Precision="3" />
@@ -135,6 +138,16 @@
     <Property Name="Updated_date" Type="DateTime" Precision="3" />
     <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="KRAs" Relationship="Self.FK_KRA_tblUser_Registration" FromRole="tblUser_Registration" ToRole="KRA" />
+  </EntityType>
+  <EntityType Name="tblUserLogHistory">
+    <Key>
+      <PropertyRef Name="AutoID" />
+    </Key>
+    <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="LoginTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UserIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ComputerName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Company_Information">
     <Key>
@@ -213,6 +226,19 @@
     <Property Name="MLeft" Type="Boolean" Nullable="false" />
     <Property Name="MLeave" Type="Boolean" Nullable="false" />
   </EntityType>
+  <EntityType Name="New_Tax_Period">
+    <Key>
+      <PropertyRef Name="TaxPerID" />
+      <PropertyRef Name="TaxPeriod" />
+      <PropertyRef Name="BeginDate" />
+      <PropertyRef Name="EndDate" />
+    </Key>
+    <Property Name="TaxPerID" Type="Int16" Nullable="false" />
+    <Property Name="TaxPeriod" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BeginDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="KPI_Enty" Type="Boolean" />
+  </EntityType>
   <EntityType Name="tblMenu">
     <Key>
       <PropertyRef Name="ID" />
@@ -223,6 +249,74 @@
     <Property Name="Menu_URL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Menu_Icon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="YsnActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="View_">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="TaxPeriod" />
+      <PropertyRef Name="BeginDate" />
+      <PropertyRef Name="EndDate" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="REG_ID" Type="Int32" />
+    <Property Name="KRA_ID" Type="Int32" />
+    <Property Name="KRA" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="KPI_ID" Type="Int32" />
+    <Property Name="KPI" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="SESSION_ID" Type="Int32" />
+    <Property Name="TaxPeriod" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BeginDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="KPI_Enty" Type="Boolean" />
+    <Property Name="KPI_OUTCOME" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="Marks_Achieved" Type="Int32" />
+    <Property Name="Supervisor_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="User_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="HOD_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="HOD_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="HOD_Propose_Incr" Type="Int32" />
+    <Property Name="Final_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="Final_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Final_Propose_Incr" Type="Int32" />
+    <Property Name="Effect_Date" Type="DateTime" Precision="0" />
+    <Property Name="Created_date" Type="DateTime" Precision="3" />
+    <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Updated_date" Type="DateTime" Precision="3" />
+    <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="View_StepDetails">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="TaxPeriod" />
+      <PropertyRef Name="BeginDate" />
+      <PropertyRef Name="EndDate" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="REG_ID" Type="Int32" />
+    <Property Name="KRA_ID" Type="Int32" />
+    <Property Name="KRA" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="KPI_ID" Type="Int32" />
+    <Property Name="KPI" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="SESSION_ID" Type="Int32" />
+    <Property Name="TaxPeriod" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BeginDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="KPI_Enty" Type="Boolean" />
+    <Property Name="KPI_OUTCOME" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="Marks_Achieved" Type="Int32" />
+    <Property Name="Supervisor_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="User_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="HOD_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="HOD_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="HOD_Propose_Incr" Type="Int32" />
+    <Property Name="Final_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="Final_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Final_Propose_Incr" Type="Int32" />
+    <Property Name="Effect_Date" Type="DateTime" Precision="0" />
+    <Property Name="Created_date" Type="DateTime" Precision="3" />
+    <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Updated_date" Type="DateTime" Precision="3" />
+    <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="FK_KPI_KRA">
     <End Role="KRA" Type="Self.KRA" Multiplicity="0..1" />
@@ -257,9 +351,13 @@
     <EntitySet Name="tblTraining_Need" EntityType="Self.tblTraining_Need" />
     <EntitySet Name="tblUser_LogInfo" EntityType="Self.tblUser_LogInfo" />
     <EntitySet Name="tblUser_Registration" EntityType="Self.tblUser_Registration" />
+    <EntitySet Name="tblUserLogHistories" EntityType="Self.tblUserLogHistory" />
     <EntitySet Name="Company_Information" EntityType="Self.Company_Information" />
     <EntitySet Name="Employee_Information" EntityType="Self.Employee_Information" />
+    <EntitySet Name="New_Tax_Period" EntityType="Self.New_Tax_Period" />
     <EntitySet Name="tblMenus" EntityType="Self.tblMenu" />
+    <EntitySet Name="View_" EntityType="Self.View_" />
+    <EntitySet Name="View_StepDetails" EntityType="Self.View_StepDetails" />
     <AssociationSet Name="FK_KPI_KRA" Association="Self.FK_KPI_KRA">
       <End Role="KRA" EntitySet="KRAs" />
       <End Role="KPI" EntitySet="KPIs" />
@@ -268,28 +366,40 @@
       <End Role="tblUser_Registration" EntitySet="tblUser_Registration" />
       <End Role="KRA" EntitySet="KRAs" />
     </AssociationSet>
-    <FunctionImport Name="prc_UserMenu" ReturnType="Collection(EMP_EVALUATIONModel.prc_UserMenu_Result)">
-      <Parameter Name="RegId" Mode="In" Type="String" />
-    </FunctionImport>
-    <EntitySet Name="View_StepDetails" EntityType="EMP_EVALUATIONModel.View_StepDetails" />
-    <EntitySet Name="New_Tax_Period" EntityType="EMP_EVALUATIONModel.New_Tax_Period" />
-    <FunctionImport Name="prc_GetEmployeeListByDeptHead" ReturnType="Collection(EMP_EVALUATIONModel.prc_GetEmployeeListByDeptHead_Result)">
-      <Parameter Name="DeptHeadValue" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="prc_GetKraKpiOutcomeData">
-      <Parameter Name="EmployeeCode" Mode="In" Type="String" />
-      <Parameter Name="DeptHeadValue" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="fnSplitString" IsComposable="true" ReturnType="Collection(String)">
+    <FunctionImport Name="fnSplitString" IsComposable="true" ReturnType="Collection(EMP_EVALUATIONModel.fnSplitString_Result)">
       <Parameter Name="string" Mode="In" Type="String" />
       <Parameter Name="delimiter" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="prc_GetEmployeeListByDeptHead" ReturnType="Collection(EMP_EVALUATIONModel.prc_GetEmployeeListByDeptHead_Result)">
+      <Parameter Name="DeptHeadValue" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="prc_GetKraKpiOutcomeData" ReturnType="Collection(EMP_EVALUATIONModel.prc_GetKraKpiOutcomeData_Result)">
+      <Parameter Name="EmployeeCode" Mode="In" Type="String" />
+      <Parameter Name="DeptHeadValue" Mode="In" Type="Int32" />
+    </FunctionImport>
     <FunctionImport Name="prc_UpdateOutcomeMarks">
       <Parameter Name="KpiOutcome" Mode="In" Type="String" />
-      <Parameter Name="RegId" Mode="In" Type="Int32" />
       <Parameter Name="MarksAchieved" Mode="In" Type="Int32" />
     </FunctionImport>
+    <FunctionImport Name="prc_UserMenu" ReturnType="Collection(EMP_EVALUATIONModel.prc_UserMenu_Result)">
+      <Parameter Name="RegId" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
+  <ComplexType Name="prc_GetEmployeeListByDeptHead_Result">
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="300" />
+    <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+    <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="prc_GetKraKpiOutcomeData_Result">
+    <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="300" />
+    <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
+    <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
+    <Property Type="String" Name="Outcome" Nullable="false" MaxLength="2000" />
+  </ComplexType>
   <ComplexType Name="prc_UserMenu_Result">
     <Property Type="Int32" Name="ID" Nullable="false" />
     <Property Type="String" Name="Main_Menu_Id" Nullable="true" MaxLength="50" />
@@ -297,59 +407,5 @@
     <Property Type="String" Name="Menu_URL" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="Menu_Icon" Nullable="true" MaxLength="50" />
     <Property Type="Boolean" Name="YsnActive" Nullable="true" />
-  </ComplexType>
-  <EntityType Name="View_StepDetails">
-    <Key>
-      <PropertyRef Name="ID" />
-      <PropertyRef Name="TaxPeriod" />
-      <PropertyRef Name="BeginDate" />
-      <PropertyRef Name="EndDate" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" />
-    <Property Name="REG_ID" Type="Int32" />
-    <Property Name="KRA_ID" Type="Int32" />
-    <Property Name="KRA" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-    <Property Name="KPI_ID" Type="Int32" />
-    <Property Name="KPI" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-    <Property Name="SESSION_ID" Type="Int32" />
-    <Property Name="TaxPeriod" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="BeginDate" Type="DateTime" Nullable="false" Precision="0" />
-    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
-    <Property Name="KPI_Enty" Type="Boolean" />
-    <Property Name="KPI_OUTCOME" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-    <Property Name="Marks_Achieved" Type="Int32" />
-    <Property Name="Supervisor_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-    <Property Name="User_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-    <Property Name="HOD_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-    <Property Name="HOD_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="HOD_Propose_Incr" Type="Int32" />
-    <Property Name="Final_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-    <Property Name="Final_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="Final_Propose_Incr" Type="Int32" />
-    <Property Name="Effect_Date" Type="DateTime" Precision="0" />
-    <Property Name="Created_date" Type="DateTime" Precision="3" />
-    <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Updated_date" Type="DateTime" Precision="3" />
-    <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-  </EntityType>
-  <EntityType Name="New_Tax_Period">
-    <Key>
-      <PropertyRef Name="TaxPerID" />
-      <PropertyRef Name="TaxPeriod" />
-      <PropertyRef Name="BeginDate" />
-      <PropertyRef Name="EndDate" />
-    </Key>
-    <Property Name="TaxPerID" Type="Int16" Nullable="false" />
-    <Property Name="TaxPeriod" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="BeginDate" Type="DateTime" Nullable="false" Precision="0" />
-    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
-    <Property Name="KPI_Enty" Type="Boolean" />
-  </EntityType>
-  <ComplexType Name="prc_GetEmployeeListByDeptHead_Result">
-    <Property Type="String" Name="Name" Nullable="false" MaxLength="300" />
-    <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
-    <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
   </ComplexType>
 </Schema>

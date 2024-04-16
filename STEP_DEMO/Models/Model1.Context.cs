@@ -35,19 +35,26 @@ namespace STEP_DEMO.Models
         public virtual DbSet<tblTraining_Need> tblTraining_Need { get; set; }
         public virtual DbSet<tblUser_LogInfo> tblUser_LogInfo { get; set; }
         public virtual DbSet<tblUser_Registration> tblUser_Registration { get; set; }
+        public virtual DbSet<tblUserLogHistory> tblUserLogHistories { get; set; }
         public virtual DbSet<Company_Information> Company_Information { get; set; }
         public virtual DbSet<Employee_Information> Employee_Information { get; set; }
-        public virtual DbSet<tblMenu> tblMenus { get; set; }
-        public virtual DbSet<View_StepDetails> View_StepDetails { get; set; }
         public virtual DbSet<New_Tax_Period> New_Tax_Period { get; set; }
+        public virtual DbSet<tblMenu> tblMenus { get; set; }
+        public virtual DbSet<View_> View_ { get; set; }
+        public virtual DbSet<View_StepDetails> View_StepDetails { get; set; }
     
-        public virtual ObjectResult<prc_UserMenu_Result> prc_UserMenu(string regId)
+        [DbFunction("EMP_EVALUATIONEntities", "fnSplitString")]
+        public virtual IQueryable<fnSplitString_Result> fnSplitString(string @string, string delimiter)
         {
-            var regIdParameter = regId != null ?
-                new ObjectParameter("RegId", regId) :
-                new ObjectParameter("RegId", typeof(string));
+            var stringParameter = @string != null ?
+                new ObjectParameter("string", @string) :
+                new ObjectParameter("string", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_UserMenu_Result>("prc_UserMenu", regIdParameter);
+            var delimiterParameter = delimiter != null ?
+                new ObjectParameter("delimiter", delimiter) :
+                new ObjectParameter("delimiter", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnSplitString_Result>("[EMP_EVALUATIONEntities].[fnSplitString](@string, @delimiter)", stringParameter, delimiterParameter);
         }
     
         public virtual ObjectResult<prc_GetEmployeeListByDeptHead_Result> prc_GetEmployeeListByDeptHead(Nullable<int> deptHeadValue)
@@ -59,7 +66,7 @@ namespace STEP_DEMO.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetEmployeeListByDeptHead_Result>("prc_GetEmployeeListByDeptHead", deptHeadValueParameter);
         }
     
-        public virtual int prc_GetKraKpiOutcomeData(string employeeCode, Nullable<int> deptHeadValue)
+        public virtual ObjectResult<prc_GetKraKpiOutcomeData_Result> prc_GetKraKpiOutcomeData(string employeeCode, Nullable<int> deptHeadValue)
         {
             var employeeCodeParameter = employeeCode != null ?
                 new ObjectParameter("EmployeeCode", employeeCode) :
@@ -69,38 +76,29 @@ namespace STEP_DEMO.Models
                 new ObjectParameter("DeptHeadValue", deptHeadValue) :
                 new ObjectParameter("DeptHeadValue", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prc_GetKraKpiOutcomeData", employeeCodeParameter, deptHeadValueParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKraKpiOutcomeData_Result>("prc_GetKraKpiOutcomeData", employeeCodeParameter, deptHeadValueParameter);
         }
     
-        [DbFunction("EMP_EVALUATIONEntities", "fnSplitString")]
-        public virtual IQueryable<string> fnSplitString(string @string, string delimiter)
-        {
-            var stringParameter = @string != null ?
-                new ObjectParameter("string", @string) :
-                new ObjectParameter("string", typeof(string));
-    
-            var delimiterParameter = delimiter != null ?
-                new ObjectParameter("delimiter", delimiter) :
-                new ObjectParameter("delimiter", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<string>("[EMP_EVALUATIONEntities].[fnSplitString](@string, @delimiter)", stringParameter, delimiterParameter);
-        }
-    
-        public virtual int prc_UpdateOutcomeMarks(string kpiOutcome, Nullable<int> regId, Nullable<int> marksAchieved)
+        public virtual int prc_UpdateOutcomeMarks(string kpiOutcome, Nullable<int> marksAchieved)
         {
             var kpiOutcomeParameter = kpiOutcome != null ?
                 new ObjectParameter("KpiOutcome", kpiOutcome) :
                 new ObjectParameter("KpiOutcome", typeof(string));
     
-            var regIdParameter = regId.HasValue ?
-                new ObjectParameter("RegId", regId) :
-                new ObjectParameter("RegId", typeof(int));
-    
             var marksAchievedParameter = marksAchieved.HasValue ?
                 new ObjectParameter("MarksAchieved", marksAchieved) :
                 new ObjectParameter("MarksAchieved", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prc_UpdateOutcomeMarks", kpiOutcomeParameter, regIdParameter, marksAchievedParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prc_UpdateOutcomeMarks", kpiOutcomeParameter, marksAchievedParameter);
+        }
+    
+        public virtual ObjectResult<prc_UserMenu_Result> prc_UserMenu(string regId)
+        {
+            var regIdParameter = regId != null ?
+                new ObjectParameter("RegId", regId) :
+                new ObjectParameter("RegId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_UserMenu_Result>("prc_UserMenu", regIdParameter);
         }
     }
 }

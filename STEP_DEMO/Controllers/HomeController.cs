@@ -259,6 +259,17 @@ namespace STEP_DEMO.Controllers
                     {
                         if (PasswordHelper.Decrypt(user.Password.Trim()) == model.Password.Trim())
                         {
+                            // insert login history
+                            tblUserLogHistory logEntry = new tblUserLogHistory
+                            {
+                                UserID = user.RegId,
+                                LoginTime = DateTime.Now,
+                                UserIP = GetIPAddress(),
+                                
+                            };
+                            db.tblUserLogHistories.Add(logEntry);
+                            db.SaveChanges();
+
                             // login successful
                             Session["RegID"] = user.RegId;
                             Session["EmailID"] = user.EmailID;
@@ -299,6 +310,57 @@ namespace STEP_DEMO.Controllers
                 return View("Login", model);
             }
         }
+  /*      private string GetClientIPAddress(HttpContextBase httpContext)
+        {
+            string ipAddress = string.Empty;
+
+            try
+            {
+                // Check for proxy/load balancer headers
+                ipAddress = httpContext.Request.ServerVariables["HTTP_CLIENT_IP"];
+                if (string.IsNullOrEmpty(ipAddress))
+                {
+                    ipAddress = httpContext.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                }
+                if (string.IsNullOrEmpty(ipAddress))
+                {
+                    ipAddress = httpContext.Request.ServerVariables["HTTP_X_REAL_IP"];
+                }
+
+                // If no proxy/load balancer headers are available, use the local IP address
+                if (string.IsNullOrEmpty(ipAddress))
+                {
+                    ipAddress = httpContext.Request.UserHostAddress;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that may occur
+                ipAddress = "Unknown";
+            }
+
+            return ipAddress;
+        }
+
+        public string GetUserIPAddress()
+        {
+            HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+            return GetClientIPAddress(httpContext);
+        }*/
+
+        protected string GetIPAddress()
+        {
+            string ipList = (Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ??
+                   Request.ServerVariables["REMOTE_ADDR"]).Split(',')[0].Trim();
+
+            if (!string.IsNullOrEmpty(ipList))
+            {
+                return ipList.Split(',')[0];
+            }
+
+            return Request.ServerVariables["REMOTE_ADDR"];
+        }
+
 
         private void SetAssignedMenuItems()
         {

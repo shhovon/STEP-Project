@@ -12,15 +12,12 @@ namespace STEP_DEMO.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tblSpecial_Factor
+    public partial class tblUserLogHistory
     {
-        public int ID { get; set; }
-        public Nullable<int> Reg_Id { get; set; }
-        public Nullable<int> Session_Id { get; set; }
-        public string Description { get; set; }
-        public Nullable<System.DateTime> Created_date { get; set; }
-        public string Created_By { get; set; }
-        public Nullable<System.DateTime> Updated_date { get; set; }
-        public string Updated_by { get; set; }
+        public int AutoID { get; set; }
+        public int UserID { get; set; }
+        public System.DateTime LoginTime { get; set; }
+        public string UserIP { get; set; }
+        public string ComputerName { get; set; }
     }
 }

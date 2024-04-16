@@ -66,6 +66,7 @@ namespace STEP_DEMO.Controllers
             return RedirectToAction("AddMarks");
         }
 
+        [CustomAuthorize]
         [HttpPost]
         public ActionResult UpdateMarks(List<string> outcomes, Dictionary<string, int> marks)
         {

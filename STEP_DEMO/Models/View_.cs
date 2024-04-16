@@ -12,13 +12,19 @@ namespace STEP_DEMO.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class STEP
+    public partial class View_
     {
         public int ID { get; set; }
         public Nullable<int> REG_ID { get; set; }
         public Nullable<int> KRA_ID { get; set; }
+        public string KRA { get; set; }
         public Nullable<int> KPI_ID { get; set; }
+        public string KPI { get; set; }
         public Nullable<int> SESSION_ID { get; set; }
+        public string TaxPeriod { get; set; }
+        public System.DateTime BeginDate { get; set; }
+        public System.DateTime EndDate { get; set; }
+        public Nullable<bool> KPI_Enty { get; set; }
         public string KPI_OUTCOME { get; set; }
         public Nullable<int> Marks_Achieved { get; set; }
         public string Supervisor_Comment { get; set; }
@@ -34,6 +40,5 @@ namespace STEP_DEMO.Models
         public string Created_By { get; set; }
         public Nullable<System.DateTime> Updated_date { get; set; }
         public string Updated_by { get; set; }
-        public Nullable<bool> YsnUpdate { get; set; }
     }
 }

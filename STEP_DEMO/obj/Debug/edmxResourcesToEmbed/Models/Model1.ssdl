@@ -241,6 +241,52 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.tblMenu' does not have a primar
     <Property Name="Updated_date" Type="datetime" />
     <Property Name="Updated_by" Type="varchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="tblUserLogHistory">
+    <Key>
+      <PropertyRef Name="AutoID" />
+    </Key>
+    <Property Name="AutoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="LoginTime" Type="datetime" Nullable="false" />
+    <Property Name="UserIP" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="ComputerName" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMP_EVALUATION.dbo.View_' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="View_">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="TaxPeriod" />
+      <PropertyRef Name="BeginDate" />
+      <PropertyRef Name="EndDate" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="REG_ID" Type="int" />
+    <Property Name="KRA_ID" Type="int" />
+    <Property Name="KRA" Type="nvarchar" MaxLength="2000" />
+    <Property Name="KPI_ID" Type="int" />
+    <Property Name="KPI" Type="nvarchar" MaxLength="2000" />
+    <Property Name="SESSION_ID" Type="int" />
+    <Property Name="TaxPeriod" Type="nvarchar" MaxLength="15" Nullable="false" />
+    <Property Name="BeginDate" Type="smalldatetime" Nullable="false" />
+    <Property Name="EndDate" Type="smalldatetime" Nullable="false" />
+    <Property Name="KPI_Enty" Type="bit" />
+    <Property Name="KPI_OUTCOME" Type="nvarchar" MaxLength="2000" />
+    <Property Name="Marks_Achieved" Type="int" />
+    <Property Name="Supervisor_Comment" Type="nvarchar" MaxLength="4000" />
+    <Property Name="User_Comment" Type="nvarchar" MaxLength="4000" />
+    <Property Name="HOD_Comment" Type="nvarchar" MaxLength="4000" />
+    <Property Name="HOD_Propose_Promotion" Type="nvarchar" MaxLength="200" />
+    <Property Name="HOD_Propose_Incr" Type="int" />
+    <Property Name="Final_Comment" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Final_Propose_Promotion" Type="nvarchar" MaxLength="200" />
+    <Property Name="Final_Propose_Incr" Type="int" />
+    <Property Name="Effect_Date" Type="smalldatetime" />
+    <Property Name="Created_date" Type="datetime" />
+    <Property Name="Created_By" Type="varchar" MaxLength="50" />
+    <Property Name="Updated_date" Type="datetime" />
+    <Property Name="Updated_by" Type="varchar" MaxLength="50" />
+  </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="View_StepDetails">
@@ -321,7 +367,6 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
   </Function>
   <Function Name="prc_UpdateOutcomeMarks" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="KpiOutcome" Type="nvarchar" Mode="In" />
-    <Parameter Name="RegId" Type="int" Mode="In" />
     <Parameter Name="MarksAchieved" Type="int" Mode="In" />
   </Function>
   <Function Name="prc_UserMenu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -336,6 +381,7 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
     <EntitySet Name="tblTraining_Need" EntityType="Self.tblTraining_Need" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblUser_LogInfo" EntityType="Self.tblUser_LogInfo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblUser_Registration" EntityType="Self.tblUser_Registration" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUserLogHistory" EntityType="Self.tblUserLogHistory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Company_Information" EntityType="Self.Company_Information" store:Type="Tables" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [Company_Information].[ID] AS [ID], 
@@ -410,6 +456,36 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
     [tblMenu].[Menu_Icon] AS [Menu_Icon], 
     [tblMenu].[YsnActive] AS [YsnActive]
     FROM [dbo].[tblMenu] AS [tblMenu]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="View_" EntityType="Self.View_" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [View_].[ID] AS [ID], 
+    [View_].[REG_ID] AS [REG_ID], 
+    [View_].[KRA_ID] AS [KRA_ID], 
+    [View_].[KRA] AS [KRA], 
+    [View_].[KPI_ID] AS [KPI_ID], 
+    [View_].[KPI] AS [KPI], 
+    [View_].[SESSION_ID] AS [SESSION_ID], 
+    [View_].[TaxPeriod] AS [TaxPeriod], 
+    [View_].[BeginDate] AS [BeginDate], 
+    [View_].[EndDate] AS [EndDate], 
+    [View_].[KPI_Enty] AS [KPI_Enty], 
+    [View_].[KPI_OUTCOME] AS [KPI_OUTCOME], 
+    [View_].[Marks_Achieved] AS [Marks_Achieved], 
+    [View_].[Supervisor_Comment] AS [Supervisor_Comment], 
+    [View_].[User_Comment] AS [User_Comment], 
+    [View_].[HOD_Comment] AS [HOD_Comment], 
+    [View_].[HOD_Propose_Promotion] AS [HOD_Propose_Promotion], 
+    [View_].[HOD_Propose_Incr] AS [HOD_Propose_Incr], 
+    [View_].[Final_Comment] AS [Final_Comment], 
+    [View_].[Final_Propose_Promotion] AS [Final_Propose_Promotion], 
+    [View_].[Final_Propose_Incr] AS [Final_Propose_Incr], 
+    [View_].[Effect_Date] AS [Effect_Date], 
+    [View_].[Created_date] AS [Created_date], 
+    [View_].[Created_By] AS [Created_By], 
+    [View_].[Updated_date] AS [Updated_date], 
+    [View_].[Updated_by] AS [Updated_by]
+    FROM [dbo].[View_] AS [View_]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="View_StepDetails" EntityType="Self.View_StepDetails" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 

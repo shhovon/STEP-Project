@@ -4,38 +4,34 @@
     <EntitySetMapping Name="KPIs">
       <EntityTypeMapping TypeName="EMP_EVALUATIONModel.KPI">
         <MappingFragment StoreEntitySet="KPI">
-          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
-          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
-          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
-          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
           <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
           <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
           <ScalarProperty Name="KPI1" ColumnName="KPI" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="KRAs">
       <EntityTypeMapping TypeName="EMP_EVALUATIONModel.KRA">
         <MappingFragment StoreEntitySet="KRA">
-          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
-          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
-          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
-          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
           <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
           <ScalarProperty Name="KRA1" ColumnName="KRA" />
           <ScalarProperty Name="RegId" ColumnName="RegId" />
           <ScalarProperty Name="Section_Name" ColumnName="Section_Name" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="STEPs">
       <EntityTypeMapping TypeName="EMP_EVALUATIONModel.STEP">
         <MappingFragment StoreEntitySet="STEP">
-          <ScalarProperty Name="YsnUpdate" ColumnName="YsnUpdate" />
-          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
-          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
-          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
-          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
           <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
           <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
@@ -51,7 +47,11 @@
           <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
           <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
           <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+          <ScalarProperty Name="YsnUpdate" ColumnName="YsnUpdate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -73,31 +73,31 @@
     <EntitySetMapping Name="tblSpecial_Factor">
       <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblSpecial_Factor">
         <MappingFragment StoreEntitySet="tblSpecial_Factor">
-          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
-          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
-          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
-          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="Reg_Id" ColumnName="Reg_Id" />
           <ScalarProperty Name="Session_Id" ColumnName="Session_Id" />
           <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="tblTraining_Need">
       <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblTraining_Need">
         <MappingFragment StoreEntitySet="tblTraining_Need">
-          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
-          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
-          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
-          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Train_Id" ColumnName="Train_Id" />
           <ScalarProperty Name="Reg_Id" ColumnName="Reg_Id" />
           <ScalarProperty Name="Session_Id" ColumnName="Session_Id" />
           <ScalarProperty Name="Title" ColumnName="Title" />
           <ScalarProperty Name="By_When" ColumnName="By_When" />
           <ScalarProperty Name="Train_Type" ColumnName="Train_Type" />
           <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="Train_Id" ColumnName="Train_Id" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -137,6 +137,17 @@
           <ScalarProperty Name="Created_By" ColumnName="Created_By" />
           <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
           <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserLogHistories">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblUserLogHistory">
+        <MappingFragment StoreEntitySet="tblUserLogHistory">
+          <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="LoginTime" ColumnName="LoginTime" />
+          <ScalarProperty Name="UserIP" ColumnName="UserIP" />
+          <ScalarProperty Name="ComputerName" ColumnName="ComputerName" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -200,6 +211,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="New_Tax_Period">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.New_Tax_Period">
+        <MappingFragment StoreEntitySet="New_Tax_Period">
+          <ScalarProperty Name="TaxPerID" ColumnName="TaxPerID" />
+          <ScalarProperty Name="TaxPeriod" ColumnName="TaxPeriod" />
+          <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="KPI_Enty" ColumnName="KPI_Enty" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tblMenus">
       <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblMenu">
         <MappingFragment StoreEntitySet="tblMenu">
@@ -212,6 +234,101 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="View_">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.View_">
+        <MappingFragment StoreEntitySet="View_">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
+          <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+          <ScalarProperty Name="KRA" ColumnName="KRA" />
+          <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
+          <ScalarProperty Name="KPI" ColumnName="KPI" />
+          <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+          <ScalarProperty Name="TaxPeriod" ColumnName="TaxPeriod" />
+          <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="KPI_Enty" ColumnName="KPI_Enty" />
+          <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
+          <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
+          <ScalarProperty Name="Supervisor_Comment" ColumnName="Supervisor_Comment" />
+          <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
+          <ScalarProperty Name="HOD_Comment" ColumnName="HOD_Comment" />
+          <ScalarProperty Name="HOD_Propose_Promotion" ColumnName="HOD_Propose_Promotion" />
+          <ScalarProperty Name="HOD_Propose_Incr" ColumnName="HOD_Propose_Incr" />
+          <ScalarProperty Name="Final_Comment" ColumnName="Final_Comment" />
+          <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
+          <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
+          <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="View_StepDetails">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.View_StepDetails">
+        <MappingFragment StoreEntitySet="View_StepDetails">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
+          <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+          <ScalarProperty Name="KRA" ColumnName="KRA" />
+          <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
+          <ScalarProperty Name="KPI" ColumnName="KPI" />
+          <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+          <ScalarProperty Name="TaxPeriod" ColumnName="TaxPeriod" />
+          <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="KPI_Enty" ColumnName="KPI_Enty" />
+          <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
+          <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
+          <ScalarProperty Name="Supervisor_Comment" ColumnName="Supervisor_Comment" />
+          <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
+          <ScalarProperty Name="HOD_Comment" ColumnName="HOD_Comment" />
+          <ScalarProperty Name="HOD_Propose_Promotion" ColumnName="HOD_Propose_Promotion" />
+          <ScalarProperty Name="HOD_Propose_Incr" ColumnName="HOD_Propose_Incr" />
+          <ScalarProperty Name="Final_Comment" ColumnName="Final_Comment" />
+          <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
+          <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
+          <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
+          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionName="EMP_EVALUATIONModel.Store.fnSplitString" FunctionImportName="fnSplitString">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.fnSplitString_Result">
+          <ScalarProperty Name="splitdata" ColumnName="splitdata" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prc_GetEmployeeListByDeptHead" FunctionName="EMP_EVALUATIONModel.Store.prc_GetEmployeeListByDeptHead">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.prc_GetEmployeeListByDeptHead_Result">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="Section" ColumnName="Section" />
+          <ScalarProperty Name="Designation" ColumnName="Designation" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prc_GetKraKpiOutcomeData" FunctionName="EMP_EVALUATIONModel.Store.prc_GetKraKpiOutcomeData">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.prc_GetKraKpiOutcomeData_Result">
+          <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Designation" ColumnName="Designation" />
+          <ScalarProperty Name="KRA" ColumnName="KRA" />
+          <ScalarProperty Name="KPI" ColumnName="KPI" />
+          <ScalarProperty Name="Outcome" ColumnName="Outcome" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prc_UpdateOutcomeMarks" FunctionName="EMP_EVALUATIONModel.Store.prc_UpdateOutcomeMarks" />
     <FunctionImportMapping FunctionImportName="prc_UserMenu" FunctionName="EMP_EVALUATIONModel.Store.prc_UserMenu">
       <ResultMapping>
         <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.prc_UserMenu_Result">
@@ -224,62 +341,5 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <EntitySetMapping Name="View_StepDetails">
-      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.View_StepDetails">
-        <MappingFragment StoreEntitySet="View_StepDetails">
-          <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
-          <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
-          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
-          <ScalarProperty Name="Created_date" ColumnName="Created_date" />
-          <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
-          <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
-          <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
-          <ScalarProperty Name="Final_Comment" ColumnName="Final_Comment" />
-          <ScalarProperty Name="HOD_Propose_Incr" ColumnName="HOD_Propose_Incr" />
-          <ScalarProperty Name="HOD_Propose_Promotion" ColumnName="HOD_Propose_Promotion" />
-          <ScalarProperty Name="HOD_Comment" ColumnName="HOD_Comment" />
-          <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
-          <ScalarProperty Name="Supervisor_Comment" ColumnName="Supervisor_Comment" />
-          <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
-          <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
-          <ScalarProperty Name="KPI_Enty" ColumnName="KPI_Enty" />
-          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-          <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
-          <ScalarProperty Name="TaxPeriod" ColumnName="TaxPeriod" />
-          <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
-          <ScalarProperty Name="KPI" ColumnName="KPI" />
-          <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
-          <ScalarProperty Name="KRA" ColumnName="KRA" />
-          <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
-          <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="New_Tax_Period">
-      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.New_Tax_Period">
-        <MappingFragment StoreEntitySet="New_Tax_Period">
-          <ScalarProperty Name="KPI_Enty" ColumnName="KPI_Enty" />
-          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-          <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
-          <ScalarProperty Name="TaxPeriod" ColumnName="TaxPeriod" />
-          <ScalarProperty Name="TaxPerID" ColumnName="TaxPerID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="prc_GetEmployeeListByDeptHead" FunctionName="EMP_EVALUATIONModel.Store.prc_GetEmployeeListByDeptHead">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.prc_GetEmployeeListByDeptHead_Result">
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
-          <ScalarProperty Name="Department" ColumnName="Department" />
-          <ScalarProperty Name="Section" ColumnName="Section" />
-          <ScalarProperty Name="Designation" ColumnName="Designation" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="prc_GetKraKpiOutcomeData" FunctionName="EMP_EVALUATIONModel.Store.prc_GetKraKpiOutcomeData" />
-    <FunctionImportMapping FunctionImportName="fnSplitString" FunctionName="EMP_EVALUATIONModel.Store.fnSplitString" />
-    <FunctionImportMapping FunctionImportName="prc_UpdateOutcomeMarks" FunctionName="EMP_EVALUATIONModel.Store.prc_UpdateOutcomeMarks" />
   </EntityContainerMapping>
 </Mapping>
