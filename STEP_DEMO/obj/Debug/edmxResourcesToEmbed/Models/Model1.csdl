@@ -384,6 +384,7 @@
     <FunctionImport Name="prc_UserMenu" ReturnType="Collection(EMP_EVALUATIONModel.prc_UserMenu_Result)">
       <Parameter Name="RegId" Mode="In" Type="String" />
     </FunctionImport>
+    <EntitySet Name="tblMarksEntryHistories" EntityType="EMP_EVALUATIONModel.tblMarksEntryHistory" />
   </EntityContainer>
   <ComplexType Name="prc_GetEmployeeListByDeptHead_Result">
     <Property Type="String" Name="Name" Nullable="false" MaxLength="300" />
@@ -408,4 +409,13 @@
     <Property Type="String" Name="Menu_Icon" Nullable="true" MaxLength="50" />
     <Property Type="Boolean" Name="YsnActive" Nullable="true" />
   </ComplexType>
+  <EntityType Name="tblMarksEntryHistory">
+    <Key>
+      <PropertyRef Name="AutoID" />
+    </Key>
+    <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SupervisorID" Type="Int32" />
+    <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+    <Property Name="UserIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
 </Schema>

@@ -152,6 +152,15 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.New_Tax_Period' does not have a
           <Property Name="Updated_by" Type="varchar" MaxLength="50" />
           <Property Name="YsnUpdate" Type="bit" />
         </EntityType>
+        <EntityType Name="tblMarksEntryHistory">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SupervisorID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UserIP" Type="varchar" MaxLength="20" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EMP_EVALUATION.dbo.tblMenu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="tblMenu">
@@ -381,6 +390,7 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <EntitySet Name="KPI" EntityType="Self.KPI" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KRA" EntityType="Self.KRA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="STEP" EntityType="Self.STEP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMarksEntryHistory" EntityType="Self.tblMarksEntryHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRole" EntityType="Self.tblRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSpecial_Factor" EntityType="Self.tblSpecial_Factor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTraining_Need" EntityType="Self.tblTraining_Need" Schema="dbo" store:Type="Tables" />
@@ -592,6 +602,15 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <Property Name="Updated_date" Type="DateTime" Precision="3" />
           <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="YsnUpdate" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tblMarksEntryHistory">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SupervisorID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UserIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tblRole">
           <Key>
@@ -882,6 +901,7 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <EntitySet Name="KPIs" EntityType="Self.KPI" />
           <EntitySet Name="KRAs" EntityType="Self.KRA" />
           <EntitySet Name="STEPs" EntityType="Self.STEP" />
+          <EntitySet Name="tblMarksEntryHistories" EntityType="Self.tblMarksEntryHistory" />
           <EntitySet Name="tblRoles" EntityType="Self.tblRole" />
           <EntitySet Name="tblSpecial_Factor" EntityType="Self.tblSpecial_Factor" />
           <EntitySet Name="tblTraining_Need" EntityType="Self.tblTraining_Need" />
@@ -1001,6 +1021,16 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
                 <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
                 <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
                 <ScalarProperty Name="YsnUpdate" ColumnName="YsnUpdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblMarksEntryHistories">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblMarksEntryHistory">
+              <MappingFragment StoreEntitySet="tblMarksEntryHistory">
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+                <ScalarProperty Name="SupervisorID" ColumnName="SupervisorID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UserIP" ColumnName="UserIP" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

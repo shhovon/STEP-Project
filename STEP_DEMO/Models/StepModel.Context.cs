@@ -30,6 +30,7 @@ namespace STEP_DEMO.Models
         public virtual DbSet<KPI> KPIs { get; set; }
         public virtual DbSet<KRA> KRAs { get; set; }
         public virtual DbSet<STEP> STEPs { get; set; }
+        public virtual DbSet<tblMarksEntryHistory> tblMarksEntryHistories { get; set; }
         public virtual DbSet<tblRole> tblRoles { get; set; }
         public virtual DbSet<tblSpecial_Factor> tblSpecial_Factor { get; set; }
         public virtual DbSet<tblTraining_Need> tblTraining_Need { get; set; }

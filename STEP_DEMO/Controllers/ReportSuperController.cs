@@ -72,6 +72,21 @@ namespace STEP_DEMO.Controllers
         {
             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
             {
+
+                int regId;
+                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
+                {
+                    // insert marks history
+                    tblMarksEntryHistory logEntry = new tblMarksEntryHistory
+                    {
+                        SupervisorID = regId,
+                        UpdateTime = DateTime.Now,
+                        UserIP = GetIPAddress(),
+
+                    };
+                    db.tblMarksEntryHistories.Add(logEntry);
+                    db.SaveChanges();
+                }
                 if (outcomes != null && marks != null)
                 {
                     foreach (var outcome in outcomes)
@@ -94,6 +109,19 @@ namespace STEP_DEMO.Controllers
             }
 
             return RedirectToAction("AddMarks");
+        }
+
+        protected string GetIPAddress()
+        {
+            string ipList = (Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ??
+                   Request.ServerVariables["REMOTE_ADDR"]).Split(',')[0].Trim();
+
+            if (!string.IsNullOrEmpty(ipList))
+            {
+                return ipList.Split(',')[0];
+            }
+
+            return Request.ServerVariables["REMOTE_ADDR"];
         }
 
         [CustomAuthorize]

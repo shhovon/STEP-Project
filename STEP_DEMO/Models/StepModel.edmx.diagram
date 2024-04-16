@@ -4,20 +4,21 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a033b25d463447ad9fa7eda5bd846a84" Name="Diagram1" ZoomLevel="60">
+      <Diagram DiagramId="c8ccd89520bf46a5b3011e0b0a18067f" Name="Diagram1" ZoomLevel="78">
         <EntityTypeShape EntityType="EMP_EVALUATIONModel.KPI" Width="1.5" PointX="5.25" PointY="2.625" IsExpanded="true" />
         <EntityTypeShape EntityType="EMP_EVALUATIONModel.KRA" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="EMP_EVALUATIONModel.STEP" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblRole" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblSpecial_Factor" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblTraining_Need" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblUser_LogInfo" Width="1.5" PointX="8.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblMarksEntryHistory" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblRole" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblSpecial_Factor" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblTraining_Need" Width="1.5" PointX="8.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblUser_LogInfo" Width="1.5" PointX="8.75" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblUser_Registration" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblUserLogHistory" Width="1.5" PointX="8.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.Company_Information" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblUserLogHistory" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.Company_Information" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EMP_EVALUATIONModel.Employee_Information" Width="1.5" PointX="4.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.New_Tax_Period" Width="1.5" PointX="6.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblMenu" Width="1.5" PointX="10.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.New_Tax_Period" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblMenu" Width="1.5" PointX="6.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EMP_EVALUATIONModel.View_" Width="1.5" PointX="8.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EMP_EVALUATIONModel.View_StepDetails" Width="1.5" PointX="10.75" PointY="11.75" IsExpanded="true" />
         <AssociationConnector Association="EMP_EVALUATIONModel.FK_KPI_KRA" ManuallyRouted="false" />

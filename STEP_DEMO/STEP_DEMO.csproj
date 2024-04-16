@@ -166,22 +166,22 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Company_Information.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CustomAuthorize.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\Employee_Information.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\fnSplitString_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\HomeData.cs" />
     <Compile Include="Models\KPI.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KRA.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KraKpiOutcomeModel.cs" />
     <Compile Include="Models\CombinedViewModel.cs" />
@@ -190,64 +190,67 @@
     <Compile Include="Models\MarksData.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
-    <Compile Include="Models\Model1.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\New_Tax_Period.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OutcomeViewModel.cs" />
     <Compile Include="Models\prc_GetEmployeeListByDeptHead_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_GetKraKpiOutcomeData_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_UserMenu_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\STEP.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StepModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StepModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StepModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StepModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StepModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblMarksEntryHistory.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblMenu.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblMenuNew.cs" />
     <Compile Include="Models\tblRole.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblSpecial_Factor.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblTraining_Need.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblUserLogHistory.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblUser_LogInfo.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblUser_Registration.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\View_.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\View_StepDetails.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1687,15 +1690,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\Model1.Context.tt">
+    <Content Include="Models\StepModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+      <DependentUpon>StepModel.edmx</DependentUpon>
+      <LastGenOutput>StepModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\Model1.tt">
+    <Content Include="Models\StepModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.cs</LastGenOutput>
+      <DependentUpon>StepModel.edmx</DependentUpon>
+      <LastGenOutput>StepModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -2025,12 +2028,12 @@
     <Content Include="Content\vendors\tinymce\readme.md" />
     <Content Include="Content\vendors\tinymce\skins\ui\oxide-dark\fonts\tinymce-mobile.woff" />
     <Content Include="Content\vendors\tinymce\skins\ui\oxide\fonts\tinymce-mobile.woff" />
-    <EntityDeploy Include="Models\Model1.edmx">
+    <EntityDeploy Include="Models\StepModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+      <LastGenOutput>StepModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
+    <Content Include="Models\StepModel.edmx.diagram">
+      <DependentUpon>StepModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\Controllers\LoginController.js" />

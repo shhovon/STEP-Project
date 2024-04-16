@@ -341,5 +341,15 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <EntitySetMapping Name="tblMarksEntryHistories">
+      <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblMarksEntryHistory">
+        <MappingFragment StoreEntitySet="tblMarksEntryHistory">
+          <ScalarProperty Name="UserIP" ColumnName="UserIP" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="SupervisorID" ColumnName="SupervisorID" />
+          <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
