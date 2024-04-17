@@ -41,7 +41,6 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- form content -->
                 @using (Html.BeginForm("InsertKpiOutcomes", "Home", FormMethod.Post, new { id = "outcomeForm" }))
                 {
                     <div class="dropdown-container">
@@ -102,15 +101,16 @@
     </div>*@
 
 <div class="dropdown-container">
-    <label class="dropdown-label" for="taxPeriodDropdown">Choose Session:</label>
+    <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
     <br />
-    <select id="taxPeriodDropdown" class="form-control custom-select">
+    <select id="taxPeriodDropdownMV" class="form-control custom-select">
         @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
         {
             <option value="@taxPeriod">@taxPeriod</option>
         }
     </select>
 </div>
+<input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
 
 
 
@@ -156,69 +156,78 @@
 @section scripts {
     <script>
         $(function () {
-            $('#selectedKRA').change(function () {
-                var selectedKRA = $(this).val();
-                var kraKpiData = @Html.Raw(Json.Encode(Model));
+            $('#taxPeriodDropdownMV').change(function () {
+                var selectedSession = $(this).val();
 
-                // filter KPI based on selected KRA
-                var filteredKPIs = kraKpiData.filter(function (item) {
-                    return item.KRA === selectedKRA;
+                $.ajax({
+                    url: '@Url.Action("GetFilteredData", "Home")',
+                    type: 'GET',
+                    data: { selectedSession: selectedSession },
+                    success: function (response) {
+                        $('#selectedItemsTable tbody').empty();
+
+                        response.forEach(function (item) {
+                            var newRow = '<tr>' +
+                                '<td>' + item.KRA + '</td>' +
+                                '<td>' + item.KPI + '</td>' +
+                                '<td>' + (item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "") + '</td>' +
+                                '<td style="text-align: center; vertical-align: middle !important;">' +
+                                '<form action="@Url.Action("DeleteRow", "Home")" method="post">' +
+                                '<input type="hidden" name="kra" value="' + item.KRA + '" />' +
+                                '<input type="hidden" name="kpi" value="' + item.KPI + '" />' +
+                                '<input type="hidden" name="kpiOutcome" value="' + item.KPI_OUTCOME + '" />' +
+                                '<button class="btn btn-danger" type="submit"><i class="ti-trash"></i></button>' +
+                                '</form>' +
+                                '</td>' +
+                                '</tr>';
+
+                            $('#selectedItemsTable tbody').append(newRow);
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
                 });
-
-                // KPI dropdown list
-@*                var kpiDropdown = '<label for="selectedKPI">KPI List: </label>';*@
-                var kpiDropdown = '<select id="selectedKPI" name="selectedKPI">';
-                filteredKPIs.forEach(function (item) {
-                    kpiDropdown += '<option value= "' + item.KPI + '">' + item.KPI + '</option>';
-                });
-                kpiDropdown += '</select>';
-
-                $('#kpiDropdown').html(kpiDropdown);
-
-                $('#selectedKPI').trigger('change');
             });
 
-            // change event for dynamically generated KPI dropdown
-            $(document).on('change', '#selectedKPI', function () {
-                var selectedKPI = $(this).val();
+            $(function () {
+                $('#selectedKRA').change(function () {
+                    var selectedKRA = $(this).val();
+                    var kraKpiData = @Html.Raw(Json.Encode(Model));
 
-                $('#kpiOutcomeFields').empty();
-                $('#kpiOutcomeFields').append('<div><label></label><input type="text" name="kpiOutcomes" /></div>');
+                    // filter KPI based on selected KRA
+                    var filteredKPIs = kraKpiData.filter(function (item) {
+                        return item.KRA === selectedKRA;
+                    });
+
+                    // KPI dropdown list
+                    var kpiDropdown = '<select id="selectedKPI" name="selectedKPI">';
+                    filteredKPIs.forEach(function (item) {
+                        kpiDropdown += '<option value= "' + item.KPI + '">' + item.KPI + '</option>';
+                    });
+                    kpiDropdown += '</select>';
+
+                    $('#kpiDropdown').html(kpiDropdown);
+
+                    $('#selectedKPI').trigger('change');
+                });
+
+                // change event for dynamically generated KPI dropdown
+                $(document).on('change', '#selectedKPI', function () {
+                    var selectedKPI = $(this).val();
+
+                    $('#kpiOutcomeFields').empty();
+                    $('#kpiOutcomeFields').append('<div><label></label><input type="text" name="kpiOutcomes" /></div>');
+                });
             });
 
-            // save selected info
-@*            $('#saveSelectedInfo').click(function () {
-                var selectedKRA = $('#selectedKRA').val();
-                var selectedKPI = $('#selectedKPI').val();
-                var selectedKPIOutcome = $('input[name="kpiOutcomes"]').val();*@
-
-                // update the selected information
-@*                $('#selectedKRAInfo').text(selectedKRA);
-                $('#selectedKPIInfo').text(selectedKPI);
-                $('#selectedKPIOutcomeInfo').text(selectedKPIOutcome);*@
-
-                var tableBody = document.querySelector("#selectedItemsTable tbody");
-                var newRow = document.createElement("tr");
-                newRow.innerHTML = `
-                <td>${selectedKRA}</td>
-                <td>${selectedKPI}</td>
-                <td>${selectedKPIOutcome}</td>
-        `;
-                tableBody.appendChild(newRow);
-        });
-
-        $(function () {
             // Update hidden field with selected tax period value
             $('#taxPeriodDropdown').change(function () {
                 var selectedTaxPeriod = $(this).val();
                 $('#selectedTaxPeriod').val(selectedTaxPeriod);
             });
-        });
 
-@*        modal validation*@
-
-        $(function () {
-
+            // modal validation
             $('#outcomeForm').submit(function (event) {
                 event.preventDefault();
                 var formData = $(this).serialize();
@@ -237,13 +246,15 @@
                     }
                 });
             });
-            // reload page when modal is closed
+
+            // Reload page when modal is closed
             $('#myModal').on('hidden.bs.modal', function () {
                 if ($('#myModal .alert-success').length) {
                     window.location.reload();
                 }
-
             });
         });
     </script>
 }
+
+

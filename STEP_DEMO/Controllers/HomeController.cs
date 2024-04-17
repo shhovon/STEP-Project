@@ -562,59 +562,6 @@ namespace STEP_DEMO.Controllers
             }
         }
 
-        /*[CustomAuthorize]
-        [HttpPost]
-        public ActionResult InsertKpiOutcomes(string selectedKRA, string selectedKPI, string kpiOutcomes)
-        {
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-            {
-                int regId;
-                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
-                {
-                    if (!string.IsNullOrEmpty(selectedKRA) && !string.IsNullOrEmpty(selectedKPI) && !string.IsNullOrEmpty(kpiOutcomes))
-                    {
-                        try
-                        {
-                            // find KRA_ID and KPI_ID based on selected KRA and KPI
-                            int kraId = db.KRAs.FirstOrDefault(k => k.KRA1 == selectedKRA)?.KRA_ID ?? 0;
-                            int kpiId = db.KPIs.FirstOrDefault(k => k.KPI1 == selectedKPI)?.KPI_ID ?? 0;
-
-                            if (kraId != 0 && kpiId != 0)
-                            {
-                                STEP newStep = new STEP
-                                {
-                                    REG_ID = regId,
-                                    KRA_ID = kraId,
-                                    KPI_ID = kpiId,
-                                    KPI_OUTCOME = kpiOutcomes
-                                };
-
-                                db.STEPs.Add(newStep);
-
-                                db.SaveChanges();
-
-                                return RedirectToAction("DisplayKrasAndKpis");
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "KRA or KPI not found");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            ModelState.AddModelError("", "error" + ex.Message);
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "please select KRA, KPI, and provide outcome");
-                    }
-                }
-
-                return View("DisplayKrasAndKpis");
-            }
-        }*/
-
         [CustomAuthorize]
         [HttpPost]
         public ActionResult InsertKpiOutcomes(string selectedKRA, string selectedKPI, string kpiOutcomes, string selectedTaxPeriod)
@@ -634,7 +581,7 @@ namespace STEP_DEMO.Controllers
                     {
                         try
                         {
-                            // Find TaxPerID based on selected TaxPeriod
+                            // find TaxPerID based on selected TaxPeriod
                             int? taxPerId = (from st in db.STEPs
                                              join tax in db.New_Tax_Period on st.SESSION_ID equals tax.TaxPerID
                                              where tax.TaxPeriod == selectedTaxPeriod && tax.KPI_Enty == true
@@ -642,7 +589,7 @@ namespace STEP_DEMO.Controllers
 
                             if (taxPerId != null)
                             {
-                                // Find KRA_ID and KPI_ID based on selected KRA and KPI
+                                // find KRA_ID and KPI_ID based on selected KRA and KPI
                                 int kraId = db.KRAs.FirstOrDefault(k => k.KRA1 == selectedKRA)?.KRA_ID ?? 0;
                                 int kpiId = db.KPIs.FirstOrDefault(k => k.KPI1 == selectedKPI)?.KPI_ID ?? 0;
 
@@ -685,6 +632,32 @@ namespace STEP_DEMO.Controllers
                 return View("DisplayKrasAndKpis");
             }
         }
+
+        public ActionResult GetFilteredData(string selectedSession)
+        {
+            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            {
+                // retrieve the session ID from the selected session name
+                var taxPerId = (from st in db.STEPs
+                                join tax in db.New_Tax_Period on st.SESSION_ID equals tax.TaxPerID
+                                where tax.TaxPeriod == selectedSession && tax.KPI_Enty == true
+                                select st.SESSION_ID).FirstOrDefault();
+
+                // filter the data based on the selected session ID
+                var kraKpiData = (from vs in db.View_StepDetails
+                                  where vs.SESSION_ID == taxPerId
+                                  select new
+                                  {
+                                      vs.KRA,
+                                      vs.KPI,
+                                      vs.KPI_OUTCOME
+                                  }).ToList();
+
+
+                return Json(kraKpiData, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
 
         [HttpPost]

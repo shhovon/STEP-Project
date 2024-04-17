@@ -9,6 +9,17 @@
 </a>
 <br />
 <br />
+<br />
+<div class="dropdown-container">
+    <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
+    <br />
+    <select id="taxPeriodDropdownMV" class="form-control custom-select">
+        @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
+        {
+            <option value="@taxPeriod">@taxPeriod</option>
+        }
+    </select>
+</div>
 @*@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
     {
         <div class="alert alert-success" role="alert">
@@ -47,29 +58,29 @@
 
                         foreach (var item in kpis)
                         {
-                    <tr>
-                        @if (first)
-                        {
-                            <td rowspan="@kpis.Count">@kra</td>
-                            first = false;
-                        }
-                        <td>@item.KPI</td>
-                        <td>@item.Outcome</td>
-                        <td>
-                            <input type="hidden" name="outcomes" value="@item.Outcome" />
-                            <select name="marks[@item.Outcome]" onchange="calculateAverage(this, '@item.KRA')">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </td>
-                          <td>
+                            <tr>
+                                @if (first)
+                                {
+                                    <td rowspan="@kpis.Count">@kra</td>
+                                    first = false;
+                                }
+                                <td>@item.KPI</td>
+                                <td>@item.Outcome</td>
+                                <td>
+                                    <input type="hidden" name="outcomes" value="@item.Outcome" />
+                                    <select name="marks[@item.Outcome]" onchange="calculateAverage(this, '@item.KRA')">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                <td>
                                     <input type="text" id="average-@item.Outcome" disabled />
                                 </td>
 
-                    </tr>
+                            </tr>
                         }
                     }
                 </tbody>
@@ -86,14 +97,48 @@ else
 }
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
 
+@section scripts {
+    <script>
 
-    function calculateAverage(selectElement, kra) {
-        var totalMarks = 0;
-        var rowCount = 0;
-        var marksCells = document.querySelectorAll('[name^="marks[' + kra + ']"]');
+        function calculateAverage(selectElement, kra) {
+            var totalMarks = 0;
+            var rowCount = 0;
+            var marksCells = document.querySelectorAll('[name^="marks[' + kra + ']"]');
+        }
 
-    }
+        $(function () {
+            $('#taxPeriodDropdownMV').change(function () {
+                var selectedSession = $(this).val();
 
-</script>
+                $.ajax({
+                    url: '@Url.Action("GetFilteredMarksData", "Home")',
+                    type: 'GET',
+                    data: { selectedSession: selectedSession },
+                    success: function (response) {
+                        $('tbody').empty();
+
+                        response.forEach(function (item) {
+                            var newRow = '<tr>' +
+                                '<td>' + item.KPI_OUTCOME + '</td>' +
+                                '<td>' + item.Marks_Achieved + '</td>' +
+                                '<td></td>' +
+                                '</tr>';
+
+                            $('tbody').append(newRow);
+                        });
+
+                        if (response.length > 0) {
+                            $('table thead').show();
+                        } else {
+                            $('table thead').hide();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -53,7 +53,13 @@ namespace STEP_DEMO.Controllers
                 {
                     using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
                     {
-                            string employeeID = Request.Form["employeeCode"];
+                        var last2session = (db.New_Tax_Period
+                                     .OrderByDescending(t => t.TaxPeriod)
+                                     .Select(t => t.TaxPeriod).Take(2).ToList());
+
+                        ViewBag.TopTaxPeriods = last2session;
+
+                        string employeeID = Request.Form["employeeCode"];
 
                             // insert marks history
                             tblMarksEntryHistory logEntry = new tblMarksEntryHistory
@@ -130,6 +136,12 @@ namespace STEP_DEMO.Controllers
             List<MarksData> marksData;
             using (var db = new EMP_EVALUATIONEntities())
             {
+                var last2session = (db.New_Tax_Period
+                                   .OrderByDescending(t => t.TaxPeriod)
+                                   .Select(t => t.TaxPeriod).Take(2).ToList());
+
+                ViewBag.TopTaxPeriods = last2session;
+
                 marksData = db.STEPs
                         .Where(s => s.REG_ID == regId)
                         .Select(s => new MarksData
@@ -142,6 +154,5 @@ namespace STEP_DEMO.Controllers
 
             return View(marksData);
         }
-
     }
 }
