@@ -45,6 +45,18 @@
                 @using (Html.BeginForm("InsertKpiOutcomes", "Home", FormMethod.Post, new { id = "outcomeForm" }))
                 {
                     <div class="dropdown-container">
+                        <label class="dropdown-label" for="taxPeriodDropdown">Choose Session:</label>
+                        <br />
+                        <select id="taxPeriodDropdown" class="form-control custom-select">
+                            @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
+                            {
+                                <option value="@taxPeriod">@taxPeriod</option>
+                            }
+                        </select>
+                    </div>
+                    <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
+
+                    <div class="dropdown-container">
                         <label class="dropdown-label" for="selectedKRA">Select KRA:</label>
                         <br />
                         @Html.DropDownList("selectedKRA", new SelectList(Model.Select(x => x.KRA).Distinct()), new { @class = "form-control custom-select" })
@@ -66,28 +78,40 @@
                 }
             </div>
             <div class="modal-footer" id="modalFooter">
-                
+
             </div>
         </div>
     </div>
 </div>
 
 
-<div>
-    @foreach (var id in ViewBag.SessionIds)
-    {
-        <div class="dropdown-container">
-            <label class="dropdown-label" for="taxPeriodDropdown">Choose Session:</label>
-            <br />
-            <select id="taxPeriodDropdown" class="form-control custom-select">
-                @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
-                {
-                    <option value="@taxPeriod">@taxPeriod</option>
-                }
-            </select>
-        </div>
-    }
+@*<div>
+        @foreach (var id in ViewBag.SessionIds)
+        {
+            <div class="dropdown-container">
+                <label class="dropdown-label" for="taxPeriodDropdown">Choose Session:</label>
+                <br />
+                <select id="taxPeriodDropdown" class="form-control custom-select">
+                    @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
+                    {
+                        <option value="@taxPeriod">@taxPeriod</option>
+                    }
+                </select>
+            </div>
+        }
+    </div>*@
+
+<div class="dropdown-container">
+    <label class="dropdown-label" for="taxPeriodDropdown">Choose Session:</label>
+    <br />
+    <select id="taxPeriodDropdown" class="form-control custom-select">
+        @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
+        {
+            <option value="@taxPeriod">@taxPeriod</option>
+        }
+    </select>
 </div>
+
 
 
 <div id="selectedInfo">
@@ -181,7 +205,15 @@
                 <td>${selectedKPIOutcome}</td>
         `;
                 tableBody.appendChild(newRow);
+        });
+
+        $(function () {
+            // Update hidden field with selected tax period value
+            $('#taxPeriodDropdown').change(function () {
+                var selectedTaxPeriod = $(this).val();
+                $('#selectedTaxPeriod').val(selectedTaxPeriod);
             });
+        });
 
 @*        modal validation*@
 
@@ -210,6 +242,7 @@
                 if ($('#myModal .alert-success').length) {
                     window.location.reload();
                 }
+
             });
         });
     </script>

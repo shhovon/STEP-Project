@@ -1,7 +1,7 @@
 ﻿@model List<MarksData>
 
 <head>
-    <title>View Marks</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
 <body>
@@ -18,20 +18,24 @@
                         <th>KPI</th>*@
                         <th>Outcome</th>
                         <th>Performance Marks</th>
-                        <th>Average</th>
+                        <th>Total Average</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
                         <tr>
-@*                            <td>@item.KRA</td>
-                            <td>@item.KPI</td>*@
+                            @*                            <td>@item.KRA</td>
+                <td>@item.KPI</td>*@
                             <td>@item.KPI_OUTCOME</td>
                             <td>@item.Marks_Achieved</td>
                             <td></td>
                         </tr>
                     }
+@*                    <tr>
+                        <td colspan="2" style="text-align:center;">Total Average</td>
+                        <td></td>
+                    </tr>*@
                 </tbody>
             </table>
         </div>
