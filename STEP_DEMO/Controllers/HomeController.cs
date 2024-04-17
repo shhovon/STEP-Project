@@ -255,7 +255,14 @@ namespace STEP_DEMO.Controllers
                 if (ModelState.IsValid)
                 {
                     var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == model.RegId);
-                    if (user != null)
+
+                    var employeeCode = (from empinfo in db.Employee_Information
+                                        join userinfo in db.tblUser_Registration
+                                        on empinfo.RegId equals userinfo.RegId
+                                        where userinfo.RegId == model.RegId
+                                        select empinfo.EmployeeCode.Substring(4)).FirstOrDefault();
+
+                    if (employeeCode != null)
                     {
                         if (PasswordHelper.Decrypt(user.Password.Trim()) == model.Password.Trim())
                         {
