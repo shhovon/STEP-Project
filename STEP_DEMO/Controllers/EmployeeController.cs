@@ -32,6 +32,12 @@ namespace STEP_DEMO.Controllers
         {
             if (ModelState.IsValid)
             {
+                using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+                {
+                    db.tblSpecial_Factor.Add(model);
+                    db.SaveChanges();
+                }
+                    
                 Session["SpecialFactors"] = model;
                 return RedirectToAction("TrainingNeed");
             }
@@ -54,6 +60,17 @@ namespace STEP_DEMO.Controllers
         {
             if (ModelState.IsValid)
             {
+                var regID = (int)Session["RegID"];
+
+                model.Reg_Id = regID;
+
+
+                using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+                {
+                    db.tblTraining_Need.Add(model);
+                    db.SaveChanges();
+                }
+
                 Session["TrainingNeed"] = model;
                 return RedirectToAction("DisplayAllData");
             }

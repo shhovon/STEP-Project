@@ -119,8 +119,9 @@
         $(function () {
             $('#submitForm').submit(function (event) {
                 event.preventDefault();
-                if (confirm('Are you sure you want to submit this data for approval?')) {
+                if (confirm('Are you sure you want to send this data for approval?')) {
                     alert('Success! Data sent for approval');
+                    window.location.href = '@Url.Action("Dashboard", "Home")';
                 }
             });
         });
