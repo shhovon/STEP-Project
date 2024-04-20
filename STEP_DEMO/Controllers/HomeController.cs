@@ -696,6 +696,32 @@ namespace STEP_DEMO.Controllers
             return RedirectToAction("DisplayKrasAndKpis");
         }
 
+        [HttpPost]
+        public ActionResult DeleteRowSession(string kra, string kpi, string kpiOutcome)
+        {
+            try
+            {
+                List<KraKpiOutcomeModel> userAddedData = Session["UserAddedData"] as List<KraKpiOutcomeModel>;
+
+                var itemToDelete = userAddedData.FirstOrDefault(item =>
+                    item.KRA == kra && item.KPI == kpi && item.KPI_OUTCOME == kpiOutcome);
+
+                if (itemToDelete != null)
+                {
+                    userAddedData.Remove(itemToDelete);
+                    Session["UserAddedData"] = userAddedData;
+                }
+
+                return RedirectToAction("DisplayKrasAndKpis");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error deleting row from session: " + ex.Message);
+                return RedirectToAction("DisplayKrasAndKpis");
+            }
+        }
+
+
 
 
 
