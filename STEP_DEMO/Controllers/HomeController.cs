@@ -83,7 +83,7 @@ namespace STEP_DEMO.Controllers
                 ViewBag.KraKpiData = groupedData;
             }
 
-            return RedirectToAction("SpecialFactors", "Employee");
+            return RedirectToAction("DisplayKrasAndKpis", "Home");
         }
 
         public ActionResult Index()
@@ -251,19 +251,20 @@ namespace STEP_DEMO.Controllers
         public ActionResult Login(LoginViewModel model)
         {
             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-            {
+            { 
                 if (ModelState.IsValid)
                 {
                     var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == model.RegId);
 
-                    var employeeCode = (from empinfo in db.Employee_Information
+                    if (user != null)
+                    {
+                        var employee = (from empinfo in db.Employee_Information
                                         join userinfo in db.tblUser_Registration
                                         on empinfo.RegId equals userinfo.RegId
                                         where userinfo.RegId == model.RegId
                                         select empinfo.EmployeeCode.Substring(4)).FirstOrDefault();
+/*                        var employeeCode = employee.EmployeeCode.Substring(4);*/
 
-                    if (employeeCode != null)
-                    {
                         if (PasswordHelper.Decrypt(user.Password.Trim()) == model.Password.Trim())
                         {
                             // insert login history
@@ -519,12 +520,6 @@ namespace STEP_DEMO.Controllers
 
                 ViewBag.SessionIDKraKpi = SessionIDKraKpi;
 
-/*                var topTaxPeriods = (from vs in db.View_StepDetails
-                                     join tax in db.New_Tax_Period
-                                     on vs.SESSION_ID equals tax.TaxPerID
-                                     orderby vs.SESSION_ID descending
-                                     select tax.TaxPeriod).Take(2).ToList();*/
-
                 var last2session = (db.New_Tax_Period
                               .OrderByDescending(t => t.TaxPeriod)
                               .Select(t => t.TaxPeriod).Take(2).ToList());
@@ -614,6 +609,22 @@ namespace STEP_DEMO.Controllers
                                     db.STEPs.Add(newStep);
                                     db.SaveChanges();
 
+                                    var newData = new KraKpiOutcomeModel
+                                    {
+                                        KRA = selectedKRA,
+                                        KPI = selectedKPI,
+                                        KPI_OUTCOME = kpiOutcomes
+                                    };
+
+                                    List<KraKpiOutcomeModel> userAddedData = Session["UserAddedData"] as List<KraKpiOutcomeModel>;
+                                    if (userAddedData == null)
+                                    {
+                                        userAddedData = new List<KraKpiOutcomeModel>();
+                                    }
+
+                                    userAddedData.Add(newData);
+                                    Session["UserAddedData"] = userAddedData;
+
                                     return RedirectToAction("DisplayKrasAndKpis");
                                 }
                                 else
@@ -623,7 +634,7 @@ namespace STEP_DEMO.Controllers
                             }
                             else
                             {
-                                ModelState.AddModelError("", "TaxPeriod not found or does not have associated TaxPerID");
+                                ModelState.AddModelError("", "Session not found");
                             }
                         }
                         catch (Exception ex)
@@ -633,7 +644,7 @@ namespace STEP_DEMO.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Please select KRA, KPI, provide outcome, and select TaxPeriod");
+                        ModelState.AddModelError("", "Please select KRA, KPI, provide outcome, and select Session");
                     }
                 }
                 return View("DisplayKrasAndKpis");

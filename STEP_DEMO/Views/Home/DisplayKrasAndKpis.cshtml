@@ -21,6 +21,18 @@
         white-space: normal !important;
         word-wrap: break-word !important;
     }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #selectedInfo, #userAddedInfo {
+        flex: 1; 
+        padding: 15px;
+    }
+
+
 </style>
 
 
@@ -113,48 +125,76 @@
 <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
 
 
-
-<div id="selectedInfo">
-    <table id="selectedItemsTable" class="table">
-        <thead>
-            <tr>
-                <th>Selected KRA</th>
-                <th>Selected KPI</th>
-                <th>KPI Outcome</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+<div class="container">
+    <div id="selectedInfo">
+        <table id="selectedItemsTable" class="table">
+            <thead>
                 <tr>
-                    <td>@item.KRA</td>
-                    <td>@item.KPI</td>
-                    <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
-                    <td style="text-align: center; vertical-align: middle !important;">
-                        <form action="@Url.Action("DeleteRow", "Home")" method="post">
-                            <input type="hidden" name="kra" value="@item.KRA" />
-                            <input type="hidden" name="kpi" value="@item.KPI" />
-                            <input type="hidden" name="kpiOutcome" value="@item.KPI_OUTCOME" />
-                            <button class="btn btn-danger" type="submit">
-                                <i class="ti-trash">
-
-                                </i>
-                            </button>
-                        </form>
-                    </td>
+                    <th>Selected KRA</th>
+                    <th>Selected KPI</th>
+                    <th>KPI Outcome</th>
+                    <th>Action</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.KRA</td>
+                        <td>@item.KPI</td>
+                        <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
+                        <td style="text-align: center; vertical-align: middle !important;">
+                            <form action="@Url.Action("DeleteRow", "Home")" method="post">
+                                <input type="hidden" name="kra" value="@item.KRA" />
+                                <input type="hidden" name="kpi" value="@item.KPI" />
+                                <input type="hidden" name="kpiOutcome" value="@item.KPI_OUTCOME" />
+                                <button class="btn btn-danger" type="submit">
+                                    <i class="ti-trash">
+
+                                    </i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <div id="userAddedInfo">
+        <h3>Selected KRA/ KPI/ KPI OUTCOME</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Selected KRA</th>
+                    <th>Selected KPI</th>
+                    <th>KPI Outcome</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Session["UserAddedData"] != null)
+                {
+                    foreach (var item in Session["UserAddedData"] as List<KraKpiOutcomeModel>)
+                    {
+                        <tr>
+                            <td>@item.KRA</td>
+                            <td>@item.KPI</td>
+                            <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    </div>
 
 
 
 
 
-@section scripts {
-    <script>
+    @section scripts {
+        <script>
         $(function () {
             $('#taxPeriodDropdownMV').change(function () {
                 var selectedSession = $(this).val();
@@ -254,7 +294,7 @@
                 }
             });
         });
-    </script>
-}
+        </script>
+    }
 
 
