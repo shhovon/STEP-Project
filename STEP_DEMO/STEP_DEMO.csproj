@@ -169,6 +169,7 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CustomAuthorize.cs" />
+    <Compile Include="Models\DisplayAllDataViewModel.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\Employee_Information.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
@@ -2074,6 +2075,7 @@
     <Content Include="Views\Error\PageNotFound.cshtml" />
     <Content Include="Views\Shared\_ErrorLayout.cshtml" />
     <Content Include="Views\ReportSuper\ViewMarks.cshtml" />
+    <Content Include="Views\Employee\DisplayAllData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -178,27 +178,33 @@
                 {
                     foreach (var item in Session["UserAddedData"] as List<KraKpiOutcomeModel>)
                     {
-                <tr>
-                    <td>@item.KRA</td>
-                    <td>@item.KPI</td>
-                    <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
-                    <td style="text-align: center; vertical-align: middle !important;">
-                        <form action="@Url.Action("DeleteRowSession", "Home")" method="post">
-                            <input type="hidden" name="kra" value="@item.KRA" />
-                            <input type="hidden" name="kpi" value="@item.KPI" />
-                            <input type="hidden" name="kpiOutcome" value="@item.KPI_OUTCOME" />
-                            <button class="btn btn-danger" type="submit">
-                                <i class="ti-trash">
+                        <tr>
+                            <td>@item.KRA</td>
+                            <td>@item.KPI</td>
+                            <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
+                            <td style="text-align: center; vertical-align: middle !important;">
+                                <form action="@Url.Action("DeleteRowSession", "Home")" method="post">
+                                    <input type="hidden" name="kra" value="@item.KRA" />
+                                    <input type="hidden" name="kpi" value="@item.KPI" />
+                                    <input type="hidden" name="kpiOutcome" value="@item.KPI_OUTCOME" />
+                                    <button class="btn btn-danger" type="submit">
+                                        <i class="ti-trash">
 
-                                </i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
+                                        </i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
                     }
                 }
             </tbody>
         </table>
+        <br /><br />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <a href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Next</a>
+            </div>
+        </div>
     </div>
     </div>
 
