@@ -1,5 +1,9 @@
 ﻿@model DisplayAllDataViewModel
 
+<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
+</head>
+
 @{
     List<KraKpiOutcomeModel> userAddedData = new List<KraKpiOutcomeModel>();
 
@@ -16,7 +20,8 @@
 
 
 
-<h3>Confirm Submission</h3>
+<h3 style="text-align:center;">Confirm Submission</h3>
+<br />
 
 <table class="table">
     <tbody>
@@ -104,6 +109,7 @@
     </table>
 }
 
+<br />
 <form id="submitForm">
     <button type="submit" class="btn btn-primary">Send For Approval</button>
 </form>
