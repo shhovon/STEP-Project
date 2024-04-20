@@ -201,11 +201,12 @@
             </tbody>
         </table>
         <br /><br />
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <a href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Next</a>
-            </div>
-        </div>
+              <div class="form-group" id="nextButtonContainer">
+                  <div class="col-md-offset-2 col-md-10">
+                      <a id="nextButton" href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Next</a>
+                  </div>
+              </div>
+
     </div>
     </div>
 
@@ -313,6 +314,13 @@
                     window.location.reload();
                 }
             });
+        });
+
+            $(document).ready(function () {
+            var userAddedData = @(Session["UserAddedData"] == null ? "false" : "true");
+            if (!userAddedData) {
+                $('#nextButtonContainer').hide();
+            }
         });
         </script>
     }
