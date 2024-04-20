@@ -97,22 +97,6 @@
 </div>
 
 
-@*<div>
-        @foreach (var id in ViewBag.SessionIds)
-        {
-            <div class="dropdown-container">
-                <label class="dropdown-label" for="taxPeriodDropdown">Choose Session:</label>
-                <br />
-                <select id="taxPeriodDropdown" class="form-control custom-select">
-                    @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
-                    {
-                        <option value="@taxPeriod">@taxPeriod</option>
-                    }
-                </select>
-            </div>
-        }
-    </div>*@
-
 <div class="dropdown-container">
     <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
     <br />
@@ -131,9 +115,9 @@
         <table id="selectedItemsTable" class="table">
             <thead>
                 <tr>
-                    <th>Selected KRA</th>
-                    <th>Selected KPI</th>
-                    <th>KPI Outcome</th>
+                    <th>List of KRA</th>
+                    <th>List of KPI</th>
+                    <th>List of KPI Outcome</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -184,7 +168,7 @@
                             <td>@item.KPI</td>
                             <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
                             <td style="text-align: center; vertical-align: middle !important;">
-                                <form action="@Url.Action("DeleteRowSession", "Home")" method="post">
+                                <form action="@Url.Action("DeleteSession", "Home")" method="post">
                                     <input type="hidden" name="kra" value="@item.KRA" />
                                     <input type="hidden" name="kpi" value="@item.KPI" />
                                     <input type="hidden" name="kpiOutcome" value="@item.KPI_OUTCOME" />
@@ -203,7 +187,7 @@
         <br /><br />
               <div class="form-group" id="nextButtonContainer">
                   <div class="col-md-offset-2 col-md-10">
-                      <a id="nextButton" href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Next</a>
+                      <a id="nextButton" href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Special Factors</a>
                   </div>
               </div>
 

@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using STEP_DEMO.Helpers;
 using System.Web.Security;
-
+using System.Data.SqlClient;
 
 namespace STEP_DEMO.Controllers
 {
@@ -248,60 +248,167 @@ namespace STEP_DEMO.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        /* public ActionResult Login(LoginViewModel model)
+         {
+             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+             { 
+                 if (ModelState.IsValid)
+                 {
+ *//*                    var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == model.RegId);*//*
+
+                     var employeeInfo = (from emp in db.Employee_Information
+                                         join com in db.Company_Information on emp.ComID equals com.ID
+                                         join reg in db.tblUser_Registration on emp.RegId equals reg.RegId
+                                         where emp.EmployeeCode.Substring(4) == model.EmployeeCode
+                                         select new { emp.EmployeeCode, emp.ComID }).FirstOrDefault();
+
+                     if (employeeInfo != null)
+                     {
+
+                         *//*                        var employeeCode = employee.EmployeeCode.Substring(4);*//*
+                         var user = db.tblUser_Registration.FirstOrDefault(u => u.EmployeeCode.Substring(4) == model.EmployeeCode);
+
+                         if (PasswordHelper.Decrypt(user.Password.Trim()) == model.Password.Trim())
+                         {
+                             // insert login history
+                             tblUserLogHistory logEntry = new tblUserLogHistory
+                             {
+                                 UserID = user.RegId,
+                                 LoginTime = DateTime.Now,
+                                 UserIP = GetIPAddress(),
+
+                             };
+                             db.tblUserLogHistories.Add(logEntry);
+                             db.SaveChanges();
+
+                             // login successful
+                             Session["RegID"] = user.RegId;
+                             Session["EmailID"] = user.EmailID;
+                             Session["MobileNoPerson"] = user.MobileNoPerson;
+                             Session["DeptHead"] = user.DeptHead;
+                             Session["Role"] = user.Role;
+
+                             int deptHeadValue;
+                             if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+                             {
+                                 var usersUnderdeptHead = db.tblUser_Registration.Where(u => u.DeptHead == deptHeadValue).ToList();
+                                 var usersUnderReportSuper = db.tblUser_Registration.Where(u => u.ReportSuper == deptHeadValue).ToList();
+                             }
+                             ModelState.Clear();
+                             return RedirectToAction("Dashboard", "Home");
+                         }
+                         else
+                         {
+                             ViewBag.ErrorMessage = "Incorrect password";
+                         }
+                     }
+                     else
+                     {
+                         ViewBag.ErrorMessage = "user not found";
+                     }
+                 }
+
+                 var companies = db.Company_Information
+                            .Select(c => new SelectListItem
+                            {
+                                Value = c.Name.ToString(),
+                                Text = c.Name
+                            })
+                            .ToList();
+
+                 ViewBag.Companies = companies;
+
+                 return View("Login", model);
+             }
+         }*/
+
         public ActionResult Login(LoginViewModel model)
         {
             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-            { 
+            {
                 if (ModelState.IsValid)
                 {
-                    var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == model.RegId);
+                    // Retrieve the employee information based on the provided RegId
+                    var employeeCompanyInfo = (from emp in db.Employee_Information
+                                               join com in db.Company_Information on emp.ComID equals com.ID
+                                               select new { emp.EmployeeCode, emp.ComID }).ToList();
 
-                    if (user != null)
+                    var employeeRegistrationInfo = (from reg in db.tblUser_Registration
+                                                    join emp in db.Employee_Information on reg.RegId equals emp.RegId
+                                                    select new { emp.EmployeeCode, reg.RegId }).ToList();
+
+                    var employeeInfo = (from empComp in employeeCompanyInfo
+                                        join empReg in employeeRegistrationInfo on empComp.EmployeeCode equals empReg.EmployeeCode
+                                        select new { empComp.EmployeeCode, empComp.ComID, empReg.RegId }).FirstOrDefault();
+
+
+
+                    if (employeeInfo != null)
                     {
-                        var employee = (from empinfo in db.Employee_Information
-                                        join userinfo in db.tblUser_Registration
-                                        on empinfo.RegId equals userinfo.RegId
-                                        where userinfo.RegId == model.RegId
-                                        select empinfo.EmployeeCode.Substring(4)).FirstOrDefault();
-/*                        var employeeCode = employee.EmployeeCode.Substring(4);*/
+                        
 
-                        if (PasswordHelper.Decrypt(user.Password.Trim()) == model.Password.Trim())
+                        // Call the stored procedure prc_EmployeeInfoByEmpCode with ComID and EmployeeCode as parameters
+                        var empCode = employeeInfo.EmployeeCode;
+                        int comId = (int)employeeInfo.ComID;
+
+                        var comIdParam = new SqlParameter("@ComID", comId);
+                        var empCodeParam = new SqlParameter("@EmpCode", empCode);
+                        var employeeData = db.Database.SqlQuery<EmployeeInfo>(
+                            "prc_EmployeeInfoByEmpCode @ComID, @EmpCode",
+                            new SqlParameter("@ComID", comId),
+                            new SqlParameter("@EmpCode", empCode)
+                        ).FirstOrDefault();
+
+
+
+
+                        if (employeeData != null)
                         {
-                            // insert login history
-                            tblUserLogHistory logEntry = new tblUserLogHistory
+                            // Check if the provided password matches the password in the database
+                            var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == employeeData.RegId);
+                            if (user != null && PasswordHelper.Decrypt(user.Password.Trim()) == model.Password.Trim())
                             {
-                                UserID = user.RegId,
-                                LoginTime = DateTime.Now,
-                                UserIP = GetIPAddress(),
-                                
-                            };
-                            db.tblUserLogHistories.Add(logEntry);
-                            db.SaveChanges();
+                                // insert login history
+                                tblUserLogHistory logEntry = new tblUserLogHistory
+                                {
+                                    UserID = (int)employeeData.RegId,
+                                    LoginTime = DateTime.Now,
+                                    UserIP = GetIPAddress(),
+                                };
+                                db.tblUserLogHistories.Add(logEntry);
+                                db.SaveChanges();
 
-                            // login successful
-                            Session["RegID"] = user.RegId;
-                            Session["EmailID"] = user.EmailID;
-                            Session["MobileNoPerson"] = user.MobileNoPerson;
-                            Session["DeptHead"] = user.DeptHead;
-                            Session["Role"] = user.Role;
+                                // Login successful
+                                Session["RegID"] = employeeData.RegId;
+                                Session["EmailID"] = employeeData.EmailID;
+                                Session["MobileNoPerson"] = employeeData.MobileNoPerson;
+                                Session["DeptHead"] = employeeData.DeptHead;
+                                Session["Role"] = employeeData.Role;
 
-                            int deptHeadValue;
-                            if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
-                            {
-                                var usersUnderdeptHead = db.tblUser_Registration.Where(u => u.DeptHead == deptHeadValue).ToList();
-                                var usersUnderReportSuper = db.tblUser_Registration.Where(u => u.ReportSuper == deptHeadValue).ToList();
+                                // Additional logic for users under department head and report supervisor
+                                int deptHeadValue;
+                                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+                                {
+                                    var usersUnderdeptHead = db.tblUser_Registration.Where(u => u.DeptHead == deptHeadValue).ToList();
+                                    var usersUnderReportSuper = db.tblUser_Registration.Where(u => u.ReportSuper == deptHeadValue).ToList();
+                                }
+
+                                ModelState.Clear();
+                                return RedirectToAction("Dashboard", "Home");
                             }
-                            ModelState.Clear();
-                            return RedirectToAction("Dashboard", "Home");
+                            else
+                            {
+                                ViewBag.ErrorMessage = "Incorrect password";
+                            }
                         }
                         else
                         {
-                            ViewBag.ErrorMessage = "Incorrect password";
+                            ViewBag.ErrorMessage = "Employee not found";
                         }
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "user not found";
+                        ViewBag.ErrorMessage = "Employee not found";
                     }
                 }
 
@@ -319,6 +426,7 @@ namespace STEP_DEMO.Controllers
             }
         }
 
+
         protected string GetIPAddress()
         {
             string ipList = (Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ??
@@ -333,26 +441,6 @@ namespace STEP_DEMO.Controllers
         }
 
 
-        private void SetAssignedMenuItems()
-        {
-            var regID = (int)Session["RegID"];
-            var roleID = Convert.ToInt32(Session["Role"]);
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-            {
-                int roleId = Convert.ToInt32(Session["Role"]);
-                tblRole role = GetRoleDetails(roleId);
-                var assignedMenuItems = GetAssignedMenuItems(role);
-
-                if (assignedMenuItems != null && assignedMenuItems.Any())
-                {
-                    Session["AssignedMenuItems"] = assignedMenuItems.ToList();
-                }
-                else
-                {
-                }
-            }
-        }
-
         [CustomAuthorize]
         public ActionResult Dashboard()
         {
@@ -361,14 +449,14 @@ namespace STEP_DEMO.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
-            var regID = (int)Session["RegID"];
+            var regID = (long)Session["RegID"];
             var roleID = Convert.ToInt32(Session["Role"]);
 
             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
             {
-                int regId;
+                long regId;
 
-                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
+                if (Session["RegID"] != null && long.TryParse(Session["RegID"].ToString(), out regId))
                 {
                     var userInfo = (from empInfo in db.Employee_Information
                                     join reg in db.tblUser_Registration
@@ -401,11 +489,11 @@ namespace STEP_DEMO.Controllers
                     }
                 }
 
-                var emailID = Session["EmailID"].ToString();
+/*                var emailID = Session["EmailID"].ToString();
                 var MobileNoPerson = Session["MobileNoPerson"].ToString();
                 ViewBag.RegID = regID;
                 ViewBag.EmailID = emailID;
-                ViewBag.MobileNoPerson = MobileNoPerson;
+                ViewBag.MobileNoPerson = MobileNoPerson;*/
 
 
                 /* get menu by prc */
@@ -554,7 +642,7 @@ namespace STEP_DEMO.Controllers
 
 
 
-                    /*                    ******************NEW DESIGN STARTS******************          */
+                    /*                    ******************NEW DESIGN STARTS******************              */
 
                 }
                 else
@@ -697,7 +785,7 @@ namespace STEP_DEMO.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteRowSession(string kra, string kpi, string kpiOutcome)
+        public ActionResult DeleteSession(string kra, string kpi, string kpiOutcome)
         {
             try
             {
@@ -716,53 +804,9 @@ namespace STEP_DEMO.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Error deleting row from session: " + ex.Message);
+                ModelState.AddModelError("", "Error deleting row: " + ex.Message);
                 return RedirectToAction("DisplayKrasAndKpis");
             }
         }
-
-
-
-
-
-
-        /*        MULTIPLE OUTCOME ACTION           */
-
-        /*  [HttpPost]
-          public ActionResult InsertKpiOutcomes(List<int> kraIds, List<int> kpiIds, List<string> kpiOutcomes)
-          {
-              using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-              {
-                  try
-                  {
-                      for (int i = 0; i < kraIds.Count; i++)
-                      {
-                          int kraId = kraIds[i];
-                          int kpiId = kpiIds[i];
-                          string outcome = kpiOutcomes[i];
-
-                          // Insert the KPI outcome into the database
-                          STEP newStep = new STEP
-                          {
-                              KRA_ID = kraId,
-                              KPI_ID = kpiId,
-                              KPI_OUTCOME = outcome
-                          };
-                          db.STEPs.Add(newStep);
-                      }
-
-                      db.SaveChanges();
-
-                      return RedirectToAction("DisplayKrasAndKpis");
-                  }
-                  catch (Exception ex)
-                  {
-                      ModelState.AddModelError("", "An error occurred: " + ex.Message);
-                      return View("DisplayKrasAndKpis");
-                  }
-              }
-          }*/
-
-
     }
 }

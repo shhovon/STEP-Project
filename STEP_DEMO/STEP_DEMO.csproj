@@ -170,6 +170,7 @@
     </Compile>
     <Compile Include="Models\CustomAuthorize.cs" />
     <Compile Include="Models\DisplayAllDataViewModel.cs" />
+    <Compile Include="Models\EmployeeInfo.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\Employee_Information.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
