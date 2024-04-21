@@ -236,8 +236,8 @@ namespace STEP_DEMO.Controllers
                 var companies = db.Company_Information
                                    .Select(c => new SelectListItem
                                    {
-                                       Value = c.Name.ToString(),
-                                       Text = c.Name
+                                       Value = c.ID.ToString(), 
+                               Text = c.Name
                                    })
                                    .ToList();
 
@@ -246,6 +246,9 @@ namespace STEP_DEMO.Controllers
                 return View();
             }
         }
+
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -329,68 +332,72 @@ namespace STEP_DEMO.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    // Retrieve the employee information based on the provided RegId
                     var employeeCompanyInfo = (from emp in db.Employee_Information
                                                join com in db.Company_Information on emp.ComID equals com.ID
                                                select new { emp.EmployeeCode, emp.ComID }).ToList();
 
-                    var employeeRegistrationInfo = (from emp in db.Employee_Information
-                                                    join reg in db.tblUser_Registration on emp.RegId equals reg.RegId
+                    var employeeRegistrationInfo = (from reg in db.tblUser_Registration
+                                                    join emp in db.Employee_Information on reg.RegId equals emp.RegId
                                                     select new { emp.EmployeeCode, reg.RegId }).ToList();
 
                     var loggedInEmployeeCode = "MGT-" + model.EmployeeCode;
+                    int cmid =  model.ComID;
 
                     var employeeInfo = (from empComp in employeeCompanyInfo
                                         join empReg in employeeRegistrationInfo on empComp.EmployeeCode equals empReg.EmployeeCode
                                         where empComp.EmployeeCode == loggedInEmployeeCode
                                         select new { empComp.EmployeeCode, empComp.ComID, empReg.RegId }).FirstOrDefault();
 
-
                     if (employeeInfo != null)
                     {
-
                         var empCode = employeeInfo.EmployeeCode;
                         int comId = employeeInfo.ComID;
 
-                        var comIdParam = new SqlParameter("@ComID", comId);
-                        var empCodeParam = new SqlParameter("@EmpCode", empCode);
-                        var employeeData = db.Database.SqlQuery<EmployeeInfo>(
-                            "prc_EmployeeInfoByEmpCode @ComID, @EmpCode",
-                            new SqlParameter("@ComID", comId),
-                            new SqlParameter("@EmpCode", empCode)).FirstOrDefault();
-
-
-                        if (employeeData != null)
+                        if (comId == model.ComID)
                         {
-                            var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == employeeData.RegId);
+                            var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == employeeInfo.RegId);
                             if (user != null && PasswordHelper.Decrypt(user.Password.Trim()) == model.Password.Trim())
                             {
                                 // insert login history
                                 tblUserLogHistory logEntry = new tblUserLogHistory
                                 {
-                                    UserID = (int)employeeData.RegId,
+                                    UserID = (int)employeeInfo.RegId,
                                     LoginTime = DateTime.Now,
                                     UserIP = GetIPAddress(),
                                 };
                                 db.tblUserLogHistories.Add(logEntry);
                                 db.SaveChanges();
 
-                                // Login successful
-                                Session["RegID"] = employeeData.RegId;
-                                Session["EmailID"] = employeeData.EmailID;
-                                Session["MobileNoPerson"] = employeeData.MobileNoPerson;
-                                Session["DeptHead"] = employeeData.DeptHead;
-                                Session["Role"] = employeeData.Role;
+                                // Call stored procedure
+                                var employeeData = db.Database.SqlQuery<EmployeeInfo>(
+                                    "prc_EmployeeInfoByEmpCode @ComID, @EmpCode",
+                                    new SqlParameter("@ComID", comId),
+                                    new SqlParameter("@EmpCode", empCode)).FirstOrDefault();
 
-
-                                int deptHeadValue;
-                                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+                                if (employeeData != null)
                                 {
-                                    var usersUnderdeptHead = db.tblUser_Registration.Where(u => u.DeptHead == deptHeadValue).ToList();
-                                    var usersUnderReportSuper = db.tblUser_Registration.Where(u => u.ReportSuper == deptHeadValue).ToList();
-                                }
+                                    // Login successful
+                                    Session["RegID"] = employeeInfo.RegId;
+                                    Session["EmailID"] = employeeData.EmailID;
+                                    Session["MobileNoPerson"] = employeeData.MobileNoPerson;
+                                    Session["DeptHead"] = employeeData.DeptHead;
+                                    Session["Role"] = employeeData.Role;
 
-                                ModelState.Clear();
-                                return RedirectToAction("Dashboard", "Home");
+                                    int deptHeadValue;
+                                    if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+                                    {
+                                        var usersUnderdeptHead = db.tblUser_Registration.Where(u => u.DeptHead == deptHeadValue).ToList();
+                                        var usersUnderReportSuper = db.tblUser_Registration.Where(u => u.ReportSuper == deptHeadValue).ToList();
+                                    }
+
+                                    ModelState.Clear();
+                                    return RedirectToAction("Dashboard", "Home");
+                                }
+                                else
+                                {
+                                    ViewBag.ErrorMessage = "Employee information not found.";
+                                }
                             }
                             else
                             {
@@ -399,20 +406,20 @@ namespace STEP_DEMO.Controllers
                         }
                         else
                         {
-                            ViewBag.ErrorMessage = "Employee not found";
+                            ViewBag.ErrorMessage = "Wrong unit";
                         }
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "Employee not found";
+                        ViewBag.ErrorMessage = "Employee not found!";
                     }
                 }
 
                 var companies = db.Company_Information
                            .Select(c => new SelectListItem
                            {
-                               Value = c.Name.ToString(),
-                               Text = c.Name
+                               Value = c.ID.ToString(),
+                                Text = c.Name
                            })
                            .ToList();
 
@@ -421,6 +428,7 @@ namespace STEP_DEMO.Controllers
                 return View("Login", model);
             }
         }
+
 
 
         protected string GetIPAddress()
