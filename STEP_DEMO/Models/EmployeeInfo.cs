@@ -7,8 +7,8 @@ namespace STEP_DEMO.Models
 {
     public class EmployeeInfo
     {
-        public long RegId { get; set; }
-        public byte ComID { get; set; }
+        public int RegId { get; set; }
+        public int ComID { get; set; }
         public string EmployeeCode { get; set; }
         public string Name { get; set; }
         public string DeptHead { get; set; }

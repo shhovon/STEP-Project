@@ -10,9 +10,8 @@
 namespace STEP_DEMO.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Employee_Information
+    public partial class prc_EmployeeInfoByEmpCode_Result
     {
         public int RegId { get; set; }
         public int ComID { get; set; }
@@ -32,7 +31,5 @@ namespace STEP_DEMO.Models
         public string Designation { get; set; }
         public string DesigAddi { get; set; }
         public string WStatus { get; set; }
-        public bool MLeft { get; set; }
-        public bool MLeave { get; set; }
     }
 }

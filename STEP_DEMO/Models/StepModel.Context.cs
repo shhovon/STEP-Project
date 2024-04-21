@@ -58,6 +58,19 @@ namespace STEP_DEMO.Models
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnSplitString_Result>("[EMP_EVALUATIONEntities].[fnSplitString](@string, @delimiter)", stringParameter, delimiterParameter);
         }
     
+        public virtual ObjectResult<prc_EmployeeInfoByEmpCode_Result> prc_EmployeeInfoByEmpCode(Nullable<int> compID, string empCode)
+        {
+            var compIDParameter = compID.HasValue ?
+                new ObjectParameter("CompID", compID) :
+                new ObjectParameter("CompID", typeof(int));
+    
+            var empCodeParameter = empCode != null ?
+                new ObjectParameter("EmpCode", empCode) :
+                new ObjectParameter("EmpCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_EmployeeInfoByEmpCode_Result>("prc_EmployeeInfoByEmpCode", compIDParameter, empCodeParameter);
+        }
+    
         public virtual ObjectResult<prc_GetEmployeeListByDeptHead_Result> prc_GetEmployeeListByDeptHead(Nullable<int> deptHeadValue)
         {
             var deptHeadValueParameter = deptHeadValue.HasValue ?

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EMP_EVALUATIONModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EMP_EVALUATIONModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EMP_EVALUATION.dbo.Company_Information' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Company_Information">
@@ -65,8 +65,8 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.Employee_Information' does not 
             <PropertyRef Name="MLeft" />
             <PropertyRef Name="MLeave" />
           </Key>
-          <Property Name="RegId" Type="bigint" Nullable="false" />
-          <Property Name="ComID" Type="tinyint" Nullable="false" />
+          <Property Name="RegId" Type="int" Nullable="false" />
+          <Property Name="ComID" Type="int" Nullable="false" />
           <Property Name="EmployeeCode" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="FathersName" Type="nvarchar" MaxLength="300" />
@@ -373,6 +373,10 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
             </CollectionType>
           </ReturnType>
         </Function>
+        <Function Name="prc_EmployeeInfoByEmpCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompID" Type="int" Mode="In" />
+          <Parameter Name="EmpCode" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="prc_GetEmployeeListByDeptHead" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="DeptHeadValue" Type="int" Mode="In" />
         </Function>
@@ -542,8 +546,7 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
             <End Role="KRA" EntitySet="KRA" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EMP_EVALUATIONModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -762,8 +765,8 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
             <PropertyRef Name="MLeft" />
             <PropertyRef Name="MLeave" />
           </Key>
-          <Property Name="RegId" Type="Int64" Nullable="false" />
-          <Property Name="ComID" Type="Byte" Nullable="false" />
+          <Property Name="RegId" Type="Int32" Nullable="false" />
+          <Property Name="ComID" Type="Int32" Nullable="false" />
           <Property Name="EmployeeCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FathersName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
@@ -928,8 +931,12 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
             <Parameter Name="string" Mode="In" Type="String" />
             <Parameter Name="delimiter" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="prc_EmployeeInfoByEmpCode" ReturnType="Collection(EMP_EVALUATIONModel.prc_EmployeeInfoByEmpCode_Result)">
+            <Parameter Name="CompID" Mode="In" Type="Int32" />
+            <Parameter Name="EmpCode" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="prc_GetEmployeeListByDeptHead" ReturnType="Collection(EMP_EVALUATIONModel.prc_GetEmployeeListByDeptHead_Result)">
-            <Parameter Name="DeptHeadValue" Mode="In" Type="Int32" />
+          <Parameter Name="DeptHeadValue" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_GetKraKpiOutcomeData" ReturnType="Collection(EMP_EVALUATIONModel.prc_GetKraKpiOutcomeData_Result)">
             <Parameter Name="EmployeeCode" Mode="In" Type="String" />
@@ -940,9 +947,29 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
             <Parameter Name="MarksAchieved" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_UserMenu" ReturnType="Collection(EMP_EVALUATIONModel.prc_UserMenu_Result)">
-            <Parameter Name="RegId" Mode="In" Type="String" />
+          <Parameter Name="RegId" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="prc_EmployeeInfoByEmpCode_Result">
+          <Property Type="Int32" Name="RegId" Nullable="false" />
+          <Property Type="Int32" Name="ComID" Nullable="false" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="FathersName" Nullable="true" MaxLength="300" />
+          <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Religion" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="PreAddress" Nullable="true" MaxLength="455" />
+          <Property Type="String" Name="PerAddress" Nullable="true" MaxLength="455" />
+          <Property Type="String" Name="NID" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="District" Nullable="false" MaxLength="25" />
+          <Property Type="DateTime" Name="JoiningDate" Nullable="false" Precision="16" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DesigAddi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WStatus" Nullable="true" MaxLength="1" />
+        </ComplexType>
         <ComplexType Name="prc_GetEmployeeListByDeptHead_Result">
           <Property Type="String" Name="Name" Nullable="false" MaxLength="300" />
           <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
@@ -1284,6 +1311,30 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
             <ResultMapping>
               <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.fnSplitString_Result">
                 <ScalarProperty Name="splitdata" ColumnName="splitdata" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_EmployeeInfoByEmpCode" FunctionName="EMP_EVALUATIONModel.Store.prc_EmployeeInfoByEmpCode">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.prc_EmployeeInfoByEmpCode_Result">
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="ComID" ColumnName="ComID" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FathersName" ColumnName="FathersName" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Religion" ColumnName="Religion" />
+                <ScalarProperty Name="PreAddress" ColumnName="PreAddress" />
+                <ScalarProperty Name="PerAddress" ColumnName="PerAddress" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="DesigAddi" ColumnName="DesigAddi" />
+                <ScalarProperty Name="WStatus" ColumnName="WStatus" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

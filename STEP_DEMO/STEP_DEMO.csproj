@@ -196,6 +196,9 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OutcomeViewModel.cs" />
+    <Compile Include="Models\prc_EmployeeInfoByEmpCode_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\prc_GetEmployeeListByDeptHead_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>

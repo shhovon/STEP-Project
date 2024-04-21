@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using STEP_DEMO.Helpers;
 using System.Web.Security;
 using System.Data.SqlClient;
+using System.Data.Entity.SqlServer;
 
 namespace STEP_DEMO.Controllers
 {
@@ -328,43 +329,38 @@ namespace STEP_DEMO.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // Retrieve the employee information based on the provided RegId
                     var employeeCompanyInfo = (from emp in db.Employee_Information
                                                join com in db.Company_Information on emp.ComID equals com.ID
                                                select new { emp.EmployeeCode, emp.ComID }).ToList();
 
-                    var employeeRegistrationInfo = (from reg in db.tblUser_Registration
-                                                    join emp in db.Employee_Information on reg.RegId equals emp.RegId
+                    var employeeRegistrationInfo = (from emp in db.Employee_Information
+                                                    join reg in db.tblUser_Registration on emp.RegId equals reg.RegId
                                                     select new { emp.EmployeeCode, reg.RegId }).ToList();
+
+                    var loggedInEmployeeCode = "MGT-" + model.EmployeeCode;
 
                     var employeeInfo = (from empComp in employeeCompanyInfo
                                         join empReg in employeeRegistrationInfo on empComp.EmployeeCode equals empReg.EmployeeCode
+                                        where empComp.EmployeeCode == loggedInEmployeeCode
                                         select new { empComp.EmployeeCode, empComp.ComID, empReg.RegId }).FirstOrDefault();
-
 
 
                     if (employeeInfo != null)
                     {
-                        
 
-                        // Call the stored procedure prc_EmployeeInfoByEmpCode with ComID and EmployeeCode as parameters
                         var empCode = employeeInfo.EmployeeCode;
-                        int comId = (int)employeeInfo.ComID;
+                        int comId = employeeInfo.ComID;
 
                         var comIdParam = new SqlParameter("@ComID", comId);
                         var empCodeParam = new SqlParameter("@EmpCode", empCode);
                         var employeeData = db.Database.SqlQuery<EmployeeInfo>(
                             "prc_EmployeeInfoByEmpCode @ComID, @EmpCode",
                             new SqlParameter("@ComID", comId),
-                            new SqlParameter("@EmpCode", empCode)
-                        ).FirstOrDefault();
-
-
+                            new SqlParameter("@EmpCode", empCode)).FirstOrDefault();
 
 
                         if (employeeData != null)
                         {
-                            // Check if the provided password matches the password in the database
                             var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == employeeData.RegId);
                             if (user != null && PasswordHelper.Decrypt(user.Password.Trim()) == model.Password.Trim())
                             {
@@ -385,7 +381,7 @@ namespace STEP_DEMO.Controllers
                                 Session["DeptHead"] = employeeData.DeptHead;
                                 Session["Role"] = employeeData.Role;
 
-                                // Additional logic for users under department head and report supervisor
+
                                 int deptHeadValue;
                                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
                                 {
@@ -449,7 +445,7 @@ namespace STEP_DEMO.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
-            var regID = (long)Session["RegID"];
+            var regID = (int)Session["RegID"];
             var roleID = Convert.ToInt32(Session["Role"]);
 
             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
