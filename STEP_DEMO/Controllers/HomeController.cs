@@ -247,92 +247,15 @@ namespace STEP_DEMO.Controllers
             }
         }
 
-
-
-
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        /* public ActionResult Login(LoginViewModel model)
-         {
-             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-             { 
-                 if (ModelState.IsValid)
-                 {
- *//*                    var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == model.RegId);*//*
-
-                     var employeeInfo = (from emp in db.Employee_Information
-                                         join com in db.Company_Information on emp.ComID equals com.ID
-                                         join reg in db.tblUser_Registration on emp.RegId equals reg.RegId
-                                         where emp.EmployeeCode.Substring(4) == model.EmployeeCode
-                                         select new { emp.EmployeeCode, emp.ComID }).FirstOrDefault();
-
-                     if (employeeInfo != null)
-                     {
-
-                         *//*                        var employeeCode = employee.EmployeeCode.Substring(4);*//*
-                         var user = db.tblUser_Registration.FirstOrDefault(u => u.EmployeeCode.Substring(4) == model.EmployeeCode);
-
-                         if (PasswordHelper.Decrypt(user.Password.Trim()) == model.Password.Trim())
-                         {
-                             // insert login history
-                             tblUserLogHistory logEntry = new tblUserLogHistory
-                             {
-                                 UserID = user.RegId,
-                                 LoginTime = DateTime.Now,
-                                 UserIP = GetIPAddress(),
-
-                             };
-                             db.tblUserLogHistories.Add(logEntry);
-                             db.SaveChanges();
-
-                             // login successful
-                             Session["RegID"] = user.RegId;
-                             Session["EmailID"] = user.EmailID;
-                             Session["MobileNoPerson"] = user.MobileNoPerson;
-                             Session["DeptHead"] = user.DeptHead;
-                             Session["Role"] = user.Role;
-
-                             int deptHeadValue;
-                             if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
-                             {
-                                 var usersUnderdeptHead = db.tblUser_Registration.Where(u => u.DeptHead == deptHeadValue).ToList();
-                                 var usersUnderReportSuper = db.tblUser_Registration.Where(u => u.ReportSuper == deptHeadValue).ToList();
-                             }
-                             ModelState.Clear();
-                             return RedirectToAction("Dashboard", "Home");
-                         }
-                         else
-                         {
-                             ViewBag.ErrorMessage = "Incorrect password";
-                         }
-                     }
-                     else
-                     {
-                         ViewBag.ErrorMessage = "user not found";
-                     }
-                 }
-
-                 var companies = db.Company_Information
-                            .Select(c => new SelectListItem
-                            {
-                                Value = c.Name.ToString(),
-                                Text = c.Name
-                            })
-                            .ToList();
-
-                 ViewBag.Companies = companies;
-
-                 return View("Login", model);
-             }
-         }*/
-
+        [ValidateAntiForgeryToken]      
         public ActionResult Login(LoginViewModel model)
         {
             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
             {
                 if (ModelState.IsValid)
                 {
-                    // Retrieve the employee information based on the provided RegId
+                    // retrieve the employee information based on the provided RegId
                     var employeeCompanyInfo = (from emp in db.Employee_Information
                                                join com in db.Company_Information on emp.ComID equals com.ID
                                                select new { emp.EmployeeCode, emp.ComID }).ToList();
@@ -396,17 +319,17 @@ namespace STEP_DEMO.Controllers
                                 }
                                 else
                                 {
-                                    ViewBag.ErrorMessage = "Employee information not found.";
+                                    ViewBag.ErrorMessage = "Employee information not found!";
                                 }
                             }
                             else
                             {
-                                ViewBag.ErrorMessage = "Incorrect password";
+                                ViewBag.ErrorMessage = "Incorrect password!";
                             }
                         }
                         else
                         {
-                            ViewBag.ErrorMessage = "Wrong unit";
+                            ViewBag.ErrorMessage = "Wrong unit!";
                         }
                     }
                     else
