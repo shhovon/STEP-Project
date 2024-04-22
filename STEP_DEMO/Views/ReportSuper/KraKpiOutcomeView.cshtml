@@ -52,38 +52,41 @@
 
                         foreach (var item in kpis)
                         {
-                    <tr>
-                        @if (first)
-                        {
-                            <td rowspan="@kpis.Count">@kra</td>
+                            <tr>
+                                @if (first)
+                                {
+                                    <td rowspan="@kpis.Count">@kra</td>
+
+                                }
+                                <td>@item.KPI</td>
+                                <td>@item.Outcome</td>
+                                <td>
+                                    <select class="marks-select" data-kra="@kra" data-outcome="@item.Outcome">
+                                        <option value="">Select Marks</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+
+                                @if (first)
+                                {
+                                    <td rowspan="@kpis.Count">
+                                        <input type="text" class="average-input" data-kra="@kra" data-outcome="@item.Outcome" readonly />
+                                    </td>
+                                    first = false;
+                                }
+
+                            </tr>
+
+                            
 
                         }
-                        <td>@item.KPI</td>
-                        <td>@item.Outcome</td>
-                        <td>
-                            <select class="marks-select" data-kra="@kra" data-outcome="@item.Outcome">
-                                <option value="">Select Marks</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </td>
 
-                        @if (first)
-                        {
-                    <td rowspan="@kpis.Count">
-                        <input type="text" class="average-input" data-kra="@kra" data-outcome="@item.Outcome" readonly />                       
-                    </td>
-                            first = false;
-                        }
-                        
-
-
-                        </tr>
-                        }
                     }
+
                 </tbody>
             </table>
             <input type="submit" value="Save Marks" />

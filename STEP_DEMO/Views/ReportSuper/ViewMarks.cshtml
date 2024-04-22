@@ -26,8 +26,6 @@
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        @*                        <th>KRA</th>
-                            <th>KPI</th>*@
                         <th>Outcome</th>
                         <th>Performance Marks</th>
                         <th>Total Average</th>
@@ -37,17 +35,11 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            @*                            <td>@item.KRA</td>
-                                <td>@item.KPI</td>*@
                             <td>@item.KPI_OUTCOME</td>
                             <td>@item.Marks_Achieved</td>
-                            <td></td>
+                            <td id="averageMarks"></td>
                         </tr>
                     }
-                    @*                    <tr>
-                            <td colspan="2" style="text-align:center;">Total Average</td>
-                            <td></td>
-                        </tr>*@
                 </tbody>
             </table>
         </div>
@@ -63,6 +55,7 @@
         $(function () {
             $('#taxPeriodDropdownMV').change(function () {
                 var selectedSession = $(this).val();
+                console.log(selectedSession);
 
                 $.ajax({
                     url: '@Url.Action("GetFilteredMarksData", "Home")',
@@ -70,6 +63,8 @@
                     data: { selectedSession: selectedSession },
                     success: function (response) {
                         $('tbody').empty();
+                        var totalMarks = 0;
+                        var count = 0;
 
                         response.forEach(function (item) {
                             var newRow = '<tr>' +
@@ -78,8 +73,16 @@
                                 '<td></td>' +
                                 '</tr>';
 
+                            totalMarks += item.Marks_Achieved;
+                            console.log(totalMarks);
+                            count++;
                             $('tbody').append(newRow);
                         });
+
+                        var average = totalMarks / count;
+                        $('#averageMarks').text(average.toFixed(2));
+                        console.log(average);
+                        $('tfoot td:nth-child(3)').text(average.toFixed(2));
                     },
                     error: function (xhr, status, error) {
                         console.error(error);
