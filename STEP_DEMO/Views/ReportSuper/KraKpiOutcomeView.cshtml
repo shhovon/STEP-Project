@@ -56,7 +56,7 @@
                         @if (first)
                         {
                             <td rowspan="@kpis.Count">@kra</td>
-                            first = false;
+
                         }
                         <td>@item.KPI</td>
                         <td>@item.Outcome</td>
@@ -70,10 +70,18 @@
                                 <option value="5">5</option>
                             </select>
                         </td>
-                        <td>
-                            <input type="text" class="average-input" data-kra="@kra" data-outcome="@item.Outcome" readonly />
-                        </td>
-                    </tr>
+
+                        @if (first)
+                        {
+                    <td rowspan="@kpis.Count">
+                        <input type="text" class="average-input" data-kra="@kra" data-outcome="@item.Outcome" readonly />                       
+                    </td>
+                            first = false;
+                        }
+                        
+
+
+                        </tr>
                         }
                     }
                 </tbody>
@@ -94,28 +102,23 @@ else
 @section scripts {
     <script>
         $(document).ready(function () {
-            // Bind change event to select elements with the class "marks-select"
+            var kraAverages = {};
             $(".marks-select").on("change", function () {
-                // Get the KRA and Outcome associated with the select element
                 var kra = $(this).data("kra");
                 var outcome = $(this).data("outcome");
                 var selectedValue = parseInt($(this).val());
 
-                // Log the selected values for debugging
                 console.log("KRA:", kra);
                 console.log("Outcome:", outcome);
                 console.log("Selected Value:", selectedValue);
 
-                // Calculate average for the KRA
                 calculateAverage(kra);
             });
 
-            // Function to calculate average for a given KRA
             function calculateAverage(kra) {
                 var totalMarks = 0;
                 var rowCount = 0;
 
-                // Loop through select elements for the specified KRA
                 $(".marks-select[data-kra='" + kra + "']").each(function () {
                     var marks = parseInt($(this).val());
                     if (!isNaN(marks)) {
@@ -124,12 +127,12 @@ else
                     }
                 });
 
-                // Calculate the average only if there are selected marks
                 if (rowCount > 0) {
                     var average = totalMarks / rowCount;
                     console.log("Average for KRA " + kra + ": " + average.toFixed(2));
 
-                    // Update average input fields for the KRA
+                    kraAverages[kra] = average;
+
                     $(".average-input[data-kra='" + kra + "']").val(average.toFixed(2));
                 }
             }
