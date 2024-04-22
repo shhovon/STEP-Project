@@ -117,8 +117,8 @@ namespace STEP_DEMO.Controllers
 /*                    TempData["SuccessMessage"] = "Marks updated successfully!";*/
                 }
             }
-
-            return RedirectToAction("AddMarks");
+            return RedirectToAction("ViewEmpList", "DeptHead");
+            //return RedirectToAction("AddMarks");
         }
 
         protected string GetIPAddress()
