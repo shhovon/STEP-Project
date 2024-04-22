@@ -24,6 +24,23 @@ namespace STEP_DEMO.Controllers
             }
         }
 
+        private List<CompanyViewModel> GetCompanies()
+        {
+            List<CompanyViewModel> companies = new List<CompanyViewModel>();
+            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            {
+                companies = db.Company_Information
+                              .Select(c => new CompanyViewModel
+                              {
+                                  ID = c.ID,
+                                  Name = c.Name
+                              })
+                              .ToList();
+            }
+
+            return companies;
+        }
+
         [CustomAuthorize]
         public ActionResult ViewEmpList()
         {
@@ -35,11 +52,46 @@ namespace STEP_DEMO.Controllers
                 employees = GetEmployeeListByDeptHead(deptHeadValue);
             }
 
+            List<CompanyViewModel> companies = GetCompanies();
+            ViewBag.Companies = new SelectList(companies, "ID", "Name");
+
+            return View(employees);
+        }
+
+        [HttpPost]
+        public ActionResult ViewEmpList(int? companyId)
+        {
+            List<EmployeeViewModel> employees = new List<EmployeeViewModel>();
+
+            if (companyId != null)
+            {
+                employees = GetEmployeesByCompany(companyId.Value);
+            }
+            else
+            {
+                ViewBag.Message = "Select an unit";
+            }
+
+            List<CompanyViewModel> companies = GetCompanies();
+            ViewBag.Companies = new SelectList(companies, "ID", "Name", companyId);
+
             return View(employees);
         }
 
 
+        private List<EmployeeViewModel> GetEmployeesByCompany(int companyId)
+        {
+            List<EmployeeViewModel> employees = new List<EmployeeViewModel>();
 
+            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            {
+                employees = db.Database.SqlQuery<EmployeeViewModel>("prc_GetEmployeesByCompany @CompanyId",
+                    new SqlParameter("CompanyId", companyId)
+                ).ToList();
+            }
+
+            return employees;
+        }
 
     }
 }

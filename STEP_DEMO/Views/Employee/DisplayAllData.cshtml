@@ -111,19 +111,61 @@
 
 <br />
 <form id="submitForm">
+    <input type="hidden" id="isSubmitted" value="false" />
     <button type="submit" class="btn btn-primary">Send For Approval</button>
 </form>
 
 @section scripts {
     <script>
-        $(function () {
-            $('#submitForm').submit(function (event) {
-                event.preventDefault();
+    $(function () {
+        $('#submitForm').submit(function (event) {
+            event.preventDefault();
+            var isSubmitted = $('#isSubmitted').val();
+            if (isSubmitted === 'false') {
                 if (confirm('Are you sure you want to send this data for approval?')) {
                     alert('Success! Data sent for approval');
                     window.location.href = '@Url.Action("Dashboard", "Home")';
+                    $('#isSubmitted').val('true');
+                }
+            } else {
+                alert('You have already sent the data for submission!');
+            }
+        });
+    });
+    </script>
+}
+
+                    @* ************************** APPROACH USING localStorage **************************** *@
+
+@*@section scripts {
+        <script>
+            $(function () {
+
+            @if (ViewBag.ClearSubmissionStatus == true)
+            {
+                @:clearSubmissionStatus();
+            }
+
+            function clearSubmissionStatus() {
+                localStorage.removeItem('isSubmitted');
+                }
+
+                clearSubmissionStatus();
+
+            $('#submitForm').submit(function (event) {
+                event.preventDefault();
+                var isSubmitted = localStorage.getItem('isSubmitted');
+                if (!isSubmitted) {
+                    if (confirm('Are you sure you want to send this data for approval?')) {
+                        alert('Success! Data sent for approval');
+                        window.location.href = '@Url.Action("Dashboard", "Home")';
+                        localStorage.setItem('isSubmitted', true);
+                    }
+                } else {
+                    alert('You have already sent the data for submission!');
                 }
             });
         });
-    </script>
-}
+        </script>
+    }*@
+

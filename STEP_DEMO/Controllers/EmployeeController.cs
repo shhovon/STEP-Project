@@ -81,6 +81,8 @@ namespace STEP_DEMO.Controllers
         [CustomAuthorize]
         public ActionResult DisplayAllData()
         {
+            ViewBag.ClearSubmissionStatus = true;
+
             var kraKpiOutcomes = Session["UserAddedData"] as List<KraKpiOutcomeModel>;
             var specialFactors = Session["SpecialFactors"] as tblSpecial_Factor;
             var trainingNeed = Session["TrainingNeed"] as tblTraining_Need;

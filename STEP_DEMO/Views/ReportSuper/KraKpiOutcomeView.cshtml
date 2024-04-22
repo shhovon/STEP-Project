@@ -20,19 +20,12 @@
         }
     </select>
 </div>
-@*@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
-    {
-        <div class="alert alert-success" role="alert">
-            @TempData["SuccessMessage"]
-        </div>
-    }
+<br />
 
-    @if (!string.IsNullOrEmpty(TempData["ErrorMessage"] as string))
-    {
-        <div class="alert alert-danger" role="alert">
-            @TempData["ErrorMessage"]
-        </div>
-    }*@
+<div>
+    <p><strong>Employee Code: @ViewBag.EmployeeCode</strong></p>
+    <p><strong>Employee Name: @ViewBag.EmployeeName</strong></p>
+</div>
 <br />
 
 @if (Model != null && Model.Count > 0)

@@ -12,6 +12,16 @@
 <h3 style="text-align:center;">Employee List</h3>
 <br />
 <br />
+@using (Html.BeginForm("ViewEmpList", "DeptHead", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.DropDownList("companyId", ViewBag.Companies as SelectList, "Select an unit", new { @class = "form-control" })
+        @Html.ValidationMessage("companyId", "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+}
+<br />
+<br />
 <div class="user-info-container">
     @if (Model != null && Model.Any())
     {

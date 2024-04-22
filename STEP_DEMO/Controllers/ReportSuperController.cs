@@ -76,6 +76,11 @@ namespace STEP_DEMO.Controllers
                         var employeeCodeParam = new SqlParameter("@EmployeeCode", employeeCode);
                         var deptHeadValueParam = new SqlParameter("@DeptHeadValue", deptHeadValue);
 
+                        // fetch employee name based on employeeCode
+                        string employeeName = GetEmployeeName(employeeCode);
+                        ViewBag.EmployeeCode = employeeCode;
+                        ViewBag.EmployeeName = employeeName;
+
                         var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("exec prc_GetKraKpiOutcomeData @EmployeeCode, @DeptHeadValue", employeeCodeParam, deptHeadValueParam).ToList();
                         ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
                         return View("KraKpiOutcomeView", kraKpiOutcomeData);
@@ -128,6 +133,23 @@ namespace STEP_DEMO.Controllers
 
             return Request.ServerVariables["REMOTE_ADDR"];
         }
+
+        private string GetEmployeeName(string employeeCode)
+        {
+            string employeeName = string.Empty;
+
+            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            {
+                var employee = db.Employee_Information.FirstOrDefault(e => e.EmployeeCode == employeeCode);
+                if (employee != null)
+                {
+                    employeeName = employee.Name;
+                }
+            }
+
+            return employeeName;
+        }
+
 
         [CustomAuthorize]
         public ActionResult ViewMarks()
