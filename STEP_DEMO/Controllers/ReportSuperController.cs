@@ -90,7 +90,9 @@ namespace STEP_DEMO.Controllers
                 }
             }
 
-            return RedirectToAction("AddMarks");
+            /*return RedirectToAction("AddMarks");*/
+            ViewBag.SuccessMessage = "Marks updated successfully!";
+            return RedirectToAction("ViewEmpList", "DeptHead");
         }
 
         /* [CustomAuthorize]
@@ -154,8 +156,9 @@ namespace STEP_DEMO.Controllers
                 }               
             }
 
-            ViewBag.SuccessMessage = "Marks updated successfully!";
-            return RedirectToAction("AddMarks");
+
+/*            return RedirectToAction("AddMarks");*/
+            return RedirectToAction("ViewEmpList", "DeptHead");
         }
 
 

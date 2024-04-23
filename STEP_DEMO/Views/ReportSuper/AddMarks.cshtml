@@ -5,18 +5,23 @@
 
 @using (Html.BeginForm("AddMarks", "ReportSuper", FormMethod.Post))
 {
-<div class="form-group">
-    @Html.DropDownList("employeeCode", new SelectList(Model, "EmployeeCode", "FullNameWithCodeAndDesignation"), "Select Employee", new { @class = "form-control" })
-    <br />
-    <input type="submit" value="Search" class="btn btn-primary" />
-</div>
+    <div class="form-group">
+        @Html.DropDownList("employeeCode", new SelectList(Model, "EmployeeCode", "FullNameWithCodeAndDesignation"), "Select Employee", new { @class = "form-control" })
+        <br />
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
 }
 
 <div id="kraKpiOutcomeTable">
 
-@*    kra kpi and outcome population*@
+    @*    kra kpi and outcome population*@
 
 </div>
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+}
 
 <script>
     $(document).ready(function () {
