@@ -2081,7 +2081,6 @@
     <Content Include="Views\Shared\_ErrorLayout.cshtml" />
     <Content Include="Views\ReportSuper\ViewMarks.cshtml" />
     <Content Include="Views\Employee\DisplayAllData.cshtml" />
-    <Content Include="Views\ReportSuper\UpdateMarks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

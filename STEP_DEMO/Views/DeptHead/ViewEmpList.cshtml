@@ -9,6 +9,12 @@
     @Html.Hidden("employeeCode", null, new { id = "employeeCodeField" })
 }
 
+@using (Html.BeginForm("ViewMarks", "ReportSuper", FormMethod.Post, new { id = "viewMarksForm" }))
+{
+    @Html.Hidden("employeeCode", null, new { id = "viewEmployeeCodeField" })
+}
+
+
 <h3 style="text-align:center;">Employee List</h3>
 <br />
 <br />
@@ -33,6 +39,7 @@
                     <th>Department</th>
                     <th>Section</th>
                     <th>Designation</th>
+                    <th>View Marks</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,6 +52,8 @@
                         <td>@employee.Department</td>
                         <td>@employee.Section</td>
                         <td>@employee.Designation</td>
+                        <td><a href="javascript:void(0);" onclick="setRegId('@employee.EmployeeCode')">View Marks</a></td> <!-- Link to view marks -->
+
                     </tr>
                 }
             </tbody>
@@ -62,4 +71,11 @@
         document.getElementById("employeeCodeField").value = code;
         document.getElementById("employeeForm").submit();
     }
+
+    function setRegId(employeeCode) {
+        document.getElementById("viewEmployeeCodeField").value = employeeCode;
+        document.getElementById("viewMarksForm").submit();
+    }
+
+
 </script>

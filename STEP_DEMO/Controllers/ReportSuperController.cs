@@ -193,6 +193,7 @@ namespace STEP_DEMO.Controllers
 
 
         [CustomAuthorize]
+        [HttpGet]
         public ActionResult ViewMarks()
         {
             int? regId = Session["RegId"] as int?;
@@ -217,5 +218,60 @@ namespace STEP_DEMO.Controllers
 
             return View(marksData);
         }
+
+        // view marks based on employee code
+
+        [HttpPost]
+        public ActionResult ViewMarks(string employeeCode)
+        {
+            List<MarksData> marksData;
+            using (var db = new EMP_EVALUATIONEntities())
+            {
+                if (!string.IsNullOrEmpty(employeeCode))
+                {
+                    var regId = (from emp in db.Employee_Information
+                                 join st in db.STEPs on emp.RegId equals st.REG_ID
+                                 where emp.EmployeeCode == employeeCode
+                                 select st.REG_ID).FirstOrDefault();
+
+                    marksData = (from st in db.STEPs
+                                 where st.REG_ID == regId
+                                 select new MarksData
+                                 {
+                                     KPI_OUTCOME = st.KPI_OUTCOME,
+                                     Marks_Achieved = st.Marks_Achieved ?? 0
+                                 }).ToList();
+                }
+                else
+                {
+                    marksData = new List<MarksData>();
+                }
+
+                var last2session = (db.New_Tax_Period
+                                   .OrderByDescending(t => t.TaxPeriod)
+                                   .Select(t => t.TaxPeriod)
+                                   .Take(2)
+                                   .ToList());
+
+                ViewBag.TopTaxPeriods = last2session;
+            }
+
+            return View(marksData);
+        }
+
+        public ActionResult GetRegId(string employeeCode)
+        {
+            using (var db = new EMP_EVALUATIONEntities())
+            {
+                var regId = (from emp in db.Employee_Information
+                             join st in db.STEPs on emp.RegId equals st.REG_ID
+                             where emp.EmployeeCode == employeeCode
+                             select st.REG_ID).FirstOrDefault();
+
+                return Json(regId, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
     }
 }
