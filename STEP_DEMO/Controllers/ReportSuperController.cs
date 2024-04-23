@@ -1,6 +1,8 @@
-﻿using STEP_DEMO.Models;
+﻿using Newtonsoft.Json;
+using STEP_DEMO.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -91,35 +93,71 @@ namespace STEP_DEMO.Controllers
             return RedirectToAction("AddMarks");
         }
 
+        /* [CustomAuthorize]
+         [HttpPost]
+         public ActionResult UpdateMarks(List<string> outcomes, Dictionary<string, int> marks)
+         {
+             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+             {
+                 if (outcomes != null && marks != null)
+                 {
+                     foreach (var outcome in outcomes)
+                     {
+                         if (marks.TryGetValue(outcome, out var mark))
+                         {
+                             var outcomeEntity = db.STEPs.FirstOrDefault(o => o.KPI_OUTCOME == outcome);
+
+                             if (outcomeEntity != null)
+                             {
+                                 outcomeEntity.Marks_Achieved = mark;
+                                 db.Entry(outcomeEntity).State = EntityState.Modified;
+                             }
+                         }
+                     }
+
+                     db.SaveChanges();
+
+                     TempData["SuccessMessage"] = "Marks updated successfully!";
+                 }
+             }
+             return RedirectToAction("ViewEmpList", "DeptHead");
+             //return RedirectToAction("AddMarks");
+         }*/
+
+
+        public class MarksUpdateModel
+        {
+            public Dictionary<string, int> Marks { get; set; }
+        }
+
         [CustomAuthorize]
         [HttpPost]
-        public ActionResult UpdateMarks(List<string> outcomes, Dictionary<string, int> marks)
+        public ActionResult UpdateMarks(MarksUpdateModel model)
         {
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            if (model != null && model.Marks != null)
             {
-                if (outcomes != null && marks != null)
+                using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
                 {
-                    foreach (var outcome in outcomes)
+                    foreach (var outcome in model.Marks.Keys)
                     {
-                        if (marks.TryGetValue(outcome, out var mark))
-                        {
-                            var outcomeEntity = db.STEPs.FirstOrDefault(o => o.KPI_OUTCOME == outcome);
+                        var mark = model.Marks[outcome];
+                        var outcomeEntity = db.STEPs.FirstOrDefault(o => o.KPI_OUTCOME == outcome);
 
-                            if (outcomeEntity != null)
-                            {
-                                outcomeEntity.Marks_Achieved = mark;
-                            }
+                        if (outcomeEntity != null)
+                        {
+                            outcomeEntity.Marks_Achieved = mark;
+                            db.Entry(outcomeEntity).State = EntityState.Modified;
                         }
                     }
 
-                    db.SaveChanges();
-
-/*                    TempData["SuccessMessage"] = "Marks updated successfully!";*/
-                }
+                    db.SaveChanges();                    
+                }               
             }
-            return RedirectToAction("ViewEmpList", "DeptHead");
-            //return RedirectToAction("AddMarks");
+
+            ViewBag.SuccessMessage = "Marks updated successfully!";
+            return RedirectToAction("AddMarks");
         }
+
 
         protected string GetIPAddress()
         {

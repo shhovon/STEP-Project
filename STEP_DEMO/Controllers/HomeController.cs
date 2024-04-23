@@ -87,6 +87,7 @@ namespace STEP_DEMO.Controllers
             return RedirectToAction("DisplayKrasAndKpis", "Home");
         }
 
+        [CustomAuthorize]
         public ActionResult Index()
         {
             var viewModel = new KraKpiViewModel
@@ -137,6 +138,7 @@ namespace STEP_DEMO.Controllers
         }
 
 
+        [CustomAuthorize]
         public ActionResult OutcomeNew()
         {
             OutcomeViewModel model = new OutcomeViewModel();
@@ -183,7 +185,7 @@ namespace STEP_DEMO.Controllers
             return View(model);
         }
 
-
+        [CustomAuthorize]
         [HttpPost]
         public ActionResult OutcomeNew(OutcomeViewModel model)
         {
