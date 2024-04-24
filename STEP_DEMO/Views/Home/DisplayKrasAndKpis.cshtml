@@ -29,11 +29,9 @@
     }
 
     #selectedInfo, #userAddedInfo {
-        flex: 1; 
+        flex: 1;
         padding: 15px;
     }
-
-
 </style>
 
 
@@ -53,6 +51,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+
             <div class="modal-body">
                 @using (Html.BeginForm("InsertKpiOutcomes", "Home", FormMethod.Post, new { id = "outcomeForm" }))
                 {
@@ -67,6 +66,8 @@
                         </select>
                     </div>
                     <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
+
+
 
                     <div class="dropdown-container">
                         <label class="dropdown-label" for="selectedKRA">Select KRA:</label>
@@ -108,6 +109,31 @@
     </select>
 </div>
 <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
+
+
+@*             new navigation buttons*@
+
+<br />
+
+<div class="form-group" style="float:left;">
+    <div class="col-md-offset-2 col-md-10">
+        <a href="@Url.Action("DisplayKrasAndKpis", "Home")" class="btn btn-primary submit-btn">Outcome Entry</a>
+    </div>
+</div>
+
+<div class="form-group" style="float:left;">
+    <div class="col-md-offset-2 col-md-10">
+        <a href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Special Factor</a>
+    </div>
+</div>
+
+<div class="form-group" style="float:left;">
+    <div class="col-md-offset-2 col-md-10">
+        <a href="@Url.Action("TrainingNeed", "Employee")" class="btn btn-primary submit-btn">Training Need</a>
+    </div>
+</div>
+
+@*             button end*@
 
 
 <div class="container">
@@ -172,21 +198,21 @@
             </tbody>
         </table>
         <br /><br />
-              <div class="form-group" id="nextButtonContainer">
-                  <div class="col-md-offset-2 col-md-10">
-                      <a id="nextButton" href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Special Factors</a>
-                  </div>
-              </div>
+        <div class="form-group" id="nextButtonContainer">
+            <div class="col-md-offset-2 col-md-10">
+                <a id="nextButton" href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Special Factors</a>
+            </div>
+        </div>
 
     </div>
-    </div>
+</div>
 
 
 
 
 
-    @section scripts {
-        <script>
+@section scripts {
+    <script>
         $(function () {
             $('#taxPeriodDropdownMV').change(function () {
                 var selectedSession = $(this).val();
@@ -288,7 +314,7 @@
                 $('#nextButtonContainer').hide();
             }
         });
-        </script>
-    }
+    </script>
+}
 
 

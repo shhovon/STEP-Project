@@ -4,10 +4,38 @@
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
-@using (Html.BeginForm()) 
+@*             new navigation buttons*@
+
+<br />
+
+<div class="form-group" style="float:left;">
+    <div class="col-md-offset-2 col-md-10">
+        <a href="@Url.Action("DisplayKrasAndKpis", "Home")" class="btn btn-primary submit-btn">Outcome Entry</a>
+    </div>
+</div>
+
+<div class="form-group" style="float:left;">
+    <div class="col-md-offset-2 col-md-10">
+        <a href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Special Factor</a>
+    </div>
+</div>
+
+<div class="form-group" style="float:left;">
+    <div class="col-md-offset-2 col-md-10">
+        <a href="@Url.Action("TrainingNeed", "Employee")" class="btn btn-primary submit-btn">Training Need</a>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+
+@*             button end*@
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h3>Add Special Factors</h3>
         <hr />
