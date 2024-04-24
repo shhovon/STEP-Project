@@ -83,21 +83,21 @@ namespace STEP_DEMO.Controllers
                             db.tblMarksEntryHistories.Add(logEntry);
                             db.SaveChanges();
 
-                      //  var employeeCodeParam = new SqlParameter("@EmployeeCode", employeeCode);
-                       // var deptHeadValueParam = new SqlParameter("@DeptHeadValue", deptHeadValue);
-
-                        // fetch employee name based on employeeCode
-                      //  string employeeName = GetEmployeeName(employeeCode);
-                     
-
-
+                   
                         var userInfo = db.Database.SqlQuery<EmployeeInfo>(
                               "prc_EmployeeInfoByRegID @RegID",
                               new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
 
-                        ViewBag.EmployeeCode = userInfo.EmployeeCode;
-                        ViewBag.EmployeeName = userInfo.Name;
+                        var model = new KraKpiOutcomeModel
+                        {
+                            EmployeeCode = userInfo.EmployeeCode,
+                            Name = userInfo.Name
+                        };
+
+/*                        ViewBag.EmployeeCode = userInfo.EmployeeCode;
+                        ViewBag.EmployeeName = userInfo.Name;*/
                         ViewBag.Designation = userInfo.Designation;
+
 
                         var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>
                             ("exec prc_GetKraKpiOutcomeData @RegId", new SqlParameter("@RegId", RegId)).ToList();
@@ -113,38 +113,6 @@ namespace STEP_DEMO.Controllers
             ViewBag.SuccessMessage = "Marks updated successfully!";
             return RedirectToAction("ViewEmpList", "DeptHead");
         }
-
-        /* [CustomAuthorize]
-         [HttpPost]
-         public ActionResult UpdateMarks(List<string> outcomes, Dictionary<string, int> marks)
-         {
-             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-             {
-                 if (outcomes != null && marks != null)
-                 {
-                     foreach (var outcome in outcomes)
-                     {
-                         if (marks.TryGetValue(outcome, out var mark))
-                         {
-                             var outcomeEntity = db.STEPs.FirstOrDefault(o => o.KPI_OUTCOME == outcome);
-
-                             if (outcomeEntity != null)
-                             {
-                                 outcomeEntity.Marks_Achieved = mark;
-                                 db.Entry(outcomeEntity).State = EntityState.Modified;
-                             }
-                         }
-                     }
-
-                     db.SaveChanges();
-
-                     TempData["SuccessMessage"] = "Marks updated successfully!";
-                 }
-             }
-             return RedirectToAction("ViewEmpList", "DeptHead");
-             //return RedirectToAction("AddMarks");
-         }*/
-
 
         public class MarksUpdateModel
         {
@@ -264,6 +232,9 @@ namespace STEP_DEMO.Controllers
                                      KPI_OUTCOME = st.KPI_OUTCOME,
                                      Marks_Achieved = st.Marks_Achieved ?? 0
                                  }).ToList();
+
+                    ViewBag.EmployeeCode = userInfo.Name;
+                    ViewBag.EmployeeName = userInfo.EmployeeCode;
                 }
 /*                else
                 {
@@ -272,8 +243,7 @@ namespace STEP_DEMO.Controllers
 
                 // fetch employee name based on employeeCode
                // string employeeName = GetEmployeeName(employeeCode);
-                ViewBag.EmployeeCode = "employeeCode";
-                ViewBag.EmployeeName = "employeeName";
+
 
                 var last2session = (db.New_Tax_Period
                                    .OrderByDescending(t => t.TaxPeriod)
@@ -299,9 +269,6 @@ namespace STEP_DEMO.Controllers
         //        return Json(regId, JsonRequestBehavior.AllowGet);
         //    }
         //}
-
-      
-
 
     }
 }
