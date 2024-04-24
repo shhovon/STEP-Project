@@ -4,24 +4,42 @@
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
+<style>
+    .card-body {
+        background: linear-gradient(to right, #78a7ca, #accbee);
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .card {
+        width: fit-content;
+        margin: auto;
+        margin-top: 20px;
+    }
+
+    .card-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn {
+        margin-bottom: 10px;
+    }
+
+    .btn {
+        margin-bottom: 10px;
+        margin-right: 10px; /* Add space between buttons */
+    }
+</style>
+
 @*             new navigation buttons*@
 
 <br />
 
-<div class="form-group" style="float:left;">
-    <div class="col-md-offset-2 col-md-10">
+<div class="card">
+    <div class="card-body">
         <a href="@Url.Action("DisplayKrasAndKpis", "Home")" class="btn btn-primary submit-btn">Outcome Entry</a>
-    </div>
-</div>
-
-<div class="form-group" style="float:left;">
-    <div class="col-md-offset-2 col-md-10">
         <a href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Special Factor</a>
-    </div>
-</div>
-
-<div class="form-group" style="float:left;">
-    <div class="col-md-offset-2 col-md-10">
         <a href="@Url.Action("TrainingNeed", "Employee")" class="btn btn-primary submit-btn">Training Need</a>
     </div>
 </div>
