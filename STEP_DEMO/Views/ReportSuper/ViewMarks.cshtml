@@ -8,6 +8,8 @@
 
     <h3>View Marks</h3>
     <br />
+
+
     <div class="dropdown-container">
         <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
         <br />
@@ -20,6 +22,11 @@
     </div>
     <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
     <br />
+    <div>
+        <p><strong>Employee Code: @ViewBag.EmployeeCode</strong></p>
+        <p><strong>Employee Name: @ViewBag.EmployeeName</strong></p>
+    </div>
+    <br />
 
     @if (Model != null && Model.Any())
     {
@@ -29,7 +36,7 @@
                     <tr>
                         <th>Outcome</th>
                         <th>Performance Marks</th>
-                        <th>Total Average</th>
+                        @* <th>Total Average</th>*@
                     </tr>
                 </thead>
                 <tbody>
@@ -38,7 +45,7 @@
                         <tr>
                             <td>@item.KPI_OUTCOME</td>
                             <td>@item.Marks_Achieved</td>
-                            <td id="averageMarks"></td>
+                            @*  <td id="averageMarks"></td>*@
                         </tr>
                     }
                 </tbody>

@@ -28,15 +28,21 @@ namespace STEP_DEMO.Controllers
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
                 {
                     // fetch employee information for the dropdown list
-                    employeeInfo = (from empInfo in db.Employee_Information
-                                    join reg in db.tblUser_Registration on empInfo.RegId equals reg.RegId
-                                    where reg.ReportSuper == deptHeadValue || reg.DeptHead == deptHeadValue
-                                    select new EmployeeViewModel
-                                    {
-                                        EmployeeCode = empInfo.EmployeeCode,
-                                        Name = empInfo.Name,
-                                        Designation = empInfo.Designation
-                                    }).ToList();
+                    //employeeInfo = (from empInfo in db.Employee_Information
+                    //                join reg in db.tblUser_Registration on empInfo.RegId equals reg.RegId
+                    //                where reg.ReportSuper == deptHeadValue || reg.DeptHead == deptHeadValue
+                    //                select new EmployeeViewModel
+                    //                {
+                    //                    EmployeeCode = empInfo.EmployeeCode,
+                    //                    Name = empInfo.Name,
+                    //                    Designation = empInfo.Designation
+                    //                }).ToList();
+
+
+                     employeeInfo = db.Database.SqlQuery<EmployeeViewModel>(
+                                "prc_GetEmployeeListByDeptHead @DeptHeadValue",
+                                new SqlParameter("@DeptHeadValue","123")).ToList();
+
 
                 }
             }
@@ -46,11 +52,12 @@ namespace STEP_DEMO.Controllers
 
         [CustomAuthorize]
         [HttpPost]
-        public ActionResult AddMarks(string employeeCode)
+        public ActionResult AddMarks(int RegId)
         {
-            if (!string.IsNullOrEmpty(employeeCode))
+           // if (!string.IsNullOrEmpty(RegId))
             {
                 int deptHeadValue;
+
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
                 {
                     using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
@@ -62,9 +69,10 @@ namespace STEP_DEMO.Controllers
                         ViewBag.TopTaxPeriods = last2session;
 
                         string employeeID = Request.Form["employeeCode"];
+                        int regID = (int)Session["RegID"];
 
                             // insert marks history
-                            tblMarksEntryHistory logEntry = new tblMarksEntryHistory
+                        tblMarksEntryHistory logEntry = new tblMarksEntryHistory
                             {
                                 SupervisorID = deptHeadValue,
                                 EmployeeID = employeeID,
@@ -75,17 +83,28 @@ namespace STEP_DEMO.Controllers
                             db.tblMarksEntryHistories.Add(logEntry);
                             db.SaveChanges();
 
-                        var employeeCodeParam = new SqlParameter("@EmployeeCode", employeeCode);
-                        var deptHeadValueParam = new SqlParameter("@DeptHeadValue", deptHeadValue);
+                      //  var employeeCodeParam = new SqlParameter("@EmployeeCode", employeeCode);
+                       // var deptHeadValueParam = new SqlParameter("@DeptHeadValue", deptHeadValue);
 
                         // fetch employee name based on employeeCode
-                        string employeeName = GetEmployeeName(employeeCode);
-                        ViewBag.EmployeeCode = employeeCode;
-                        ViewBag.EmployeeName = employeeName;
+                      //  string employeeName = GetEmployeeName(employeeCode);
+                     
 
-                        var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("exec prc_GetKraKpiOutcomeData @EmployeeCode, @DeptHeadValue", employeeCodeParam, deptHeadValueParam).ToList();
+
+                        var userInfo = db.Database.SqlQuery<EmployeeInfo>(
+                              "prc_EmployeeInfoByRegID @RegID",
+                              new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
+
+                        ViewBag.EmployeeCode = userInfo.EmployeeCode;
+                        ViewBag.EmployeeName = userInfo.Name;
+                        ViewBag.Designation = userInfo.Designation;
+
+                        var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>
+                            ("exec prc_GetKraKpiOutcomeData @RegId", new SqlParameter("@RegId", RegId)).ToList();
+
                         ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
                         return View("KraKpiOutcomeView", kraKpiOutcomeData);
+
                     }
                 }
             }
@@ -175,21 +194,21 @@ namespace STEP_DEMO.Controllers
             return Request.ServerVariables["REMOTE_ADDR"];
         }
 
-        private string GetEmployeeName(string employeeCode)
-        {
-            string employeeName = string.Empty;
+        //private string GetEmployeeName(string employeeCode)
+        //{
+        //    string employeeName = string.Empty;
 
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-            {
-                var employee = db.Employee_Information.FirstOrDefault(e => e.EmployeeCode == employeeCode);
-                if (employee != null)
-                {
-                    employeeName = employee.Name;
-                }
-            }
+        //    using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+        //    {
+        //        var employee = db.Employee_Information.FirstOrDefault(e => e.EmployeeCode == employeeCode);
+        //        if (employee != null)
+        //        {
+        //            employeeName = employee.Name;
+        //        }
+        //    }
 
-            return employeeName;
-        }
+        //    return employeeName;
+        //}
 
 
         [CustomAuthorize]
@@ -222,17 +241,21 @@ namespace STEP_DEMO.Controllers
         // view marks based on employee code
 
         [HttpPost]
-        public ActionResult ViewMarks(string employeeCode)
+        public ActionResult ViewMarks(int regId)
         {
             List<MarksData> marksData;
-            using (var db = new EMP_EVALUATIONEntities())
+            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
             {
-                if (!string.IsNullOrEmpty(employeeCode))
+/*                if (!string.IsNullOrEmpty(regId))*/
                 {
-                    var regId = (from emp in db.Employee_Information
-                                 join st in db.STEPs on emp.RegId equals st.REG_ID
-                                 where emp.EmployeeCode == employeeCode
-                                 select st.REG_ID).FirstOrDefault();
+                    var userInfo = db.Database.SqlQuery<EmployeeInfo>(
+                                    "prc_EmployeeInfoByRegID @RegID",
+                                    new SqlParameter("@RegID", regId)).FirstOrDefault();
+
+                    /* var regId = (from emp in db.Employee_Information
+                                                     join st in db.STEPs on emp.RegId equals st.REG_ID
+                                                     where emp.EmployeeCode == employeeCode
+                                                     select st.REG_ID).FirstOrDefault();*/
 
                     marksData = (from st in db.STEPs
                                  where st.REG_ID == regId
@@ -242,10 +265,15 @@ namespace STEP_DEMO.Controllers
                                      Marks_Achieved = st.Marks_Achieved ?? 0
                                  }).ToList();
                 }
-                else
+/*                else
                 {
                     marksData = new List<MarksData>();
-                }
+                }*/
+
+                // fetch employee name based on employeeCode
+               // string employeeName = GetEmployeeName(employeeCode);
+                ViewBag.EmployeeCode = "employeeCode";
+                ViewBag.EmployeeName = "employeeName";
 
                 var last2session = (db.New_Tax_Period
                                    .OrderByDescending(t => t.TaxPeriod)
@@ -259,18 +287,20 @@ namespace STEP_DEMO.Controllers
             return View(marksData);
         }
 
-        public ActionResult GetRegId(string employeeCode)
-        {
-            using (var db = new EMP_EVALUATIONEntities())
-            {
-                var regId = (from emp in db.Employee_Information
-                             join st in db.STEPs on emp.RegId equals st.REG_ID
-                             where emp.EmployeeCode == employeeCode
-                             select st.REG_ID).FirstOrDefault();
+        //public ActionResult GetRegId(string employeeCode)
+        //{
+        //    using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+        //    {
+        //        var regId = (from emp in db.Employee_Information
+        //                     join st in db.STEPs on emp.RegId equals st.REG_ID
+        //                     where emp.EmployeeCode == employeeCode
+        //                     select st.REG_ID).FirstOrDefault();
 
-                return Json(regId, JsonRequestBehavior.AllowGet);
-            }
-        }
+        //        return Json(regId, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+
+      
 
 
     }

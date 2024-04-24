@@ -14,7 +14,12 @@ namespace STEP_DEMO.Models
         public string DeptHead { get; set; }
         public string EmailID { get; set; }
         public int MobileNoPerson { get; set; }
-        public string Role { get; set; }
-
+        public int Role { get; set; }
+        public DateTime JoiningDate { get; set; }
+        public string Department { get; set; }
+        public string Section { get; set; }
+        public string Designation   { get; set; }
+        public string DesigAddi { get; set; }
+        public string WStatus { get; set; }
     }
 }

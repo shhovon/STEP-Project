@@ -1,25 +1,27 @@
 ﻿using STEP_DEMO.Models;
-using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace STEP_DEMO.Controllers
 {
     public class DeptHeadController : Controller
     {
-        // GET: DeptHead
         public ActionResult Index()
         {
             return View();
         }
-        public List<EmployeeViewModel> GetEmployeeListByDeptHead(int deptHeadValue)
+
+        public List<EmployeeInfo> GetEmployeeListByDeptHead(int deptHeadValue, int companyId)
         {
             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
             {
-                var employees = db.Database.SqlQuery<EmployeeViewModel>("exec prc_GetEmployeeListByDeptHead @DeptHeadValue", new SqlParameter("@DeptHeadValue", deptHeadValue)).ToList();
+                var employees = db.Database.SqlQuery<EmployeeInfo>("exec prc_GetTeamMember @RegID, @CompID",
+                    new SqlParameter("@RegID", deptHeadValue),
+                    new SqlParameter("@CompID", companyId)).ToList();
+
                 return employees;
             }
         }
@@ -44,12 +46,13 @@ namespace STEP_DEMO.Controllers
         [CustomAuthorize]
         public ActionResult ViewEmpList()
         {
-            List<EmployeeViewModel> employees = new List<EmployeeViewModel>();
-
+            List<EmployeeInfo> employees = new List<EmployeeInfo>();
             int deptHeadValue;
+            int companyId = 0;
+
             if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
             {
-                employees = GetEmployeeListByDeptHead(deptHeadValue);
+                employees = GetEmployeeListByDeptHead(deptHeadValue, companyId);
             }
 
             List<CompanyViewModel> companies = GetCompanies();
@@ -61,11 +64,12 @@ namespace STEP_DEMO.Controllers
         [HttpPost]
         public ActionResult ViewEmpList(int? companyId)
         {
-            List<EmployeeViewModel> employees = new List<EmployeeViewModel>();
+            List<EmployeeInfo> employees = new List<EmployeeInfo>();
+            int deptHeadValue;
 
-            if (companyId != null)
+            if (companyId != null && Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
             {
-                employees = GetEmployeesByCompany(companyId.Value);
+                employees = GetEmployeeListByDeptHead(deptHeadValue, companyId.Value);
             }
             else
             {
@@ -77,21 +81,5 @@ namespace STEP_DEMO.Controllers
 
             return View(employees);
         }
-
-
-        private List<EmployeeViewModel> GetEmployeesByCompany(int companyId)
-        {
-            List<EmployeeViewModel> employees = new List<EmployeeViewModel>();
-
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-            {
-                employees = db.Database.SqlQuery<EmployeeViewModel>("prc_GetEmployeesByCompany @CompanyId",
-                    new SqlParameter("CompanyId", companyId)
-                ).ToList();
-            }
-
-            return employees;
-        }
-
     }
 }

@@ -23,14 +23,20 @@ namespace STEP_DEMO.Controllers
                 int regId;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
-                    var sectionInfo = (from empInfo in db.Employee_Information
-                                       join reg in db.tblUser_Registration
-                                       on empInfo.RegId equals reg.RegId
-                                       where empInfo.RegId == regId
-                                       select new
-                                       {
-                                           Section = empInfo.Section
-                                       }).FirstOrDefault();
+                    //var sectionInfo = (from empInfo in db.Employee_Information
+                    //                   join reg in db.tblUser_Registration
+                    //                   on empInfo.RegId equals reg.RegId
+                    //                   where empInfo.RegId == regId
+                    //                   select new
+                    //                   {
+                    //                       Section = empInfo.Section
+                    //                   }).FirstOrDefault();
+
+
+                    var userInfo = db.Database.SqlQuery<EmployeeInfo>(
+                              "prc_EmployeeInfoByRegID @RegID",
+                              new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
+
 
                     for (int i = 0; i < model.KRAs.Count; i++)
                     {
@@ -40,7 +46,7 @@ namespace STEP_DEMO.Controllers
                             {
                                 KRA1 = model.KRAs[i],
                                 RegId = regId,
-                                Section_Name = sectionInfo.Section
+                                Section_Name = userInfo.Section
                             };
 
                             db.KRAs.Add(kra);
@@ -106,9 +112,9 @@ namespace STEP_DEMO.Controllers
                 int regId;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
-                    var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == regId);
+                  //  var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == regId);
 
-                    if (user != null)
+                  //  if (user != null)
                     {
                         // Get KRA and KPI data for the logged user
                         var kraKpiData = (from kra in db.KRAs
@@ -147,9 +153,9 @@ namespace STEP_DEMO.Controllers
                 int regId;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
-                    var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == regId);
+                   // var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == regId);
 
-                    if (user != null)
+                   // if (user != null)
                     {
 
                         // Fetch KRA and KPI data for the logged user
@@ -258,31 +264,45 @@ namespace STEP_DEMO.Controllers
                 if (ModelState.IsValid)
                 {
                     // retrieve the employee information based on the provided RegId
-                    var employeeCompanyInfo = (from emp in db.Employee_Information
-                                               join com in db.Company_Information on emp.ComID equals com.ID
-                                               select new { emp.EmployeeCode, emp.ComID }).ToList();
+                    //var employeeCompanyInfo = (from emp in db.Employee_Information
+                    //                           join com in db.Company_Information on emp.ComID equals com.ID
+                    //                           select new { emp.EmployeeCode, emp.ComID }).ToList();
 
-                    var employeeRegistrationInfo = (from reg in db.tblUser_Registration
-                                                    join emp in db.Employee_Information on reg.RegId equals emp.RegId
-                                                    select new { emp.EmployeeCode, reg.RegId }).ToList();
+                    //var employeeRegistrationInfo = (from reg in db.tblUser_Registration
+                    //                                join emp in db.Employee_Information on reg.RegId equals emp.RegId
+                    //                                select new { emp.EmployeeCode, reg.RegId }).ToList();
 
-                    var loggedInEmployeeCode = "MGT-" + model.EmployeeCode;
-                    int cmid =  model.ComID;
+                    //var loggedInEmployeeCode = "MGT-" + model.EmployeeCode;
+                    //int cmid =  model.ComID;
 
-                    var employeeInfo = (from empComp in employeeCompanyInfo
-                                        join empReg in employeeRegistrationInfo on empComp.EmployeeCode equals empReg.EmployeeCode
-                                        where empComp.EmployeeCode == loggedInEmployeeCode
-                                        select new { empComp.EmployeeCode, empComp.ComID, empReg.RegId }).FirstOrDefault();
+                    //var employeeInfo = (from empComp in employeeCompanyInfo
+                    //                    join empReg in employeeRegistrationInfo on empComp.EmployeeCode equals empReg.EmployeeCode
+                    //                    where empComp.EmployeeCode == loggedInEmployeeCode
+                    //                    select new { empComp.EmployeeCode, empComp.ComID, empReg.RegId }).FirstOrDefault();
+
+
+                    var employeeInfo = db.Database.SqlQuery<EmployeeInfo>(
+                                   "prc_EmployeeInfoByEmpCode @ComID, @EmpCode",
+                                   new SqlParameter("@ComID", model.ComID),
+                                   new SqlParameter("@EmpCode", model.EmployeeCode)).FirstOrDefault();
+
 
                     if (employeeInfo != null)
                     {
-                        var empCode = employeeInfo.EmployeeCode;
-                        int comId = employeeInfo.ComID;
+                      //  var empCode = employeeInfo.EmployeeCode;
+                      //  int comId = employeeInfo.ComID;
 
-                        if (comId == model.ComID)
-                        {
-                            var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == employeeInfo.RegId);
-                            if (user != null && PasswordHelper.Decrypt(user.Password.Trim()) == model.Password.Trim())
+                      //  if (comId == model.ComID)
+                      //  {
+                           // var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == employeeInfo.RegId);
+
+                        var user = db.Database.SqlQuery<User_RegistrationInfo>(
+                                   "prc_User_Registration  @RegID",
+                                   new SqlParameter("@RegID", employeeInfo.RegId)).FirstOrDefault();
+
+
+
+                        if (user != null && PasswordHelper.Decrypt(user.Password.Trim()) == model.Password.Trim())
                             {
                                 // insert login history
                                 tblUserLogHistory logEntry = new tblUserLogHistory
@@ -294,45 +314,39 @@ namespace STEP_DEMO.Controllers
                                 db.tblUserLogHistories.Add(logEntry);
                                 db.SaveChanges();
 
-                                // Call stored procedure
-                                var employeeData = db.Database.SqlQuery<EmployeeInfo>(
-                                    "prc_EmployeeInfoByEmpCode @ComID, @EmpCode",
-                                    new SqlParameter("@ComID", comId),
-                                    new SqlParameter("@EmpCode", empCode)).FirstOrDefault();
+                            // Call stored procedure
 
-                                if (employeeData != null)
-                                {
-                                    // Login successful
-                                    Session["RegID"] = employeeInfo.RegId;
-                                    Session["EmailID"] = employeeData.EmailID;
-                                    Session["MobileNoPerson"] = employeeData.MobileNoPerson;
-                                    Session["DeptHead"] = employeeData.DeptHead;
-                                    Session["Role"] = employeeData.Role;
 
-                                    int deptHeadValue;
-                                    if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
-                                    {
-                                        var usersUnderdeptHead = db.tblUser_Registration.Where(u => u.DeptHead == deptHeadValue).ToList();
-                                        var usersUnderReportSuper = db.tblUser_Registration.Where(u => u.ReportSuper == deptHeadValue).ToList();
-                                    }
+                            // Login successful
+                            Session["RegID"] = employeeInfo.RegId;
+                            Session["ComID"] = employeeInfo.ComID;                           
+                            Session["EmailID"] = employeeInfo.EmailID;
+                            Session["MobileNoPerson"] = employeeInfo.MobileNoPerson;
+                            Session["DeptHead"] = employeeInfo.DeptHead;
+                            Session["Role"] = employeeInfo.Role;
 
-                                    ModelState.Clear();
-                                    return RedirectToAction("Dashboard", "Home");
-                                }
-                                else
-                                {
-                                    ViewBag.ErrorMessage = "Employee information not found!";
-                                }
-                            }
+                            //int deptHeadValue;
+
+                            //if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+                            //{
+                            //    var usersUnderdeptHead = db.tblUser_Registration.Where(u => u.DeptHead == deptHeadValue).ToList();
+                            //    var usersUnderReportSuper = db.tblUser_Registration.Where(u => u.ReportSuper == deptHeadValue).ToList();
+                            //}
+
+                            ModelState.Clear();
+                            return RedirectToAction("Dashboard", "Home");
+
+
+                        }
                             else
                             {
                                 ViewBag.ErrorMessage = "Incorrect password!";
                             }
-                        }
-                        else
-                        {
-                            ViewBag.ErrorMessage = "Wrong unit!";
-                        }
+                        //}
+                        //else
+                        //{
+                        //    ViewBag.ErrorMessage = "Wrong unit!";
+                        //}
                     }
                     else
                     {
@@ -387,34 +401,42 @@ namespace STEP_DEMO.Controllers
 
                 if (Session["RegID"] != null && long.TryParse(Session["RegID"].ToString(), out regId))
                 {
-                    var userInfo = (from empInfo in db.Employee_Information
-                                    join reg in db.tblUser_Registration
-                                    on empInfo.RegId equals reg.RegId
-                                    where empInfo.RegId == regId
-                                    select new
-                                    {
-                                        EmployeeCode = empInfo.EmployeeCode,
-                                        Name = empInfo.Name,
-                                        Department = empInfo.Department,
-                                        Section = empInfo.Section,
-                                        Designation = empInfo.Designation,
-                                        Role = reg.Role
-                                    }).FirstOrDefault();
+                    //var userInfo = (from empInfo in db.Employee_Information
+                    //                join reg in db.tblUser_Registration
+                    //                on empInfo.RegId equals reg.RegId
+                    //                where empInfo.RegId == regId
+                    //                select new
+                    //                {
+                    //                    EmployeeCode = empInfo.EmployeeCode,
+                    //                    Name = empInfo.Name,
+                    //                    Department = empInfo.Department,
+                    //                    Section = empInfo.Section,
+                    //                    Designation = empInfo.Designation,
+                    //                    Role = reg.Role
+                    //                }).FirstOrDefault();
+
+
+                    var userInfo = db.Database.SqlQuery<EmployeeInfo>(
+                                  "prc_EmployeeInfoByRegID @RegID",
+                                  new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
+
+                   
 
                     if (userInfo != null)
                     {
 
-                        var employeeCode = userInfo.EmployeeCode;
-                        var name = userInfo.Name;
-                        var department = userInfo.Department;
-                        var section = userInfo.Section;
-                        var designation = userInfo.Designation;
+                        //var employeeCode = userInfo.EmployeeCode;
+                        //var name = userInfo.Name;
+                        //var department = userInfo.Department;
+                        //var section = userInfo.Section;
+                        //var designation = userInfo.Designation;
+
                         Session["EmployeeCode"] = userInfo.EmployeeCode;
                         Session["Name"] = userInfo.Name;
                         Session["Department"] = userInfo.Department;
                         Session["Section"] = userInfo.Section;
                         Session["Designation"] = userInfo.Designation;
-                        Session["Role"] = userInfo.Role;
+                        
                     }
                 }
 
@@ -546,8 +568,8 @@ namespace STEP_DEMO.Controllers
 
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
-                    var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == regId);
-                    if (user != null)
+                   // var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == regId);
+                   // if (user != null)
                     {
                         // fetch kra and kpi for the logged-in user
                         var kraKpiData = (from kra in db.KRAs
@@ -564,10 +586,10 @@ namespace STEP_DEMO.Controllers
 
                         return View(kraKpiData);
                     }
-                    else
-                    {
-                        return HttpNotFound("user not found");
-                    }
+                    //else
+                    //{
+                    //    return HttpNotFound("user not found");
+                    //}
 
 
 
@@ -670,6 +692,7 @@ namespace STEP_DEMO.Controllers
 
         public ActionResult GetFilteredData(string selectedSession)
         {
+
             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
             {
                 // retrieve the session ID from the selected session name

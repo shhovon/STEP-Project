@@ -49,43 +49,6 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.Company_Information' does not h
           <Property Name="IsClose" Type="tinyint" Nullable="false" />
           <Property Name="ReportPath" Type="varchar" MaxLength="100" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'EMP_EVALUATION.dbo.Employee_Information' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Employee_Information">
-          <Key>
-            <PropertyRef Name="RegId" />
-            <PropertyRef Name="ComID" />
-            <PropertyRef Name="EmployeeCode" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="District" />
-            <PropertyRef Name="JoiningDate" />
-            <PropertyRef Name="Department" />
-            <PropertyRef Name="Section" />
-            <PropertyRef Name="Designation" />
-            <PropertyRef Name="MLeft" />
-            <PropertyRef Name="MLeave" />
-          </Key>
-          <Property Name="RegId" Type="int" Nullable="false" />
-          <Property Name="ComID" Type="int" Nullable="false" />
-          <Property Name="EmployeeCode" Type="nvarchar" MaxLength="15" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="300" Nullable="false" />
-          <Property Name="FathersName" Type="nvarchar" MaxLength="300" />
-          <Property Name="BirthDate" Type="smalldatetime" />
-          <Property Name="Religion" Type="nvarchar" MaxLength="15" />
-          <Property Name="PreAddress" Type="nvarchar" MaxLength="455" />
-          <Property Name="PerAddress" Type="nvarchar" MaxLength="455" />
-          <Property Name="NID" Type="nvarchar" MaxLength="25" />
-          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
-          <Property Name="District" Type="nvarchar" MaxLength="25" Nullable="false" />
-          <Property Name="JoiningDate" Type="smalldatetime" Nullable="false" />
-          <Property Name="Department" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Section" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Designation" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="DesigAddi" Type="nvarchar" MaxLength="50" />
-          <Property Name="WStatus" Type="nvarchar" MaxLength="1" />
-          <Property Name="MLeft" Type="bit" Nullable="false" />
-          <Property Name="MLeave" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="KPI">
           <Key>
             <PropertyRef Name="KPI_ID" />
@@ -131,12 +94,31 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.New_Tax_Period' does not have a
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SESSION_ID" Type="int" />
           <Property Name="REG_ID" Type="int" />
           <Property Name="KRA_ID" Type="int" />
           <Property Name="KPI_ID" Type="int" />
-          <Property Name="SESSION_ID" Type="int" />
           <Property Name="KPI_OUTCOME" Type="nvarchar" MaxLength="2000" />
           <Property Name="Marks_Achieved" Type="int" />
+          <Property Name="Created_date" Type="datetime" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+          <Property Name="Updated_date" Type="datetime" />
+          <Property Name="Updated_by" Type="varchar" MaxLength="50" />
+          <Property Name="YsnUpdate" Type="bit" />
+        </EntityType>
+        <EntityType Name="tbl_StepMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SESSION_ID" Type="int" />
+          <Property Name="REG_ID" Type="int" />
+          <Property Name="ApprovalSent" Type="bit" />
+          <Property Name="Lock" Type="bit" />
+          <Property Name="KPI_AVG" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Attendance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Discipline" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Rating_Achieved" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Supervisor_Comment" Type="nvarchar" MaxLength="4000" />
           <Property Name="User_Comment" Type="nvarchar" MaxLength="4000" />
           <Property Name="HOD_Comment" Type="nvarchar" MaxLength="4000" />
@@ -194,8 +176,8 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.tblMenu' does not have a primar
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Reg_Id" Type="int" />
           <Property Name="Session_Id" Type="int" />
+          <Property Name="Reg_Id" Type="int" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
           <Property Name="Created_date" Type="datetime" />
           <Property Name="Created_By" Type="varchar" MaxLength="50" />
@@ -207,8 +189,8 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.tblMenu' does not have a primar
             <PropertyRef Name="Train_Id" />
           </Key>
           <Property Name="Train_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Reg_Id" Type="int" />
           <Property Name="Session_Id" Type="int" />
+          <Property Name="Reg_Id" Type="int" />
           <Property Name="Title" Type="nvarchar" MaxLength="200" />
           <Property Name="By_When" Type="smalldatetime" />
           <Property Name="Train_Type" Type="nvarchar" MaxLength="150" />
@@ -227,34 +209,6 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.tblMenu' does not have a primar
           <Property Name="login_time" Type="datetime" Nullable="false" />
           <Property Name="login_Mac" Type="varchar" MaxLength="200" />
           <Property Name="logout__time" Type="datetime" />
-        </EntityType>
-        <EntityType Name="tblUser_Registration">
-          <Key>
-            <PropertyRef Name="RegId" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RegId" Type="int" Nullable="false" />
-          <Property Name="Password" Type="nvarchar" MaxLength="500" />
-          <Property Name="DeptHead" Type="int" />
-          <Property Name="ReportSuper" Type="int" />
-          <Property Name="DateofBirth" Type="date" />
-          <Property Name="BloodGroup" Type="nvarchar" MaxLength="5" />
-          <Property Name="EmailID" Type="nvarchar" MaxLength="50" />
-          <Property Name="EmailID2" Type="varchar" MaxLength="50" />
-          <Property Name="MobileNoPerson" Type="nvarchar" MaxLength="50" />
-          <Property Name="MobileNoHome" Type="nvarchar" MaxLength="50" />
-          <Property Name="PhoneExt" Type="nvarchar" MaxLength="50" />
-          <Property Name="Picture" Type="nvarchar" MaxLength="50" />
-          <Property Name="Role" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Registerd" Type="bit" Nullable="false" />
-          <Property Name="LoginReq" Type="int" />
-          <Property Name="YsnActive" Type="bit" Nullable="false" />
-          <Property Name="last_login_date" Type="datetime" />
-          <Property Name="last_login_Mac" Type="varchar" MaxLength="200" />
-          <Property Name="Created_date" Type="datetime" />
-          <Property Name="Created_By" Type="varchar" MaxLength="50" />
-          <Property Name="Updated_date" Type="datetime" />
-          <Property Name="Updated_by" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tblUserLogHistory">
           <Key>
@@ -324,44 +278,11 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <Property Name="KPI_Enty" Type="bit" />
           <Property Name="KPI_OUTCOME" Type="nvarchar" MaxLength="2000" />
           <Property Name="Marks_Achieved" Type="int" />
-          <Property Name="Supervisor_Comment" Type="nvarchar" MaxLength="4000" />
-          <Property Name="User_Comment" Type="nvarchar" MaxLength="4000" />
-          <Property Name="HOD_Comment" Type="nvarchar" MaxLength="4000" />
-          <Property Name="HOD_Propose_Promotion" Type="nvarchar" MaxLength="200" />
-          <Property Name="HOD_Propose_Incr" Type="int" />
-          <Property Name="Final_Comment" Type="nvarchar" MaxLength="4000" />
-          <Property Name="Final_Propose_Promotion" Type="nvarchar" MaxLength="200" />
-          <Property Name="Final_Propose_Incr" Type="int" />
-          <Property Name="Effect_Date" Type="smalldatetime" />
           <Property Name="Created_date" Type="datetime" />
           <Property Name="Created_By" Type="varchar" MaxLength="50" />
           <Property Name="Updated_date" Type="datetime" />
           <Property Name="Updated_by" Type="varchar" MaxLength="50" />
         </EntityType>
-        <Association Name="FK_KPI_KRA">
-          <End Role="KRA" Type="Self.KRA" Multiplicity="0..1" />
-          <End Role="KPI" Type="Self.KPI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="KRA">
-              <PropertyRef Name="KRA_ID" />
-            </Principal>
-            <Dependent Role="KPI">
-              <PropertyRef Name="KRA_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_KRA_tblUser_Registration">
-          <End Role="tblUser_Registration" Type="Self.tblUser_Registration" Multiplicity="0..1" />
-          <End Role="KRA" Type="Self.KRA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblUser_Registration">
-              <PropertyRef Name="RegId" />
-            </Principal>
-            <Dependent Role="KRA">
-              <PropertyRef Name="RegId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Function Name="fnSplitString" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="string" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="delimiter" Type="char" Mode="In" />
@@ -395,12 +316,12 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <EntitySet Name="KPI" EntityType="Self.KPI" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KRA" EntityType="Self.KRA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="STEP" EntityType="Self.STEP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_StepMaster" EntityType="Self.tbl_StepMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblMarksEntryHistory" EntityType="Self.tblMarksEntryHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRole" EntityType="Self.tblRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSpecial_Factor" EntityType="Self.tblSpecial_Factor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTraining_Need" EntityType="Self.tblTraining_Need" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUser_LogInfo" EntityType="Self.tblUser_LogInfo" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tblUser_Registration" EntityType="Self.tblUser_Registration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserLogHistory" EntityType="Self.tblUserLogHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Company_Information" EntityType="Self.Company_Information" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -433,30 +354,6 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
     [Company_Information].[IsClose] AS [IsClose], 
     [Company_Information].[ReportPath] AS [ReportPath]
     FROM [dbo].[Company_Information] AS [Company_Information]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Employee_Information" EntityType="Self.Employee_Information" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Employee_Information].[RegId] AS [RegId], 
-    [Employee_Information].[ComID] AS [ComID], 
-    [Employee_Information].[EmployeeCode] AS [EmployeeCode], 
-    [Employee_Information].[Name] AS [Name], 
-    [Employee_Information].[FathersName] AS [FathersName], 
-    [Employee_Information].[BirthDate] AS [BirthDate], 
-    [Employee_Information].[Religion] AS [Religion], 
-    [Employee_Information].[PreAddress] AS [PreAddress], 
-    [Employee_Information].[PerAddress] AS [PerAddress], 
-    [Employee_Information].[NID] AS [NID], 
-    [Employee_Information].[Phone] AS [Phone], 
-    [Employee_Information].[District] AS [District], 
-    [Employee_Information].[JoiningDate] AS [JoiningDate], 
-    [Employee_Information].[Department] AS [Department], 
-    [Employee_Information].[Section] AS [Section], 
-    [Employee_Information].[Designation] AS [Designation], 
-    [Employee_Information].[DesigAddi] AS [DesigAddi], 
-    [Employee_Information].[WStatus] AS [WStatus], 
-    [Employee_Information].[MLeft] AS [MLeft], 
-    [Employee_Information].[MLeave] AS [MLeave]
-    FROM [dbo].[Employee_Information] AS [Employee_Information]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="New_Tax_Period" EntityType="Self.New_Tax_Period" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -522,29 +419,12 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
     [View_StepDetails].[KPI_Enty] AS [KPI_Enty], 
     [View_StepDetails].[KPI_OUTCOME] AS [KPI_OUTCOME], 
     [View_StepDetails].[Marks_Achieved] AS [Marks_Achieved], 
-    [View_StepDetails].[Supervisor_Comment] AS [Supervisor_Comment], 
-    [View_StepDetails].[User_Comment] AS [User_Comment], 
-    [View_StepDetails].[HOD_Comment] AS [HOD_Comment], 
-    [View_StepDetails].[HOD_Propose_Promotion] AS [HOD_Propose_Promotion], 
-    [View_StepDetails].[HOD_Propose_Incr] AS [HOD_Propose_Incr], 
-    [View_StepDetails].[Final_Comment] AS [Final_Comment], 
-    [View_StepDetails].[Final_Propose_Promotion] AS [Final_Propose_Promotion], 
-    [View_StepDetails].[Final_Propose_Incr] AS [Final_Propose_Incr], 
-    [View_StepDetails].[Effect_Date] AS [Effect_Date], 
     [View_StepDetails].[Created_date] AS [Created_date], 
     [View_StepDetails].[Created_By] AS [Created_By], 
     [View_StepDetails].[Updated_date] AS [Updated_date], 
     [View_StepDetails].[Updated_by] AS [Updated_by]
     FROM [dbo].[View_StepDetails] AS [View_StepDetails]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK_KPI_KRA" Association="Self.FK_KPI_KRA">
-            <End Role="KRA" EntitySet="KRA" />
-            <End Role="KPI" EntitySet="KPI" />
-          </AssociationSet>
-          <AssociationSet Name="FK_KRA_tblUser_Registration" Association="Self.FK_KRA_tblUser_Registration">
-            <End Role="tblUser_Registration" EntitySet="tblUser_Registration" />
-            <End Role="KRA" EntitySet="KRA" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -579,33 +459,6 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <Property Name="Updated_date" Type="DateTime" Precision="3" />
           <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="KPIs" Relationship="Self.FK_KPI_KRA" FromRole="KRA" ToRole="KPI" />
-          <NavigationProperty Name="tblUser_Registration" Relationship="Self.FK_KRA_tblUser_Registration" FromRole="KRA" ToRole="tblUser_Registration" />
-        </EntityType>
-        <EntityType Name="STEP">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="REG_ID" Type="Int32" />
-          <Property Name="KRA_ID" Type="Int32" />
-          <Property Name="KPI_ID" Type="Int32" />
-          <Property Name="SESSION_ID" Type="Int32" />
-          <Property Name="KPI_OUTCOME" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="Marks_Achieved" Type="Int32" />
-          <Property Name="Supervisor_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="User_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="HOD_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="HOD_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="HOD_Propose_Incr" Type="Int32" />
-          <Property Name="Final_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="Final_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Final_Propose_Incr" Type="Int32" />
-          <Property Name="Effect_Date" Type="DateTime" Precision="0" />
-          <Property Name="Created_date" Type="DateTime" Precision="3" />
-          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Updated_date" Type="DateTime" Precision="3" />
-          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="YsnUpdate" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblMarksEntryHistory">
           <Key>
@@ -670,35 +523,6 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <Property Name="login_Mac" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="logout__time" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="tblUser_Registration">
-          <Key>
-            <PropertyRef Name="RegId" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RegId" Type="Int32" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="DeptHead" Type="Int32" />
-          <Property Name="ReportSuper" Type="Int32" />
-          <Property Name="DateofBirth" Type="DateTime" Precision="0" />
-          <Property Name="BloodGroup" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="EmailID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmailID2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="MobileNoPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MobileNoHome" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneExt" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Picture" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Registerd" Type="Boolean" Nullable="false" />
-          <Property Name="LoginReq" Type="Int32" />
-          <Property Name="YsnActive" Type="Boolean" Nullable="false" />
-          <Property Name="last_login_date" Type="DateTime" Precision="3" />
-          <Property Name="last_login_Mac" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Created_date" Type="DateTime" Precision="3" />
-          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Updated_date" Type="DateTime" Precision="3" />
-          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="KRAs" Relationship="Self.FK_KRA_tblUser_Registration" FromRole="tblUser_Registration" ToRole="KRA" />
-        </EntityType>
         <EntityType Name="tblUserLogHistory">
           <Key>
             <PropertyRef Name="AutoID" />
@@ -750,41 +574,6 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <Property Name="DBPrefix" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="IsClose" Type="Byte" Nullable="false" />
           <Property Name="ReportPath" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Employee_Information">
-          <Key>
-            <PropertyRef Name="RegId" />
-            <PropertyRef Name="ComID" />
-            <PropertyRef Name="EmployeeCode" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="District" />
-            <PropertyRef Name="JoiningDate" />
-            <PropertyRef Name="Department" />
-            <PropertyRef Name="Section" />
-            <PropertyRef Name="Designation" />
-            <PropertyRef Name="MLeft" />
-            <PropertyRef Name="MLeave" />
-          </Key>
-          <Property Name="RegId" Type="Int32" Nullable="false" />
-          <Property Name="ComID" Type="Int32" Nullable="false" />
-          <Property Name="EmployeeCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FathersName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="BirthDate" Type="DateTime" Precision="0" />
-          <Property Name="Religion" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="PreAddress" Type="String" MaxLength="455" FixedLength="false" Unicode="true" />
-          <Property Name="PerAddress" Type="String" MaxLength="455" FixedLength="false" Unicode="true" />
-          <Property Name="NID" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="District" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="JoiningDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Section" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Designation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DesigAddi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="MLeft" Type="Boolean" Nullable="false" />
-          <Property Name="MLeave" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="New_Tax_Period">
           <Key>
@@ -844,40 +633,6 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <Property Name="Updated_date" Type="DateTime" Precision="3" />
           <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="View_StepDetails">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="TaxPeriod" />
-            <PropertyRef Name="BeginDate" />
-            <PropertyRef Name="EndDate" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="REG_ID" Type="Int32" />
-          <Property Name="KRA_ID" Type="Int32" />
-          <Property Name="KRA" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="KPI_ID" Type="Int32" />
-          <Property Name="KPI" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="SESSION_ID" Type="Int32" />
-          <Property Name="TaxPeriod" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BeginDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="KPI_Enty" Type="Boolean" />
-          <Property Name="KPI_OUTCOME" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="Marks_Achieved" Type="Int32" />
-          <Property Name="Supervisor_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="User_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="HOD_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="HOD_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="HOD_Propose_Incr" Type="Int32" />
-          <Property Name="Final_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="Final_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Final_Propose_Incr" Type="Int32" />
-          <Property Name="Effect_Date" Type="DateTime" Precision="0" />
-          <Property Name="Created_date" Type="DateTime" Precision="3" />
-          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Updated_date" Type="DateTime" Precision="3" />
-          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <Association Name="FK_KPI_KRA">
           <End Role="KRA" Type="Self.KRA" Multiplicity="0..1" />
           <End Role="KPI" Type="Self.KPI" Multiplicity="*" />
@@ -890,42 +645,22 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_KRA_tblUser_Registration">
-          <End Role="tblUser_Registration" Type="Self.tblUser_Registration" Multiplicity="0..1" />
-          <End Role="KRA" Type="Self.KRA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblUser_Registration">
-              <PropertyRef Name="RegId" />
-            </Principal>
-            <Dependent Role="KRA">
-              <PropertyRef Name="RegId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="EMP_EVALUATIONEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="KPIs" EntityType="Self.KPI" />
           <EntitySet Name="KRAs" EntityType="Self.KRA" />
-          <EntitySet Name="STEPs" EntityType="Self.STEP" />
           <EntitySet Name="tblMarksEntryHistories" EntityType="Self.tblMarksEntryHistory" />
           <EntitySet Name="tblRoles" EntityType="Self.tblRole" />
           <EntitySet Name="tblSpecial_Factor" EntityType="Self.tblSpecial_Factor" />
           <EntitySet Name="tblTraining_Need" EntityType="Self.tblTraining_Need" />
           <EntitySet Name="tblUser_LogInfo" EntityType="Self.tblUser_LogInfo" />
-          <EntitySet Name="tblUser_Registration" EntityType="Self.tblUser_Registration" />
           <EntitySet Name="tblUserLogHistories" EntityType="Self.tblUserLogHistory" />
           <EntitySet Name="Company_Information" EntityType="Self.Company_Information" />
-          <EntitySet Name="Employee_Information" EntityType="Self.Employee_Information" />
           <EntitySet Name="New_Tax_Period" EntityType="Self.New_Tax_Period" />
           <EntitySet Name="tblMenus" EntityType="Self.tblMenu" />
           <EntitySet Name="View_" EntityType="Self.View_" />
-          <EntitySet Name="View_StepDetails" EntityType="Self.View_StepDetails" />
           <AssociationSet Name="FK_KPI_KRA" Association="Self.FK_KPI_KRA">
             <End Role="KRA" EntitySet="KRAs" />
             <End Role="KPI" EntitySet="KPIs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_KRA_tblUser_Registration" Association="Self.FK_KRA_tblUser_Registration">
-            <End Role="tblUser_Registration" EntitySet="tblUser_Registration" />
-            <End Role="KRA" EntitySet="KRAs" />
           </AssociationSet>
           <FunctionImport Name="fnSplitString" IsComposable="true" ReturnType="Collection(EMP_EVALUATIONModel.fnSplitString_Result)">
             <Parameter Name="string" Mode="In" Type="String" />
@@ -949,6 +684,9 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <FunctionImport Name="prc_UserMenu" ReturnType="Collection(EMP_EVALUATIONModel.prc_UserMenu_Result)">
           <Parameter Name="RegId" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="tbl_StepMaster" EntityType="EMP_EVALUATIONModel.tbl_StepMaster" />
+          <EntitySet Name="STEPs" EntityType="EMP_EVALUATIONModel.STEP" />
+          <EntitySet Name="View_StepDetails" EntityType="EMP_EVALUATIONModel.View_StepDetails" />
         </EntityContainer>
         <ComplexType Name="prc_EmployeeInfoByEmpCode_Result">
           <Property Type="Int32" Name="RegId" Nullable="false" />
@@ -993,6 +731,76 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <Property Type="String" Name="Menu_Icon" Nullable="true" MaxLength="50" />
           <Property Type="Boolean" Name="YsnActive" Nullable="true" />
         </ComplexType>
+        <EntityType Name="tbl_StepMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SESSION_ID" Type="Int32" />
+          <Property Name="REG_ID" Type="Int32" />
+          <Property Name="ApprovalSent" Type="Boolean" />
+          <Property Name="Lock" Type="Boolean" />
+          <Property Name="KPI_AVG" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Attendance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Discipline" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Rating_Achieved" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Supervisor_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="User_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="HOD_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="HOD_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HOD_Propose_Incr" Type="Int32" />
+          <Property Name="Final_Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Final_Propose_Promotion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Final_Propose_Incr" Type="Int32" />
+          <Property Name="Effect_Date" Type="DateTime" Precision="0" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="YsnUpdate" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="STEP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SESSION_ID" Type="Int32" />
+          <Property Name="REG_ID" Type="Int32" />
+          <Property Name="KRA_ID" Type="Int32" />
+          <Property Name="KPI_ID" Type="Int32" />
+          <Property Name="KPI_OUTCOME" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Marks_Achieved" Type="Int32" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="YsnUpdate" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="View_StepDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="TaxPeriod" />
+            <PropertyRef Name="BeginDate" />
+            <PropertyRef Name="EndDate" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="REG_ID" Type="Int32" />
+          <Property Name="KRA_ID" Type="Int32" />
+          <Property Name="KRA" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="KPI_ID" Type="Int32" />
+          <Property Name="KPI" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="SESSION_ID" Type="Int32" />
+          <Property Name="TaxPeriod" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="BeginDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="KPI_Enty" Type="Boolean" />
+          <Property Name="KPI_OUTCOME" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Marks_Achieved" Type="Int32" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1023,33 +831,6 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
                 <ScalarProperty Name="Created_By" ColumnName="Created_By" />
                 <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
                 <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="STEPs">
-            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.STEP">
-              <MappingFragment StoreEntitySet="STEP">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
-                <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
-                <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
-                <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
-                <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
-                <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
-                <ScalarProperty Name="Supervisor_Comment" ColumnName="Supervisor_Comment" />
-                <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
-                <ScalarProperty Name="HOD_Comment" ColumnName="HOD_Comment" />
-                <ScalarProperty Name="HOD_Propose_Promotion" ColumnName="HOD_Propose_Promotion" />
-                <ScalarProperty Name="HOD_Propose_Incr" ColumnName="HOD_Propose_Incr" />
-                <ScalarProperty Name="Final_Comment" ColumnName="Final_Comment" />
-                <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
-                <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
-                <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
-                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
-                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
-                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
-                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
-                <ScalarProperty Name="YsnUpdate" ColumnName="YsnUpdate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1120,35 +901,6 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblUser_Registration">
-            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblUser_Registration">
-              <MappingFragment StoreEntitySet="tblUser_Registration">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="RegId" ColumnName="RegId" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="DeptHead" ColumnName="DeptHead" />
-                <ScalarProperty Name="ReportSuper" ColumnName="ReportSuper" />
-                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
-                <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
-                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
-                <ScalarProperty Name="EmailID2" ColumnName="EmailID2" />
-                <ScalarProperty Name="MobileNoPerson" ColumnName="MobileNoPerson" />
-                <ScalarProperty Name="MobileNoHome" ColumnName="MobileNoHome" />
-                <ScalarProperty Name="PhoneExt" ColumnName="PhoneExt" />
-                <ScalarProperty Name="Picture" ColumnName="Picture" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="Registerd" ColumnName="Registerd" />
-                <ScalarProperty Name="LoginReq" ColumnName="LoginReq" />
-                <ScalarProperty Name="YsnActive" ColumnName="YsnActive" />
-                <ScalarProperty Name="last_login_date" ColumnName="last_login_date" />
-                <ScalarProperty Name="last_login_Mac" ColumnName="last_login_Mac" />
-                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
-                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
-                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
-                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tblUserLogHistories">
             <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tblUserLogHistory">
               <MappingFragment StoreEntitySet="tblUserLogHistory">
@@ -1194,32 +946,6 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Employee_Information">
-            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.Employee_Information">
-              <MappingFragment StoreEntitySet="Employee_Information">
-                <ScalarProperty Name="RegId" ColumnName="RegId" />
-                <ScalarProperty Name="ComID" ColumnName="ComID" />
-                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="FathersName" ColumnName="FathersName" />
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="Religion" ColumnName="Religion" />
-                <ScalarProperty Name="PreAddress" ColumnName="PreAddress" />
-                <ScalarProperty Name="PerAddress" ColumnName="PerAddress" />
-                <ScalarProperty Name="NID" ColumnName="NID" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="District" ColumnName="District" />
-                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
-                <ScalarProperty Name="Department" ColumnName="Department" />
-                <ScalarProperty Name="Section" ColumnName="Section" />
-                <ScalarProperty Name="Designation" ColumnName="Designation" />
-                <ScalarProperty Name="DesigAddi" ColumnName="DesigAddi" />
-                <ScalarProperty Name="WStatus" ColumnName="WStatus" />
-                <ScalarProperty Name="MLeft" ColumnName="MLeft" />
-                <ScalarProperty Name="MLeave" ColumnName="MLeave" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="New_Tax_Period">
             <EntityTypeMapping TypeName="EMP_EVALUATIONModel.New_Tax_Period">
               <MappingFragment StoreEntitySet="New_Tax_Period">
@@ -1246,38 +972,6 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
           <EntitySetMapping Name="View_">
             <EntityTypeMapping TypeName="EMP_EVALUATIONModel.View_">
               <MappingFragment StoreEntitySet="View_">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
-                <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
-                <ScalarProperty Name="KRA" ColumnName="KRA" />
-                <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
-                <ScalarProperty Name="KPI" ColumnName="KPI" />
-                <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
-                <ScalarProperty Name="TaxPeriod" ColumnName="TaxPeriod" />
-                <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="KPI_Enty" ColumnName="KPI_Enty" />
-                <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
-                <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
-                <ScalarProperty Name="Supervisor_Comment" ColumnName="Supervisor_Comment" />
-                <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
-                <ScalarProperty Name="HOD_Comment" ColumnName="HOD_Comment" />
-                <ScalarProperty Name="HOD_Propose_Promotion" ColumnName="HOD_Propose_Promotion" />
-                <ScalarProperty Name="HOD_Propose_Incr" ColumnName="HOD_Propose_Incr" />
-                <ScalarProperty Name="Final_Comment" ColumnName="Final_Comment" />
-                <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
-                <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
-                <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
-                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
-                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
-                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
-                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="View_StepDetails">
-            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.View_StepDetails">
-              <MappingFragment StoreEntitySet="View_StepDetails">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
                 <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
@@ -1374,6 +1068,76 @@ warning 6002: The table/view 'EMP_EVALUATION.dbo.View_StepDetails' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="tbl_StepMaster">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.tbl_StepMaster">
+              <MappingFragment StoreEntitySet="tbl_StepMaster">
+                <ScalarProperty Name="YsnUpdate" ColumnName="YsnUpdate" />
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
+                <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
+                <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
+                <ScalarProperty Name="Final_Comment" ColumnName="Final_Comment" />
+                <ScalarProperty Name="HOD_Propose_Incr" ColumnName="HOD_Propose_Incr" />
+                <ScalarProperty Name="HOD_Propose_Promotion" ColumnName="HOD_Propose_Promotion" />
+                <ScalarProperty Name="HOD_Comment" ColumnName="HOD_Comment" />
+                <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
+                <ScalarProperty Name="Supervisor_Comment" ColumnName="Supervisor_Comment" />
+                <ScalarProperty Name="Rating_Achieved" ColumnName="Rating_Achieved" />
+                <ScalarProperty Name="Discipline" ColumnName="Discipline" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="KPI_AVG" ColumnName="KPI_AVG" />
+                <ScalarProperty Name="Lock" ColumnName="Lock" />
+                <ScalarProperty Name="ApprovalSent" ColumnName="ApprovalSent" />
+                <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
+                <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STEPs">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.STEP">
+              <MappingFragment StoreEntitySet="STEP">
+                <ScalarProperty Name="YsnUpdate" ColumnName="YsnUpdate" />
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
+                <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
+                <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
+                <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+                <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
+                <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_StepDetails">
+            <EntityTypeMapping TypeName="EMP_EVALUATIONModel.View_StepDetails">
+              <MappingFragment StoreEntitySet="View_StepDetails">
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
+                <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
+                <ScalarProperty Name="KPI_Enty" ColumnName="KPI_Enty" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+                <ScalarProperty Name="TaxPeriod" ColumnName="TaxPeriod" />
+                <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+                <ScalarProperty Name="KPI" ColumnName="KPI" />
+                <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
+                <ScalarProperty Name="KRA" ColumnName="KRA" />
+                <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+                <ScalarProperty Name="REG_ID" ColumnName="REG_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

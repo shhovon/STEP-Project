@@ -171,11 +171,15 @@
     </Compile>
     <Compile Include="Models\CustomAuthorize.cs" />
     <Compile Include="Models\DisplayAllDataViewModel.cs" />
-    <Compile Include="Models\EmployeeInfo.cs" />
-    <Compile Include="Models\EmployeeViewModel.cs" />
-    <Compile Include="Models\Employee_Information.cs">
+    <Compile Include="Models\STEP.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_StepMaster.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User_RegistrationInfo.cs" />
+    <Compile Include="Models\EmployeeInfo.cs" />
+    <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\fnSplitString_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
@@ -207,9 +211,6 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_UserMenu_Result.cs">
-      <DependentUpon>StepModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\STEP.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StepModel.Context.cs">
@@ -247,9 +248,6 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblUser_LogInfo.cs">
-      <DependentUpon>StepModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblUser_Registration.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\View_.cs">

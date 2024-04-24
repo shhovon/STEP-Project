@@ -1,4 +1,4 @@
-﻿@model List<EmployeeViewModel>
+﻿@model List<STEP_DEMO.Models.EmployeeInfo>
 
 <head>
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
@@ -6,14 +6,13 @@
 
 @using (Html.BeginForm("AddMarks", "ReportSuper", FormMethod.Post, new { id = "employeeForm" }))
 {
-    @Html.Hidden("employeeCode", null, new { id = "employeeCodeField" })
+    @Html.Hidden("regID", null, new { id = "regIDField" })
 }
 
 @using (Html.BeginForm("ViewMarks", "ReportSuper", FormMethod.Post, new { id = "viewMarksForm" }))
 {
-    @Html.Hidden("employeeCode", null, new { id = "viewEmployeeCodeField" })
+    @Html.Hidden("regID", null, new { id = "viewregIDField" })
 }
-
 
 <h3 style="text-align:center;">Employee List</h3>
 <br />
@@ -45,16 +44,14 @@
             <tbody>
                 @foreach (var employee in Model)
                 {
-                    <tr>
-                        @*<td>@employee.Name</td>*@
-                        <td><a href="javascript:void(0);" onclick="setEmployeeCodeAndSubmit('@employee.EmployeeCode')">@employee.Name</a></td>
-                        <td>@employee.EmployeeCode</td>
-                        <td>@employee.Department</td>
-                        <td>@employee.Section</td>
-                        <td>@employee.Designation</td>
-                        <td><a href="javascript:void(0);" onclick="setRegId('@employee.EmployeeCode')">View Marks</a></td> <!-- Link to view marks -->
-
-                    </tr>
+                <tr>
+                    <td><a href="javascript:void(0);" onclick="setEmployeeCodeAndSubmit('@employee.RegId')">@employee.Name</a></td>
+                    <td>@employee.EmployeeCode</td>
+                    <td>@employee.Department</td>
+                    <td>@employee.Section</td>
+                    <td>@employee.Designation</td>
+                    <td><a href="javascript:void(0);" onclick="setRegId('@employee.RegId')">View Marks</a></td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -67,15 +64,12 @@
 
 <script>
     function setEmployeeCodeAndSubmit(code) {
-        // set the value of the hidden input field
-        document.getElementById("employeeCodeField").value = code;
+        document.getElementById("regIDField").value = code;
         document.getElementById("employeeForm").submit();
     }
 
-    function setRegId(employeeCode) {
-        document.getElementById("viewEmployeeCodeField").value = employeeCode;
+    function setRegId(regID) {
+        document.getElementById("viewregIDField").value = regID;
         document.getElementById("viewMarksForm").submit();
     }
-
-
 </script>

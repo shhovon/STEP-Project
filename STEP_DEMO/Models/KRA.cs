@@ -31,6 +31,5 @@ namespace STEP_DEMO.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<KPI> KPIs { get; set; }
-        public virtual tblUser_Registration tblUser_Registration { get; set; }
     }
 }

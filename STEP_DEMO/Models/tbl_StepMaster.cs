@@ -12,15 +12,26 @@ namespace STEP_DEMO.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class STEP
+    public partial class tbl_StepMaster
     {
         public int ID { get; set; }
         public Nullable<int> SESSION_ID { get; set; }
         public Nullable<int> REG_ID { get; set; }
-        public Nullable<int> KRA_ID { get; set; }
-        public Nullable<int> KPI_ID { get; set; }
-        public string KPI_OUTCOME { get; set; }
-        public Nullable<int> Marks_Achieved { get; set; }
+        public Nullable<bool> ApprovalSent { get; set; }
+        public Nullable<bool> Lock { get; set; }
+        public Nullable<decimal> KPI_AVG { get; set; }
+        public Nullable<decimal> Attendance { get; set; }
+        public Nullable<decimal> Discipline { get; set; }
+        public Nullable<decimal> Rating_Achieved { get; set; }
+        public string Supervisor_Comment { get; set; }
+        public string User_Comment { get; set; }
+        public string HOD_Comment { get; set; }
+        public string HOD_Propose_Promotion { get; set; }
+        public Nullable<int> HOD_Propose_Incr { get; set; }
+        public string Final_Comment { get; set; }
+        public string Final_Propose_Promotion { get; set; }
+        public Nullable<int> Final_Propose_Incr { get; set; }
+        public Nullable<System.DateTime> Effect_Date { get; set; }
         public Nullable<System.DateTime> Created_date { get; set; }
         public string Created_By { get; set; }
         public Nullable<System.DateTime> Updated_date { get; set; }

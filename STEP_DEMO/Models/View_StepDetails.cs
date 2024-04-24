@@ -27,15 +27,6 @@ namespace STEP_DEMO.Models
         public Nullable<bool> KPI_Enty { get; set; }
         public string KPI_OUTCOME { get; set; }
         public Nullable<int> Marks_Achieved { get; set; }
-        public string Supervisor_Comment { get; set; }
-        public string User_Comment { get; set; }
-        public string HOD_Comment { get; set; }
-        public string HOD_Propose_Promotion { get; set; }
-        public Nullable<int> HOD_Propose_Incr { get; set; }
-        public string Final_Comment { get; set; }
-        public string Final_Propose_Promotion { get; set; }
-        public Nullable<int> Final_Propose_Incr { get; set; }
-        public Nullable<System.DateTime> Effect_Date { get; set; }
         public Nullable<System.DateTime> Created_date { get; set; }
         public string Created_By { get; set; }
         public Nullable<System.DateTime> Updated_date { get; set; }
