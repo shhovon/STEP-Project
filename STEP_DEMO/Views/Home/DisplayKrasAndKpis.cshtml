@@ -111,6 +111,7 @@
 <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
 
 
+
 <style>
     .card-body {
         @*        background: linear-gradient(to right, #78a7ca, #accbee);*@
@@ -162,16 +163,15 @@
                 <tr>
                     <th>List of KRA</th>
                     <th>List of KPI</th>
-                    @*                    <th>List of KPI Outcome</th>*@
                 </tr>
             </thead>
             <tbody>
+
                 @foreach (var item in Model.KraKpiData)
                 {
                     <tr>
                         <td>@item.KRA</td>
                         <td>@item.KPI</td>
-                        @*                        <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>*@
                     </tr>
                 }
             </tbody>
@@ -200,7 +200,7 @@
                             <td>@item.KPI</td>
                             <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
                             <td style="text-align: center; vertical-align: middle !important;">
-                                <form action="@Url.Action("DeleteSession", "Home")" method="post">
+                                <form action="@Url.Action("DeleteSession", "Home")" method="post" onsubmit="return confirm('Are you sure you want to delete this?');">
                                     @Html.Hidden("kraId", item.KRA_ID)
                                     @Html.Hidden("kpiId", item.KPI_ID)
                                     @Html.Hidden("kpiOutcome", item.KPI_OUTCOME)
@@ -216,11 +216,11 @@
 
         </table>
         <br /><br />
-        <div class="form-group" id="nextButtonContainer">
-            <div class="col-md-offset-2 col-md-10">
-                <a id="nextButton" href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Special Factors</a>
-            </div>
-        </div>
+        @*        <div class="form-group" id="nextButtonContainer">
+                <div class="col-md-offset-2 col-md-10">
+                    <a id="nextButton" href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Special Factors</a>
+                </div>
+            </div>*@
 
     </div>
 </div>
@@ -365,6 +365,15 @@
         $('#myModal').on('show.bs.modal', function (e) {
             var selectedSession = document.getElementById("selectedTaxPeriod").value;
             updateModalDropdown(selectedSession);
+        });
+
+        // delete confirmation
+
+        $('.delete-btn').click(function () {
+            var description = $(this).data('description');
+            if (confirm("Are you sure you want to delete this description?")) {
+                $('#deleteForm_' + description).submit();
+            }
         });
     </script>
 }

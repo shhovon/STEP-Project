@@ -593,7 +593,9 @@ namespace STEP_DEMO.Controllers
                                         {
                                             KRA = k.KRA1,
                                             KPI = kp.KPI1,
-                                            KPI_OUTCOME = s.KPI_OUTCOME
+                                            KPI_OUTCOME = s.KPI_OUTCOME,
+                                            KRA_ID = k.KRA_ID,
+                                            KPI_ID = kp.KPI_ID
                                         }).ToList();
 
                         var compositeModel = new CompositeModel
@@ -601,25 +603,13 @@ namespace STEP_DEMO.Controllers
                             KraKpiData = kraKpiData,
                             StepData = stepData
                         };
+
+
+                        Session["selectedTaxPeriod"] = "";
+                        var sessionId = Session["selectedTaxPeriod"].ToString();
                         return View(compositeModel);
 
                     }
-
-                    /*                    var stepData = (from s in db.STEPs
-                                                        join k in db.KRAs on s.KRA_ID equals k.KRA_ID
-                                                        join kp in db.KPIs on s.KPI_ID equals kp.KPI_ID
-                                                        where s.REG_ID == regId
-                                                        select new KraKpiViewModel
-                                                        {
-                                                            KRA = k.KRA1,
-                                                            KPI = kp.KPI1,
-                                                            KPI_OUTCOME = s.KPI_OUTCOME
-                                                        }).ToList();
-
-
-
-                                        return View(stepData);*/
-
                 }
                 else
                 {
@@ -729,29 +719,11 @@ namespace STEP_DEMO.Controllers
                                       vs.KPI_OUTCOME
                                   }).ToList();
 
+                Session["selectedTaxPeriod"]= taxPerId;
+
 
                 return Json(kraKpiData, JsonRequestBehavior.AllowGet);
             }
-        }
-
-
-
-        [HttpPost]
-        public ActionResult DeleteRow(string kra, string kpi, string kpiOutcome)
-        {
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-            {
-                var recordToDelete = db.View_StepDetails.FirstOrDefault(vs =>
-                    vs.KRA == kra && vs.KPI == kpi && vs.KPI_OUTCOME == kpiOutcome);
-
-                if (recordToDelete != null)
-                {
-                    db.View_StepDetails.Remove(recordToDelete);
-                    db.SaveChanges();
-                }
-            }
-
-            return RedirectToAction("DisplayKrasAndKpis");
         }
 
         [HttpPost]
@@ -767,25 +739,14 @@ namespace STEP_DEMO.Controllers
             {
                 try
                 {
-                    var entriesToDelete = (from step in db.STEPs
-                                           join kra in db.KRAs on step.KRA_ID equals kra.KRA_ID
-                                           join kpi in db.KPIs on step.KPI_ID equals kpi.KPI_ID
-                                           where step.REG_ID == regId
-                                           select step).ToList();
+                    var itemToDelete = db.STEPs.FirstOrDefault(step =>
+                                          step.KRA_ID == kraId && step.KPI_ID == kpiId && step.KPI_OUTCOME == kpiOutcome);
 
-                    db.STEPs.RemoveRange(entriesToDelete);
-                    db.SaveChanges();
-
-
-/*                    if (stepEntry != null)
+                    if (itemToDelete != null)
                     {
-                        db.STEPs.Remove(stepEntry);
+                        db.STEPs.Remove(itemToDelete);
                         db.SaveChanges();
                     }
-                    else
-                    {
-                        ModelState.AddModelError("", "Error: STEP entry not found");
-                    }*/
 
                     return RedirectToAction("DisplayKrasAndKpis");
                 }

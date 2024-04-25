@@ -170,8 +170,10 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CustomAuthorize.cs" />
+    <Compile Include="Models\CustomErrorHandler.cs" />
     <Compile Include="Models\DisplayAllDataViewModel.cs" />
     <Compile Include="Models\KraKpiCombinedModel.cs" />
+    <Compile Include="Models\SpecialFactorViewModel.cs" />
     <Compile Include="Models\STEP.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
