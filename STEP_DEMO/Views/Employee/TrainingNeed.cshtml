@@ -49,7 +49,7 @@
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
+
 
 <div class="form-horizontal">
     <h3>Add Training Need</h3>
@@ -82,11 +82,11 @@
         </div>
         <div class="col-md-10">
             <div class="dropdown-container">
-                @Html.DropDownList("TrainingType", new List<SelectListItem>
+                @Html.DropDownListFor(model => model.Train_Type, new List<SelectListItem>
                 {
-                    new SelectListItem { Text = "On The Job", Value = "1", Selected=false},
-                    new SelectListItem { Text = "Coaching", Value = "2"},
-                    new SelectListItem { Text = "Out Sourced", Value = "3"}
+                    new SelectListItem { Text = "On The Job", Value = "On The Job" },
+                    new SelectListItem { Text = "Coaching", Value = "Coaching" },
+                    new SelectListItem { Text = "Out Sourced", Value = "Out Sourced" }
                 }, "Select Training Type", new { @class = "form-control custom-select" })
             </div>
         </div>

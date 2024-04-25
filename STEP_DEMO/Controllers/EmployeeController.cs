@@ -214,7 +214,7 @@ namespace STEP_DEMO.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteTraining(string title, DateTime by_when, string type, string status)
+        public ActionResult DeleteTraining(string title, DateTime? by_when, string type, string status)
         {
             try
             {
@@ -232,12 +232,8 @@ namespace STEP_DEMO.Controllers
                 TempData["ErrorMessage"] = "Error deleting training data: " + ex.Message;
             }
 
-            return RedirectToAction("SpecialFactors");
+            return RedirectToAction("TrainingNeed");
         }
-
-
-
-
 
     }
 }
