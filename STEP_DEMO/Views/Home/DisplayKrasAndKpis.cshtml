@@ -1,4 +1,6 @@
-﻿@model List<KraKpiOutcomeModel>
+﻿@model CompositeModel
+
+
 
 @{
     var sessionIds = ViewBag.SessionIds as List<string>;
@@ -59,10 +61,7 @@
                         <label class="dropdown-label" for="taxPeriodDropdown">Choose Session:</label>
                         <br />
                         <select id="taxPeriodDropdown" class="form-control custom-select">
-                            @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
-                            {
-                                <option value="@taxPeriod">@taxPeriod</option>
-                            }
+                            <!-- Options will be added dynamically via JavaScript -->
                         </select>
                     </div>
                     <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
@@ -72,7 +71,7 @@
                     <div class="dropdown-container">
                         <label class="dropdown-label" for="selectedKRA">Select KRA:</label>
                         <br />
-                        @Html.DropDownList("selectedKRA", new SelectList(Model.Select(x => x.KRA).Distinct()), new { @class = "form-control custom-select" })
+                        @Html.DropDownList("selectedKRA", new SelectList(Model.KraKpiData.Select(x => x.KRA).Distinct()), "Select KRA", new { @class = "form-control custom-select" })
                     </div>
 
                     <div class="dropdown-container">
@@ -102,6 +101,7 @@
     <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
     <br />
     <select id="taxPeriodDropdownMV" class="form-control custom-select">
+        <option value="" selected disabled>Choose a Session</option>
         @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
         {
             <option value="@taxPeriod">@taxPeriod</option>
@@ -111,28 +111,47 @@
 <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
 
 
-@*             new navigation buttons*@
+<style>
+    .card-body {
+        @*        background: linear-gradient(to right, #78a7ca, #accbee);*@
+        background: linear-gradient(to right, #d9e8f5, #e6f1fb);
+        padding: 8px;
+        border-radius: 8px;
+        height: 70px;
+    }
 
-<br />
+    .card {
+        width: fit-content;
+        margin: auto;
+        margin-top: 10px;
+    }
 
-<div class="form-group" style="float:left;">
-    <div class="col-md-offset-2 col-md-10">
+    .card-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn {
+        margin-bottom: 10px;
+    }
+
+    .btn {
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+</style>
+
+@*      new navigation buttons   *@
+
+<div class="card">
+    <div class="card-body">
         <a href="@Url.Action("DisplayKrasAndKpis", "Home")" class="btn btn-primary submit-btn">Outcome Entry</a>
-    </div>
-</div>
-
-<div class="form-group" style="float:left;">
-    <div class="col-md-offset-2 col-md-10">
         <a href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Special Factor</a>
-    </div>
-</div>
-
-<div class="form-group" style="float:left;">
-    <div class="col-md-offset-2 col-md-10">
         <a href="@Url.Action("TrainingNeed", "Employee")" class="btn btn-primary submit-btn">Training Need</a>
     </div>
 </div>
-
+<br />
+<br />
 @*             button end*@
 
 
@@ -143,16 +162,16 @@
                 <tr>
                     <th>List of KRA</th>
                     <th>List of KPI</th>
-                    <th>List of KPI Outcome</th>
+                    @*                    <th>List of KPI Outcome</th>*@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.KraKpiData)
                 {
                     <tr>
                         <td>@item.KRA</td>
                         <td>@item.KPI</td>
-                        <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
+                        @*                        <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>*@
                     </tr>
                 }
             </tbody>
@@ -172,9 +191,9 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Session["UserAddedData"] != null)
+                @if (Model != null && Model.StepData.Count > 0)
                 {
-                    foreach (var item in Session["UserAddedData"] as List<KraKpiOutcomeModel>)
+                    foreach (var item in Model.StepData)
                     {
                         <tr>
                             <td>@item.KRA</td>
@@ -182,13 +201,11 @@
                             <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
                             <td style="text-align: center; vertical-align: middle !important;">
                                 <form action="@Url.Action("DeleteSession", "Home")" method="post">
-                                    <input type="hidden" name="kra" value="@item.KRA" />
-                                    <input type="hidden" name="kpi" value="@item.KPI" />
-                                    <input type="hidden" name="kpiOutcome" value="@item.KPI_OUTCOME" />
+                                    @Html.Hidden("kraId", item.KRA_ID)
+                                    @Html.Hidden("kpiId", item.KPI_ID)
+                                    @Html.Hidden("kpiOutcome", item.KPI_OUTCOME)
                                     <button class="btn btn-danger" type="submit">
-                                        <i class="ti-trash">
-
-                                        </i>
+                                        <i class="ti-trash"></i>
                                     </button>
                                 </form>
                             </td>
@@ -196,6 +213,7 @@
                     }
                 }
             </tbody>
+
         </table>
         <br /><br />
         <div class="form-group" id="nextButtonContainer">
@@ -206,9 +224,6 @@
 
     </div>
 </div>
-
-
-
 
 
 @section scripts {
@@ -228,7 +243,7 @@
                             var newRow = '<tr>' +
                                 '<td>' + item.KRA + '</td>' +
                                 '<td>' + item.KPI + '</td>' +
-                                '<td>' + (item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "") + '</td>' +
+@*                                '<td>' + (item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "") + '</td>' +*@
                                 '</tr>';
 
                             $('#selectedItemsTable tbody').append(newRow);
@@ -240,36 +255,46 @@
                 });
             });
 
-            $(function () {
-                $('#selectedKRA').change(function () {
-                    var selectedKRA = $(this).val();
-                    var kraKpiData = @Html.Raw(Json.Encode(Model));
+           $(function () {
+    $('#selectedKRA').change(function () {
+        var selectedKRA = $(this).val();
+        var kraKpiData = @Html.Raw(Json.Encode(Model.KraKpiData));
 
-                    // filter KPI based on selected KRA
-                    var filteredKPIs = kraKpiData.filter(function (item) {
-                        return item.KRA === selectedKRA;
-                    });
+        // Filter KPIs based on selected KRA
+        var filteredKPIs = kraKpiData.filter(function (item) {
+            return item.KRA === selectedKRA;
+        });
+        console.log(selectedKRA);
+        console.log(filteredKPIs);
 
-                    // KPI dropdown list
-                    var kpiDropdown = '<select id="selectedKPI" name="selectedKPI">';
-                    filteredKPIs.forEach(function (item) {
-                        kpiDropdown += '<option value= "' + item.KPI + '">' + item.KPI + '</option>';
-                    });
-                    kpiDropdown += '</select>';
+        // Clear existing options in the dropdown
+        $('#selectedKPI').empty();
 
-                    $('#kpiDropdown').html(kpiDropdown);
+        $('#kpiDropdown').empty();
+        var selectElement = $('<select id="selectedKPI" name="selectedKPI"></select>');
 
-                    $('#selectedKPI').trigger('change');
-                });
+        // Append each option to the select element
+        filteredKPIs.forEach(function (item) {
+            var option = $('<option value="' + item.KPI + '">' + item.KPI + '</option>');
+            selectElement.append(option);
+        });
 
-                // change event for dynamically generated KPI dropdown
-                $(document).on('change', '#selectedKPI', function () {
-                    var selectedKPI = $(this).val();
+        // Append the select element to the dropdown container
+        $('#kpiDropdown').append(selectElement);
 
-                    $('#kpiOutcomeFields').empty();
-                    $('#kpiOutcomeFields').append('<div><label></label><input type="text" name="kpiOutcomes" /></div>');
-                });
-            });
+        // Trigger change event for dynamically generated KPI dropdown
+        $('#selectedKPI').trigger('change');
+    });
+
+    // Change event for dynamically generated KPI dropdown
+    $(document).on('change', '#selectedKPI', function () {
+        var selectedKPI = $(this).val();
+
+        $('#kpiOutcomeFields').empty();
+        $('#kpiOutcomeFields').append('<div><label></label><input type="text" name="kpiOutcomes" /></div>');
+    });
+});
+
 
             // Update hidden field with selected tax period value
             $('#taxPeriodDropdown').change(function () {
@@ -313,6 +338,33 @@
             if (!userAddedData) {
                 $('#nextButtonContainer').hide();
             }
+            });
+
+        // modal dropdown auto select
+
+        function updateModalDropdown(selectedSession) {
+            document.getElementById("selectedTaxPeriod").value = selectedSession;
+
+            // Set value of modal dropdown
+            var modalDropdown = document.getElementById("taxPeriodDropdown");
+            modalDropdown.innerHTML = '';
+            modalDropdown.disabled = true;
+
+            // Add option for selected session
+            var option = document.createElement("option");
+            option.text = selectedSession;
+            option.value = selectedSession;
+            modalDropdown.add(option);
+        }
+
+        document.getElementById("taxPeriodDropdownMV").addEventListener("change", function () {
+            var selectedSession = this.value;
+            updateModalDropdown(selectedSession);
+        });
+
+        $('#myModal').on('show.bs.modal', function (e) {
+            var selectedSession = document.getElementById("selectedTaxPeriod").value;
+            updateModalDropdown(selectedSession);
         });
     </script>
 }

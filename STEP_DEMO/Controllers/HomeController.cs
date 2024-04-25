@@ -584,16 +584,41 @@ namespace STEP_DEMO.Controllers
                                               KPI = kpi.KPI1
                                           }).ToList();
 
-                        return View(kraKpiData);
+                        // Fetch data from the database
+                        var stepData = (from s in db.STEPs
+                                        join k in db.KRAs on s.KRA_ID equals k.KRA_ID
+                                        join kp in db.KPIs on s.KPI_ID equals kp.KPI_ID
+                                        where s.REG_ID == regId
+                                        select new KraKpiViewModel
+                                        {
+                                            KRA = k.KRA1,
+                                            KPI = kp.KPI1,
+                                            KPI_OUTCOME = s.KPI_OUTCOME
+                                        }).ToList();
+
+                        var compositeModel = new CompositeModel
+                        {
+                            KraKpiData = kraKpiData,
+                            StepData = stepData
+                        };
+                        return View(compositeModel);
+
                     }
-                    //else
-                    //{
-                    //    return HttpNotFound("user not found");
-                    //}
+
+                    /*                    var stepData = (from s in db.STEPs
+                                                        join k in db.KRAs on s.KRA_ID equals k.KRA_ID
+                                                        join kp in db.KPIs on s.KPI_ID equals kp.KPI_ID
+                                                        where s.REG_ID == regId
+                                                        select new KraKpiViewModel
+                                                        {
+                                                            KRA = k.KRA1,
+                                                            KPI = kp.KPI1,
+                                                            KPI_OUTCOME = s.KPI_OUTCOME
+                                                        }).ToList();
 
 
 
-                    /*                    ******************NEW DESIGN STARTS******************              */
+                                        return View(stepData);*/
 
                 }
                 else
@@ -655,16 +680,9 @@ namespace STEP_DEMO.Controllers
                                         KPI_OUTCOME = kpiOutcomes
                                     };
 
-                                    List<KraKpiOutcomeModel> userAddedData = Session["UserAddedData"] as List<KraKpiOutcomeModel>;
-                                    if (userAddedData == null)
-                                    {
-                                        userAddedData = new List<KraKpiOutcomeModel>();
-                                    }
 
-                                    userAddedData.Add(newData);
-                                    Session["UserAddedData"] = userAddedData;
 
-                                    return RedirectToAction("DisplayKrasAndKpis");
+/*                                    return RedirectToAction("DisplayKrasAndKpis");*/
                                 }
                                 else
                                 {
@@ -721,7 +739,7 @@ namespace STEP_DEMO.Controllers
         [HttpPost]
         public ActionResult DeleteRow(string kra, string kpi, string kpiOutcome)
         {
-            using (var db = new EMP_EVALUATIONEntities())
+            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
             {
                 var recordToDelete = db.View_StepDetails.FirstOrDefault(vs =>
                     vs.KRA == kra && vs.KPI == kpi && vs.KPI_OUTCOME == kpiOutcome);
@@ -737,28 +755,47 @@ namespace STEP_DEMO.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteSession(string kra, string kpi, string kpiOutcome)
+        public ActionResult DeleteSession(int kraId, int kpiId, string kpiOutcome)
         {
-            try
+            int regId;
+            if (!int.TryParse(Session["RegID"].ToString(), out regId))
             {
-                List<KraKpiOutcomeModel> userAddedData = Session["UserAddedData"] as List<KraKpiOutcomeModel>;
-
-                var itemToDelete = userAddedData.FirstOrDefault(item =>
-                    item.KRA == kra && item.KPI == kpi && item.KPI_OUTCOME == kpiOutcome);
-
-                if (itemToDelete != null)
-                {
-                    userAddedData.Remove(itemToDelete);
-                    Session["UserAddedData"] = userAddedData;
-                }
-
                 return RedirectToAction("DisplayKrasAndKpis");
             }
-            catch (Exception ex)
+
+            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
             {
-                ModelState.AddModelError("", "Error deleting row: " + ex.Message);
-                return RedirectToAction("DisplayKrasAndKpis");
+                try
+                {
+                    var entriesToDelete = (from step in db.STEPs
+                                           join kra in db.KRAs on step.KRA_ID equals kra.KRA_ID
+                                           join kpi in db.KPIs on step.KPI_ID equals kpi.KPI_ID
+                                           where step.REG_ID == regId
+                                           select step).ToList();
+
+                    db.STEPs.RemoveRange(entriesToDelete);
+                    db.SaveChanges();
+
+
+/*                    if (stepEntry != null)
+                    {
+                        db.STEPs.Remove(stepEntry);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Error: STEP entry not found");
+                    }*/
+
+                    return RedirectToAction("DisplayKrasAndKpis");
+                }
+                catch (Exception ex)
+                {
+                    return RedirectToAction("DisplayKrasAndKpis");
+                }
             }
         }
+
+
     }
 }

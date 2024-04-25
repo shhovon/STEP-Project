@@ -27,6 +27,7 @@ namespace STEP_DEMO.Models
         public int KRA_ID { get; set; }
         public int KPI_ID { get; set; }
         public string KPI { get; set; }
+        public string KPI_OUTCOME { get; set; }
         public List<string> KRAs { get; set; }
         public List<string> KPIIs { get; set; }
         public List<int> KPI_IDs { get; set; }

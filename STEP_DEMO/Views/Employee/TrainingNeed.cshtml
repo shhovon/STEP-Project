@@ -6,15 +6,17 @@
 
 <style>
     .card-body {
-        background: linear-gradient(to right, #78a7ca, #accbee);
-        padding: 20px;
-        border-radius: 10px;
+        @*        background: linear-gradient(to right, #78a7ca, #accbee);*@
+        background: linear-gradient(to right, #d9e8f5, #e6f1fb);
+        padding: 8px; 
+        border-radius: 8px; 
+        height: 70px; 
     }
 
     .card {
         width: fit-content;
         margin: auto;
-        margin-top: 20px;
+        margin-top: 10px;
     }
 
     .card-container {
@@ -28,13 +30,11 @@
 
     .btn {
         margin-bottom: 10px;
-        margin-right: 10px; /* Add space between buttons */
+        margin-right: 10px;
     }
 </style>
 
-@*             new navigation buttons*@
-
-<br />
+@*      new navigation buttons   *@
 
 <div class="card">
     <div class="card-body">
@@ -45,9 +45,6 @@
 </div>
 <br />
 <br />
-<br />
-<br />
-
 @*             button end*@
 
 @using (Html.BeginForm())
