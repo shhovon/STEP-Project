@@ -90,31 +90,24 @@
             $('#submitForm').submit(function (event) {
                 event.preventDefault();
 
-                var isDataSent = @(ViewBag.IsDataSent ? "true" : "false");
-
-                if (isDataSent) {
-                    $('#submitForm')[0].submit();
-                } else {
-                    if (confirm('Are you sure you want to send this data for approval?')) {
-                        $.ajax({
-                            url: '@Url.Action("SubmitForApproval", "Employee")',
-                            type: 'POST',
-                            success: function (response) {
-                                if (response.success) {
-                                    alert(response.message);
-                                    window.location.href = '@Url.Action("DsiplayAllData", "Employee")';
-                                } else {
-                                    alert(response.message);
-                                }
+                if (confirm('Are you sure you want to send this data for approval?')) {
+                    $.ajax({
+                        url: '@Url.Action("SubmitForApproval", "Employee")',
+                        type: 'POST',
+                        success: function (response) {
+                            if (response.success) {
+                                alert(response.message);
+                                window.location.href = '@Url.Action("DisplayAllData", "Employee")';
+                            } else {
+                                alert(response.message);
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             });
         });
     </script>
 }
-
 
 
 
