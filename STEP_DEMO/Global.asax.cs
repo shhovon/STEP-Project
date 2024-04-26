@@ -19,7 +19,7 @@ namespace STEP_DEMO
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             GlobalFilters.Filters.Add(new HandleErrorAttribute());
         }
-  /*      protected void Application_Error(object sender, EventArgs e)
+        protected void Application_Error(object sender, EventArgs e)
         {
             var exception = Server.GetLastError();
 
@@ -41,6 +41,6 @@ namespace STEP_DEMO
                      new HttpContextWrapper(Context), routeData);
                 controller.Execute(requestContext);
             }
-        }*/
+        }
     }
 }
