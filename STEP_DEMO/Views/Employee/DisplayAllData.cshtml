@@ -4,61 +4,30 @@
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
-@{
-    List<KraKpiOutcomeModel> userAddedData = new List<KraKpiOutcomeModel>();
-
-    if (Model.KraKpiOutcome != null)
-    {
-        userAddedData.Add(Model.KraKpiOutcome);
-    }
-
-    if (Model.KraKpiOutcomes != null)
-    {
-        userAddedData.AddRange(Model.KraKpiOutcomes);
-    }
-}
-
-
 
 <h3 style="text-align:center;">Confirm Submission</h3>
 <br />
 
 <table class="table">
-    <tbody>
+    <thead>
         <tr>
-            <td colspan="3"><h4>KRA/KPI Outcome</h4></td>
+            <th>Selected KRA</th>
+            <th>Selected KPI</th>
+            <th>KPI Outcome</th>
         </tr>
-        @if (Model.KraKpiOutcomes != null)
+    </thead>
+
+    <tbody>
+        @if (Model != null && Model.StepData.Count > 0)
         {
-            <tr>
-                <td colspan="3">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Selected KRA</th>
-                                <th>Selected KPI</th>
-                                <th>KPI Outcome</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var outcome in Model.KraKpiOutcomes)
-                            {
-                                <tr>
-                                    <td>@outcome.KRA</td>
-                                    <td>@outcome.KPI</td>
-                                    <td>@outcome.KPI_OUTCOME</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        }
-        else
-        {
-            <tr>
-                <td colspan="3"><p>No KRA/KPI Outcomes found</p></td>
-            </tr>
+            foreach (var item in Model.StepData)
+            {
+                <tr>
+                    <td>@item.KRA</td>
+                    <td>@item.KPI</td>
+                    <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
+                </tr>
+            }
         }
     </tbody>
 </table>
@@ -110,62 +79,42 @@
 }
 
 <br />
-<form id="submitForm">
-    <input type="hidden" id="isSubmitted" value="false" />
-    <button type="submit" class="btn btn-primary">Send For Approval</button>
+<form id="submitForm" action="@Url.Action("SubmitForApproval", "Employee")" method="post">
+    <input type="hidden" />
+    <button type="submit" class="btn btn-primary" id="submitButton">Send For Approval</button>
 </form>
 
 @section scripts {
     <script>
-    $(function () {
-        $('#submitForm').submit(function (event) {
-            event.preventDefault();
-            var isSubmitted = $('#isSubmitted').val();
-            if (isSubmitted === 'false') {
-                if (confirm('Are you sure you want to send this data for approval?')) {
-                    alert('Success! Data sent for approval');
-                    window.location.href = '@Url.Action("Dashboard", "Home")';
-                    $('#isSubmitted').val('true');
-                }
-            } else {
-                alert('You have already sent the data for submission!');
-            }
-        });
-    });
-    </script>
-}
-
-                    @* ************************** APPROACH USING localStorage **************************** *@
-
-@*@section scripts {
-        <script>
-            $(function () {
-
-            @if (ViewBag.ClearSubmissionStatus == true)
-            {
-                @:clearSubmissionStatus();
-            }
-
-            function clearSubmissionStatus() {
-                localStorage.removeItem('isSubmitted');
-                }
-
-                clearSubmissionStatus();
-
+        $(function () {
             $('#submitForm').submit(function (event) {
                 event.preventDefault();
-                var isSubmitted = localStorage.getItem('isSubmitted');
-                if (!isSubmitted) {
-                    if (confirm('Are you sure you want to send this data for approval?')) {
-                        alert('Success! Data sent for approval');
-                        window.location.href = '@Url.Action("Dashboard", "Home")';
-                        localStorage.setItem('isSubmitted', true);
-                    }
+
+                var isDataSent = @(ViewBag.IsDataSent ? "true" : "false");
+
+                if (isDataSent) {
+                    $('#submitForm')[0].submit();
                 } else {
-                    alert('You have already sent the data for submission!');
+                    if (confirm('Are you sure you want to send this data for approval?')) {
+                        $.ajax({
+                            url: '@Url.Action("SubmitForApproval", "Employee")',
+                            type: 'POST',
+                            success: function (response) {
+                                if (response.success) {
+                                    alert(response.message);
+                                    window.location.href = '@Url.Action("DsiplayAllData", "Employee")';
+                                } else {
+                                    alert(response.message);
+                                }
+                            }
+                        });
+                    }
                 }
             });
         });
-        </script>
-    }*@
+    </script>
+}
+
+
+
 

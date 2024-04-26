@@ -19,5 +19,7 @@ namespace STEP_DEMO.Models
         public string KRA { get; set; }
         public string KPI { get; set; }
         public string Outcome { get; set; }
+        public Nullable<bool> ApprovalSent { get; set; }
+        public Nullable<bool> Lock { get; set; }
     }
 }

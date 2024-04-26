@@ -29,6 +29,8 @@ namespace STEP_DEMO.Models
     
         public virtual DbSet<KPI> KPIs { get; set; }
         public virtual DbSet<KRA> KRAs { get; set; }
+        public virtual DbSet<STEP> STEPs { get; set; }
+        public virtual DbSet<tbl_StepMaster> tbl_StepMaster { get; set; }
         public virtual DbSet<tblMarksEntryHistory> tblMarksEntryHistories { get; set; }
         public virtual DbSet<tblRole> tblRoles { get; set; }
         public virtual DbSet<tblSpecial_Factor> tblSpecial_Factor { get; set; }
@@ -39,8 +41,6 @@ namespace STEP_DEMO.Models
         public virtual DbSet<New_Tax_Period> New_Tax_Period { get; set; }
         public virtual DbSet<tblMenu> tblMenus { get; set; }
         public virtual DbSet<View_> View_ { get; set; }
-        public virtual DbSet<tbl_StepMaster> tbl_StepMaster { get; set; }
-        public virtual DbSet<STEP> STEPs { get; set; }
         public virtual DbSet<View_StepDetails> View_StepDetails { get; set; }
     
         [DbFunction("EMP_EVALUATIONEntities", "fnSplitString")]
@@ -70,6 +70,24 @@ namespace STEP_DEMO.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_EmployeeInfoByEmpCode_Result>("prc_EmployeeInfoByEmpCode", compIDParameter, empCodeParameter);
         }
     
+        public virtual ObjectResult<prc_EmployeeInfoByRegID_Result> prc_EmployeeInfoByRegID(Nullable<int> regID)
+        {
+            var regIDParameter = regID.HasValue ?
+                new ObjectParameter("RegID", regID) :
+                new ObjectParameter("RegID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_EmployeeInfoByRegID_Result>("prc_EmployeeInfoByRegID", regIDParameter);
+        }
+    
+        public virtual ObjectResult<prc_EmployeeInfoByRegIDs_Result> prc_EmployeeInfoByRegIDs(string regID)
+        {
+            var regIDParameter = regID != null ?
+                new ObjectParameter("RegID", regID) :
+                new ObjectParameter("RegID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_EmployeeInfoByRegIDs_Result>("prc_EmployeeInfoByRegIDs", regIDParameter);
+        }
+    
         public virtual ObjectResult<prc_GetEmployeeListByDeptHead_Result> prc_GetEmployeeListByDeptHead(Nullable<int> deptHeadValue)
         {
             var deptHeadValueParameter = deptHeadValue.HasValue ?
@@ -79,17 +97,35 @@ namespace STEP_DEMO.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetEmployeeListByDeptHead_Result>("prc_GetEmployeeListByDeptHead", deptHeadValueParameter);
         }
     
-        public virtual ObjectResult<prc_GetKraKpiOutcomeData_Result> prc_GetKraKpiOutcomeData(string employeeCode, Nullable<int> deptHeadValue)
+        public virtual int prc_GetEmployeesByCompany(Nullable<int> companyId)
         {
-            var employeeCodeParameter = employeeCode != null ?
-                new ObjectParameter("EmployeeCode", employeeCode) :
-                new ObjectParameter("EmployeeCode", typeof(string));
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
     
-            var deptHeadValueParameter = deptHeadValue.HasValue ?
-                new ObjectParameter("DeptHeadValue", deptHeadValue) :
-                new ObjectParameter("DeptHeadValue", typeof(int));
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prc_GetEmployeesByCompany", companyIdParameter);
+        }
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKraKpiOutcomeData_Result>("prc_GetKraKpiOutcomeData", employeeCodeParameter, deptHeadValueParameter);
+        public virtual ObjectResult<prc_GetKraKpiOutcomeData_Result> prc_GetKraKpiOutcomeData(Nullable<int> regId)
+        {
+            var regIdParameter = regId.HasValue ?
+                new ObjectParameter("RegId", regId) :
+                new ObjectParameter("RegId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKraKpiOutcomeData_Result>("prc_GetKraKpiOutcomeData", regIdParameter);
+        }
+    
+        public virtual ObjectResult<prc_GetTeamMember_Result> prc_GetTeamMember(Nullable<int> regID, Nullable<int> compID)
+        {
+            var regIDParameter = regID.HasValue ?
+                new ObjectParameter("RegID", regID) :
+                new ObjectParameter("RegID", typeof(int));
+    
+            var compIDParameter = compID.HasValue ?
+                new ObjectParameter("CompID", compID) :
+                new ObjectParameter("CompID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetTeamMember_Result>("prc_GetTeamMember", regIDParameter, compIDParameter);
         }
     
         public virtual int prc_UpdateOutcomeMarks(string kpiOutcome, Nullable<int> marksAchieved)
@@ -103,6 +139,15 @@ namespace STEP_DEMO.Models
                 new ObjectParameter("MarksAchieved", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prc_UpdateOutcomeMarks", kpiOutcomeParameter, marksAchievedParameter);
+        }
+    
+        public virtual ObjectResult<prc_User_Registration_Result> prc_User_Registration(Nullable<int> regID)
+        {
+            var regIDParameter = regID.HasValue ?
+                new ObjectParameter("RegID", regID) :
+                new ObjectParameter("RegID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_User_Registration_Result>("prc_User_Registration", regIDParameter);
         }
     
         public virtual ObjectResult<prc_UserMenu_Result> prc_UserMenu(string regId)

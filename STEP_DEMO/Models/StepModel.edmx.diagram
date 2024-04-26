@@ -4,23 +4,22 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a1cbc246352d4fb09592afed20e6a5e5" Name="Diagram1" ZoomLevel="54">
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.KPI" Width="1.5" PointX="5.25" PointY="2.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.KRA" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblMarksEntryHistory" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblRole" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblSpecial_Factor" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblTraining_Need" Width="1.5" PointX="8.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblUser_LogInfo" Width="1.5" PointX="8.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblUserLogHistory" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.Company_Information" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.New_Tax_Period" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblMenu" Width="1.5" PointX="6.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.View_" Width="1.5" PointX="8.75" PointY="11.75" IsExpanded="true" />
-        <AssociationConnector Association="EMP_EVALUATIONModel.FK_KPI_KRA" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tbl_StepMaster" Width="1.5" PointX="0.75" PointY="12.75" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.STEP" Width="1.5" PointX="0.75" PointY="6.75" />
-        <EntityTypeShape EntityType="EMP_EVALUATIONModel.View_StepDetails" Width="1.5" PointX="3.375" PointY="9.75" />
+      <Diagram DiagramId="79fbf991a223451d88efe29ee5a1d733" Name="Diagram1">
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.KPI" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.KRA" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.STEP" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tbl_StepMaster" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblMarksEntryHistory" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblRole" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblSpecial_Factor" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblTraining_Need" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblUser_LogInfo" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblUserLogHistory" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.Company_Information" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.New_Tax_Period" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.tblMenu" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.View_" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMP_EVALUATIONModel.View_StepDetails" Width="1.5" PointX="10.75" PointY="7.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

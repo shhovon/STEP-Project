@@ -15,8 +15,8 @@ namespace STEP_DEMO.Models
     public partial class tblTraining_Need
     {
         public int Train_Id { get; set; }
-        public Nullable<int> Reg_Id { get; set; }
         public Nullable<int> Session_Id { get; set; }
+        public Nullable<int> Reg_Id { get; set; }
         public string Title { get; set; }
         public Nullable<System.DateTime> By_When { get; set; }
         public string Train_Type { get; set; }

@@ -172,39 +172,26 @@
     <Compile Include="Models\CustomAuthorize.cs" />
     <Compile Include="Models\CustomErrorHandler.cs" />
     <Compile Include="Models\DisplayAllDataViewModel.cs" />
-    <Compile Include="Models\KraKpiCombinedModel.cs" />
-    <Compile Include="Models\SpecialFactorViewModel.cs" />
-    <Compile Include="Models\STEP.cs">
-      <DependentUpon>StepModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tbl_StepMaster.cs">
-      <DependentUpon>StepModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\User_RegistrationInfo.cs" />
-    <Compile Include="Models\EmployeeInfo.cs" />
-    <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\fnSplitString_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\HomeData.cs" />
     <Compile Include="Models\KPI.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KRA.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\KraKpiOutcomeModel.cs" />
-    <Compile Include="Models\CombinedViewModel.cs" />
-    <Compile Include="Models\KraKpiViewModel.cs" />
-    <Compile Include="Models\LoginViewModel.cs" />
-    <Compile Include="Models\MarksData.cs" />
-    <Compile Include="Models\MenuItem.cs" />
-    <Compile Include="Models\MenuViewModel.cs" />
+    <Compile Include="Models\KraKpiCombinedModel.cs" />
     <Compile Include="Models\New_Tax_Period.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\OutcomeViewModel.cs" />
     <Compile Include="Models\prc_EmployeeInfoByEmpCode_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_EmployeeInfoByRegIDs_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_EmployeeInfoByRegID_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_GetEmployeeListByDeptHead_Result.cs">
@@ -213,7 +200,17 @@
     <Compile Include="Models\prc_GetKraKpiOutcomeData_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\prc_GetTeamMember_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\prc_UserMenu_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_User_Registration_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpecialFactorViewModel.cs" />
+    <Compile Include="Models\STEP.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StepModel.Context.cs">
@@ -237,7 +234,6 @@
     <Compile Include="Models\tblMenu.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\tblMenuNew.cs" />
     <Compile Include="Models\tblRole.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
@@ -253,6 +249,22 @@
     <Compile Include="Models\tblUser_LogInfo.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_StepMaster.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User_RegistrationInfo.cs" />
+    <Compile Include="Models\EmployeeInfo.cs" />
+    <Compile Include="Models\EmployeeViewModel.cs" />
+    <Compile Include="Models\HomeData.cs" />
+    <Compile Include="Models\KraKpiOutcomeModel.cs" />
+    <Compile Include="Models\CombinedViewModel.cs" />
+    <Compile Include="Models\KraKpiViewModel.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\MarksData.cs" />
+    <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\MenuViewModel.cs" />
+    <Compile Include="Models\OutcomeViewModel.cs" />
+    <Compile Include="Models\tblMenuNew.cs" />
     <Compile Include="Models\View_.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>

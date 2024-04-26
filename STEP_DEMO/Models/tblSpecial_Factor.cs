@@ -15,8 +15,8 @@ namespace STEP_DEMO.Models
     public partial class tblSpecial_Factor
     {
         public int ID { get; set; }
-        public Nullable<int> Reg_Id { get; set; }
         public Nullable<int> Session_Id { get; set; }
+        public Nullable<int> Reg_Id { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> Created_date { get; set; }
         public string Created_By { get; set; }

@@ -21,7 +21,5 @@ namespace STEP_DEMO.Models
         public string Created_By { get; set; }
         public Nullable<System.DateTime> Updated_date { get; set; }
         public string Updated_by { get; set; }
-    
-        public virtual KRA KRA { get; set; }
     }
 }

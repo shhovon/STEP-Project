@@ -147,13 +147,13 @@
 @*      new navigation buttons   *@
 
 
-    <div class="card">
-        <div class="card-body">
-            <a href="@Url.Action("DisplayKrasAndKpis", "Home")" class="btn btn-primary submit-btn">Outcome Entry</a>
-            <a href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Special Factor</a>
-            <a href="@Url.Action("TrainingNeed", "Employee")" class="btn btn-primary submit-btn">Training Need</a>
-        </div>
+<div class="card">
+    <div class="card-body">
+        <a href="@Url.Action("DisplayKrasAndKpis", "Home")" id="outcomeEntryBtn" class="btn btn-primary submit-btn">Outcome Entry</a>
+        <a href="@Url.Action("SpecialFactors", "Employee")" id="specialFactorsBtn" class="btn btn-primary submit-btn">Special Factor</a>
+        <a href="@Url.Action("TrainingNeed", "Employee")" id="trainingNeedBtn" class="btn btn-primary submit-btn">Training Need</a>
     </div>
+</div>
 
 
 
@@ -379,6 +379,17 @@
             var description = $(this).data('description');
             if (confirm("Are you sure you want to delete this description?")) {
                 $('#deleteForm_' + description).submit();
+            }
+        });
+
+        // session validation
+
+        $("#outcomeEntryBtn, #specialFactorsBtn, #trainingNeedBtn").click(function (e) {
+            var selectedTaxPeriod = $("#selectedTaxPeriod").val();
+
+            if (!selectedTaxPeriod || selectedTaxPeriod === "0") {
+                e.preventDefault();
+                alert("Choose a session first");
             }
         });
     </script>

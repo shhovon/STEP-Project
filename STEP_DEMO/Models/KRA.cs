@@ -14,12 +14,6 @@ namespace STEP_DEMO.Models
     
     public partial class KRA
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public KRA()
-        {
-            this.KPIs = new HashSet<KPI>();
-        }
-    
         public int KRA_ID { get; set; }
         public string KRA1 { get; set; }
         public Nullable<int> RegId { get; set; }
@@ -28,8 +22,5 @@ namespace STEP_DEMO.Models
         public string Created_By { get; set; }
         public Nullable<System.DateTime> Updated_date { get; set; }
         public string Updated_by { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<KPI> KPIs { get; set; }
     }
 }

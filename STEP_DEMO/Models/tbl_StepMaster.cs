@@ -16,7 +16,7 @@ namespace STEP_DEMO.Models
     {
         public int ID { get; set; }
         public Nullable<int> SESSION_ID { get; set; }
-        public Nullable<int> REG_ID { get; set; }
+        public Nullable<int> RegId { get; set; }
         public Nullable<bool> ApprovalSent { get; set; }
         public Nullable<bool> Lock { get; set; }
         public Nullable<decimal> KPI_AVG { get; set; }

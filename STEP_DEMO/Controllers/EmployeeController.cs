@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using STEP_DEMO.Helpers;
 using System.Web.Security;
-
+using System.Globalization;
 
 namespace STEP_DEMO.Controllers
 {
@@ -141,20 +141,9 @@ namespace STEP_DEMO.Controllers
                     using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
                     {
                         int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
-
-                        /*                        var trainingData = db.tblTraining_Need
-                                                    .Where(tn => tn.Session_Id == sessionIdInt)
-                                                    .Select(tn => new {
-                                                        Title = tn.Title,
-                                                        By_When = tn.By_When,
-                                                        Train_Type = tn.Train_Type,
-                                                        Status = tn.Status
-                                                    })
-                                                    .ToList();*/
                         var trainingData = db.tblTraining_Need
                             .Where(tn => tn.Session_Id == sessionIdInt)
                             .ToList();
-
 
                         Session["TrainingData"] = trainingData;
                     }
@@ -168,26 +157,6 @@ namespace STEP_DEMO.Controllers
             return View();
         }
 
-
-
-        [CustomAuthorize]
-        public ActionResult DisplayAllData()
-        {
-            ViewBag.ClearSubmissionStatus = true;
-
-            var kraKpiOutcomes = Session["UserAddedData"] as List<KraKpiOutcomeModel>;
-            var specialFactors = Session["SpecialFactors"] as tblSpecial_Factor;
-            var trainingNeed = Session["TrainingNeed"] as tblTraining_Need;
-
-            var viewModel = new DisplayAllDataViewModel
-            {
-                KraKpiOutcomes = kraKpiOutcomes,
-                SpecialFactors = specialFactors,
-                TrainingNeed = trainingNeed
-            };
-
-            return View(viewModel);
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -209,22 +178,39 @@ namespace STEP_DEMO.Controllers
             }
 
             return RedirectToAction("SpecialFactors");
-        }  
-        
-        
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteTraining(string title, DateTime? by_when, string type, string status)
+        public ActionResult DeleteTraining(string title, string by_when, string type, string status)
         {
             try
             {
+                DateTime? byWhen = null;
+                if (!string.IsNullOrEmpty(by_when))
+                {
+                    if (DateTime.TryParse(by_when, out DateTime parsedDate))
+                    {
+                        byWhen = parsedDate;
+                    }
+                }
+
+
                 using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
                 {
                     var session = db.tblTraining_Need.FirstOrDefault(tn =>
-                                          tn.Title == title && tn.By_When == by_when && tn.Train_Type == type && tn.Status == status);
+                        tn.Title == title && tn.By_When == byWhen && tn.Train_Type == type && tn.Status == status);
 
-                    db.tblTraining_Need.Remove(session);
-                    db.SaveChanges();
+                    if (session != null)
+                    {
+                        db.tblTraining_Need.Remove(session);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Training data not found for deletion.";
+                    }
                 }
             }
             catch (Exception ex)
@@ -234,6 +220,90 @@ namespace STEP_DEMO.Controllers
 
             return RedirectToAction("TrainingNeed");
         }
+
+
+
+        [CustomAuthorize]
+        public ActionResult DisplayAllData()
+        {
+            var regId = (int)Session["RegId"];
+
+            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            {
+                var kraKpiData = (from kra in db.KRAs
+                                  join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
+                                  where kra.RegId == regId && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
+                                  orderby kra.KRA_ID descending, kpi.KPI_ID descending
+                                  select new KraKpiOutcomeModel
+                                  {
+                                      KRA_ID = kra.KRA_ID,
+                                      KPI_ID = kpi.KPI_ID,
+                                      KRA = kra.KRA1,
+                                      KPI = kpi.KPI1
+                                  }).ToList();
+
+                var stepData = (from s in db.STEPs
+                                join k in db.KRAs on s.KRA_ID equals k.KRA_ID
+                                join kp in db.KPIs on s.KPI_ID equals kp.KPI_ID
+                                where s.REG_ID == regId
+                                select new KraKpiViewModel
+                                {
+                                    KRA = k.KRA1,
+                                    KPI = kp.KPI1,
+                                    KPI_OUTCOME = s.KPI_OUTCOME,
+                                    KRA_ID = k.KRA_ID,
+                                    KPI_ID = kp.KPI_ID
+                                }).ToList();
+
+
+                var specialFactors = db.tblSpecial_Factor.FirstOrDefault(m => m.Reg_Id == regId);
+                var trainingNeed = db.tblTraining_Need.FirstOrDefault(m => m.Reg_Id == regId);
+
+                var viewModel = new DisplayAllDataViewModel
+                {
+                    KraKpiData = kraKpiData,
+                    StepData = stepData,
+                    SpecialFactors = specialFactors,
+                    TrainingNeed = trainingNeed
+                };
+
+                return View(viewModel);
+            }
+        }
+
+        [CustomAuthorize]
+        [HttpPost] 
+        public ActionResult SubmitForApproval()
+        {
+            var sessionId = (int)Session["selectedTaxPeriod"];
+            var regId = (int)Session["RegId"];
+
+            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            {
+
+                var existingRecord = db.tbl_StepMaster.FirstOrDefault(record =>
+                                     record.SESSION_ID == sessionId && record.RegId == regId && record.ApprovalSent == true);
+
+                if (existingRecord != null)
+                {
+                    return Json(new { success = false, message = "Data already sent for approval!" });
+                }
+
+                var newRecord = new tbl_StepMaster
+                {
+                    SESSION_ID = sessionId,
+                    RegId = regId,
+                    ApprovalSent = true
+                };
+
+                db.tbl_StepMaster.Add(newRecord);
+                db.SaveChanges();
+
+            }
+
+            return Json(new { success = true, message = "Data sent for approval successfully!" });
+        }
+
 
     }
 }
