@@ -732,7 +732,7 @@ namespace STEP_DEMO.Controllers
             }
         }
 
-        public ActionResult GetFilteredData(string selectedSession)
+        public ActionResult GetFilteredData(string selectedSession, int regId)
         {
 
             using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
@@ -744,14 +744,9 @@ namespace STEP_DEMO.Controllers
                                 select st.SESSION_ID).FirstOrDefault();
 
                 // filter the data based on the selected session ID
-                var kraKpiData = (from vs in db.View_StepDetails
-                                  where vs.SESSION_ID == taxPerId
-                                  select new
-                                  {
-                                      vs.KRA,
-                                      vs.KPI,
-                                      vs.KPI_OUTCOME
-                                  }).ToList();
+                var kraKpiData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiByRegIdOrSectionName @RegId, @SectionName",
+                               new SqlParameter("RegId", regId),
+                               new SqlParameter("SectionName", selectedSession)).ToList();
 
                 Session["selectedTaxPeriod"]= taxPerId;
 

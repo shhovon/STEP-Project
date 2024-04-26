@@ -235,11 +235,12 @@
         $(function () {
             $('#taxPeriodDropdownMV').change(function () {
                 var selectedSession = $(this).val();
+                var regId = @(Session["RegId"]);
 
                 $.ajax({
                     url: '@Url.Action("GetFilteredData", "Home")',
                     type: 'GET',
-                    data: { selectedSession: selectedSession },
+                    data: { selectedSession: selectedSession, regId: regId },
                     success: function (response) {
                         $('#selectedItemsTable tbody').empty();
 

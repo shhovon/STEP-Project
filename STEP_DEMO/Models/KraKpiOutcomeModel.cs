@@ -7,6 +7,7 @@ public class KraKpiOutcomeModel
         public string KRA { get; set; }
         public string KPI { get; set; }
         public string EmployeeCode { get; set; }
+        public string Section_Name { get; set; }
         public string Name { get; set; }
         public string Designation { get; set; }
         public string Outcome { get; set; }
