@@ -62,7 +62,7 @@ namespace STEP_DEMO.Controllers
             try
             {
                 var regId = (int)Session["RegId"];
-                var sessionId = Session["selectedTaxPeriod"]?.ToString(); // Using null propagation operator
+                var sessionId = Session["selectedTaxPeriod"]?.ToString();
 
                 if (sessionId != null)
                 {
@@ -233,7 +233,7 @@ namespace STEP_DEMO.Controllers
                 var kraKpiData = (from kra in db.KRAs
                                   join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
                                   where kra.RegId == regId && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
-                                  orderby kra.KRA_ID descending, kpi.KPI_ID descending
+                                  orderby kra.KRA_ID ascending, kpi.KPI_ID ascending
                                   select new KraKpiOutcomeModel
                                   {
                                       KRA_ID = kra.KRA_ID,
