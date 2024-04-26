@@ -71,7 +71,7 @@ namespace STEP_DEMO.Controllers
                         int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
 
                         var addedDescriptions = db.tblSpecial_Factor
-                            .Where(sf => sf.Session_Id == sessionIdInt)
+                            .Where(sf => sf.Session_Id == sessionIdInt && sf.Reg_Id == regId)
                             .Select(sf => sf.Description)
                             .ToList();
 
@@ -142,7 +142,7 @@ namespace STEP_DEMO.Controllers
                     {
                         int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
                         var trainingData = db.tblTraining_Need
-                            .Where(tn => tn.Session_Id == sessionIdInt)
+                            .Where(tn => tn.Session_Id == sessionIdInt && tn.Reg_Id == regId)
                             .ToList();
 
                         Session["TrainingData"] = trainingData;
