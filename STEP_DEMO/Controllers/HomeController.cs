@@ -671,8 +671,42 @@ namespace STEP_DEMO.Controllers
                                     };
 
 
+                                    var kraKpiData = (from kra in db.KRAs
+                                                      join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
+                                                      where kra.RegId == regId && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
+                                                      orderby kra.KRA_ID descending, kpi.KPI_ID descending
+                                                      select new KraKpiOutcomeModel
+                                                      {
+                                                          KRA_ID = kra.KRA_ID,
+                                                          KPI_ID = kpi.KPI_ID,
+                                                          KRA = kra.KRA1,
+                                                          KPI = kpi.KPI1
+                                                      }).ToList();
 
-/*                                    return RedirectToAction("DisplayKrasAndKpis");*/
+                                    // Fetch data from the database
+                                    var stepData = (from s in db.STEPs
+                                                    join k in db.KRAs on s.KRA_ID equals k.KRA_ID
+                                                    join kp in db.KPIs on s.KPI_ID equals kp.KPI_ID
+                                                    where s.REG_ID == regId
+                                                    select new KraKpiViewModel
+                                                    {
+                                                        KRA = k.KRA1,
+                                                        KPI = kp.KPI1,
+                                                        KPI_OUTCOME = s.KPI_OUTCOME,
+                                                        KRA_ID = k.KRA_ID,
+                                                        KPI_ID = kp.KPI_ID
+                                                    }).ToList();
+
+                                    var model = new CompositeModel
+                                    {
+                                        KraKpiData = kraKpiData,
+                                        StepData = stepData
+                                    };
+
+                                    // Pass the model to the view
+                                    return View("DisplayKrasAndKpis", model);
+
+                                    /*                                    return RedirectToAction("DisplayKrasAndKpis");*/
                                 }
                                 else
                                 {
