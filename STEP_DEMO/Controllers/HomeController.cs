@@ -598,6 +598,14 @@ namespace STEP_DEMO.Controllers
                                             KPI_ID = kp.KPI_ID
                                         }).ToList();
 
+                        var approvalSent = db.prc_GetKraKpiOutcomeData(regId)
+                                                          .Where(data => data.ApprovalSent != null)
+                                                          .Select(data => data.ApprovalSent)
+                                                          .Distinct()
+                                                          .ToList();
+
+                        Session["ApprovalSent"] = approvalSent;
+
                         var compositeModel = new CompositeModel
                         {
                             KraKpiData = kraKpiData,
@@ -703,10 +711,9 @@ namespace STEP_DEMO.Controllers
                                         StepData = stepData
                                     };
 
-                                    // Pass the model to the view
                                     return View("DisplayKrasAndKpis", model);
 
-                                    /*                                    return RedirectToAction("DisplayKrasAndKpis");*/
+                                    /*  return RedirectToAction("DisplayKrasAndKpis");*/
                                 }
                                 else
                                 {
@@ -768,8 +775,20 @@ namespace STEP_DEMO.Controllers
             {
                 try
                 {
+                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId)
+                        .Where(data => data.ApprovalSent != null)
+                        .Select(data => data.ApprovalSent)
+                        .Distinct()
+                        .ToList();
+
+                    if (approvalSent.Any(x => x == true))
+                    {
+                        TempData["ErrorMessage"] = "Could not Delete! You already sent this data for approval.";
+                        return RedirectToAction("DisplayKrasAndKpis");
+                    }
+
                     var itemToDelete = db.STEPs.FirstOrDefault(step =>
-                                          step.KRA_ID == kraId && step.KPI_ID == kpiId && step.KPI_OUTCOME == kpiOutcome);
+                        step.KRA_ID == kraId && step.KPI_ID == kpiId && step.KPI_OUTCOME == kpiOutcome);
 
                     if (itemToDelete != null)
                     {
@@ -785,6 +804,8 @@ namespace STEP_DEMO.Controllers
                 }
             }
         }
+
+
 
 
     }

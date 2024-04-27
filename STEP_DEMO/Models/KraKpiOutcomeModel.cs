@@ -15,5 +15,7 @@ public class KraKpiOutcomeModel
         public List<string> Outcomes { get; set; }
         public string KPI_OUTCOME { get; set; }
         public int Marks_Achieved { get; set; }
+        public bool ApprovalSent { get; set; }
+        public bool Lock { get; set; }
 
 }

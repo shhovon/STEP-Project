@@ -42,6 +42,10 @@ namespace STEP_DEMO.Controllers
 
                         db.tblSpecial_Factor.Add(specialFactor);
                         db.SaveChanges();
+                        int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
+
+                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
+                        Session["TaxPeriod"] = taxPeriod;
                     }
 
                     return RedirectToAction("SpecialFactors");
@@ -75,6 +79,9 @@ namespace STEP_DEMO.Controllers
                             .Select(sf => sf.Description)
                             .ToList();
 
+                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
+                        Session["TaxPeriod"] = taxPeriod;
+
                         ViewBag.AddedDescriptions = addedDescriptions;
                     }
                 }
@@ -100,6 +107,8 @@ namespace STEP_DEMO.Controllers
                     var regId = (int)Session["RegId"];
                     var sessionId = Session["selectedTaxPeriod"].ToString();
 
+
+
                     using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
                     {
                         var training = new tblTraining_Need
@@ -112,8 +121,14 @@ namespace STEP_DEMO.Controllers
                             Status = model.Status
                         };
 
+
                         db.tblTraining_Need.Add(training);
                         db.SaveChanges();
+
+                        int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
+
+                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
+                        Session["TaxPeriod"] = taxPeriod;
                     }
 
                     return RedirectToAction("TrainingNeed");
@@ -143,7 +158,10 @@ namespace STEP_DEMO.Controllers
                         int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
                         var trainingData = db.tblTraining_Need
                             .Where(tn => tn.Session_Id == sessionIdInt && tn.Reg_Id == regId)
-                            .ToList();
+                            .ToList();                       
+
+                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
+                        Session["TaxPeriod"] = taxPeriod;
 
                         Session["TrainingData"] = trainingData;
                     }
@@ -162,10 +180,28 @@ namespace STEP_DEMO.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteSession(string description)
         {
+            int regId;
+            if (!int.TryParse(Session["RegID"].ToString(), out regId))
+            {
+                return RedirectToAction("DisplayKrasAndKpis", "Home");
+            }
+
             try
             {
                 using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
                 {
+                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId)
+                                        .Where(data => data.ApprovalSent != null)
+                                        .Select(data => data.ApprovalSent)
+                                        .Distinct()
+                                        .ToList();
+
+                    if (approvalSent.Any(x => x == true))
+                    {
+                        TempData["ErrorMessage"] = "Could not Delete! You already sent this data for approval.";
+                        return RedirectToAction("SpecialFactors");
+                    }
+
                     var session = db.tblSpecial_Factor.FirstOrDefault(sf => sf.Description == description);
 
                     db.tblSpecial_Factor.Remove(session);
@@ -185,6 +221,12 @@ namespace STEP_DEMO.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteTraining(string title, string by_when, string type, string status)
         {
+            int regId;
+            if (!int.TryParse(Session["RegID"].ToString(), out regId))
+            {
+                return RedirectToAction("DisplayKrasAndKpis", "Home");
+            }
+
             try
             {
                 DateTime? byWhen = null;
@@ -199,6 +241,18 @@ namespace STEP_DEMO.Controllers
 
                 using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
                 {
+                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId)
+                    .Where(data => data.ApprovalSent != null)
+                    .Select(data => data.ApprovalSent)
+                    .Distinct()
+                    .ToList();
+
+                    if (approvalSent.Any(x => x == true))
+                    {
+                        TempData["ErrorMessage"] = "Could not Delete! You already sent this data for approval.";
+                        return RedirectToAction("TrainingNeed");
+                    }
+
                     var session = db.tblTraining_Need.FirstOrDefault(tn =>
                         tn.Title == title && tn.By_When == byWhen && tn.Train_Type == type && tn.Status == status);
 
