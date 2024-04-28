@@ -137,7 +137,7 @@ namespace STEP_PORTAL.Controllers
             return RedirectToAction("ViewEmpList", "DeptHead");
         }
 
-        // update marks from database in select option
+        // auto update marks from database in select option
 
        /* [CustomAuthorize]
         [HttpPost]

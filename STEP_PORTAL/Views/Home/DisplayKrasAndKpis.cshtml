@@ -36,11 +36,10 @@
 
 
 <!-- modal button -->
-<button style="float:right;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+<!--<button style="float:right;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
     NEW
 </button>
-<br />
-
+<br />-->
 <!-- modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -53,8 +52,8 @@
             </div>
 
             <div class="modal-body">
-                @using (Html.BeginForm("InsertKpiOutcomes", "Home", FormMethod.Post, new { id = "outcomeForm" }))
-                {
+@*                @using (Html.BeginForm("InsertKpiOutcomes", "Home", FormMethod.Post, new { id = "outcomeForm" }))
+                {*@
                     <div class="dropdown-container">
                         <label class="dropdown-label" for="taxPeriodDropdown">Choose Session:</label>
                         <br />
@@ -67,7 +66,7 @@
 
 
                     <div class="dropdown-container">
-                        <label class="dropdown-label" for="selectedKRA">Select KRA:</label>
+                        <label class="dropdown-labeAl" for="selectedKRA">Select KRA:</label>
                         <br />
                         @Html.DropDownList("selectedKRA", new SelectList(Model.KraKpiData.Select(x => x.KRA).Distinct()), "Select KRA", new { @class = "form-control custom-select" })
                     </div>
@@ -84,8 +83,9 @@
                         <div id="kpiOutcomeFields" class="form-control"></div>
                     </div>
 
-                    <input type="submit" value="Add" class="submit-btn" />
-                }
+@*                    <input type="submit" value="Add" class="submit-btn" />*@
+                        <button id="addOutcomeBtn" class="submit-btn">Add</button>
+@*                }*@
             </div>
             <div class="modal-footer" id="modalFooter">
 
@@ -107,6 +107,14 @@
     </select>
 </div>
 <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
+
+<br />
+<!-- modal button -->
+<button style="float:right;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+    NEW
+</button>
+
+
 
 
 
@@ -147,7 +155,7 @@
 
 <div class="card">
     <div class="card-body">
-        <a href="@Url.Action("DisplayKrasAndKpis", "Home")" id="outcomeEntryBtn" class="btn btn-primary submit-btn">Outcome Entry</a>
+        @*<a href="@Url.Action("DisplayKrasAndKpis", "Home")" id="outcomeEntryBtn" class="btn btn-primary submit-btn">Outcome Entry</a>*@
         <a href="@Url.Action("SpecialFactors", "Employee")" id="specialFactorsBtn" class="btn btn-primary submit-btn">Special Factor</a>
         <a href="@Url.Action("TrainingNeed", "Employee")" id="trainingNeedBtn" class="btn btn-primary submit-btn">Training Need</a>
     </div>
@@ -315,6 +323,51 @@
     });
 });
 
+            // start of outcome button
+
+            $('#addOutcomeBtn').click(function () {
+        var selectedTaxPeriod = $('#selectedTaxPeriod').val();
+        var selectedKRA = $('#selectedKRA').val();
+        var selectedKPI = $('#selectedKPI').val();
+        var kpiOutcomes = $('#kpiOutcomeFields input[name=kpiOutcomes]').val();
+
+        // Validate form fields
+        if (!selectedTaxPeriod || !selectedKRA || !selectedKPI || !kpiOutcomes) {
+            alert("Please select KRA, KPI, provide outcome, and select Session");
+            return;
+        }
+
+        // Prepare data for AJAX request
+        var formData = {
+            selectedKRA: selectedKRA,
+            selectedKPI: selectedKPI,
+            kpiOutcomes: kpiOutcomes,
+            selectedTaxPeriod: selectedTaxPeriod
+        };
+
+        // Send AJAX request
+        $.ajax({
+            url: '@Url.Action("InsertKpiOutcomes", "Home")',
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                // Handle success response
+                $('#myModal .modal-body').html('<div class="alert alert-success">Outcome added successfully!</div>');
+                $('#myModal .modal-footer').html('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+                // Reload page after modal is closed
+                $('#myModal').on('hidden.bs.modal', function () {
+                    location.reload();
+                });
+            },
+            error: function (xhr, status, error) {
+                // Handle error response
+                $('#myModal .modal-body').html('<div class="alert alert-danger">Could not add outcome!</div>');
+                $('#myModal .modal-footer').html('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+            }
+        });
+            });
+
+            // end of outcome button
 
             // Update hidden field with selected tax period value
             $('#taxPeriodDropdown').change(function () {

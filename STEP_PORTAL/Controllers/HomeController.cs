@@ -23,15 +23,6 @@ namespace STEP_PORTAL.Controllers
                 int regId;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
-                    //var sectionInfo = (from empInfo in db.Employee_Information
-                    //                   join reg in db.tblUser_Registration
-                    //                   on empInfo.RegId equals reg.RegId
-                    //                   where empInfo.RegId == regId
-                    //                   select new
-                    //                   {
-                    //                       Section = empInfo.Section
-                    //                   }).FirstOrDefault();
-
 
                     var userInfo = db.Database.SqlQuery<EmployeeInfo>(
                               "prc_EmployeeInfoByRegID @RegID",
@@ -300,8 +291,6 @@ namespace STEP_PORTAL.Controllers
                                    "prc_User_Registration  @RegID",
                                    new SqlParameter("@RegID", employeeInfo.RegId)).FirstOrDefault();
 
-
-
                         if (user != null && PasswordHelper.Decrypt(user.Password.Trim()) == model.Password.Trim())
                             {
                                 // insert login history
@@ -314,7 +303,6 @@ namespace STEP_PORTAL.Controllers
                                 db.tblUserLogHistories.Add(logEntry);
                                 db.SaveChanges();
 
-                            // Call stored procedure
 
 
                             // Login successful
@@ -342,11 +330,6 @@ namespace STEP_PORTAL.Controllers
                             {
                                 ViewBag.ErrorMessage = "Incorrect password!";
                             }
-                        //}
-                        //else
-                        //{
-                        //    ViewBag.ErrorMessage = "Wrong unit!";
-                        //}
                     }
                     else
                     {
@@ -644,21 +627,14 @@ namespace STEP_PORTAL.Controllers
 
                     if (!string.IsNullOrEmpty(selectedKRA) && !string.IsNullOrEmpty(selectedKPI) && !string.IsNullOrEmpty(kpiOutcomes) && !string.IsNullOrEmpty(selectedTaxPeriod))
                     {
-                        try
-                        {
-                            // find TaxPerID based on selected TaxPeriod
-                            //int? taxPerId = (from st in db.STEPs
-                            //                 join tax in db.New_Tax_Period on st.SESSION_ID equals tax.TaxPerID
-                            //                 where tax.TaxPeriod == selectedTaxPeriod && tax.KPI_Enty == true
-                            //                 select st.SESSION_ID).FirstOrDefault();
-
-                            //if (taxPerId != null)
+/*                        try
+                        {*/
                             {
-                                // find KRA_ID and KPI_ID based on selected KRA and KPI
                                 int kraId = db.KRAs.FirstOrDefault(k => k.KRA1 == selectedKRA)?.KRA_ID ?? 0;
                                 int kpiId = db.KPIs.FirstOrDefault(k => k.KPI1 == selectedKPI)?.KPI_ID ?? 0;
+                                int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedTaxPeriod).Select(t => t.TaxPerID).FirstOrDefault();
 
-                                if (kraId != 0 && kpiId != 0)
+                            if (kraId != 0 && kpiId != 0)
                                 {
                                     STEP newStep = new STEP
                                     {
@@ -666,8 +642,9 @@ namespace STEP_PORTAL.Controllers
                                         KRA_ID = kraId,
                                         KPI_ID = kpiId,
                                         KPI_OUTCOME = kpiOutcomes,
-                                        SESSION_ID = Int32.Parse(selectedTaxPeriod)
+                                        SESSION_ID = sessionID.Value
                                     };
+
 
                                     db.STEPs.Add(newStep);
                                     db.SaveChanges();
@@ -712,28 +689,19 @@ namespace STEP_PORTAL.Controllers
                                         StepData = stepData
                                     };
 
-                                    return View("DisplayKrasAndKpis", model);
-
-                                    /*  return RedirectToAction("DisplayKrasAndKpis");*/
+                                    return Json(new { success = true });
                                 }
                                 else
                                 {
-                                    ModelState.AddModelError("", "KRA or KPI not found");
+                                    return Json(new { success = false, message = "Please select KRA, KPI, provide outcome, and select Session" });
                                 }
                             }
-/*                            else
-                            {
-                                ModelState.AddModelError("", "Session not found");
-                            }*/
-                        }
+
+/*                        }
                         catch (Exception ex)
                         {
-                            ModelState.AddModelError("", "Error: " + ex.Message);
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Please select KRA, KPI, provide outcome, and select Session");
+                            return Json(new { success = false, message = "An error occurred while saving the data. Please try again later." });
+                        }*/
                     }
                 }
                 return View("DisplayKrasAndKpis");
