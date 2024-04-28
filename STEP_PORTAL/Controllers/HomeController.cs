@@ -627,8 +627,6 @@ namespace STEP_PORTAL.Controllers
 
                     if (!string.IsNullOrEmpty(selectedKRA) && !string.IsNullOrEmpty(selectedKPI) && !string.IsNullOrEmpty(kpiOutcomes) && !string.IsNullOrEmpty(selectedTaxPeriod))
                     {
-/*                        try
-                        {*/
                             {
                                 int kraId = db.KRAs.FirstOrDefault(k => k.KRA1 == selectedKRA)?.KRA_ID ?? 0;
                                 int kpiId = db.KPIs.FirstOrDefault(k => k.KPI1 == selectedKPI)?.KPI_ID ?? 0;
@@ -696,12 +694,6 @@ namespace STEP_PORTAL.Controllers
                                     return Json(new { success = false, message = "Please select KRA, KPI, provide outcome, and select Session" });
                                 }
                             }
-
-/*                        }
-                        catch (Exception ex)
-                        {
-                            return Json(new { success = false, message = "An error occurred while saving the data. Please try again later." });
-                        }*/
                     }
                 }
                 return View("DisplayKrasAndKpis");

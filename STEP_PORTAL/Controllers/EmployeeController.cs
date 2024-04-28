@@ -183,8 +183,8 @@ namespace STEP_PORTAL.Controllers
                 return RedirectToAction("DisplayKrasAndKpis", "Home");
             }
 
-            try
-            {
+/*            try
+            {*/
                 using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
                 {
                     var approvalSent = db.prc_GetKraKpiOutcomeData(regId)
@@ -204,11 +204,11 @@ namespace STEP_PORTAL.Controllers
                     db.tblSpecial_Factor.Remove(session);
                     db.SaveChanges();
                 }
-            }
+/*            }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Error deleting session: " + ex.Message;
-            }
+            }*/
 
             return RedirectToAction("SpecialFactors");
         }
@@ -223,8 +223,8 @@ namespace STEP_PORTAL.Controllers
                 return RedirectToAction("DisplayKrasAndKpis", "Home");
             }
 
-            try
-            {
+/*            try
+            {*/
                 DateTime? byWhen = null;
                 if (!string.IsNullOrEmpty(by_when))
                 {
@@ -262,11 +262,11 @@ namespace STEP_PORTAL.Controllers
                         TempData["ErrorMessage"] = "Training data not found for deletion.";
                     }
                 }
-            }
+/*            }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Error deleting training data: " + ex.Message;
-            }
+            }*/
 
             return RedirectToAction("TrainingNeed");
         }

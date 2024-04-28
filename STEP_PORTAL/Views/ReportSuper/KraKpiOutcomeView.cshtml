@@ -43,6 +43,9 @@
 <div class="table-responsive">
     @using (Html.BeginForm("UpdateMarks", "ReportSuper", FormMethod.Post))
     {
+            @Html.Hidden("regId", null, new { id = "viewregIDField" })
+
+            @Html.HiddenFor(m => m[0].REG_ID)
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
