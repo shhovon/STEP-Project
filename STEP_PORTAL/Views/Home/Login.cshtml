@@ -1,0 +1,47 @@
+﻿@model STEP_PORTAL.Models.LoginViewModel
+
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="login-container">
+    <h2>Login</h2>
+    <br /><br />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name, "Unit :", new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.ComID, (IEnumerable<SelectListItem>)ViewBag.Companies, "Select Unit", new { @class = "form-control", required = "required" })
+            @Html.ValidationMessageFor(m => m.ComID, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.EmployeeCode, "Login ID :", new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.EmployeeCode, new { @class = "form-control", required = "required" })
+            @Html.ValidationMessageFor(m => m.EmployeeCode, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, "Password :", new { @class = "control-label" })
+            @Html.PasswordFor(model => model.Password, new { @class = "form-control", required = "required" })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn-primary">Login</button>
+        <br />
+
+        if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <br />
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+    }
+</div>
