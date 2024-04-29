@@ -229,6 +229,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StepModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmployeeSessionViewModel .cs" />
     <Compile Include="Models\tblMarksEntryHistory.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>

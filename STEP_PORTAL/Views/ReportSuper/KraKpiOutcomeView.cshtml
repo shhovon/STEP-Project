@@ -18,17 +18,8 @@
 <br />
 <br />
 <br />
-<div class="dropdown-container">
-    <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
-    <br />
-    <select id="taxPeriodDropdownMV" class="form-control custom-select">
-        @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
-        {
-            <option value="@taxPeriod">@taxPeriod</option>
-        }
-    </select>
-</div>
-<br />
+
+
 @if (firstItem != null)
 {
     <div>
@@ -40,9 +31,9 @@
 
 @if (Model != null && Model.Count > 0)
 {
-<div class="table-responsive">
-    @using (Html.BeginForm("UpdateMarks", "ReportSuper", FormMethod.Post))
-    {
+    <div class="table-responsive">
+        @using (Html.BeginForm("UpdateMarks", "ReportSuper", FormMethod.Post))
+        {
             @Html.Hidden("regId", null, new { id = "viewregIDField" })
 
             @Html.HiddenFor(m => m[0].REG_ID)
@@ -79,18 +70,72 @@
                                 <td>@Model[i].Outcome</td>
                                 <td>
                                     <select name="@("marksUpdateModel[" + (marksUpdateModel.Count - 1) + "].Marks")" class="marks-select" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
+                                        @if (@Model[i].Marks_Achieved == 0)
+                                        {
+                                            <option value="0" selected>0</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="0">0</option>
+                                        }
+
+
+                                        @if (@Model[i].Marks_Achieved == 1)
+                                        {
+                                            <option value="1" selected>1</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="1">1</option>
+                                        }
+
+                                        @if (@Model[i].Marks_Achieved == 2)
+                                        {
+                                            <option value="2" selected>2</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="2">2</option>
+                                        } 
+                                        
+                                        @if (@Model[i].Marks_Achieved == 3)
+                                        {
+                                            <option value="3" selected>3</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="3">3</option>
+                                        }
+                                        
+                                        @if (@Model[i].Marks_Achieved == 4)
+                                        {
+                                            <option value="4" selected>4</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="4">4</option>
+                                        } 
+                                        
+                                        @if (@Model[i].Marks_Achieved == 5)
+                                        {
+                                            <option value="5" selected>5</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="5">5</option>
+                                        }
+
                                     </select>
                                     <input type="hidden" name="@("marksUpdateModel[" + i + "].Outcome")" value="@Model[i].Outcome" />
                                 </td>
                                 @if (j == 0)
                                 {
                                     <td rowspan="@kraCount">
-                                        <input type="text" class="average-input" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome" readonly />
+                                        <input type="text" class="average-input" value="0" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome" readonly />
                                     </td>
                                 }
                             </tr>

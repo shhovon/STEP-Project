@@ -52,7 +52,7 @@ namespace STEP_PORTAL.Controllers
 
         [CustomAuthorize]
         [HttpPost]
-        public ActionResult AddMarks(int RegId)
+        public ActionResult AddMarks(int? RegId)
         {
            // if (!string.IsNullOrEmpty(RegId))
             {
@@ -67,6 +67,8 @@ namespace STEP_PORTAL.Controllers
                                      .Select(t => t.TaxPeriod).Take(2).ToList());
 
                         ViewBag.TopTaxPeriods = last2session;
+
+                        string selectedTaxPeriod = Session["SelectedTaxPeriod"] as string;
 
                         string employeeID = Request.Form["employeeCode"];
                         int regID = (int)Session["RegID"];
@@ -98,9 +100,12 @@ namespace STEP_PORTAL.Controllers
                         ViewBag.EmployeeName = userInfo.Name;*/
                         ViewBag.Designation = userInfo.Designation;
 
+                        /*int? SESSION_ID = db.New_Tax_Period.Where(t => t.TaxPeriod == sessionId).Select(t => t.TaxPerID).FirstOrDefault();*/
 
                         var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>
-                            ("exec prc_GetKraKpiOutcomeData @RegId", new SqlParameter("@RegId", RegId)).ToList();
+                            ("exec prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                             new SqlParameter("@RegId", RegId),
+                             new SqlParameter("@SESSION_ID", Session["SelectedTaxPeriod"])).ToList();
 
                         ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
                         return View("KraKpiOutcomeView", kraKpiOutcomeData);
@@ -137,31 +142,6 @@ namespace STEP_PORTAL.Controllers
             return RedirectToAction("ViewEmpList", "DeptHead");
         }
 
-        // auto update marks from database in select option
-
-       /* [CustomAuthorize]
-        [HttpPost]
-        public ActionResult UpdateMarks(List<KraKpiOutcomeModel> model, int regId)
-        {
-            if (model != null)
-            {
-                using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-                {
-                    var marksUpdateModel = db.STEPs
-                        .Where(o => o.REG_ID == regId)
-                        .Select(o => new MarksUpdateModel
-                        {
-                            Outcome = o.KPI_OUTCOME,
-                            Marks = (int)o.Marks_Achieved
-                        })
-                        .ToList();
-
-                    ViewBag.MarksUpdateModel = marksUpdateModel;
-                }
-            }
-            return View(model);
-        }
-*/
         protected string GetIPAddress()
         {
             string ipList = (Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ??
@@ -174,22 +154,6 @@ namespace STEP_PORTAL.Controllers
 
             return Request.ServerVariables["REMOTE_ADDR"];
         }
-
-        //private string GetEmployeeName(string employeeCode)
-        //{
-        //    string employeeName = string.Empty;
-
-        //    using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
-        //    {
-        //        var employee = db.Employee_Information.FirstOrDefault(e => e.EmployeeCode == employeeCode);
-        //        if (employee != null)
-        //        {
-        //            employeeName = employee.Name;
-        //        }
-        //    }
-
-        //    return employeeName;
-        //}
 
 
         [CustomAuthorize]

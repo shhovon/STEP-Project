@@ -625,6 +625,9 @@ namespace STEP_PORTAL.Controllers
 
                     ViewBag.TopTaxPeriods = last2session;
 
+                    
+                    int? sessionId = Session["selectedTaxPeriod"] as int?;
+
                     if (!string.IsNullOrEmpty(selectedKRA) && !string.IsNullOrEmpty(selectedKPI) && !string.IsNullOrEmpty(kpiOutcomes) && !string.IsNullOrEmpty(selectedTaxPeriod))
                     {
                             {

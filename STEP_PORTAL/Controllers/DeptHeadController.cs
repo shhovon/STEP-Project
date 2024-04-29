@@ -58,7 +58,23 @@ namespace STEP_PORTAL.Controllers
             List<CompanyViewModel> companies = GetCompanies();
             ViewBag.Companies = new SelectList(companies, "ID", "Name");
 
-            return View(employees);
+            List<string> topTaxPeriods = new List<string>();
+            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            {
+                topTaxPeriods = db.New_Tax_Period
+                                .OrderByDescending(t => t.TaxPeriod)
+                                .Select(t => t.TaxPeriod)
+                                .Take(2)
+                                .ToList();
+            }
+
+            var model = new EmployeeSessionViewModelClass
+            {
+                Employees = employees,
+                TopTaxPeriods = topTaxPeriods
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -79,7 +95,29 @@ namespace STEP_PORTAL.Controllers
             List<CompanyViewModel> companies = GetCompanies();
             ViewBag.Companies = new SelectList(companies, "ID", "Name", companyId);
 
-            return View(employees);
+            List<string> topTaxPeriods = new List<string>();
+            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            {
+                topTaxPeriods = db.New_Tax_Period
+                                .OrderByDescending(t => t.TaxPeriod)
+                                .Select(t => t.TaxPeriod)
+                                .Take(2)
+                                .ToList();
+
+                string selectedTaxPeriod = Request.Form["selectedTaxPeriod"];
+                int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedTaxPeriod).Select(t => t.TaxPerID).FirstOrDefault();
+                Session["SelectedTaxPeriod"] = sessionID;
+            }
+
+            var model = new EmployeeSessionViewModelClass
+            {
+                Employees = employees,
+                TopTaxPeriods = topTaxPeriods
+            };
+
+            return View(model);
+
         }
+
     }
 }
