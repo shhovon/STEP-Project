@@ -6,7 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="EMP_EVALUATIONModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
-warning 6002: The table/view 'DB_KPI.dbo.Company_Information' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'DB_STEP.dbo.Company_Information' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Company_Information">
           <Key>
             <PropertyRef Name="ID" />
@@ -75,7 +75,7 @@ warning 6002: The table/view 'DB_KPI.dbo.Company_Information' does not have a pr
           <Property Name="Updated_by" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'DB_KPI.dbo.New_Tax_Period' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'DB_STEP.dbo.New_Tax_Period' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="New_Tax_Period">
           <Key>
             <PropertyRef Name="TaxPerID" />
@@ -145,7 +145,7 @@ warning 6002: The table/view 'DB_KPI.dbo.New_Tax_Period' does not have a primary
           <Property Name="EmployeeID" Type="varchar" MaxLength="20" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'DB_KPI.dbo.tblMenu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'DB_STEP.dbo.tblMenu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="tblMenu">
           <Key>
             <PropertyRef Name="ID" />
@@ -221,7 +221,7 @@ warning 6002: The table/view 'DB_KPI.dbo.tblMenu' does not have a primary key de
           <Property Name="ComputerName" Type="varchar" MaxLength="20" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'DB_KPI.dbo.View_StepDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_StepDetails">
           <Key>
             <PropertyRef Name="ID" />
@@ -274,8 +274,17 @@ warning 6002: The table/view 'DB_KPI.dbo.View_StepDetails' does not have a prima
         <Function Name="prc_GetEmployeesByCompany" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
         </Function>
+        <Function Name="prc_GetKPIOutcomeByRegIdOrSectionName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegId" Type="int" Mode="In" />
+          <Parameter Name="SectionName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="prc_GetKraKpiByRegIdOrSectionName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegId" Type="int" Mode="In" />
+          <Parameter Name="SectionName" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="prc_GetKraKpiOutcomeData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RegId" Type="int" Mode="In" />
+          <Parameter Name="SESSION_ID" Type="int" Mode="In" />
         </Function>
         <Function Name="prc_GetTeamMember" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RegID" Type="int" Mode="In" />
@@ -653,6 +662,7 @@ warning 6002: The table/view 'DB_KPI.dbo.View_StepDetails' does not have a prima
           </FunctionImport>
           <FunctionImport Name="prc_GetKraKpiOutcomeData" ReturnType="Collection(EMP_EVALUATIONModel.prc_GetKraKpiOutcomeData_Result)">
           <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_GetTeamMember" ReturnType="Collection(EMP_EVALUATIONModel.prc_GetTeamMember_Result)">
             <Parameter Name="RegID" Mode="In" Type="Int32" />
@@ -667,6 +677,14 @@ warning 6002: The table/view 'DB_KPI.dbo.View_StepDetails' does not have a prima
           </FunctionImport>
           <FunctionImport Name="prc_UserMenu" ReturnType="Collection(EMP_EVALUATIONModel.prc_UserMenu_Result)">
           <Parameter Name="RegId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetKPIOutcomeByRegIdOrSectionName" ReturnType="Collection(EMP_EVALUATIONModel.prc_GetKPIOutcomeByRegIdOrSectionName_Result)">
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="SectionName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetKraKpiByRegIdOrSectionName" ReturnType="Collection(EMP_EVALUATIONModel.prc_GetKraKpiByRegIdOrSectionName_Result)">
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="SectionName" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="prc_EmployeeInfoByEmpCode_Result">
@@ -798,6 +816,15 @@ warning 6002: The table/view 'DB_KPI.dbo.View_StepDetails' does not have a prima
           <Property Type="String" Name="Menu_URL" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Menu_Icon" Nullable="true" MaxLength="50" />
           <Property Type="Boolean" Name="YsnActive" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="prc_GetKPIOutcomeByRegIdOrSectionName_Result">
+          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="KPI_OUTCOME" Nullable="true" MaxLength="2000" />
+        </ComplexType>
+        <ComplexType Name="prc_GetKraKpiByRegIdOrSectionName_Result">
+          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1205,6 +1232,23 @@ warning 6002: The table/view 'DB_KPI.dbo.View_StepDetails' does not have a prima
                 <ScalarProperty Name="Menu_URL" ColumnName="Menu_URL" />
                 <ScalarProperty Name="Menu_Icon" ColumnName="Menu_Icon" />
                 <ScalarProperty Name="YsnActive" ColumnName="YsnActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetKPIOutcomeByRegIdOrSectionName" FunctionName="EMP_EVALUATIONModel.Store.prc_GetKPIOutcomeByRegIdOrSectionName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.prc_GetKPIOutcomeByRegIdOrSectionName_Result">
+                <ScalarProperty Name="KRA" ColumnName="KRA" />
+                <ScalarProperty Name="KPI" ColumnName="KPI" />
+                <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetKraKpiByRegIdOrSectionName" FunctionName="EMP_EVALUATIONModel.Store.prc_GetKraKpiByRegIdOrSectionName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EMP_EVALUATIONModel.prc_GetKraKpiByRegIdOrSectionName_Result">
+                <ScalarProperty Name="KRA" ColumnName="KRA" />
+                <ScalarProperty Name="KPI" ColumnName="KPI" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

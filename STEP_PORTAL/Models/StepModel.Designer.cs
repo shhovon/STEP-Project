@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Shovon_Workspace\STEP_PORTAL - V1 - On Page Submission [6 march]\STEP_PORTAL\Models\StepModel.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\Shovon_Workspace\STEP_DEMO - V1 - On Page Submission [6 march]\STEP_PORTAL\Models\StepModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

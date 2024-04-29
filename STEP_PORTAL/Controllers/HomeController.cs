@@ -9,6 +9,7 @@ using STEP_PORTAL.Helpers;
 using System.Web.Security;
 using System.Data.SqlClient;
 using System.Data.Entity.SqlServer;
+using STEP_DEMO.Models;
 
 namespace STEP_PORTAL.Controllers
 {
@@ -582,7 +583,9 @@ namespace STEP_PORTAL.Controllers
                                             KPI_ID = kp.KPI_ID
                                         }).ToList();
 
-                        var approvalSent = db.prc_GetKraKpiOutcomeData(regId)
+                        int sesn = 0;
+
+                        var approvalSent = db.prc_GetKraKpiOutcomeData(regId, sesn)
                                                           .Where(data => data.ApprovalSent != null)
                                                           .Select(data => data.ApprovalSent)
                                                           .Distinct()
@@ -719,10 +722,22 @@ namespace STEP_PORTAL.Controllers
                                new SqlParameter("RegId", regId),
                                new SqlParameter("SectionName", selectedSession)).ToList();
 
+                int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedSession).Select(t => t.TaxPerID).FirstOrDefault();
+
+                var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                               new SqlParameter("@RegId", regId),
+                               new SqlParameter("@SESSION_ID", sessionID)).ToList();
+
+                var result = new
+                {
+                    KraKpiData = kraKpiData,
+                    KraKpiOutcomeData = kraKpiOutcomeData
+                };
+
                 Session["selectedTaxPeriod"]= taxPerId;
 
 
-                return Json(kraKpiData, JsonRequestBehavior.AllowGet);
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -739,7 +754,12 @@ namespace STEP_PORTAL.Controllers
             {
                 try
                 {
-                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId)
+                    var sessionID="";
+                    Session["selectedTaxPeriod"] = sessionID;
+
+                    int sesn = 0;
+
+                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId, sesn)
                         .Where(data => data.ApprovalSent != null)
                         .Select(data => data.ApprovalSent)
                         .Distinct()

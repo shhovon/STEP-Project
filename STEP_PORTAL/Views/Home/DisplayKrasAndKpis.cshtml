@@ -52,42 +52,46 @@
             </div>
 
             <div class="modal-body">
-@*                @using (Html.BeginForm("InsertKpiOutcomes", "Home", FormMethod.Post, new { id = "outcomeForm" }))
-                {*@
-                    <div class="dropdown-container">
-                        <label class="dropdown-label" for="taxPeriodDropdown">Choose Session:</label>
-                        <br />
-                        <select id="taxPeriodDropdown" class="form-control custom-select">
-                            <!-- options will be added dynamically via javascript -->
-                        </select>
-                    </div>
-                    <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
+                @*                @using (Html.BeginForm("InsertKpiOutcomes", "Home", FormMethod.Post, new { id = "outcomeForm" }))
+                    {*@
+                <div class="dropdown-container">
+                    <label class="dropdown-label" for="taxPeriodDropdown">Choose Session:</label>
+                    <br />
+                    <select id="taxPeriodDropdown" class="form-control custom-select">
+                        <!-- options will be added dynamically via javascript -->
+                    </select>
+                </div>
+                <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
 
 
 
-                    <div class="dropdown-container">
-                        <label class="dropdown-labeAl" for="selectedKRA">Select KRA:</label>
-                        <br />
-                        @Html.DropDownList("selectedKRA", new SelectList(Model.KraKpiData.Select(x => x.KRA).Distinct()), "Select KRA", new { @class = "form-control custom-select" })
-                    </div>
+                <div class="dropdown-container">
+                    <label class="dropdown-labeAl" for="selectedKRA">Select KRA:</label>
+                    <br />
+                    @Html.DropDownList("selectedKRA", new SelectList(Model.KraKpiData.Select(x => x.KRA).Distinct()), "Select KRA", new { @class = "form-control custom-select" })
+                </div>
 
-                    <div class="dropdown-container">
-                        <label class="dropdown-label" for="selectedKPI">Select KPI:</label>
-                        <br />
-                        <div id="kpiDropdown" class="form-control"></div>
-                    </div>
+                <div class="dropdown-container">
+                    <label class="dropdown-label" for="selectedKPI">Select KPI:</label>
+                    <br />
+                    <div id="kpiDropdown" class="form-control"></div>
+                </div>
 
-                    <div class="outcome-field">
-                        <label class="dropdown-label" for="kpiOutcome">KPI Outcome:</label>
-                        <br />
-                        <div id="kpiOutcomeFields" class="form-control"></div>
-                    </div>
+                <div class="outcome-field">
+                    <label class="dropdown-label" for="kpiOutcome">KPI Outcome:</label>
+                    <br />
+                    <div id="kpiOutcomeFields" class="form-control"></div>
+                </div>
 
-@*                    <input type="submit" value="Add" class="submit-btn" />*@
-                        <button id="addOutcomeBtn" class="submit-btn">Add</button>
-@*                }*@
+                @*                    <input type="submit" value="Add" class="submit-btn" />*@
+                <button id="addOutcomeBtn" class="submit-btn">Add</button>
+                @*                }*@
             </div>
             <div class="modal-footer" id="modalFooter">
+
+
+
+
 
             </div>
         </div>
@@ -195,54 +199,44 @@
     <div id="userAddedInfo">
         <h4>Selected KRA/ KPI/ KPI OUTCOME</h4>
         <table class="table">
-            <thead>
+@*            <thead>
                 <tr>
                     <th>Selected KRA</th>
                     <th>Selected KPI</th>
                     <th>KPI Outcome</th>
                     <th>Action</th>
                 </tr>
-            </thead>
-            <tbody>
-                @if (Model != null && Model.StepData.Count > 0)
+            </thead>*@
+            @*    <tbody>
+            @if (Model != null && Model.StepData.Count > 0)
+            {
+                foreach (var item in Model.StepData)
                 {
-                    foreach (var item in Model.StepData)
-                    {
-                        <tr>
-                            <td>@item.KRA</td>
-                            <td>@item.KPI</td>
-                            <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
-                            <td style="text-align: center; vertical-align: middle !important;">
-                                @*@if (Session["IsDeletionPossible"] != null && (bool)Session["IsDeletionPossible"])
-                                    {*@
-                                <form action="@Url.Action("DeleteSession", "Home")" method="post" onsubmit="return confirm('Are you sure you want to delete this?');">
-                                    @Html.Hidden("kraId", item.KRA_ID)
-                                    @Html.Hidden("kpiId", item.KPI_ID)
-                                    @Html.Hidden("kpiOutcome", item.KPI_OUTCOME)
-                                    <button class="btn btn-danger" type="submit">
-                                        <i class="ti-trash"></i>
-                                    </button>
-                                </form>
-                                @*                            }
-                                    else
-                                    {
-                                        <span style="color:red;">Data sent for approval</span>
-                                    }*@
-                            </td>
-                        </tr>
-                    }
+                    <tr>
+                        <td>@item.KRA</td>
+                        <td>@item.KPI</td>
+                        <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
+                        <td style="text-align: center; vertical-align: middle !important;">
+                            <form action="@Url.Action("DeleteSession", "Home")" method="post" onsubmit="return confirm('Are you sure you want to delete this?');">
+                                @Html.Hidden("kraId", item.KRA_ID)
+                                @Html.Hidden("kpiId", item.KPI_ID)
+                                @Html.Hidden("kpiOutcome", item.KPI_OUTCOME)
+                                <button class="btn btn-danger" type="submit">
+                                    <i class="ti-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
                 }
+            }
+        </tbody>*@
+
+            <tbody id="kraKpiOutcomeTableBody">
+                <!-- This tbody will be populated dynamically -->
             </tbody>
-
-
-
         </table>
         <br /><br />
-        @*        <div class="form-group" id="nextButtonContainer">
-                <div class="col-md-offset-2 col-md-10">
-                    <a id="nextButton" href="@Url.Action("SpecialFactors", "Employee")" class="btn btn-primary submit-btn">Special Factors</a>
-                </div>
-            </div>*@
+
         @if (TempData["ErrorMessage"] != null)
         {
             <div class="alert alert-danger">
@@ -258,124 +252,131 @@
         $(function () {
             $('#taxPeriodDropdownMV').change(function () {
                 var selectedSession = $(this).val();
-                var regId = @(Session["RegId"]);
-
+                var regId = '@(Session["RegId"])';
+               
                 $.ajax({
                     url: '@Url.Action("GetFilteredData", "Home")',
                     type: 'GET',
                     data: { selectedSession: selectedSession, regId: regId },
                     success: function (response) {
+                       
                         $('#selectedItemsTable tbody').empty();
 
-                        response.forEach(function (item) {
+                        $.each(response.KraKpiData, function (index, item) {
                             var newRow = '<tr>' +
                                 '<td>' + item.KRA + '</td>' +
                                 '<td>' + item.KPI + '</td>' +
-@*                                '<td>' + (item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "") + '</td>' +*@
                                 '</tr>';
 
                             $('#selectedItemsTable tbody').append(newRow);
                         });
+
+                        var kraKpiOutcomeTableBody = $('#kraKpiOutcomeTableBody');
+                        kraKpiOutcomeTableBody.empty();
+                        
+                        var table = $('<table class="table"><thead><tr><th>Selected KRA</th><th>Selected KPI</th><th>KPI Outcome</th><th>Action</th></tr></thead><tbody></tbody></table>');
+                       var tbody = table.find('tbody');
+
+                        //var tbody = '';
+                      //  alert(tbody)
+                      //  alert(response.KraKpiOutcomeData)
+                        $.each(response.KraKpiOutcomeData, function (index, item) {
+                            var row = $('<tr>');
+                            row.append('<td>' + item.KRA + '</td>');
+                            row.append('<td>' + item.KPI + '</td>');
+                            row.append('<td>' + (item.Outcome != null ? item.Outcome : "") + '</td>');
+                            row.append('</tr>')
+                          //  alert(JSON.stringify(row)))
+
+                            console.log(row);
+                            var actionCell = $('<td style="text-align: center; vertical-align: middle !important;"></td>');
+                            var form = $('<form action="@Url.Action("DeleteSession", "Home")" method="post" onsubmit="return confirm(\'Are you sure you want to delete this?\');"></form>');
+                            form.append('<input type="hidden" name="kraId" value="' + item.KRA_ID + '">');
+                            form.append('<input type="hidden" name="kpiId" value="' + item.KPI_ID + '">');
+                            form.append('<input type="hidden" name="Outcome" value="' + item.Outcome + '">');
+                            form.append('<button class="btn btn-danger" type="submit"><i class="ti-trash"></i></button>');
+                            actionCell.append(form);
+                            row.append(actionCell);
+
+                            tbody.append(row);
+                        });
+
+                        kraKpiOutcomeTableBody.append(table);
                     },
                     error: function (xhr, status, error) {
                         console.error(error);
+                        alert(error)
                     }
                 });
             });
 
-           $(function () {
-    $('#selectedKRA').change(function () {
-        var selectedKRA = $(this).val();
-        var kraKpiData = @Html.Raw(Json.Encode(Model.KraKpiData));
+            $('#selectedKRA').change(function () {
+                var selectedKRA = $(this).val();
+                var kraKpiData = @Html.Raw(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Model.KraKpiData));
 
-        // Filter KPIs based on selected KRA
-        var filteredKPIs = kraKpiData.filter(function (item) {
-            return item.KRA === selectedKRA;
-        });
-        console.log(selectedKRA);
-        console.log(filteredKPIs);
-
-        // Clear existing options in the dropdown
-        $('#selectedKPI').empty();
-
-        $('#kpiDropdown').empty();
-        var selectElement = $('<select id="selectedKPI" name="selectedKPI"></select>');
-
-        // Append each option to the select element
-        filteredKPIs.forEach(function (item) {
-            var option = $('<option value="' + item.KPI + '">' + item.KPI + '</option>');
-            selectElement.append(option);
-        });
-
-        // Append the select element to the dropdown container
-        $('#kpiDropdown').append(selectElement);
-
-        // Trigger change event for dynamically generated KPI dropdown
-        $('#selectedKPI').trigger('change');
-    });
-
-    // Change event for dynamically generated KPI dropdown
-    $(document).on('change', '#selectedKPI', function () {
-        var selectedKPI = $(this).val();
-
-        $('#kpiOutcomeFields').empty();
-        $('#kpiOutcomeFields').append('<div><label></label><input type="text" name="kpiOutcomes" /></div>');
-    });
-});
-
-            // start of outcome button
-
-            $('#addOutcomeBtn').click(function () {
-        var selectedTaxPeriod = $('#selectedTaxPeriod').val();
-        var selectedKRA = $('#selectedKRA').val();
-        var selectedKPI = $('#selectedKPI').val();
-        var kpiOutcomes = $('#kpiOutcomeFields input[name=kpiOutcomes]').val();
-
-        // Validate form fields
-        if (!selectedTaxPeriod || !selectedKRA || !selectedKPI || !kpiOutcomes) {
-            alert("Please select KRA, KPI, provide outcome, and select Session");
-            return;
-        }
-
-        // Prepare data for AJAX request
-        var formData = {
-            selectedKRA: selectedKRA,
-            selectedKPI: selectedKPI,
-            kpiOutcomes: kpiOutcomes,
-            selectedTaxPeriod: selectedTaxPeriod
-        };
-
-        // Send AJAX request
-        $.ajax({
-            url: '@Url.Action("InsertKpiOutcomes", "Home")',
-            type: 'POST',
-            data: formData,
-            success: function (response) {
-                // Handle success response
-                $('#myModal .modal-body').html('<div class="alert alert-success">Outcome added successfully!</div>');
-                $('#myModal .modal-footer').html('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
-                // Reload page after modal is closed
-                $('#myModal').on('hidden.bs.modal', function () {
-                    location.reload();
+                var filteredKPIs = kraKpiData.filter(function (item) {
+                    return item.KRA === selectedKRA;
                 });
-            },
-            error: function (xhr, status, error) {
-                // Handle error response
-                $('#myModal .modal-body').html('<div class="alert alert-danger">Could not add outcome!</div>');
-                $('#myModal .modal-footer').html('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
-            }
-        });
+
+                $('#selectedKPI').empty();
+                $('#kpiDropdown').empty();
+                var selectElement = $('<select id="selectedKPI" name="selectedKPI"></select>');
+
+                $.each(filteredKPIs, function (index, item) {
+                    var option = $('<option value="' + item.KPI + '">' + item.KPI + '</option>');
+                    selectElement.append(option);
+                });
+
+                $('#kpiDropdown').append(selectElement);
+                $('#selectedKPI').trigger('change');
             });
 
-            // end of outcome button
+            $(document).on('change', '#selectedKPI', function () {
+                $('#kpiOutcomeFields').empty();
+                $('#kpiOutcomeFields').append('<div><label></label><input type="text" name="kpiOutcomes" /></div>');
+            });
 
-            // Update hidden field with selected tax period value
+            $('#addOutcomeBtn').click(function () {
+                var selectedTaxPeriod = $('#selectedTaxPeriod').val();
+                var selectedKRA = $('#selectedKRA').val();
+                var selectedKPI = $('#selectedKPI').val();
+                var kpiOutcomes = $('#kpiOutcomeFields input[name=kpiOutcomes]').val();
+
+                if (!selectedTaxPeriod || !selectedKRA || !selectedKPI || !kpiOutcomes) {
+                    alert("Please select KRA, KPI, provide outcome, and select Session");
+                    return;
+                }
+
+                var formData = {
+                    selectedKRA: selectedKRA,
+                    selectedKPI: selectedKPI,
+                    kpiOutcomes: kpiOutcomes,
+                    selectedTaxPeriod: selectedTaxPeriod
+                };
+
+                $.ajax({
+                    url: '@Url.Action("InsertKpiOutcomes", "Home")',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        $('#myModal .modal-body').html('<div class="alert alert-success">Outcome added successfully!</div>');
+                        $('#myModal .modal-footer').html('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+                        $('#myModal').on('hidden.bs.modal', function () {
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        $('#myModal .modal-body').html('<div class="alert alert-danger">Could not add outcome!</div>');
+                        $('#myModal .modal-footer').html('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+                    }
+                });
+            });
+
             $('#taxPeriodDropdown').change(function () {
                 var selectedTaxPeriod = $(this).val();
                 $('#selectedTaxPeriod').val(selectedTaxPeriod);
             });
 
-            // modal validation
             $('#outcomeForm').submit(function (event) {
                 event.preventDefault();
                 var formData = $(this).serialize();
@@ -395,71 +396,56 @@
                 });
             });
 
-            // Reload page when modal is closed
             $('#myModal').on('hidden.bs.modal', function () {
-                if ($('#myModal .alert-success').length) {
-                    window.location.reload();
-                }
-                else if ($('#myModal .alert-danger').length) {
+                if ($('#myModal .alert-success').length || $('#myModal .alert-danger').length) {
                     window.location.reload();
                 }
             });
-        });
 
-            $(document).ready(function () {
-            var userAddedData = @(Session["UserAddedData"] == null ? "false" : "true");
-            if (!userAddedData) {
+            var userAddedData = '@(Session["UserAddedData"] == null ? "false" : "true")'; // Enclose Session["UserAddedData"] in quotes
+            if (userAddedData !== "true") {
                 $('#nextButtonContainer').hide();
             }
+
+            function updateModalDropdown(selectedSession) {
+                document.getElementById("selectedTaxPeriod").value = selectedSession;
+                var modalDropdown = document.getElementById("taxPeriodDropdown");
+                modalDropdown.innerHTML = '';
+                modalDropdown.disabled = true;
+
+                var option = document.createElement("option");
+                option.text = selectedSession;
+                option.value = selectedSession;
+                modalDropdown.add(option);
+            }
+
+            document.getElementById("taxPeriodDropdownMV").addEventListener("change", function () {
+                var selectedSession = this.value;
+                updateModalDropdown(selectedSession);
             });
 
-        // modal dropdown auto select
+            $('#myModal').on('show.bs.modal', function (e) {
+                var selectedSession = document.getElementById("selectedTaxPeriod").value;
+                updateModalDropdown(selectedSession);
+            });
 
-        function updateModalDropdown(selectedSession) {
-            document.getElementById("selectedTaxPeriod").value = selectedSession;
+            $('.delete-btn').click(function () {
+                var description = $(this).data('description');
+                if (confirm("Are you sure you want to delete this description?")) {
+                    $('#deleteForm_' + description).submit();
+                }
+            });
 
-            // Set value of modal dropdown
-            var modalDropdown = document.getElementById("taxPeriodDropdown");
-            modalDropdown.innerHTML = '';
-            modalDropdown.disabled = true;
-
-            // Add option for selected session
-            var option = document.createElement("option");
-            option.text = selectedSession;
-            option.value = selectedSession;
-            modalDropdown.add(option);
-        }
-
-        document.getElementById("taxPeriodDropdownMV").addEventListener("change", function () {
-            var selectedSession = this.value;
-            updateModalDropdown(selectedSession);
-        });
-
-        $('#myModal').on('show.bs.modal', function (e) {
-            var selectedSession = document.getElementById("selectedTaxPeriod").value;
-            updateModalDropdown(selectedSession);
-        });
-
-        // delete confirmation
-
-        $('.delete-btn').click(function () {
-            var description = $(this).data('description');
-            if (confirm("Are you sure you want to delete this description?")) {
-                $('#deleteForm_' + description).submit();
-            }
-        });
-
-        // session validation
-
-        $("#outcomeEntryBtn, #specialFactorsBtn, #trainingNeedBtn").click(function (e) {
-            var selectedTaxPeriod = $("#selectedTaxPeriod").val();
-
-            if (!selectedTaxPeriod || selectedTaxPeriod === "0") {
-                e.preventDefault();
-                alert("Choose a session first");
-            }
+            $("#outcomeEntryBtn, #specialFactorsBtn, #trainingNeedBtn").click(function (e) {
+                var selectedTaxPeriod = $("#selectedTaxPeriod").val();
+                if (!selectedTaxPeriod || selectedTaxPeriod === "0") {
+                    e.preventDefault();
+                    alert("Choose a session first");
+                }
+            });
         });
     </script>
 }
+
 
 

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace STEP_PORTAL.Models
+namespace STEP_DEMO.Models
 {
     using System;
     using System.Data.Entity;
@@ -105,13 +105,17 @@ namespace STEP_PORTAL.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prc_GetEmployeesByCompany", companyIdParameter);
         }
     
-        public virtual ObjectResult<prc_GetKraKpiOutcomeData_Result> prc_GetKraKpiOutcomeData(Nullable<int> regId)
+        public virtual ObjectResult<prc_GetKraKpiOutcomeData_Result> prc_GetKraKpiOutcomeData(Nullable<int> regId, Nullable<int> sESSION_ID)
         {
             var regIdParameter = regId.HasValue ?
                 new ObjectParameter("RegId", regId) :
                 new ObjectParameter("RegId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKraKpiOutcomeData_Result>("prc_GetKraKpiOutcomeData", regIdParameter);
+            var sESSION_IDParameter = sESSION_ID.HasValue ?
+                new ObjectParameter("SESSION_ID", sESSION_ID) :
+                new ObjectParameter("SESSION_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKraKpiOutcomeData_Result>("prc_GetKraKpiOutcomeData", regIdParameter, sESSION_IDParameter);
         }
     
         public virtual ObjectResult<prc_GetTeamMember_Result> prc_GetTeamMember(Nullable<int> regID, Nullable<int> compID)
@@ -156,6 +160,32 @@ namespace STEP_PORTAL.Models
                 new ObjectParameter("RegId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_UserMenu_Result>("prc_UserMenu", regIdParameter);
+        }
+    
+        public virtual ObjectResult<prc_GetKPIOutcomeByRegIdOrSectionName_Result> prc_GetKPIOutcomeByRegIdOrSectionName(Nullable<int> regId, string sectionName)
+        {
+            var regIdParameter = regId.HasValue ?
+                new ObjectParameter("RegId", regId) :
+                new ObjectParameter("RegId", typeof(int));
+    
+            var sectionNameParameter = sectionName != null ?
+                new ObjectParameter("SectionName", sectionName) :
+                new ObjectParameter("SectionName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKPIOutcomeByRegIdOrSectionName_Result>("prc_GetKPIOutcomeByRegIdOrSectionName", regIdParameter, sectionNameParameter);
+        }
+    
+        public virtual ObjectResult<prc_GetKraKpiByRegIdOrSectionName_Result> prc_GetKraKpiByRegIdOrSectionName(Nullable<int> regId, string sectionName)
+        {
+            var regIdParameter = regId.HasValue ?
+                new ObjectParameter("RegId", regId) :
+                new ObjectParameter("RegId", typeof(int));
+    
+            var sectionNameParameter = sectionName != null ?
+                new ObjectParameter("SectionName", sectionName) :
+                new ObjectParameter("SectionName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKraKpiByRegIdOrSectionName_Result>("prc_GetKraKpiByRegIdOrSectionName", regIdParameter, sectionNameParameter);
         }
     }
 }

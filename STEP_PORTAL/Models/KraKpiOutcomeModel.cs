@@ -8,6 +8,7 @@ public class KraKpiOutcomeModel
         public string KRA { get; set; }
         public string KPI { get; set; }
         public int REG_ID { get; set; }
+        public decimal AVG_Marks_Achieved { get; set; }
         public string EmployeeCode { get; set; }
         public string Section_Name { get; set; }
         public string Name { get; set; }

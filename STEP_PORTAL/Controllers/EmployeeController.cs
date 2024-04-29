@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using STEP_PORTAL.Helpers;
 using System.Web.Security;
 using System.Globalization;
+using STEP_DEMO.Models;
 
 namespace STEP_PORTAL.Controllers
 {
@@ -187,7 +188,8 @@ namespace STEP_PORTAL.Controllers
             {*/
                 using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
                 {
-                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId)
+                int sesn = 0;
+                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId, sesn)
                                         .Where(data => data.ApprovalSent != null)
                                         .Select(data => data.ApprovalSent)
                                         .Distinct()
@@ -237,7 +239,8 @@ namespace STEP_PORTAL.Controllers
 
                 using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
                 {
-                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId)
+                int sesn = 0;
+                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId, sesn)
                     .Where(data => data.ApprovalSent != null)
                     .Select(data => data.ApprovalSent)
                     .Distinct()

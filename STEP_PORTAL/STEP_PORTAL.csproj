@@ -198,6 +198,12 @@
     <Compile Include="Models\prc_GetEmployeeListByDeptHead_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\prc_GetKPIOutcomeByRegIdOrSectionName_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetKraKpiByRegIdOrSectionName_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\prc_GetKraKpiOutcomeData_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
