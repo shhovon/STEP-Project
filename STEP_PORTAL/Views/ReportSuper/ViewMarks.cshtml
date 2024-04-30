@@ -23,8 +23,8 @@
     <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
     <br />
     <div>
-        <p><strong>Employee Code: @ViewBag.EmployeeCode</strong></p>
-        <p><strong>Employee Name: @ViewBag.EmployeeName</strong></p>
+        <p><strong>Employee Code: @Session["EmployeeCode"]</strong></p>
+        <p><strong>Employee Name: @Session["Name"]</strong></p>
     </div>
     <br />
 
@@ -34,6 +34,8 @@
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
+                        <th>KRA</th>
+                        <th>KPI</th>
                         <th>Outcome</th>
                         <th>Performance Marks</th>
                         @* <th>Total Average</th>*@
@@ -43,6 +45,8 @@
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td>@item.KRA</td>
+                            <td>@item.KPI</td>
                             <td>@item.KPI_OUTCOME</td>
                             <td>@item.Marks_Achieved</td>
                             @*  <td id="averageMarks"></td>*@
@@ -56,6 +60,23 @@
     {
         <p>No marks data available</p>
     }
+    <br /><br />
+    <div style=" padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
+            <input type="text" disabled id="comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <br>
+    </div>
+    <br />
+    
+    <div style=" padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <form>
+            <label for="comment" style="font-weight: bold; color: #333;">Employee's Comment:</label><br>
+            <input type="text" id="comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <br>
+            <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+        </form>
+    </div>
+
 </body>
 
 @section scripts {

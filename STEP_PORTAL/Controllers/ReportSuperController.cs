@@ -171,15 +171,29 @@ namespace STEP_PORTAL.Controllers
 
                 ViewBag.TopTaxPeriods = last2session;
 
-                marksData = db.STEPs
+
+/*                marksData = db.STEPs
                         .Where(s => s.REG_ID == regId)
                         .Select(s => new MarksData
                         {
                             KPI_OUTCOME = s.KPI_OUTCOME,
                             Marks_Achieved = s.Marks_Achieved ?? 0
                         })
-                        .ToList();
+                        .ToList();*/
+
+                 marksData = (from s in db.STEPs
+                                join k in db.KRAs on s.KRA_ID equals k.KRA_ID
+                                join kp in db.KPIs on s.KPI_ID equals kp.KPI_ID
+                                where s.REG_ID == regId
+                                select new MarksData
+                                {
+                                    KRA = k.KRA1,
+                                    KPI = kp.KPI1,
+                                    KPI_OUTCOME = s.KPI_OUTCOME,
+                                    Marks_Achieved = (int)s.Marks_Achieved
+                                }).ToList();
             }
+
 
             return View(marksData);
         }
