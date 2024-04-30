@@ -8,6 +8,15 @@
     ViewBag.Title = "Login";
 }
 
+@if (TempData["LoggedOut"] != null)
+{
+    <script>
+        window.localStorage.clear();
+    </script>
+    TempData.Remove("LoggedOut");
+}
+
+
 <div class="login-container">
     <h2>Login</h2>
     <br /><br />

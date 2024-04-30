@@ -33,12 +33,12 @@
             <option value="@taxPeriod">@taxPeriod</option>
         }
                 </select>
-            </div>
-                <div class="form-group">
-                @Html.DropDownList("companyId", ViewBag.Companies as SelectList, "Select an unit", new { @class = "form-control" })
-                @Html.ValidationMessage("companyId", "", new { @class = "text-danger" })
-                </div>
-               <button type="submit" class="btn btn-primary" id="submitButton" disabled>Search</button>}
+ </div>
+           <div class="form-group">
+           @Html.DropDownList("companyId", ViewBag.Companies as SelectList, "Select an unit", new { @class = "form-control" })
+           @Html.ValidationMessage("companyId", "", new { @class = "text-danger" })
+           </div>
+          <button type="submit" class="btn btn-primary" id="submitButton" disabled>Search</button>}
 
 
 <br />

@@ -510,11 +510,10 @@ namespace STEP_PORTAL.Controllers
             }
         }
 
-       
         public ActionResult Logout()
         {
             Session.Clear();
-            Session.Abandon();
+            TempData["LoggedOut"] = true;
             return RedirectToAction("Login", "Home");
         }
 
@@ -602,6 +601,12 @@ namespace STEP_PORTAL.Controllers
 
                         Session["selectedTaxPeriod"] = "";
                         var sessionId = Session["selectedTaxPeriod"].ToString();
+
+                        if (TempData["selectedTaxPeriod"] != null)
+                        {
+                            ViewBag.SelectedTaxPeriod = TempData["selectedTaxPeriod"].ToString();
+                        }
+
                         return View(compositeModel);
 
                     }
