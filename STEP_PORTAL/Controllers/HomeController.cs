@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 using System.Data.Entity.SqlServer;
 using STEP_DEMO.Models;
 
-namespace STEP_PORTAL.Controllers
+namespace STEP_DEMO.Controllers
 {
     public class HomeController : Controller
     {
@@ -19,7 +19,7 @@ namespace STEP_PORTAL.Controllers
         [HttpPost]
         public ActionResult Index(KraKpiViewModel model)
         {
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 int regId;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
@@ -99,7 +99,7 @@ namespace STEP_PORTAL.Controllers
         public ActionResult Outcome()
         {
 
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 int regId;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
@@ -140,7 +140,7 @@ namespace STEP_PORTAL.Controllers
         public ActionResult OutcomeNew()
         {
             OutcomeViewModel model = new OutcomeViewModel();
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 int regId;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
@@ -194,7 +194,7 @@ namespace STEP_PORTAL.Controllers
 
             try
             {
-                using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+                using (DB_STEPEntities db = new DB_STEPEntities())
                 {
                     foreach (var formDataItem in model.FormData)
                     {
@@ -231,7 +231,7 @@ namespace STEP_PORTAL.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 var companies = db.Company_Information
                                    .Select(c => new SelectListItem
@@ -251,7 +251,7 @@ namespace STEP_PORTAL.Controllers
         [ValidateAntiForgeryToken]      
         public ActionResult Login(LoginViewModel model)
         {
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 if (ModelState.IsValid)
                 {
@@ -379,7 +379,7 @@ namespace STEP_PORTAL.Controllers
             var regID = (int)Session["RegID"];
             var roleID = Convert.ToInt32(Session["Role"]);
 
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 long regId;
 
@@ -463,7 +463,7 @@ namespace STEP_PORTAL.Controllers
         }
         private tblRole GetRoleDetails(int roleId)
         {
-            using (var db = new EMP_EVALUATIONEntities())
+            using (var db = new DB_STEPEntities())
             {
                 var role = db.tblRoles.FirstOrDefault(r => r.ID == roleId);
 
@@ -481,7 +481,7 @@ namespace STEP_PORTAL.Controllers
 
         /* private IQueryable<tblMenu> GetAssignedMenuItems(tblRole role)
          {
-             using (var db = new EMP_EVALUATIONEntities())
+             using (var db = new DB_STEPEntities())
              {
                  if (role == null || string.IsNullOrEmpty(role.Menus))
                  {
@@ -496,7 +496,7 @@ namespace STEP_PORTAL.Controllers
 
         private List<tblMenu> GetAssignedMenuItems(tblRole role)
         {
-            using (var db = new EMP_EVALUATIONEntities())
+            using (var db = new DB_STEPEntities())
             {
                 if (role == null || string.IsNullOrEmpty(role.Menus))
                 {
@@ -522,7 +522,7 @@ namespace STEP_PORTAL.Controllers
         {
             int regId;
             List<string> sessionIds;
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 sessionIds = (from vs in db.View_StepDetails
                               join tax in db.New_Tax_Period on vs.SESSION_ID equals tax.TaxPerID
@@ -622,7 +622,7 @@ namespace STEP_PORTAL.Controllers
         [HttpPost]
         public ActionResult InsertKpiOutcomes(string selectedKRA, string selectedKPI, string kpiOutcomes, string selectedTaxPeriod)
         {
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 int regId;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
@@ -714,7 +714,7 @@ namespace STEP_PORTAL.Controllers
         public ActionResult GetFilteredData(string selectedSession, int regId)
         {
 
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 // retrieve the session ID from the selected session name
                 var taxPerId = (from st in db.STEPs
@@ -755,7 +755,7 @@ namespace STEP_PORTAL.Controllers
                 return RedirectToAction("DisplayKrasAndKpis");
             }
 
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 try
                 {

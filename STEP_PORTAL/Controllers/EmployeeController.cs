@@ -31,7 +31,7 @@ namespace STEP_PORTAL.Controllers
                     var regId = (int)Session["RegId"];
                     var sessionId = Session["selectedTaxPeriod"].ToString();
 
-                    using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+                    using (DB_STEPEntities db = new DB_STEPEntities())
                     {
                         var specialFactor = new tblSpecial_Factor
                         {
@@ -70,7 +70,7 @@ namespace STEP_PORTAL.Controllers
 
 /*                if (sessionId != null)*/
                 {
-                    using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+                    using (DB_STEPEntities db = new DB_STEPEntities())
                     {
                         int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
 
@@ -109,7 +109,7 @@ namespace STEP_PORTAL.Controllers
                     var regId = (int)Session["RegId"];
                     var sessionId = Session["selectedTaxPeriod"].ToString();
 
-                    using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+                    using (DB_STEPEntities db = new DB_STEPEntities())
                     {
                         var training = new tblTraining_Need
                         {
@@ -151,7 +151,7 @@ namespace STEP_PORTAL.Controllers
 
 /*                if (sessionId != null)*/
                 {
-                    using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+                    using (DB_STEPEntities db = new DB_STEPEntities())
                     {
                         int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
 
@@ -186,7 +186,7 @@ namespace STEP_PORTAL.Controllers
 
 /*            try
             {*/
-                using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+                using (DB_STEPEntities db = new DB_STEPEntities())
                 {
                 int sesn = 0;
                     var approvalSent = db.prc_GetKraKpiOutcomeData(regId, sesn)
@@ -237,7 +237,7 @@ namespace STEP_PORTAL.Controllers
                 }
 
 
-                using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+                using (DB_STEPEntities db = new DB_STEPEntities())
                 {
                 int sesn = 0;
                     var approvalSent = db.prc_GetKraKpiOutcomeData(regId, sesn)
@@ -281,7 +281,7 @@ namespace STEP_PORTAL.Controllers
         {
             var regId = (int)Session["RegId"];
 
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 var kraKpiData = (from kra in db.KRAs
                                   join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
@@ -331,7 +331,7 @@ namespace STEP_PORTAL.Controllers
             var sessionId = (int)Session["selectedTaxPeriod"];
             var regId = (int)Session["RegId"];
 
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
 
                 var existingRecord = db.tbl_StepMaster.FirstOrDefault(record =>

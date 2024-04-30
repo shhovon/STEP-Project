@@ -316,6 +316,16 @@
                 getFilteredData(selectedSession, regId);
             });
 
+            // null validation
+
+@*            $("#outcomeEntryBtn, #specialFactorsBtn, #trainingNeedBtn").click(function (e) {
+                var selectedTaxPeriod = $('#selectedTaxPeriod').val();
+
+                if (!selectedTaxPeriod || selectedTaxPeriod === "") {
+                    e.preventDefault();
+                    alert("Choose a session first");
+                }
+            });*@
 
             // session selection
 
@@ -461,13 +471,6 @@
                 }
             });
 
-            $("#outcomeEntryBtn, #specialFactorsBtn, #trainingNeedBtn").click(function (e) {
-                var selectedTaxPeriod = $("#selectedTaxPeriod").val();
-                if (!selectedTaxPeriod || selectedTaxPeriod === "0") {
-                    e.preventDefault();
-                    alert("Choose a session first");
-                }
-            });
         });
     </script>
 }

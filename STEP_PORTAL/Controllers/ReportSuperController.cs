@@ -23,7 +23,7 @@ namespace STEP_PORTAL.Controllers
         public ActionResult AddMarks()
         {
             List<EmployeeViewModel> employeeInfo = new List<EmployeeViewModel>();
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 int deptHeadValue;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
@@ -61,7 +61,7 @@ namespace STEP_PORTAL.Controllers
 
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
                 {
-                    using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+                    using (DB_STEPEntities db = new DB_STEPEntities())
                     {
                         var last2session = (db.New_Tax_Period
                                      .OrderByDescending(t => t.TaxPeriod)
@@ -126,7 +126,7 @@ namespace STEP_PORTAL.Controllers
         {
             if (model != null && marksUpdateModel != null)
             {
-                using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+                using (DB_STEPEntities db = new DB_STEPEntities())
                 {
                     foreach (var item in marksUpdateModel)
                     {
@@ -163,7 +163,7 @@ namespace STEP_PORTAL.Controllers
         {
             int? regId = Session["RegId"] as int?;
             List<MarksData> marksData;
-            using (var db = new EMP_EVALUATIONEntities())
+            using (var db = new DB_STEPEntities())
             {
                 var last2session = (db.New_Tax_Period
                                    .OrderByDescending(t => t.TaxPeriod)
@@ -190,7 +190,7 @@ namespace STEP_PORTAL.Controllers
         public ActionResult ViewMarks(int regId)
         {
             List<MarksData> marksData;
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
 /*                if (!string.IsNullOrEmpty(regId))*/
                 {

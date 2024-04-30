@@ -172,9 +172,6 @@
     <Compile Include="Models\CustomAuthorize.cs" />
     <Compile Include="Models\CustomErrorHandler.cs" />
     <Compile Include="Models\DisplayAllDataViewModel.cs" />
-    <Compile Include="Models\fnSplitString_Result.cs">
-      <DependentUpon>StepModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\KPI.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
@@ -217,6 +214,7 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SpecialFactorViewModel.cs" />
+    <Compile Include="Models\EmployeeSessionViewModel .cs" />
     <Compile Include="Models\STEP.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
@@ -235,7 +233,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StepModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\EmployeeSessionViewModel .cs" />
     <Compile Include="Models\tblMarksEntryHistory.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>

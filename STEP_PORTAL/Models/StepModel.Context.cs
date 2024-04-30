@@ -14,11 +14,12 @@ namespace STEP_DEMO.Models
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    
-    public partial class EMP_EVALUATIONEntities : DbContext
+    using STEP_PORTAL.Models;
+
+    public partial class DB_STEPEntities : DbContext
     {
-        public EMP_EVALUATIONEntities()
-            : base("name=EMP_EVALUATIONEntities")
+        public DB_STEPEntities()
+            : base("name=DB_STEPEntities")
         {
         }
     
@@ -41,20 +42,6 @@ namespace STEP_DEMO.Models
         public virtual DbSet<New_Tax_Period> New_Tax_Period { get; set; }
         public virtual DbSet<tblMenu> tblMenus { get; set; }
         public virtual DbSet<View_StepDetails> View_StepDetails { get; set; }
-    
-        [DbFunction("EMP_EVALUATIONEntities", "fnSplitString")]
-        public virtual IQueryable<fnSplitString_Result> fnSplitString(string @string, string delimiter)
-        {
-            var stringParameter = @string != null ?
-                new ObjectParameter("string", @string) :
-                new ObjectParameter("string", typeof(string));
-    
-            var delimiterParameter = delimiter != null ?
-                new ObjectParameter("delimiter", delimiter) :
-                new ObjectParameter("delimiter", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnSplitString_Result>("[EMP_EVALUATIONEntities].[fnSplitString](@string, @delimiter)", stringParameter, delimiterParameter);
-        }
     
         public virtual ObjectResult<prc_EmployeeInfoByEmpCode_Result> prc_EmployeeInfoByEmpCode(Nullable<int> compID, string empCode)
         {
@@ -103,6 +90,32 @@ namespace STEP_DEMO.Models
                 new ObjectParameter("CompanyId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prc_GetEmployeesByCompany", companyIdParameter);
+        }
+    
+        public virtual ObjectResult<prc_GetKPIOutcomeByRegIdOrSectionName_Result> prc_GetKPIOutcomeByRegIdOrSectionName(Nullable<int> regId, string sectionName)
+        {
+            var regIdParameter = regId.HasValue ?
+                new ObjectParameter("RegId", regId) :
+                new ObjectParameter("RegId", typeof(int));
+    
+            var sectionNameParameter = sectionName != null ?
+                new ObjectParameter("SectionName", sectionName) :
+                new ObjectParameter("SectionName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKPIOutcomeByRegIdOrSectionName_Result>("prc_GetKPIOutcomeByRegIdOrSectionName", regIdParameter, sectionNameParameter);
+        }
+    
+        public virtual ObjectResult<prc_GetKraKpiByRegIdOrSectionName_Result> prc_GetKraKpiByRegIdOrSectionName(Nullable<int> regId, string sectionName)
+        {
+            var regIdParameter = regId.HasValue ?
+                new ObjectParameter("RegId", regId) :
+                new ObjectParameter("RegId", typeof(int));
+    
+            var sectionNameParameter = sectionName != null ?
+                new ObjectParameter("SectionName", sectionName) :
+                new ObjectParameter("SectionName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKraKpiByRegIdOrSectionName_Result>("prc_GetKraKpiByRegIdOrSectionName", regIdParameter, sectionNameParameter);
         }
     
         public virtual ObjectResult<prc_GetKraKpiOutcomeData_Result> prc_GetKraKpiOutcomeData(Nullable<int> regId, Nullable<int> sESSION_ID)
@@ -160,32 +173,6 @@ namespace STEP_DEMO.Models
                 new ObjectParameter("RegId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_UserMenu_Result>("prc_UserMenu", regIdParameter);
-        }
-    
-        public virtual ObjectResult<prc_GetKPIOutcomeByRegIdOrSectionName_Result> prc_GetKPIOutcomeByRegIdOrSectionName(Nullable<int> regId, string sectionName)
-        {
-            var regIdParameter = regId.HasValue ?
-                new ObjectParameter("RegId", regId) :
-                new ObjectParameter("RegId", typeof(int));
-    
-            var sectionNameParameter = sectionName != null ?
-                new ObjectParameter("SectionName", sectionName) :
-                new ObjectParameter("SectionName", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKPIOutcomeByRegIdOrSectionName_Result>("prc_GetKPIOutcomeByRegIdOrSectionName", regIdParameter, sectionNameParameter);
-        }
-    
-        public virtual ObjectResult<prc_GetKraKpiByRegIdOrSectionName_Result> prc_GetKraKpiByRegIdOrSectionName(Nullable<int> regId, string sectionName)
-        {
-            var regIdParameter = regId.HasValue ?
-                new ObjectParameter("RegId", regId) :
-                new ObjectParameter("RegId", typeof(int));
-    
-            var sectionNameParameter = sectionName != null ?
-                new ObjectParameter("SectionName", sectionName) :
-                new ObjectParameter("SectionName", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKraKpiByRegIdOrSectionName_Result>("prc_GetKraKpiByRegIdOrSectionName", regIdParameter, sectionNameParameter);
         }
     }
 }

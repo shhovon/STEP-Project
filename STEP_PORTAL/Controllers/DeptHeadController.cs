@@ -1,5 +1,6 @@
 ﻿using STEP_DEMO.Models;
 using STEP_PORTAL.Models;
+using STEP_PORTAL.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -17,7 +18,7 @@ namespace STEP_PORTAL.Controllers
 
         public List<EmployeeInfo> GetEmployeeListByDeptHead(int deptHeadValue, int companyId)
         {
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 var employees = db.Database.SqlQuery<EmployeeInfo>("exec prc_GetTeamMember @RegID, @CompID",
                     new SqlParameter("@RegID", deptHeadValue),
@@ -30,7 +31,7 @@ namespace STEP_PORTAL.Controllers
         private List<CompanyViewModel> GetCompanies()
         {
             List<CompanyViewModel> companies = new List<CompanyViewModel>();
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 companies = db.Company_Information
                               .Select(c => new CompanyViewModel
@@ -60,7 +61,7 @@ namespace STEP_PORTAL.Controllers
             ViewBag.Companies = new SelectList(companies, "ID", "Name");
 
             List<string> topTaxPeriods = new List<string>();
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 topTaxPeriods = db.New_Tax_Period
                                 .OrderByDescending(t => t.TaxPeriod)
@@ -97,7 +98,7 @@ namespace STEP_PORTAL.Controllers
             ViewBag.Companies = new SelectList(companies, "ID", "Name", companyId);
 
             List<string> topTaxPeriods = new List<string>();
-            using (EMP_EVALUATIONEntities db = new EMP_EVALUATIONEntities())
+            using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 topTaxPeriods = db.New_Tax_Period
                                 .OrderByDescending(t => t.TaxPeriod)
