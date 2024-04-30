@@ -222,7 +222,6 @@ namespace STEP_DEMO.Controllers
             }
             catch (Exception ex)
             {
-                // Handle exception
                 return RedirectToAction("OutcomeNew");
             }
         }
@@ -351,8 +350,6 @@ namespace STEP_DEMO.Controllers
                 return View("Login", model);
             }
         }
-
-
 
         protected string GetIPAddress()
         {
@@ -714,29 +711,44 @@ namespace STEP_DEMO.Controllers
         public ActionResult GetFilteredData(string selectedSession, int regId)
         {
 
-            using (DB_STEPEntities db = new DB_STEPEntities())
+            using (DB_STEPEntities dbContext = new DB_STEPEntities())
             {
                 // retrieve the session ID from the selected session name
-                var taxPerId = (from st in db.STEPs
-                                join tax in db.New_Tax_Period on st.SESSION_ID equals tax.TaxPerID
+                var taxPerId = (from st in dbContext.STEPs
+                                join tax in dbContext.New_Tax_Period on st.SESSION_ID equals tax.TaxPerID
                                 where tax.TaxPeriod == selectedSession && tax.KPI_Enty == true
                                 select st.SESSION_ID).FirstOrDefault();
 
                 // filter the data based on the selected session ID
-                var kraKpiData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiByRegIdOrSectionName @RegId, @SectionName",
+                var kraKpiData = dbContext.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiByRegIdOrSectionName @RegId, @SectionName",
                                new SqlParameter("RegId", regId),
                                new SqlParameter("SectionName", selectedSession)).ToList();
 
-                int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedSession).Select(t => t.TaxPerID).FirstOrDefault();
+                int? sessionID = dbContext.New_Tax_Period.Where(t => t.TaxPeriod == selectedSession).Select(t => t.TaxPerID).FirstOrDefault();
+/*                int selectedTaxPeriod = Convert.ToInt32(Session["SelectedTaxPeriod"]);*/
 
-                var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                var kraKpiOutcomeData = dbContext.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                                new SqlParameter("@RegId", regId),
                                new SqlParameter("@SESSION_ID", sessionID)).ToList();
+
+                var stepData = (from s in dbContext.STEPs
+                                join k in dbContext.KRAs on s.KRA_ID equals k.KRA_ID
+                                join kp in dbContext.KPIs on s.KPI_ID equals kp.KPI_ID
+                                where s.REG_ID == regId
+                                select new KraKpiViewModel
+                                {
+                                    KRA = k.KRA1,
+                                    KPI = kp.KPI1,
+                                    KPI_OUTCOME = s.KPI_OUTCOME,
+                                    KRA_ID = k.KRA_ID,
+                                    KPI_ID = kp.KPI_ID
+                                }).ToList();
 
                 var result = new
                 {
                     KraKpiData = kraKpiData,
-                    KraKpiOutcomeData = kraKpiOutcomeData
+                    KraKpiOutcomeData = kraKpiOutcomeData,
+                    StepData = stepData
                 };
 
                 Session["selectedTaxPeriod"]= taxPerId;
@@ -747,7 +759,7 @@ namespace STEP_DEMO.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteSession(int kraId, int kpiId, string kpiOutcome)
+        public ActionResult DeleteSession(int kraId, int kpiId)
         {
             int regId;
             if (!int.TryParse(Session["RegID"].ToString(), out regId))
@@ -759,12 +771,9 @@ namespace STEP_DEMO.Controllers
             {
                 try
                 {
-                    var sessionID="";
-                    Session["selectedTaxPeriod"] = sessionID;
+                    int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
 
-                    int sesn = 0;
-
-                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId, sesn)
+                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId, selectedTaxPeriod)
                         .Where(data => data.ApprovalSent != null)
                         .Select(data => data.ApprovalSent)
                         .Distinct()
@@ -777,7 +786,7 @@ namespace STEP_DEMO.Controllers
                     }
 
                     var itemToDelete = db.STEPs.FirstOrDefault(step =>
-                        step.KRA_ID == kraId && step.KPI_ID == kpiId && step.KPI_OUTCOME == kpiOutcome);
+                       step.REG_ID == regId && step.SESSION_ID == selectedTaxPeriod && step.KRA_ID == kraId && step.KPI_ID == kpiId );
 
                     if (itemToDelete != null)
                     {
@@ -794,6 +803,17 @@ namespace STEP_DEMO.Controllers
             }
         }
 
+
+        [HttpPost]
+        public ActionResult UpdateSelectedSession(string selectedSession)
+        {
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedSession).Select(t => t.TaxPerID).FirstOrDefault();
+                Session["SelectedTaxPeriod"] = sessionID;
+            }
+            return Json(new { success = true });
+        }
 
 
 

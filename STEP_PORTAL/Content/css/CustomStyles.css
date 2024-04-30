@@ -220,27 +220,27 @@ input[type="submit"] {
 
     .user-info-table th:first-child,
     .user-info-table td:first-child {
-        width: 40%; /* Adjust as needed */
+        /*   width: 40%; Adjust as needed */
     }
 
     .user-info-table th:nth-child(2),
     .user-info-table td:nth-child(2) {
-        width: 30%; /* Adjust as needed */
+        /* width: 30%; Adjust as needed */
     }
 
     .user-info-table th:nth-child(3),
     .user-info-table td:nth-child(3) {
-        width: 30%; /* Adjust as needed */
+        /* width: 30%; Adjust as needed */
     }
 
     .user-info-table th:nth-child(4),
     .user-info-table td:nth-child(4) {
-        width: 30%; /* Adjust as needed */
+        /*    width: 30%; Adjust as needed */
     }
 
     .user-info-table th:nth-child(5),
     .user-info-table td:nth-child(5) {
-        width: 40%; /* Adjust as needed */
+        /* width: 40%; Adjust as needed */
     }
 
 .user-info-table {
