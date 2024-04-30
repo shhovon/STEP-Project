@@ -162,41 +162,19 @@ namespace STEP_PORTAL.Controllers
         public ActionResult ViewMarks()
         {
             int? regId = Session["RegId"] as int?;
-            List<MarksData> marksData;
+            List<KraKpiOutcomeModel> kraKpiOutcomeData;
             using (var db = new DB_STEPEntities())
             {
-                var last2session = (db.New_Tax_Period
-                                   .OrderByDescending(t => t.TaxPeriod)
-                                   .Select(t => t.TaxPeriod).Take(2).ToList());
-
-                ViewBag.TopTaxPeriods = last2session;
-
-
-/*                marksData = db.STEPs
-                        .Where(s => s.REG_ID == regId)
-                        .Select(s => new MarksData
-                        {
-                            KPI_OUTCOME = s.KPI_OUTCOME,
-                            Marks_Achieved = s.Marks_Achieved ?? 0
-                        })
-                        .ToList();*/
-
-                 marksData = (from s in db.STEPs
-                                join k in db.KRAs on s.KRA_ID equals k.KRA_ID
-                                join kp in db.KPIs on s.KPI_ID equals kp.KPI_ID
-                                where s.REG_ID == regId
-                                select new MarksData
-                                {
-                                    KRA = k.KRA1,
-                                    KPI = kp.KPI1,
-                                    KPI_OUTCOME = s.KPI_OUTCOME,
-                                    Marks_Achieved = (int)s.Marks_Achieved
-                                }).ToList();
+               int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
+               kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+               new SqlParameter("@RegId", regId),
+               new SqlParameter("@SESSION_ID", selectedTaxPeriod)).ToList();
             }
 
 
-            return View(marksData);
+            return View(kraKpiOutcomeData);
         }
+
 
         // view marks based on employee code
 
