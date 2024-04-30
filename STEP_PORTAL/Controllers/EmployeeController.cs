@@ -188,8 +188,8 @@ namespace STEP_PORTAL.Controllers
             {*/
                 using (DB_STEPEntities db = new DB_STEPEntities())
                 {
-                int sesn = 0;
-                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId, sesn)
+                    int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
+                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId, selectedTaxPeriod)
                                         .Where(data => data.ApprovalSent != null)
                                         .Select(data => data.ApprovalSent)
                                         .Distinct()
@@ -239,8 +239,8 @@ namespace STEP_PORTAL.Controllers
 
                 using (DB_STEPEntities db = new DB_STEPEntities())
                 {
-                int sesn = 0;
-                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId, sesn)
+                    int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
+                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId, selectedTaxPeriod)
                     .Where(data => data.ApprovalSent != null)
                     .Select(data => data.ApprovalSent)
                     .Distinct()
