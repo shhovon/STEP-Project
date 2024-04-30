@@ -165,6 +165,13 @@ namespace STEP_PORTAL.Controllers
             List<KraKpiOutcomeModel> kraKpiOutcomeData;
             using (var db = new DB_STEPEntities())
             {
+                var last2session = (db.New_Tax_Period
+                                   .OrderByDescending(t => t.TaxPeriod)
+                                   .Select(t => t.TaxPeriod).Take(2).ToList());
+
+                ViewBag.TopTaxPeriods = last2session;
+
+
                int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
                kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                new SqlParameter("@RegId", regId),
