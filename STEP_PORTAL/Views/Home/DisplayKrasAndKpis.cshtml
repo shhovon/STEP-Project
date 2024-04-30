@@ -318,14 +318,18 @@
 
             // null validation
 
-@*            $("#outcomeEntryBtn, #specialFactorsBtn, #trainingNeedBtn").click(function (e) {
-                var selectedTaxPeriod = $('#selectedTaxPeriod').val();
+            var firstOptionValue = $('#taxPeriodDropdownMV option:first').val();
+            console.log(firstOptionValue)
 
-                if (!selectedTaxPeriod || selectedTaxPeriod === "") {
+            $("#outcomeEntryBtn, #specialFactorsBtn, #trainingNeedBtn").click(function (e) {
+                var selectedOption = $('#taxPeriodDropdownMV option:selected').val();
+                console.log(selectedOption)
+
+                if (selectedOption === firstOptionValue) {
                     e.preventDefault();
                     alert("Choose a session first");
                 }
-            });*@
+            });
 
             // session selection
 
