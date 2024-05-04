@@ -348,6 +348,7 @@
     <Content Include="Content\images\faces\face7.jpg" />
     <Content Include="Content\images\faces\face8.jpg" />
     <Content Include="Content\images\faces\face9.jpg" />
+    <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\images\file-icons\128\001-interface-1.png" />
     <Content Include="Content\images\file-icons\128\002-tool.png" />
     <Content Include="Content\images\file-icons\128\003-interface.png" />
@@ -380,6 +381,10 @@
     <Content Include="Content\images\file-icons\64\006-record.png" />
     <Content Include="Content\images\file-icons\64\007-folder.png" />
     <Content Include="Content\images\file-icons\64\008-archive.png" />
+    <Content Include="Content\images\Home.jpg" />
+    <Content Include="Content\images\kpi_1.jpg" />
+    <Content Include="Content\images\kpi_2.jpg" />
+    <Content Include="Content\images\kpi_3.jpg" />
     <Content Include="Content\images\lightbox\play-button.png" />
     <Content Include="Content\images\lightbox\thumb-v-v-1.jpg" />
     <Content Include="Content\images\lightbox\thumb-v-v-2.jpg" />

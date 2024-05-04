@@ -149,7 +149,7 @@
 
 
 
-@* new navigation buttons   *@
+@*  new navigation buttons   *@
 
 
 <div class="card">
@@ -421,10 +421,18 @@
                 });
             });
 
+
+
             $('#taxPeriodDropdown').change(function () {
                 var selectedTaxPeriod = $(this).val();
                 $('#selectedTaxPeriod').val(selectedTaxPeriod);
             });
+
+                        // new modal dropdown logic
+
+@*            taxPeriodDropdown.addEventListener('change', function () {
+                localStorage.setItem('selectedTaxPeriod', this.value);
+            });*@
 
             $('#outcomeForm').submit(function (event) {
                 event.preventDefault();
@@ -452,8 +460,9 @@
             });
 
 
-            function updateModalDropdown(selectedSession) {
-                document.getElementById("selectedTaxPeriod").value = selectedSession;
+            function updateModalDropdown() {
+               // document.getElementById("selectedTaxPeriod").value = selectedSession;
+                var selectedSession = localStorage.getItem('selectedTaxPeriod') || $('#taxPeriodDropdownMV').val();
                 var modalDropdown = document.getElementById("taxPeriodDropdown");
                 modalDropdown.innerHTML = '';
                 modalDropdown.disabled = true;
@@ -466,12 +475,12 @@
 
             document.getElementById("taxPeriodDropdownMV").addEventListener("change", function () {
                 var selectedSession = this.value;
-                updateModalDropdown(selectedSession);
+                updateModalDropdown();
             });
 
             $('#myModal').on('show.bs.modal', function (e) {
-                var selectedSession = document.getElementById("selectedTaxPeriod").value;
-                updateModalDropdown(selectedSession);
+                //var selectedSession = document.getElementById("selectedTaxPeriod").value;
+                updateModalDropdown();
             });
 
             $('.delete-btn').click(function () {
