@@ -140,76 +140,76 @@
                     @*                    OLD NAVBAR                *@
 
                     @*@if (Session["AssignedMenuItems"] != null)
+        {
+            var assignedMenuItems = Session["AssignedMenuItems"] as List<tblMenu>;
+
+            if (assignedMenuItems != null && assignedMenuItems.Any())
+            {
+                <ul class="nav flex-column">
+                    @foreach (var menuItem in assignedMenuItems)
                     {
-                        var assignedMenuItems = Session["AssignedMenuItems"] as List<tblMenu>;
-
-                        if (assignedMenuItems != null && assignedMenuItems.Any())
+                        var menuUrlParts = menuItem.Menu_URL.Split('/');
+                        if (menuUrlParts.Length >= 2)
                         {
-                            <ul class="nav flex-column">
-                                @foreach (var menuItem in assignedMenuItems)
-                                {
-                                    var menuUrlParts = menuItem.Menu_URL.Split('/');
-                                    if (menuUrlParts.Length >= 2)
+                            var controller = menuUrlParts[0];
+                            var view = menuUrlParts[1];
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action(view, controller)">
+                                    <i class="icon-layout menu-icon"></i>
+                                    <span class="menu-title">@menuItem.Menu_Name</span>
+                                </a>
+                                @{
+                                    var UserMenus = ViewBag.UserMenus as IEnumerable<STEP_PORTAL.Models.UserMenu>;
+                                    if (UserMenus != null)
                                     {
-                                        var controller = menuUrlParts[0];
-                                        var view = menuUrlParts[1];
-
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="@Url.Action(view, controller)">
-                                                <i class="icon-layout menu-icon"></i>
-                                                <span class="menu-title">@menuItem.Menu_Name</span>
-                                            </a>
-                                            @{
-                                                var UserMenus = ViewBag.UserMenus as IEnumerable<STEP_PORTAL.Models.UserMenu>;
-                                                if (UserMenus != null)
+                                        var SubMenus = UserMenus.Where(p => p.Main_Menu_Id == menuItem.ID.ToString()).ToList();
+                                        if (SubMenus != null && SubMenus.Any())
+                                        {
+                                            <ul class="nav flex-column sub-menu">
+                                                @foreach (var subMenuItem in SubMenus)
                                                 {
-                                                    var SubMenus = UserMenus.Where(p => p.Main_Menu_Id == menuItem.ID.ToString()).ToList();
-                                                    if (SubMenus != null && SubMenus.Any())
+                                                    var submenuUrlParts = subMenuItem.Menu_URL.Split('/');
+                                                    if (submenuUrlParts.Length >= 2)
                                                     {
-                                                        <ul class="nav flex-column sub-menu">
-                                                            @foreach (var subMenuItem in SubMenus)
-                                                            {
-                                                                var submenuUrlParts = subMenuItem.Menu_URL.Split('/');
-                                                                if (submenuUrlParts.Length >= 2)
-                                                                {
-                                                                    var submenuController = submenuUrlParts[0];
-                                                                    var submenuView = submenuUrlParts[1];
+                                                        var submenuController = submenuUrlParts[0];
+                                                        var submenuView = submenuUrlParts[1];
 
-                                                                    <li class="nav-item">
-                                                                        <a class="nav-link" href="@Url.Action(submenuView, submenuController)">
-                                                                            <i class="icon-layout menu-icon"></i>
-                                                                            <span class="menu-title">@subMenuItem.Menu_Name</span>
-                                                                        </a>
-                                                                    </li>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <li>view or controller not found</li>
-                                                                }
-                                                            }
-                                                        </ul>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" href="@Url.Action(submenuView, submenuController)">
+                                                                <i class="icon-layout menu-icon"></i>
+                                                                <span class="menu-title">@subMenuItem.Menu_Name</span>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>view or controller not found</li>
                                                     }
                                                 }
-                                            }
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li>Invalid menu URL format</li>
+                                            </ul>
+                                        }
                                     }
                                 }
-                            </ul>
+                            </li>
                         }
                         else
                         {
-                            <li>No assigned menus found</li>
+                            <li>Invalid menu URL format</li>
                         }
                     }
-                    else
-                    {
-                        <li>Error: AssignedMenuItems session variable is null</li>
-                    }
-*@
+                </ul>
+            }
+            else
+            {
+                <li>No assigned menus found</li>
+            }
+        }
+        else
+        {
+            <li>Error: AssignedMenuItems session variable is null</li>
+        }
+                    *@
 
 
 
@@ -218,39 +218,39 @@
                     @*STATIC LAYOUT*@
 
                     <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("Dashboard", "Home")">
-                <i class="icon-grid menu-icon"></i>
-                <span class="menu-title">Dashboard</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-                <i class="icon-layout menu-icon"></i>
-                <span class="menu-title">KRA/KPI Entry</span>
-                <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-basic">
-                <ul class="nav flex-column sub-menu">
-                    @*<li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "Home")">Master Data Entry</a></li>*@
-                    <li class="nav-item"> <a class="nav-link" href="@Url.Action("Outcome", "Home")">View List of KRA/KPI</a></li>
-                </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-                <i class="icon-columns menu-icon"></i>
-                <span class="menu-title">KPI Outcome Entry</span>
-                <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="form-elements">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("DisplayKrasAndKpis", "Home")">Current Year</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("DisplayKrasAndKpis", "Home")">Next Year</a></li>
-                </ul>
-            </div>
-        </li>
+                        <a class="nav-link" href="@Url.Action("Dashboard", "Home")">
+                            <i class="icon-grid menu-icon"></i>
+                            <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                            <i class="icon-layout menu-icon"></i>
+                            <span class="menu-title">KRA/KPI Entry</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="ui-basic">
+                            <ul class="nav flex-column sub-menu">
+                                @*<li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "Home")">Master Data Entry</a></li>*@
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Outcome", "Home")">View List of KRA/KPI</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+                            <i class="icon-columns menu-icon"></i>
+                            <span class="menu-title">KPI Outcome Entry</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="form-elements">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"><a class="nav-link" href="@Url.Action("DisplayKrasAndKpis", "Home")">Current Year</a></li>
+                                <li class="nav-item"><a class="nav-link" href="@Url.Action("DisplayKrasAndKpis", "Home")">Next Year</a></li>
+                            </ul>
+                        </div>
+                    </li>
 
-@*        <li class="nav-item">
+                    @*        <li class="nav-item">
             <a class="nav-link" href="@Url.Action("SpecialFactors", "Employee")">
                 <i class="icon-paper menu-icon"></i>
                 <span class="menu-title">Add Special Factors</span>
@@ -263,24 +263,31 @@
             </a>
         </li>*@
 
-        <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("ViewEmpList", "DeptHead")">
-                <i class="icon-paper menu-icon"></i>
-                <span class="menu-title">Add Performance Marks</span>
-            </a>
-        </li>
-@*        <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ViewEmpList", "DeptHead")">
+                            <i class="icon-paper menu-icon"></i>
+                            <span class="menu-title">Add Performance Marks</span>
+                        </a>
+                    </li>
+                    @*        <li class="nav-item">
             <a class="nav-link" href="@Url.Action("AddMarks", "ReportSuper")">
                 <i class="icon-paper menu-icon"></i>
                 <span class="menu-title">Add Performance Marks</span>
             </a>
         </li>*@
                     <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("ViewMarks", "ReportSuper")">
-                <i class="icon-paper menu-icon"></i>
-                <span class="menu-title">View Performance Marks</span>
-            </a>
-        </li>
+                        <a class="nav-link" href="@Url.Action("ViewMarks", "ReportSuper")">
+                            <i class="icon-paper menu-icon"></i>
+                            <span class="menu-title">View Performance Marks</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ViewEmpListHR", "HR")">
+                            <i class="icon-paper menu-icon"></i>
+                            <span class="menu-title">HR Add Performance Marks</span>
+                        </a>
+                    </li>
 
 
                 </ul>

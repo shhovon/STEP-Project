@@ -1,0 +1,118 @@
+﻿@*@model List<STEP_PORTAL.Models.EmployeeInfo>*@
+@model EmployeeSessionViewModelClass
+
+
+
+<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
+</head>
+
+@using (Html.BeginForm("AddMarksHR", "HR", FormMethod.Post, new { id = "employeeForm" }))
+{
+    @Html.Hidden("regID", null, new { id = "regIDField" })
+}
+
+@using (Html.BeginForm("ViewMarks", "ReportSuper", FormMethod.Post, new { id = "viewMarksForm" }))
+{
+    @Html.Hidden("regID", null, new { id = "viewregIDField" })
+}
+
+<h3 style="text-align:center;">Team Member List</h3>
+<br />
+<br />
+
+@using (Html.BeginForm("ViewEmpListHR", "HR", FormMethod.Post, new { id = "viewEmpListForm" }))
+{
+    <div class="dropdown-container">
+        <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
+        <br />
+        <select id="taxPeriodDropdownMV" class="form-control custom-select" name="selectedTaxPeriod">
+            <option value="" selected disabled>Choose a Session</option>
+            @foreach (var taxPeriod in Model.TopTaxPeriods)
+            {
+                <option value="@taxPeriod">@taxPeriod</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        @Html.DropDownList("companyId", ViewBag.Companies as SelectList, "Select an unit", new { @class = "form-control" })
+        @Html.ValidationMessage("companyId", "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-primary" id="submitButton" disabled>Search</button>
+}
+
+
+<br />
+<br />
+<div class="user-info-container" style="width:150%">
+    @if (Model != null && Model.Employees.Count > 0)
+    {
+        <table class="user-info-table">
+            <thead>
+                <tr>
+                    <th style="width: 100% ">Department</th>
+                    <th>Section</th>
+                    <th>Designation</th>
+                    <th style="width:100%">Name</th>
+                    <th>Employee Code</th>
+                    <th>View Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model.Employees)
+                {
+                    <tr>
+                        @* <td><a href="javascript:void(0);" onclick="setEmployeeCodeAndSubmit('@employee.RegId')">@employee.Name</a></td>*@
+                        <td>@employee.Department</td>
+                        <td>@employee.Section</td>
+                        <td>@employee.Designation</td>
+                        <td>@employee.Name</td>
+                        <td>@employee.EmployeeCode</td>
+
+                        <td><a href="javascript:void(0);" onclick="setEmployeeCodeAndSubmit('@employee.RegId')">Marks Entry</a></td>
+                        @*  <td><a href="javascript:void(0);" onclick="setRegId('@employee.RegId')">View Marks</a></td>*@
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <p>No employees found</p>
+    }
+</div>
+
+<script>
+    function setEmployeeCodeAndSubmit(code) {
+        document.getElementById("regIDField").value = code;
+        document.getElementById("employeeForm").submit();
+    }
+
+    function setRegId(regID) {
+        document.getElementById("viewregIDField").value = regID;
+        document.getElementById("viewMarksForm").submit();
+    }
+
+    // store session value
+
+    var dropdown = document.getElementById("taxPeriodDropdownMV");
+    var companyDropdown = document.querySelector("select[name='companyId']");
+    var submitButton = document.getElementById("submitButton");
+
+    dropdown.addEventListener("change", enableSubmitButton);
+    companyDropdown.addEventListener("change", enableSubmitButton);
+
+    function enableSubmitButton() {
+        var selectedSession = dropdown.value;
+        var selectedCompany = companyDropdown.value;
+
+        if (selectedSession && selectedCompany) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
+
+
+</script>

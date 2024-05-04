@@ -21,7 +21,7 @@ namespace STEP_PORTAL
         }
         protected void Application_Error(object sender, EventArgs e)
         {
-            var exception = Server.GetLastError();
+/*            var exception = Server.GetLastError();
 
             // Process 404 HTTP errors
             var httpException = exception as HttpException;
@@ -40,7 +40,7 @@ namespace STEP_PORTAL
                 var requestContext = new RequestContext(
                      new HttpContextWrapper(Context), routeData);
                 controller.Execute(requestContext);
-            }
+            }*/
         }
     }
 }

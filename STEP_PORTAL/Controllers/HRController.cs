@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using STEP_DEMO.Models;
+﻿using STEP_DEMO.Models;
 using STEP_PORTAL.Models;
 using System;
 using System.Collections.Generic;
@@ -9,18 +8,125 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace STEP_PORTAL.Controllers
+namespace STEP_DEMO.Controllers
 {
-    public class ReportSuperController : Controller
+    public class HRController : Controller
     {
-        // GET: ReportSuper
+        // GET: HR
         public ActionResult Index()
         {
             return View();
         }
 
+        public List<EmployeeInfo> GetEmployeeListByDeptHead(int deptHeadValue, int companyId)
+        {
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                var employees = db.Database.SqlQuery<EmployeeInfo>("exec prc_GetEmployeeByHR @RegID, @CompID",
+                    new SqlParameter("@RegID", deptHeadValue),
+                    new SqlParameter("@CompID", companyId)).ToList();
+
+                return employees;
+            }
+        }
+
+        private List<CompanyViewModel> GetCompanies()
+        {
+            List<CompanyViewModel> companies = new List<CompanyViewModel>();
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                companies = db.Company_Information
+                              .Select(c => new CompanyViewModel
+                              {
+                                  ID = c.ID,
+                                  Name = c.Name
+                              })
+                              .ToList();
+            }
+
+            return companies;
+        }
+
         [CustomAuthorize]
-        public ActionResult AddMarks()
+        public ActionResult ViewEmpListHR()
+        {
+            List<EmployeeInfo> employees = new List<EmployeeInfo>();
+            int deptHeadValue;
+            int companyId = 0;
+
+            if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+            {
+                employees = GetEmployeeListByDeptHead(deptHeadValue, companyId);
+            }
+
+            List<CompanyViewModel> companies = GetCompanies();
+            ViewBag.Companies = new SelectList(companies, "ID", "Name");
+
+            List<string> topTaxPeriods = new List<string>();
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                topTaxPeriods = db.New_Tax_Period
+                                .OrderByDescending(t => t.TaxPeriod)
+                                .Select(t => t.TaxPeriod)
+                                .Take(2)
+                                .ToList();
+            }
+
+            var model = new EmployeeSessionViewModelClass
+            {
+                Employees = employees,
+                TopTaxPeriods = topTaxPeriods
+            };
+
+            ViewBag.SuccessMessage = TempData["SuccessMessage"];
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ViewEmpListHR(int? companyId)
+        {
+            List<EmployeeInfo> employees = new List<EmployeeInfo>();
+            int deptHeadValue;
+
+            if (companyId != null && Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+            {
+                employees = GetEmployeeListByDeptHead(deptHeadValue, companyId.Value);
+            }
+            else
+            {
+                ViewBag.Message = "Select an unit";
+            }
+
+            List<CompanyViewModel> companies = GetCompanies();
+            ViewBag.Companies = new SelectList(companies, "ID", "Name", companyId);
+
+            List<string> topTaxPeriods = new List<string>();
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                topTaxPeriods = db.New_Tax_Period
+                                .OrderByDescending(t => t.TaxPeriod)
+                                .Select(t => t.TaxPeriod)
+                                .Take(2)
+                                .ToList();
+
+                string selectedTaxPeriod = Request.Form["selectedTaxPeriod"];
+                int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedTaxPeriod).Select(t => t.TaxPerID).FirstOrDefault();
+                Session["SelectedTaxPeriod"] = sessionID;
+            }
+
+            var model = new EmployeeSessionViewModelClass
+            {
+                Employees = employees,
+                TopTaxPeriods = topTaxPeriods
+            };
+
+            return View(model);
+
+        }
+
+        [CustomAuthorize]
+        public ActionResult AddMarksHR()
         {
             List<EmployeeViewModel> employeeInfo = new List<EmployeeViewModel>();
             using (DB_STEPEntities db = new DB_STEPEntities())
@@ -28,9 +134,9 @@ namespace STEP_PORTAL.Controllers
                 int deptHeadValue;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
                 {
-                     employeeInfo = db.Database.SqlQuery<EmployeeViewModel>(
-                                "prc_GetEmployeeListByDeptHead @DeptHeadValue",
-                                new SqlParameter("@DeptHeadValue","123")).ToList();
+                    employeeInfo = db.Database.SqlQuery<EmployeeViewModel>(
+                               "prc_GetEmployeeListByDeptHead @DeptHeadValue",
+                               new SqlParameter("@DeptHeadValue", "123")).ToList();
                 }
             }
 
@@ -39,9 +145,9 @@ namespace STEP_PORTAL.Controllers
 
         [CustomAuthorize]
         [HttpPost]
-        public ActionResult AddMarks(int? RegId)
+        public ActionResult AddMarksHR(int? RegId)
         {
-           // if (!string.IsNullOrEmpty(RegId))
+            // if (!string.IsNullOrEmpty(RegId))
             {
                 int deptHeadValue;
 
@@ -60,19 +166,19 @@ namespace STEP_PORTAL.Controllers
                         string employeeID = Request.Form["employeeCode"];
                         int regID = (int)Session["RegID"];
 
-                            // insert marks history
+                        // insert marks history
                         tblMarksEntryHistory logEntry = new tblMarksEntryHistory
-                            {
-                                SupervisorID = deptHeadValue,
-                                EmployeeID = employeeID,
-                                UpdateTime = DateTime.Now,
-                                UserIP = GetIPAddress(),
+                        {
+                            SupervisorID = deptHeadValue,
+                            EmployeeID = employeeID,
+                            UpdateTime = DateTime.Now,
+                            UserIP = GetIPAddress(),
 
-                            };
-                            db.tblMarksEntryHistories.Add(logEntry);
-                            db.SaveChanges();
+                        };
+                        db.tblMarksEntryHistories.Add(logEntry);
+                        db.SaveChanges();
 
-                   
+
                         var userInfo = db.Database.SqlQuery<EmployeeInfo>(
                               "prc_EmployeeInfoByRegID @RegID",
                               new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
@@ -93,7 +199,8 @@ namespace STEP_PORTAL.Controllers
                              new SqlParameter("@SESSION_ID", Session["SelectedTaxPeriod"])).ToList();
 
                         ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
-                        return View("KraKpiOutcomeView", kraKpiOutcomeData);
+                        return View("KraKpiOutcomeViewHR", kraKpiOutcomeData);
+/*                        return PartialView("~/Views/HR/KraKpiOutcomeViewHR.cshtml", kraKpiOutcomeData);*/
 
                     }
                 }
@@ -124,7 +231,7 @@ namespace STEP_PORTAL.Controllers
                     db.SaveChanges();
                 }
             }
-            return RedirectToAction("ViewEmpList", "DeptHead");
+            return RedirectToAction("ViewEmpListHR", "HR");
         }
 
         protected string GetIPAddress()
@@ -182,7 +289,6 @@ namespace STEP_PORTAL.Controllers
             List<MarksData> marksData;
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-/*                if (!string.IsNullOrEmpty(regId))*/
                 {
                     var userInfo = db.Database.SqlQuery<EmployeeInfo>(
                                     "prc_EmployeeInfoByRegID @RegID",
@@ -199,14 +305,6 @@ namespace STEP_PORTAL.Controllers
                     ViewBag.EmployeeCode = userInfo.Name;
                     ViewBag.EmployeeName = userInfo.EmployeeCode;
                 }
-/*                else
-                {
-                    marksData = new List<MarksData>();
-                }*/
-
-                // fetch employee name based on employeeCode
-               // string employeeName = GetEmployeeName(employeeCode);
-
 
                 var last2session = (db.New_Tax_Period
                                    .OrderByDescending(t => t.TaxPeriod)
@@ -220,99 +318,52 @@ namespace STEP_PORTAL.Controllers
             return View(marksData);
         }
 
-        [HttpPost]
-        public ActionResult SaveReportSuperComment(string comment, int regId)
+        public ActionResult SaveAttendance(int attendance, int regId)
         {
-            int updatedBy = (int)Session["RegID"];
             int sessionID = (int)Session["SelectedTaxPeriod"];
-            string statusType = "Report Super Comment";
-            string statusMessage = comment;
             DateTime updatedDate = DateTime.Now;
 
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                var result = db.Database.SqlQuery<StatusResult>(
-                    "EXEC prc_UpdateStatus @RegId, @SESSION_ID, @StatusType, @StatusValue, @StatusMessage, @Updated_date, @Updated_by",
-                    new SqlParameter("@RegId", regId),
-                    new SqlParameter("@SESSION_ID", sessionID),
-                    new SqlParameter("@StatusType", statusType),
-                    new SqlParameter("@StatusValue", DBNull.Value),
-                    new SqlParameter("@StatusMessage", statusMessage),
-                    new SqlParameter("@Updated_date", updatedDate),
-                    new SqlParameter("@Updated_by", updatedBy)).FirstOrDefault();
+                var attn = db.tbl_StepMaster.Where(s => s.SESSION_ID == sessionID && s.RegId == regId).FirstOrDefault();
 
-                if (result.Status)
+                if (attn != null)
                 {
-                    return Json(new { success = true, message = result.Message });
+                    attn.Attendance = attendance;
+                    attn.Updated_date = DateTime.Now;
+                    attn.Updated_by = regId.ToString();
                 }
-                else
-                {
-                    return Json(new { success = false, message = result.Message });
-                }
-
-/*                return RedirectToAction("ViewEmpList", "DeptHead");*/
-
-/*                return View();*/
+                db.SaveChanges();
             }
-        }  
-        
+            TempData["SuccessMessage"] = "Attendance marks saved successfully!";
+/*            ViewBag.SuccessMessage = "Attendance marks saved successfully!";*/
+
+            return RedirectToAction("ViewEmpListHR", "HR");
+        }
+
         [HttpPost]
-        public ActionResult SaveUserComment(string comment)
+        public ActionResult SaveDiscipline(int discipline, int regId)
         {
-            int updatedBy = (int)Session["RegID"];
             int sessionID = (int)Session["SelectedTaxPeriod"];
-            string statusType = "Employee Comment";
-            string statusMessage = comment;
             DateTime updatedDate = DateTime.Now;
 
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                var result = db.Database.SqlQuery<StatusResult>(
-                    "EXEC prc_UpdateStatus @RegId, @SESSION_ID, @StatusType, @StatusValue, @StatusMessage, @Updated_date, @Updated_by",
-                    new SqlParameter("@RegId", updatedBy),
-                    new SqlParameter("@SESSION_ID", sessionID),
-                    new SqlParameter("@StatusType", statusType),
-                    new SqlParameter("@StatusValue", DBNull.Value),
-                    new SqlParameter("@StatusMessage", statusMessage),
-                    new SqlParameter("@Updated_date", updatedDate),
-                    new SqlParameter("@Updated_by", updatedBy)).FirstOrDefault();
+                var disc = db.tbl_StepMaster.Where(s => s.SESSION_ID == sessionID && s.RegId == regId).FirstOrDefault();
 
-                if (result.Status)
+                if (disc != null)
                 {
-                    return Json(new { success = true, message = result.Message });
+                    disc.Discipline = discipline;
+                    disc.Updated_date = DateTime.Now;
+                    disc.Updated_by = regId.ToString();
                 }
-                else
-                {
-                    return Json(new { success = false, message = result.Message });
-                }
+                db.SaveChanges();
             }
+
+            TempData["SuccessMessage"] = "Discipline marks saved successfully!";
+/*            ViewBag.SuccessMessage = "Discipline marks saved successfully!";*/
+
+            return RedirectToAction("ViewEmpListHR", "HR");
         }
-
-        public ActionResult GetReportSuperComment()
-        {
-
-            if (Session["SelectedTaxPeriod"] == null)
-            {
-                ViewBag.ErrorMessage = "Choose session first";
-                return Json(new { SupervisorComment = "" }, JsonRequestBehavior.AllowGet);
-            }
-
-            int regId = (int)Session["RegID"];
-            int sessionID = (int)Session["SelectedTaxPeriod"];
-
-            string supervisorComment = "";
-
-            using (DB_STEPEntities db = new DB_STEPEntities())
-            {
-                supervisorComment = db.tbl_StepMaster
-                                        .Where(comment => comment.RegId == regId && comment.SESSION_ID == sessionID)
-                                        .Select(comment => comment.Supervisor_Comment)
-                                        .FirstOrDefault();
-            }
-
-            return Json(new { SupervisorComment = supervisorComment }, JsonRequestBehavior.AllowGet);
-        }
-
-
     }
 }
