@@ -215,6 +215,7 @@
     </Compile>
     <Compile Include="Models\SpecialFactorViewModel.cs" />
     <Compile Include="Models\EmployeeSessionViewModel .cs" />
+    <Compile Include="Models\StatusResult.cs" />
     <Compile Include="Models\STEP.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>

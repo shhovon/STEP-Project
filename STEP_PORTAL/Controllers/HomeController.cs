@@ -580,6 +580,7 @@ namespace STEP_DEMO.Controllers
                                         }).ToList();
 
                         int sesn = 0;
+/*                        int sessionID = (int)Session["SelectedTaxPeriod"];       */                  
 
                         var approvalSent = db.prc_GetKraKpiOutcomeData(regId, sesn)
                                                           .Where(data => data.ApprovalSent != null)

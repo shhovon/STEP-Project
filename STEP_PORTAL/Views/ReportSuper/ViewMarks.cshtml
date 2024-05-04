@@ -1,5 +1,6 @@
 ﻿@model List<KraKpiOutcomeModel>
 
+
 <head>
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
@@ -9,8 +10,13 @@
     <h3>View Marks</h3>
     <br />
 
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <script>alert('@ViewBag.ErrorMessage');</script>
+    }
 
-    <div class="dropdown-container">
+
+@*    <div class="dropdown-container">
         <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
         <br />
         <select id="taxPeriodDropdownMV" class="form-control custom-select">
@@ -20,7 +26,7 @@
             }
         </select>
     </div>
-    <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />
+    <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />*@
     <br />
     <div>
         <p><strong>Employee Code: @Session["EmployeeCode"]</strong></p>
@@ -38,7 +44,7 @@
                         <th>KPI</th>
                         <th>Outcome</th>
                         <th>Performance Marks</th>
-                         <th>Total Average</th>
+                        <th>Total Average</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,21 +67,26 @@
         <p>No marks data available</p>
     }
     <br /><br />
-    <div style=" padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
-            <input type="text" disabled id="comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            <br>
+    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
+        <input type="text" disabled id="comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br>
     </div>
     <br />
-    
-    <div style=" padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <form>
-            <label for="comment" style="font-weight: bold; color: #333;">Employee's Comment:</label><br>
+
+    @using (Html.BeginForm("SaveUserComment", "ReportSuper", FormMethod.Post))
+    {
+        @Html.Hidden("regId", null, new { id = "viewregIDField" })
+
+        @*        @Html.HiddenFor(m => m[0].REG_ID)*@
+
+        <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <label for="comment" style="font-weight: bold; color: #333;">Comment:</label><br>
             <input type="text" id="comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
             <br>
             <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
-        </form>
-    </div>
+        </div>
+    }
 
 </body>
 
@@ -119,6 +130,43 @@
                 });
             });
         });
+
+        $.ajax({
+        url: '@Url.Action("GetReportSuperComment", "ReportSuper")',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            $('#comment').val(data.SupervisorComment);
+        },
+        error: function() {
+            console.error('Error fetching supervisor comment');
+        }
+    });
+
+        $(function() {
+            $('form').submit(function(event) {
+                event.preventDefault();
+
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: '@Url.Action("SaveUserComment", "ReportSuper")',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while saving the comment!');
+                    }
+                });
+            });
+            });
+
     </script>
 }
 

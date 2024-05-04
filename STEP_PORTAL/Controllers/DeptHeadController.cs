@@ -76,6 +76,8 @@ namespace STEP_PORTAL.Controllers
                 TopTaxPeriods = topTaxPeriods
             };
 
+            ViewBag.SuccessMessage = TempData["SuccessMessage"];
+
             return View(model);
         }
 

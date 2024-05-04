@@ -20,5 +20,6 @@ public class KraKpiOutcomeModel
         public int Marks_Achieved { get; set; }
         public bool? ApprovalSent { get; set; }
         public bool? Lock { get; set; }
+        public string ReportSuperComment { get; set; }
 
 }

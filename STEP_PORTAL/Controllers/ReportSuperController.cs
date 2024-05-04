@@ -97,8 +97,6 @@ namespace STEP_PORTAL.Controllers
                             Name = userInfo.Name
                         };
 
-/*                        ViewBag.EmployeeCode = userInfo.EmployeeCode;
-                        ViewBag.EmployeeName = userInfo.Name;*/
                         ViewBag.Designation = userInfo.Designation;
 
                         /*int? SESSION_ID = db.New_Tax_Period.Where(t => t.TaxPeriod == sessionId).Select(t => t.TaxPerID).FirstOrDefault();*/
@@ -172,8 +170,15 @@ namespace STEP_PORTAL.Controllers
                 ViewBag.TopTaxPeriods = last2session;
 
 
-               int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
-               kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                /*int? selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];*/
+                int? selectedTaxPeriod = Session["SelectedTaxPeriod"] as int?;
+                if (selectedTaxPeriod == null)
+                {
+                    ViewBag.ErrorMessage = "Choose session first";
+                    return View();
+                }
+
+                kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                new SqlParameter("@RegId", regId),
                new SqlParameter("@SESSION_ID", selectedTaxPeriod)).ToList();
             }
@@ -228,5 +233,102 @@ namespace STEP_PORTAL.Controllers
 
             return View(marksData);
         }
+
+        [HttpPost]
+        public ActionResult SaveReportSuperComment(string comment, int regId)
+        {
+            int updatedBy = (int)Session["RegID"];
+            int sessionID = (int)Session["SelectedTaxPeriod"];
+            string statusType = "Report Super Comment";
+            string statusMessage = comment;
+            DateTime updatedDate = DateTime.Now;
+
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                var result = db.Database.SqlQuery<StatusResult>(
+                    "EXEC prc_UpdateStatus @RegId, @SESSION_ID, @StatusType, @StatusValue, @StatusMessage, @Updated_date, @Updated_by",
+                    new SqlParameter("@RegId", regId),
+                    new SqlParameter("@SESSION_ID", sessionID),
+                    new SqlParameter("@StatusType", statusType),
+                    new SqlParameter("@StatusValue", DBNull.Value),
+                    new SqlParameter("@StatusMessage", statusMessage),
+                    new SqlParameter("@Updated_date", updatedDate),
+                    new SqlParameter("@Updated_by", updatedBy)
+                ).FirstOrDefault();
+
+                if (result.Status)
+                {
+                    return Json(new { success = true, message = result.Message });
+                }
+                else
+                {
+                    return Json(new { success = false, message = result.Message });
+                }
+
+/*                return RedirectToAction("ViewEmpList", "DeptHead");*/
+
+/*                return View();*/
+            }
+        }  
+        
+        [HttpPost]
+        public ActionResult SaveUserComment(string comment)
+        {
+            int updatedBy = (int)Session["RegID"];
+            int sessionID = (int)Session["SelectedTaxPeriod"];
+            string statusType = "Employee Comment";
+            string statusMessage = comment;
+            DateTime updatedDate = DateTime.Now;
+
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                var result = db.Database.SqlQuery<StatusResult>(
+                    "EXEC prc_UpdateStatus @RegId, @SESSION_ID, @StatusType, @StatusValue, @StatusMessage, @Updated_date, @Updated_by",
+                    new SqlParameter("@RegId", updatedBy),
+                    new SqlParameter("@SESSION_ID", sessionID),
+                    new SqlParameter("@StatusType", statusType),
+                    new SqlParameter("@StatusValue", DBNull.Value),
+                    new SqlParameter("@StatusMessage", statusMessage),
+                    new SqlParameter("@Updated_date", updatedDate),
+                    new SqlParameter("@Updated_by", updatedBy)
+                ).FirstOrDefault();
+
+                if (result.Status)
+                {
+                    return Json(new { success = true, message = result.Message });
+                }
+                else
+                {
+                    return Json(new { success = false, message = result.Message });
+                }
+            }
+        }
+
+        public ActionResult GetReportSuperComment()
+        {
+
+            if (Session["SelectedTaxPeriod"] == null)
+            {
+                ViewBag.ErrorMessage = "Choose session first";
+                return Json(new { SupervisorComment = "" }, JsonRequestBehavior.AllowGet);
+            }
+
+            int regId = (int)Session["RegID"];
+            int sessionID = (int)Session["SelectedTaxPeriod"];
+
+            string supervisorComment = "";
+
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                supervisorComment = db.tbl_StepMaster
+                                        .Where(comment => comment.RegId == regId && comment.SESSION_ID == sessionID)
+                                        .Select(comment => comment.Supervisor_Comment)
+                                        .FirstOrDefault();
+            }
+
+            return Json(new { SupervisorComment = supervisorComment }, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }
