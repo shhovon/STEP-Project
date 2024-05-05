@@ -21,5 +21,7 @@ public class KraKpiOutcomeModel
         public bool? ApprovalSent { get; set; }
         public bool? Lock { get; set; }
         public string ReportSuperComment { get; set; }
+        public decimal? Attendance { get; set; }
+        public decimal? Discipline { get; set; }
 
 }

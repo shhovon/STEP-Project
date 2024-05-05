@@ -274,6 +274,13 @@ namespace STEP_DEMO.Controllers
                 kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                new SqlParameter("@RegId", regId),
                new SqlParameter("@SESSION_ID", selectedTaxPeriod)).ToList();
+                if (kraKpiOutcomeData != null && kraKpiOutcomeData.Any())
+                {
+                    kraKpiOutcomeData = kraKpiOutcomeData
+                        .GroupBy(k => new { k.REG_ID, k.SESSION_ID })
+                        .Select(g => g.First())
+                        .ToList();
+                }
             }
 
 
@@ -325,15 +332,28 @@ namespace STEP_DEMO.Controllers
 
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                var attn = db.tbl_StepMaster.Where(s => s.SESSION_ID == sessionID && s.RegId == regId).FirstOrDefault();
+                var existingRecord = db.tbl_StepMaster.FirstOrDefault(s => s.SESSION_ID == sessionID && s.RegId == regId);
 
-                if (attn != null)
+                if (existingRecord != null)
                 {
-                    attn.Attendance = attendance;
-                    attn.Updated_date = DateTime.Now;
-                    attn.Updated_by = regId.ToString();
+                    existingRecord.Attendance = attendance;
+                    existingRecord.Updated_date = DateTime.Now;
+                    existingRecord.Updated_by = regId.ToString();
                 }
-                db.SaveChanges();
+                else
+                {
+                    var newRecord = new tbl_StepMaster
+                    {
+                        SESSION_ID = sessionID,
+                        RegId = regId,
+                        Attendance = attendance,
+                        Updated_date = DateTime.Now,
+                        Updated_by = regId.ToString()
+                    };
+
+                    db.tbl_StepMaster.Add(newRecord);
+                }
+                    db.SaveChanges();
             }
             TempData["SuccessMessage"] = "Attendance marks saved successfully!";
 /*            ViewBag.SuccessMessage = "Attendance marks saved successfully!";*/
@@ -349,13 +369,26 @@ namespace STEP_DEMO.Controllers
 
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                var disc = db.tbl_StepMaster.Where(s => s.SESSION_ID == sessionID && s.RegId == regId).FirstOrDefault();
+                var existingRecord = db.tbl_StepMaster.FirstOrDefault(s => s.SESSION_ID == sessionID && s.RegId == regId);
 
-                if (disc != null)
+                if (existingRecord != null)
                 {
-                    disc.Discipline = discipline;
-                    disc.Updated_date = DateTime.Now;
-                    disc.Updated_by = regId.ToString();
+                    existingRecord.Discipline = discipline;
+                    existingRecord.Updated_date = DateTime.Now;
+                    existingRecord.Updated_by = regId.ToString();
+                }
+                else
+                {
+                    var newRecord = new tbl_StepMaster
+                    {
+                        SESSION_ID = sessionID,
+                        RegId = regId,
+                        Discipline = discipline,
+                        Updated_date = DateTime.Now,
+                        Updated_by = regId.ToString()
+                    };
+
+                    db.tbl_StepMaster.Add(newRecord);
                 }
                 db.SaveChanges();
             }
