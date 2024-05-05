@@ -43,13 +43,8 @@
 
 
 
-
-<div class="dropdown-container">           
-			
-			<label class="dropdown-label" for="taxPeriodDropdownMV"> Session:</label>
-			<label class="form-control"for="taxPeriodDropdownMV"> @Session["TaxPeriod"]</label>		
-   
-	
+<div class="dropdown-container">
+            <p>For Session: <br/>@Session["TaxPeriod"] </p>
         </div>
 		
 		

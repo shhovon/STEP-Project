@@ -19,14 +19,16 @@ namespace STEP_PORTAL.Models
 
 using System.Collections.Generic;
 
-namespace STEP_PORTAL.Models
-{
+/*namespace STEP_PORTAL.Models
+{*/
     public class KraKpiViewModel
     {
+        public List<string> KPIOutcomes { get; set; }
         public string KRA { get; set; }
         public int KRA_ID { get; set; }
         public int KPI_ID { get; set; }
         public string KPI { get; set; }
+        public string KPIOutcome { get; set; }
         public string KPI_OUTCOME { get; set; }
         public List<string> KRAs { get; set; }
         public List<string> KPIIs { get; set; }
@@ -40,6 +42,6 @@ namespace STEP_PORTAL.Models
             KPI_IDs = new List<int>();
         }
     }
-}
-
+/*}
+*/
 

@@ -82,7 +82,7 @@ namespace STEP_DEMO.Controllers
                 ViewBag.KraKpiData = groupedData;
             }
 
-            return RedirectToAction("DisplayKrasAndKpis", "Home");
+            return RedirectToAction("Outcome", "Home");
         }
 
         [CustomAuthorize]
@@ -312,6 +312,7 @@ namespace STEP_DEMO.Controllers
                             Session["MobileNoPerson"] = employeeInfo.MobileNoPerson;
                             Session["DeptHead"] = employeeInfo.DeptHead;
                             Session["Role"] = employeeInfo.Role;
+                            Session["SelectedTaxPeriod"] = 17;
 
                             //int deptHeadValue;
 
@@ -517,108 +518,99 @@ namespace STEP_DEMO.Controllers
         [CustomAuthorize]
         public ActionResult DisplayKrasAndKpis()
         {
-            int regId;
-            List<string> sessionIds;
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                sessionIds = (from vs in db.View_StepDetails
-                              join tax in db.New_Tax_Period on vs.SESSION_ID equals tax.TaxPerID
-                              where tax.KPI_Enty == true
-                              select tax.TaxPeriod).Distinct().ToList();
-
-            ViewBag.SessionIds = sessionIds;
-
-                var SessionIDKraKpi = from vs in db.View_StepDetails
-                                      join tax in db.New_Tax_Period on vs.SESSION_ID equals tax.TaxPerID
-                                      where tax.KPI_Enty == true
-                                      select new
-                                      {
-                                          vs.KRA,
-                                          vs.KPI,
-                                          vs.KPI_OUTCOME
-                                      };
-
-                ViewBag.SessionIDKraKpi = SessionIDKraKpi;
-
-                var last2session = (db.New_Tax_Period
-                              .OrderByDescending(t => t.TaxPeriod)
-                              .Select(t => t.TaxPeriod).Take(2).ToList());
-
-                ViewBag.TopTaxPeriods = last2session;
-
-
+                int regId;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
-                   // var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == regId);
-                   // if (user != null)
+                    //  var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == regId);
+
+                    //  if (user != null)
                     {
-                        // fetch kra and kpi for the logged-in user
+                        // Get KRA and KPI data for the logged user
                         var kraKpiData = (from kra in db.KRAs
                                           join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
+                                          join st in db.STEPs on kpi.KPI_ID equals st.KPI_ID
                                           where kra.RegId == regId && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
                                           orderby kra.KRA_ID ascending, kpi.KPI_ID ascending
-                                          select new KraKpiOutcomeModel
-                                          {
-                                              KRA_ID = kra.KRA_ID,
-                                              KPI_ID = kpi.KPI_ID,
-                                              KRA = kra.KRA1,
-                                              KPI = kpi.KPI1
-                                          }).ToList();
+                                          select new 
+                                          { KRA = kra.KRA1, 
+                                            KPI = kpi.KPI1,
+                                            KPIOutcome = st.KPI_OUTCOME}).ToList();
 
-                        // Fetch data from the database
-                        var stepData = (from s in db.STEPs
-                                        join k in db.KRAs on s.KRA_ID equals k.KRA_ID
-                                        join kp in db.KPIs on s.KPI_ID equals kp.KPI_ID
-                                        where s.REG_ID == regId
-                                        select new KraKpiViewModel
-                                        {
-                                            KRA = k.KRA1,
-                                            KPI = kp.KPI1,
-                                            KPI_OUTCOME = s.KPI_OUTCOME,
-                                            KRA_ID = k.KRA_ID,
-                                            KPI_ID = kp.KPI_ID
-                                        }).ToList();
-
-                        int sesn = 0;
-/*                        int sessionID = (int)Session["SelectedTaxPeriod"];       */                  
-
-                        var approvalSent = db.prc_GetKraKpiOutcomeData(regId, sesn)
-                                                          .Where(data => data.ApprovalSent != null)
-                                                          .Select(data => data.ApprovalSent)
-                                                          .Distinct()
-                                                          .ToList();
-
-                        Session["ApprovalSent"] = approvalSent;
-
-                        var compositeModel = new CompositeModel
-                        {
-                            KraKpiData = kraKpiData,
-                            StepData = stepData
-                        };
+                        // Grouping KPIs by KRA
+                        var groupedData = kraKpiData.GroupBy(x => x.KRA)
+                                                    .Select(g => new KraKpiViewModel
+                                                    {
+                                                        KRA = g.Key,
+                                                        KPIIs = g.Select(x => x.KPI).ToList(),
+                                                        KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
+                                                    })
+                                                    .ToList();
 
 
-                        Session["selectedTaxPeriod"] = "";
-                        var sessionId = Session["selectedTaxPeriod"].ToString();
 
-                        if (TempData["selectedTaxPeriod"] != null)
-                        {
-                            ViewBag.SelectedTaxPeriod = TempData["selectedTaxPeriod"].ToString();
-                        }
-
-                        return View(compositeModel);
+                        return View(groupedData);
 
                     }
                 }
-                else
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult DisplayKrasAndKpis(FormCollection form)
+        {
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                int regId;
+                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
-                    return RedirectToAction("Login", "Home");
+
+                    var selectedKRAs = form.GetValues("SelectedKRA");
+                    var selectedKPIs = form.GetValues("SelectedKPI");
+                    var kpiOutcomes = form.GetValues("KPIOutcome");
+
+                    for (int i = 0; i < selectedKRAs.Length; i++)
+                    {
+                        string selectedKRA = selectedKRAs[i];
+                        string selectedKPI = selectedKPIs[i];
+                        string outcome = kpiOutcomes[i];
+
+                        int kraId = db.KRAs.FirstOrDefault(k => k.KRA1 == selectedKRA)?.KRA_ID ?? 0;
+                        int kpiId = db.KPIs.FirstOrDefault(k => k.KPI1 == selectedKPI)?.KPI_ID ?? 0;
+
+                        var existingRecord = db.STEPs.FirstOrDefault(s => s.REG_ID == regId && s.KRA_ID == kraId && s.KPI_ID == kpiId);
+
+                        if (existingRecord != null)
+                        {
+                            existingRecord.KPI_OUTCOME = outcome;
+                        }
+                        else
+                        {
+                            var kpiOutcome = new STEP
+                            {
+                                REG_ID = regId,
+                                KRA_ID = kraId,
+                                KPI_ID = kpiId,
+                                KPI_OUTCOME = outcome
+                            };
+
+                            db.STEPs.Add(kpiOutcome);
+                        }
+                    }
+
+                    db.SaveChanges();
                 }
             }
+
+            return RedirectToAction("DisplayKrasAndKpis");
         }
 
         [CustomAuthorize]
         [HttpPost]
-        public ActionResult InsertKpiOutcomes(string selectedKRA, string selectedKPI, string kpiOutcomes, string selectedTaxPeriod)
+        public ActionResult InsertKpiOutcomes(string selectedKRA, string selectedKPI, string kpiOutcomes)
         {
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
@@ -631,15 +623,16 @@ namespace STEP_DEMO.Controllers
 
                     ViewBag.TopTaxPeriods = last2session;
 
-                    
-                    int? sessionId = Session["selectedTaxPeriod"] as int?;
 
-                    if (!string.IsNullOrEmpty(selectedKRA) && !string.IsNullOrEmpty(selectedKPI) && !string.IsNullOrEmpty(kpiOutcomes) && !string.IsNullOrEmpty(selectedTaxPeriod))
+                    /*  int? sessionId = Session["selectedTaxPeriod"] as int?;*/
+                    int sessionId = 17;
+
+                    if (!string.IsNullOrEmpty(selectedKRA) && !string.IsNullOrEmpty(selectedKPI) && !string.IsNullOrEmpty(kpiOutcomes) )
                     {
                             {
                                 int kraId = db.KRAs.FirstOrDefault(k => k.KRA1 == selectedKRA)?.KRA_ID ?? 0;
                                 int kpiId = db.KPIs.FirstOrDefault(k => k.KPI1 == selectedKPI)?.KPI_ID ?? 0;
-                                int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedTaxPeriod).Select(t => t.TaxPerID).FirstOrDefault();
+  /*                              int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedTaxPeriod).Select(t => t.TaxPerID).FirstOrDefault();*/
 
                             if (kraId != 0 && kpiId != 0)
                                 {
@@ -649,7 +642,7 @@ namespace STEP_DEMO.Controllers
                                         KRA_ID = kraId,
                                         KPI_ID = kpiId,
                                         KPI_OUTCOME = kpiOutcomes,
-                                        SESSION_ID = sessionID.Value
+                                        SESSION_ID = sessionId
                                     };
 
 

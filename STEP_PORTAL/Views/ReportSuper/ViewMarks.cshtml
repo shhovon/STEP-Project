@@ -27,10 +27,21 @@
         </select>
     </div>
     <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />*@
+<style>
+    .tab {
+        display: inline-block;
+        margin-left: 40px;
+    }    
+    .tab2 {
+        display: inline-block;
+        margin-left: 45px;
+    }
+</style>
+
     <br />
     <div>
-        <p><strong>Employee Code: @Session["EmployeeCode"]</strong></p>
-        <p><strong>Employee Name: @Session["Name"]</strong></p>
+        <p><strong>Employee Code: <span class="tab2"></span> @Session["EmployeeCode"]</strong></p>
+        <p><strong>Employee Name: <span class="tab"></span> @Session["Name"]</strong></p>
     </div>
     <br />
 
@@ -139,7 +150,7 @@
             $('#comment').val(data.SupervisorComment);
         },
         error: function() {
-            console.error('Error fetching supervisor comment');
+            console.error('Error fetching supervisor comment!');
         }
     });
 

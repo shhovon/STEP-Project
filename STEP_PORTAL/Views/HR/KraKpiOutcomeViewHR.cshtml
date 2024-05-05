@@ -19,13 +19,25 @@
 <br />
 <br />
 
+<style>
+    .tab {
+        display: inline-block;
+        margin-left: 40px;
+    }
+
+    .tab2 {
+        display: inline-block;
+        margin-left: 45px;
+    }
+</style>
+
 
 @if (firstItem != null)
 {
-    <div>
-        <p><strong>Employee Code: @firstItem.EmployeeCode</strong></p>
-        <p><strong>Employee Name: @firstItem.Name</strong></p>
-    </div>
+<div>
+    <p><strong>Employee Code: <span class="tab2"></span> @firstItem.EmployeeCode</strong></p>
+    <p><strong>Employee Name: <span class="tab"></span>  @firstItem.Name</strong></p>
+</div>
 }
 <br />
 

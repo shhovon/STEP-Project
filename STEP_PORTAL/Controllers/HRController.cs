@@ -274,13 +274,6 @@ namespace STEP_DEMO.Controllers
                 kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                new SqlParameter("@RegId", regId),
                new SqlParameter("@SESSION_ID", selectedTaxPeriod)).ToList();
-                if (kraKpiOutcomeData != null && kraKpiOutcomeData.Any())
-                {
-                    kraKpiOutcomeData = kraKpiOutcomeData
-                        .GroupBy(k => new { k.REG_ID, k.SESSION_ID })
-                        .Select(g => g.First())
-                        .ToList();
-                }
             }
 
 

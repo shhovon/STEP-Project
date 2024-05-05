@@ -75,7 +75,7 @@
             </table>
 
             <br />
-            <div class="form-group" style=" text-align: center;">
+            <div class="form-group" style="align:right">
                 <input type="submit" value="Save" class="btn btn-primary submit-btn" />
             </div>
         }

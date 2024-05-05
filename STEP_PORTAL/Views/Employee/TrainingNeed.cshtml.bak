@@ -61,18 +61,18 @@
 
     <input id="3" name="r" type="radio" checked/>
     <label class="collapse" for="1"><a href="@Url.Action("TrainingNeed", "Employee")" > 3. Training  & Submit</a></label>
-    <div></div>   
-    
+    <div></div>
 </div>
 </div>
 
-<br />
 
 <form id="trainingNeedForm">
     <div class="form-horizontal">
 	
         <h4>Add Training Need</h4>
-       
+        <div>
+            <p>For Session: @Session["TaxPeriod"] </p>
+        </div>
         <hr />
         <br />
         <div id="validationSummary" class="text-danger"></div>
@@ -179,11 +179,11 @@
 
 <br />
 
-@*<div class="form-group">
+<div class="form-group">
     <div class="col-md-offset-2 col-md-10">
         <a href="@Url.Action("DisplayAllData", "Employee")" class="btn btn-primary submit-btn">Review Submission</a>
     </div>
-</div>*@
+</div>
 
 @section scripts {
     <script>
