@@ -290,7 +290,6 @@ namespace STEP_PORTAL.Controllers
 
         public ActionResult GetReportSuperComment()
         {
-
             if (Session["SelectedTaxPeriod"] == null)
             {
                 ViewBag.ErrorMessage = "Choose session first";
@@ -298,6 +297,55 @@ namespace STEP_PORTAL.Controllers
             }
 
             int regId = (int)Session["RegID"];
+            int sessionID = (int)Session["SelectedTaxPeriod"];
+
+            string supervisorComment = "";
+
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                supervisorComment = db.tbl_StepMaster
+                                        .Where(comment => comment.RegId == regId && comment.SESSION_ID == sessionID)
+                                        .Select(comment => comment.Supervisor_Comment)
+                                        .FirstOrDefault();
+            }
+
+            return Json(new { SupervisorComment = supervisorComment }, JsonRequestBehavior.AllowGet);
+        } 
+        
+        
+        public ActionResult GetUserComment()
+        {
+            if (Session["SelectedTaxPeriod"] == null)
+            {
+                ViewBag.ErrorMessage = "Choose session first";
+                return Json(new { SupervisorComment = "" }, JsonRequestBehavior.AllowGet);
+            }
+
+            int regId = (int)Session["RegID"];
+            int sessionID = (int)Session["SelectedTaxPeriod"];
+
+            string userComment = "";
+
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                userComment = db.tbl_StepMaster
+                                        .Where(comment => comment.RegId == regId && comment.SESSION_ID == sessionID)
+                                        .Select(comment => comment.User_Comment)
+                                        .FirstOrDefault();
+            }
+
+            return Json(new { UserComment = userComment }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult GetReportSuperOwnComment(int regId)
+        {
+            if (Session["SelectedTaxPeriod"] == null)
+            {
+                ViewBag.ErrorMessage = "Choose session first";
+                return Json(new { SupervisorComment = "" }, JsonRequestBehavior.AllowGet);
+            }
+
             int sessionID = (int)Session["SelectedTaxPeriod"];
 
             string supervisorComment = "";

@@ -93,7 +93,7 @@
 
         <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <label for="comment" style="font-weight: bold; color: #333;">Comment:</label><br>
-            <input type="text" id="comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <input type="text" id="UserComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
             <br>
             <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
         </div>
@@ -151,6 +151,18 @@
         },
         error: function() {
             console.error('Error fetching supervisor comment!');
+        }
+        });
+
+        $.ajax({
+        url: '@Url.Action("GetUserComment", "ReportSuper")',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            $('#UserComment').val(data.UserComment);
+        },
+        error: function() {
+            console.error('Error fetching employee comment!');
         }
     });
 

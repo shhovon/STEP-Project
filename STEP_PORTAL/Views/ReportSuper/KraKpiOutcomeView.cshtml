@@ -265,6 +265,19 @@ else
             });
         });
 
+        $.ajax({
+        url: '@Url.Action("GetReportSuperOwnComment", "ReportSuper")',
+        type: 'POST',
+        dataType: 'json',
+        data: { regId: regId },
+        success: function(data) {
+            $('#comment').val(data.SupervisorComment);
+        },
+        error: function() {
+            console.error('Error fetching supervisor comment!');
+        }
+        });
+
         $(function() {
             $('#reportSuperForm').submit(function(event) {
                 event.preventDefault();
