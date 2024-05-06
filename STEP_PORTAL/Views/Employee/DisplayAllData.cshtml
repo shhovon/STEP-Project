@@ -21,17 +21,41 @@
         <label class="collapse" for="2"> <a href="@Url.Action("SpecialFactors", "Employee")"> 2. Special Factor</a></label>
         <div></div>
 
-        <input id="3" name="r" type="radio"  />
-        <label class="collapse" for="1"><a href="@Url.Action("TrainingNeed", "Employee")"> 3. Training  & Submit</a></label>
+        <input id="3" name="r" type="radio" />
+        <label class="collapse" for="1"><a href="@Url.Action("TrainingNeed", "Employee")"> 3. Training</a></label>
         <div></div>
 
-        <input id="3" name="r" type="radio" checked/>
+        <input id="3" name="r" type="radio" checked />
         <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("DisplayALlData", "Employee")">4. Preview & Submit</a></label>
         <div></div>
     </div>
 </div>
 
 <br />
+
+@*<table class="table">
+        <thead>
+            <tr>
+                <th>Selected KRA</th>
+                <th>Selected KPI</th>
+                <th>KPI Outcome</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model != null && Model.StepData.Count > 0)
+            {
+                foreach (var item in Model.StepData)
+                {
+                    <tr>
+                        <td>@item.KRA</td>
+                        <td>@item.KPI</td>
+                        <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>*@
 
 <table class="table">
     <thead>
@@ -43,19 +67,51 @@
     </thead>
 
     <tbody>
-        @if (Model != null && Model.StepData.Count > 0)
+        @if (Model != null && Model.GroupedData.Count > 0)
         {
-            foreach (var item in Model.StepData)
+            foreach (var item in Model.GroupedData)
             {
                 <tr>
                     <td>@item.KRA</td>
-                    <td>@item.KPI</td>
-                    <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
+                    <td>
+                        @for (int i = 0; i < item.KPIIs.Count; i++)
+                        {
+                            <div>@item.KPIIs[i]</div>
+                            if (i != item.KPIIs.Count - 1)
+                            {
+                                <hr>
+                            }
+
+                        }
+                        <br />
+                    </td>
+                    <td>
+                        @for (int i = 0; i < item.KPIIs.Count; i++)
+                        {
+                            var stepDataForKPI = Model.StepData.FirstOrDefault(s => s.KPI == item.KPIIs[i] && s.KRA == item.KRA);
+                            if (stepDataForKPI != null)
+                            {
+                                <div>@(stepDataForKPI.KPI_OUTCOME != null ? stepDataForKPI.KPI_OUTCOME : "")</div>
+                            }
+                            else
+                            {
+                                <div></div>
+                            }
+                            if (i != item.KPIIs.Count - 1)
+                            {
+                                <hr>
+                            }
+                        }
+                    </td>
                 </tr>
             }
         }
     </tbody>
 </table>
+
+
+
+
 
 @if (Model.SpecialFactors != null)
 {

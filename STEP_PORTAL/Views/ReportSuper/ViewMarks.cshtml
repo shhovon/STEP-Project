@@ -1,4 +1,5 @@
-﻿@model List<KraKpiOutcomeModel>
+﻿@*@model List<KraKpiOutcomeModel>*@
+@model DisplayAllDataViewModel
 
 
 <head>
@@ -16,27 +17,28 @@
     }
 
 
-@*    <div class="dropdown-container">
-        <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
-        <br />
-        <select id="taxPeriodDropdownMV" class="form-control custom-select">
-            @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
-            {
-                <option value="@taxPeriod">@taxPeriod</option>
-            }
-        </select>
-    </div>
-    <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />*@
-<style>
-    .tab {
-        display: inline-block;
-        margin-left: 40px;
-    }    
-    .tab2 {
-        display: inline-block;
-        margin-left: 45px;
-    }
-</style>
+    @*    <div class="dropdown-container">
+            <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
+            <br />
+            <select id="taxPeriodDropdownMV" class="form-control custom-select">
+                @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
+                {
+                    <option value="@taxPeriod">@taxPeriod</option>
+                }
+            </select>
+        </div>
+        <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" />*@
+    <style>
+        .tab {
+            display: inline-block;
+            margin-left: 40px;
+        }
+
+        .tab2 {
+            display: inline-block;
+            margin-left: 45px;
+        }
+    </style>
 
     <br />
     <div>
@@ -45,7 +47,40 @@
     </div>
     <br />
 
-    @if (Model != null && Model.Any())
+     @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>KRA</th>
+                            <th>KPI</th>
+                            <th>Outcome</th>
+                            <th>Performance Marks</th>
+                            <th>Total Average</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.KraKpiOutcomeData)
+                        {
+                            <tr>
+                                <td>@item.KRA</td>
+                                <td>@item.KPI</td>
+                                <td>@item.Outcome</td>
+                                <td>@item.Marks_Achieved</td>
+                                <td>@item.AVG_Marks_Achieved</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p>No marks data available</p>
+        }
+
+ @*   @if (Model != null && Model.GroupedData.Count > 0)
     {
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
@@ -59,14 +94,33 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.GroupedData)
                     {
                         <tr>
                             <td>@item.KRA</td>
-                            <td>@item.KPI</td>
-                            <td>@item.Outcome</td>
-                            <td>@item.Marks_Achieved</td>
-                            <td>@item.AVG_Marks_Achieved</td>
+                            <td>
+                                @foreach (var kpi in item.KPIIs)
+                                {
+                                    <div>@kpi</div>
+                                }
+                            </td>
+                            <td>@item.KPIOutcome</td>
+                            <td>
+                                @foreach (var kpi in item.KPIIs)
+                                {
+                                    var mark = Model.KraKpiOutcomeData.FirstOrDefault(m => m.KRA == item.KRA && m.KPI == kpi);
+                                    if (mark != null)
+                                    {
+                                        <div>@mark.Marks_Achieved</div>
+                                    }
+                                    else
+                                    {
+                                        <div></div>
+                                    }
+
+                                }
+                            </td>
+                            <td>@item.TotalAverage</td>
                         </tr>
                     }
                 </tbody>
@@ -76,7 +130,8 @@
     else
     {
         <p>No marks data available</p>
-    }
+    }*@
+
     <br /><br />
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>

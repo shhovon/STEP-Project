@@ -308,6 +308,15 @@ namespace STEP_PORTAL.Controllers
                                     KPI_ID = kp.KPI_ID
                                 }).ToList();
 
+                var groupedData = kraKpiData.GroupBy(x => x.KRA)
+                                .Select(g => new KraKpiViewModel
+                                {
+                                    KRA = g.Key,
+                                    KPIIs = g.Select(x => x.KPI).ToList(),
+                                    KPIOutcomes = g.Select(x => x.KPI_OUTCOME).ToList()
+                                })
+                                .ToList();
+
 
                 var specialFactors = db.tblSpecial_Factor.FirstOrDefault(m => m.Reg_Id == regId);
                 var trainingNeed = db.tblTraining_Need.FirstOrDefault(m => m.Reg_Id == regId);
@@ -317,7 +326,8 @@ namespace STEP_PORTAL.Controllers
                     KraKpiData = kraKpiData,
                     StepData = stepData,
                     SpecialFactors = specialFactors,
-                    TrainingNeed = trainingNeed
+                    TrainingNeed = trainingNeed,
+                    GroupedData = groupedData
                 };
 
                 return View(viewModel);

@@ -167,10 +167,25 @@ namespace STEP_PORTAL.Controllers
                 kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                new SqlParameter("@RegId", regId),
                new SqlParameter("@SESSION_ID", selectedTaxPeriod)).ToList();
+
+                var groupedData = kraKpiOutcomeData.GroupBy(x => x.KRA)
+                                .Select(g => new KraKpiViewModel
+                                {
+                                    KRA = g.Key,
+                                    KPIIs = g.Select(x => x.KPI).ToList(),
+                                    KPIOutcomes = g.Select(x => x.KPI_OUTCOME).ToList()
+                                })
+                                .ToList();
+
+                var viewModel = new DisplayAllDataViewModel
+                {
+                    KraKpiOutcomeData = kraKpiOutcomeData,
+                    GroupedData = groupedData
+                };
+
+                return View(viewModel);
             }
 
-
-            return View(kraKpiOutcomeData);
         }
 
 
@@ -196,6 +211,8 @@ namespace STEP_PORTAL.Controllers
                                      Marks_Achieved = st.Marks_Achieved ?? 0
                                  }).ToList();
 
+
+
                     ViewBag.EmployeeCode = userInfo.Name;
                     ViewBag.EmployeeName = userInfo.EmployeeCode;
                 }
@@ -216,6 +233,8 @@ namespace STEP_PORTAL.Controllers
 
                 ViewBag.TopTaxPeriods = last2session;
             }
+
+
 
             return View(marksData);
         }

@@ -30,6 +30,7 @@ using System.Collections.Generic;
         public string KPI { get; set; }
         public string KPIOutcome { get; set; }
         public string KPI_OUTCOME { get; set; }
+        public decimal TotalAverage { get; set; }
         public List<string> KRAs { get; set; }
         public List<string> KPIIs { get; set; }
         public List<int> KPI_IDs { get; set; }
