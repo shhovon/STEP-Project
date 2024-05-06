@@ -101,7 +101,11 @@ else
         <div></div>
 
         <input id="3" name="r" type="radio" />
-        <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("TrainingNeed", "Employee")"> 3. Training  & Submit</a></label>
+        <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("TrainingNeed", "Employee")"> 3. Training</a></label>
+        <div></div>        
+        
+        <input id="3" name="r" type="radio" />
+        <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("DisplayALlData", "Employee")">4. Preview & Submit</a></label>
         <div></div>
     </div>
 </div>
@@ -110,7 +114,7 @@ else
 @*main body start*@
 
 <form method="post" action="@Url.Action("DisplayKrasAndKpis", "Home")">
-    <table id="numberInputTable" border="1" style="width:150%">
+    <table id="numberInputTable" border="1">
         <tr>
             <th>SL</th>
             <th>KEY RESULT AREAS (KRA)<br />(Task and Personal Objectives)</th>

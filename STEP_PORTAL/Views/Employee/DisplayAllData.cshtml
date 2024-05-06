@@ -8,6 +8,31 @@
 <h3 style="text-align:center;">Preview Data</h3>
 <br />
 
+<div class="card" style=" background-color: transparent">
+    <div id="menu_tab">
+
+        <!-- Selected by default -->
+
+        <input id="1" name="r" type="radio" />
+        <label class="collapse" for="1"><a href="@Url.Action("DisplayKrasAndKpis", "Home")"> 1. Outcome Entry</a></label>
+        <div></div>
+
+        <input id="2" name="r" type="radio" />
+        <label class="collapse" for="2"> <a href="@Url.Action("SpecialFactors", "Employee")"> 2. Special Factor</a></label>
+        <div></div>
+
+        <input id="3" name="r" type="radio"  />
+        <label class="collapse" for="1"><a href="@Url.Action("TrainingNeed", "Employee")"> 3. Training  & Submit</a></label>
+        <div></div>
+
+        <input id="3" name="r" type="radio" checked/>
+        <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("DisplayALlData", "Employee")">4. Preview & Submit</a></label>
+        <div></div>
+    </div>
+</div>
+
+<br />
+
 <table class="table">
     <thead>
         <tr>
