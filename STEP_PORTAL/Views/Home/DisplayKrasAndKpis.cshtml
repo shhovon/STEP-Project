@@ -160,6 +160,38 @@ else
     <button class="btn btn-primary" type="submit">Save</button>
 </form>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+@section scripts {
+    <script>
+
+        $(document).ready(function() {
+    $('#taxPeriodDropdownMV').on('change', function() {
+        var selectedSession = $(this).val();
+
+        if (selectedSession) {
+            $.ajax({
+                url: '@Url.Action("UpdateSelectedSession", "Home")',
+                type: 'POST',
+                data: { selectedSession: selectedSession },
+                success: function(response) {
+                    if (response.success) {
+                        console.log('Selected session updated successfully.');
+                    } else {
+                        console.error('Failed to update selected session.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', error);
+                }
+            });
+        }
+    });
+});
+
+    </script>
+}
+
 
 
 

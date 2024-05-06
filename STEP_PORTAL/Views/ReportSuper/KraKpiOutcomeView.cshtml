@@ -170,7 +170,7 @@ else
 <br />
 <br />
 
-@using (Html.BeginForm("SaveReportSuperComment", "ReportSuper", FormMethod.Post))
+@using (Html.BeginForm("SaveReportSuperComment", "ReportSuper", FormMethod.Post, new { id = "reportSuperForm" }))
 {
     @Html.Hidden("regId", null, new { id = "viewregIDField" })
 
@@ -266,7 +266,7 @@ else
         });
 
         $(function() {
-            $('form').submit(function(event) {
+            $('#reportSuperForm').submit(function(event) {
                 event.preventDefault();
 
                 var formData = $(this).serialize();

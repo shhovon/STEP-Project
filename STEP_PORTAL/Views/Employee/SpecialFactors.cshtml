@@ -42,42 +42,49 @@
 </style>
 
 
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
 
 
-<div class="dropdown-container">           
-			
-			<label class="dropdown-label" for="taxPeriodDropdownMV"> Session:</label>
-			<label class="form-control"for="taxPeriodDropdownMV"> @Session["TaxPeriod"]</label>		
-   
-	
-        </div>
-		
-		
+
+<div class="dropdown-container">
+
+    <label class="dropdown-label" for="taxPeriodDropdownMV"> Session:</label>
+    <label class="form-control" for="taxPeriodDropdownMV"> @Session["TaxPeriod"]</label>
+
+
+</div>
+
+
 @*      new navigation buttons   *@
 <div class="card" style=" background-color: transparent">
-<div id="menu_tab">
+    <div id="menu_tab">
 
-    <!-- Selected by default -->
+        <!-- Selected by default -->
 
-    <input id="1" name="r" type="radio"/>
-    <label class="collapse" for="1"><a href="@Url.Action("DisplayKrasAndKpis", "Home")" > 1. Outcome Entry</a></label>
-    <div></div>
+        <input id="1" name="r" type="radio" />
+        <label class="collapse" for="1"><a href="@Url.Action("DisplayKrasAndKpis", "Home")"> 1. Outcome Entry</a></label>
+        <div></div>
 
-    <input id="2" name="r" type="radio" checked/>
-    <label class="collapse" for="2"> <a href="@Url.Action("SpecialFactors", "Employee")" > 2. Special Factor</a></label>
-    <div></div>
+        <input id="2" name="r" type="radio" checked />
+        <label class="collapse" for="2"> <a href="@Url.Action("SpecialFactors", "Employee")"> 2. Special Factor</a></label>
+        <div></div>
 
-    <input id="3" name="r" type="radio" />
-    <label class="collapse" for="1"><a href="@Url.Action("TrainingNeed", "Employee")" > 3. Training  & Submit</a></label>
-    <div></div>
-</div>
+        <input id="3" name="r" type="radio" />
+        <label class="collapse" for="1"><a href="@Url.Action("TrainingNeed", "Employee")"> 3. Training  & Submit</a></label>
+        <div></div>
+    </div>
 </div>
 
 <form id="specialFactorForm">
     <div class="form-horizontal">
         <h4>Add Special Factors</h4>
 
-       
+
         <hr />
         <br />
         <div id="validationSummary" class="text-danger"></div>
@@ -102,39 +109,40 @@
     <h3>Added Special Factors</h3>
     @if (ViewBag.AddedDescriptions != null && ViewBag.AddedDescriptions.Count > 0)
     {
-<table class="table">
-    <thead>
-        <tr>
-            <th>Description</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var description in ViewBag.AddedDescriptions)
-        {
-<tr>
-    <td>@description</td>
-    <td style="text-align: center; vertical-align: middle !important;">
-        <button class="btn btn-danger delete-btn" data-description="@description">
-            <i class="ti-trash"></i>
-        </button>
-    </td>
-</tr>                }
-    </tbody>
-</table> }
-            else
-            {
-            <p>No descriptions found</p>
-            }
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var description in ViewBag.AddedDescriptions)
+                {
+                    <tr>
+                        <td>@description</td>
+                        <td style="text-align: center; vertical-align: middle !important;">
+                            <button class="btn btn-danger delete-btn" data-description="@description">
+                                <i class="ti-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+           }
+            </tbody>
+        </table> }
+    else
+    {
+        <p>No descriptions found</p>
+    }
     <br />
 
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <div class="alert alert-danger">
-                @TempData["ErrorMessage"]
-            </div>
-        }
-    </div>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+</div>
 
 @section scripts {
     <script>

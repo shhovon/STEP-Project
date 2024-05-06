@@ -207,7 +207,7 @@ namespace STEP_DEMO.Controllers
             }
 
             ViewBag.SuccessMessage = "Marks updated successfully!";
-            return RedirectToAction("ViewEmpList", "DeptHead");
+            return RedirectToAction("ViewEmpListHR", "HR");
         }
 
 

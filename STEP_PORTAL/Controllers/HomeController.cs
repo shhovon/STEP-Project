@@ -518,28 +518,51 @@ namespace STEP_DEMO.Controllers
         [CustomAuthorize]
         public ActionResult DisplayKrasAndKpis()
         {
+            int regId;
+            List<string> sessionIds;
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                int regId;
+                sessionIds = (from vs in db.View_StepDetails
+                              join tax in db.New_Tax_Period on vs.SESSION_ID equals tax.TaxPerID
+                              where tax.KPI_Enty == true
+                              select tax.TaxPeriod).Distinct().ToList();
+
+                ViewBag.SessionIds = sessionIds;
+
+                var SessionIDKraKpi = from vs in db.View_StepDetails
+                                      join tax in db.New_Tax_Period on vs.SESSION_ID equals tax.TaxPerID
+                                      where tax.KPI_Enty == true
+                                      select new
+                                      {
+                                          vs.KRA,
+                                          vs.KPI,
+                                          vs.KPI_OUTCOME
+                                      };
+
+                ViewBag.SessionIDKraKpi = SessionIDKraKpi;
+
+                var last2session = (db.New_Tax_Period
+                              .OrderByDescending(t => t.TaxPeriod)
+                              .Select(t => t.TaxPeriod).Take(2).ToList());
+
+                ViewBag.TopTaxPeriods = last2session;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
-                    //  var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == regId);
 
-                    //  if (user != null)
-                    {
-                        // Get KRA and KPI data for the logged user
-                        var kraKpiData = (from kra in db.KRAs
-                                          join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
-                                          join st in db.STEPs on kpi.KPI_ID equals st.KPI_ID
-                                          where kra.RegId == regId && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
-                                          orderby kra.KRA_ID ascending, kpi.KPI_ID ascending
-                                          select new 
-                                          { KRA = kra.KRA1, 
-                                            KPI = kpi.KPI1,
-                                            KPIOutcome = st.KPI_OUTCOME}).ToList();
+                    // Get KRA and KPI data for the logged user
+                    var kraKpiData = (from kra in db.KRAs
+                                      join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
+                                      join st in db.STEPs on kpi.KPI_ID equals st.KPI_ID into stJoin
+                                      from st in stJoin.DefaultIfEmpty()
+                                      where kra.RegId == regId && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
+                                      orderby kra.KRA_ID ascending, kpi.KPI_ID ascending
+                                      select new { KRA = kra.KRA1, KPI = kpi.KPI1, KPIOutcome = st != null ? st.KPI_OUTCOME : null })
+                                      .ToList();
 
-                        // Grouping KPIs by KRA
-                        var groupedData = kraKpiData.GroupBy(x => x.KRA)
+
+
+                    // Grouping KPIs by KRA
+                    var groupedData = kraKpiData.GroupBy(x => x.KRA)
                                                     .Select(g => new KraKpiViewModel
                                                     {
                                                         KRA = g.Key,
@@ -549,10 +572,9 @@ namespace STEP_DEMO.Controllers
                                                     .ToList();
 
 
-
                         return View(groupedData);
 
-                    }
+
                 }
             }
 
@@ -580,8 +602,9 @@ namespace STEP_DEMO.Controllers
 
                         int kraId = db.KRAs.FirstOrDefault(k => k.KRA1 == selectedKRA)?.KRA_ID ?? 0;
                         int kpiId = db.KPIs.FirstOrDefault(k => k.KPI1 == selectedKPI)?.KPI_ID ?? 0;
+                        int sessionID = (int)Session["SelectedTaxPeriod"];
 
-                        var existingRecord = db.STEPs.FirstOrDefault(s => s.REG_ID == regId && s.KRA_ID == kraId && s.KPI_ID == kpiId);
+                        var existingRecord = db.STEPs.FirstOrDefault(s => s.REG_ID == regId && s.SESSION_ID == sessionID && s.KRA_ID == kraId && s.KPI_ID == kpiId);
 
                         if (existingRecord != null)
                         {
@@ -594,7 +617,8 @@ namespace STEP_DEMO.Controllers
                                 REG_ID = regId,
                                 KRA_ID = kraId,
                                 KPI_ID = kpiId,
-                                KPI_OUTCOME = outcome
+                                KPI_OUTCOME = outcome,
+                                SESSION_ID = sessionID
                             };
 
                             db.STEPs.Add(kpiOutcome);
@@ -602,10 +626,13 @@ namespace STEP_DEMO.Controllers
                     }
 
                     db.SaveChanges();
+                    bool success = true;
+                    TempData["SuccessMessage"] = success ? "Outcome Data saved successfully!" : "";
+                    /* ViewBag.Success = success ? true : (bool?)null;*/
                 }
             }
 
-            return RedirectToAction("DisplayKrasAndKpis");
+            return RedirectToAction("SpecialFactors", "Employee");
         }
 
         [CustomAuthorize]
