@@ -175,7 +175,8 @@ namespace STEP_PORTAL.Controllers
                                     KPIIs = g.Select(x => x.KPI).ToList(),
                                     KPIOutcomes = g.Select(x => x.KPI_OUTCOME).ToList()
                                 })
-                                .ToList();
+                                .ToList();                
+
 
                 var viewModel = new DisplayAllDataViewModel
                 {

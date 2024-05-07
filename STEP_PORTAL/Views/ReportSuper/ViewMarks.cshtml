@@ -47,7 +47,7 @@
     </div>
     <br />
 
-     @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
+    @*   @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
         {
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
@@ -78,9 +78,9 @@
         else
         {
             <p>No marks data available</p>
-        }
+        }*@
 
- @*   @if (Model != null && Model.GroupedData.Count > 0)
+    @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
     {
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
@@ -102,25 +102,53 @@
                                 @foreach (var kpi in item.KPIIs)
                                 {
                                     <div>@kpi</div>
+                                    if (kpi != item.KPIIs.Last())
+                                    {
+                                        <hr />
+                                    }
                                 }
                             </td>
-                            <td>@item.KPIOutcome</td>
                             <td>
                                 @foreach (var kpi in item.KPIIs)
                                 {
-                                    var mark = Model.KraKpiOutcomeData.FirstOrDefault(m => m.KRA == item.KRA && m.KPI == kpi);
-                                    if (mark != null)
+                                    var outcomeItem = Model.KraKpiOutcomeData.FirstOrDefault(m => m.KRA == item.KRA && m.KPI == kpi);
+                                    string outcome = outcomeItem != null ? outcomeItem.Outcome : null;
+                                    if (!string.IsNullOrEmpty(outcome))
                                     {
-                                        <div>@mark.Marks_Achieved</div>
+                                        <div>@outcome</div>
+                                        if (kpi != item.KPIIs.Last())
+                                        {
+                                            <hr />
+                                        }
                                     }
                                     else
                                     {
                                         <div></div>
                                     }
-
                                 }
                             </td>
-                            <td>@item.TotalAverage</td>
+                            <td style="vertical-align: middle;">
+                                @foreach (var kpi in item.KPIIs)
+                                {
+                                    var mark = Model.KraKpiOutcomeData.FirstOrDefault(m => m.KRA == item.KRA && m.KPI == kpi);
+                                    if (mark != null)
+                                    {
+                                        <div style="margin-bottom: 10px; margin-bottom: 10px;">@mark.Marks_Achieved</div>
+                                        if (kpi != item.KPIIs.Last())
+                                        {
+                                            <hr />
+                                            <br />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div></div>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -130,7 +158,8 @@
     else
     {
         <p>No marks data available</p>
-    }*@
+    }
+
 
     <br /><br />
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
@@ -144,7 +173,7 @@
     {
         @Html.Hidden("regId", null, new { id = "viewregIDField" })
 
-        @*        @Html.HiddenFor(m => m[0].REG_ID)*@
+        @* @Html.HiddenFor(m => m[0].REG_ID)*@
 
         <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <label for="comment" style="font-weight: bold; color: #333;">Comment:</label><br>
