@@ -20,8 +20,10 @@ namespace STEP_PORTAL.Controllers
         }
 
         [CustomAuthorize]
-        public ActionResult AddMarks(int RegId)
+        public ActionResult AddMarks(string regId)
         {
+            //regId = HttpUtility.UrlDecode(regId);
+            int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
             int deptHeadValue;
 
             if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))

@@ -67,7 +67,10 @@
                     <td>@employee.Designation</td>
                     <td>@employee.Name</td>
                     <td>@employee.EmployeeCode</td>
-                    <td><a target="_blank" href="../ReportSuper/AddMarks?RegId=@employee.RegId">Marks Entry</a></td>
+                    @*<td><a target="_blank" href="../ReportSuper/AddMarks?RegId=@employee.RegId">Marks Entry</a></td>*@
+                    <td><a target="_blank" href="../ReportSuper/AddMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
+
+
 
                     @*
         <td><a href="javascript:void(0);" onclick="setEmployeeCodeAndSubmit('@employee.RegId')">Marks Entry</a></td>
