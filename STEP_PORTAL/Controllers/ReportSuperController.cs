@@ -20,26 +20,71 @@ namespace STEP_PORTAL.Controllers
         }
 
         [CustomAuthorize]
-        public ActionResult AddMarks()
+        public ActionResult AddMarks(int RegId)
         {
-            List<EmployeeViewModel> employeeInfo = new List<EmployeeViewModel>();
-            using (DB_STEPEntities db = new DB_STEPEntities())
+            int deptHeadValue;
+
+            if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
             {
-                int deptHeadValue;
-                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+                using (DB_STEPEntities db = new DB_STEPEntities())
                 {
-                     employeeInfo = db.Database.SqlQuery<EmployeeViewModel>(
-                                "prc_GetEmployeeListByDeptHead @DeptHeadValue",
-                                new SqlParameter("@DeptHeadValue","123")).ToList();
+                    var last2session = (db.New_Tax_Period
+                                 .OrderByDescending(t => t.TaxPeriod)
+                                 .Select(t => t.TaxPeriod).Take(2).ToList());
+
+                    ViewBag.TopTaxPeriods = last2session;
+
+                    string selectedTaxPeriod = Session["SelectedTaxPeriod"] as string;
+
+                    string employeeID = Request.Form["employeeCode"];
+                    int regID = (int)Session["RegID"];
+
+                    // insert marks history
+                    tblMarksEntryHistory logEntry = new tblMarksEntryHistory
+                    {
+                        SupervisorID = deptHeadValue,
+                        EmployeeID = employeeID,
+                        UpdateTime = DateTime.Now,
+                        UserIP = GetIPAddress(),
+
+                    };
+                    db.tblMarksEntryHistories.Add(logEntry);
+                    db.SaveChanges();
+
+
+                    var userInfo = db.Database.SqlQuery<EmployeeInfo>(
+                          "prc_EmployeeInfoByRegID @RegID",
+                          new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
+
+                    var model = new KraKpiOutcomeModel
+                    {
+                        EmployeeCode = userInfo.EmployeeCode,
+                        Name = userInfo.Name
+                    };
+
+                    ViewBag.Designation = userInfo.Designation;
+
+                    /*int? SESSION_ID = db.New_Tax_Period.Where(t => t.TaxPeriod == sessionId).Select(t => t.TaxPerID).FirstOrDefault();*/
+
+                    var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>
+                        ("exec prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                         new SqlParameter("@RegId", RegId),
+                         new SqlParameter("@SESSION_ID", Session["SelectedTaxPeriod"])).ToList();
+
+                    ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
+                    return View("KraKpiOutcomeView", kraKpiOutcomeData);
+
+
                 }
             }
 
-            return View(employeeInfo);
-        }
+            return null;
+
+            }
 
         [CustomAuthorize]
         [HttpPost]
-        public ActionResult AddMarks(int? RegId)
+        public ActionResult AddMarks2(int? RegId)
         {
            // if (!string.IsNullOrEmpty(RegId))
             {
@@ -99,8 +144,14 @@ namespace STEP_PORTAL.Controllers
                 }
             }
 
-            ViewBag.SuccessMessage = "Marks updated successfully!";
-            return RedirectToAction("ViewEmpList", "DeptHead");
+/*            ViewBag.SuccessMessage = "Marks updated successfully!";*/
+
+            if (TempData["SuccessMessage"] != null)
+            {
+                ViewBag.SuccessMessage = TempData["SuccessMessage"].ToString();
+            }
+            /*            return RedirectToAction("ViewEmpList", "DeptHead");*/
+            return View();
         }
 
 
@@ -122,9 +173,12 @@ namespace STEP_PORTAL.Controllers
                         }
                     }
                     db.SaveChanges();
+
                 }
             }
-            return RedirectToAction("ViewEmpList", "DeptHead");
+            TempData["SuccessMessage"] = "Marks updated successfully!";
+
+            return RedirectToAction("AddMarks", new { RegId = regId });
         }
 
         protected string GetIPAddress()

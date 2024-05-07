@@ -31,13 +31,20 @@
     }
 </style>
 
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.SuccessMessage
+    </div>
+}
+
 
 @if (firstItem != null)
 {
-<div>
-    <p><strong>Employee Code: <span class="tab2"></span> @firstItem.EmployeeCode</strong></p>
-    <p><strong>Employee Name: <span class="tab"></span>  @firstItem.Name</strong></p>
-</div>
+    <div>
+        <p><strong>Employee Code: <span class="tab2"></span> @firstItem.EmployeeCode</strong></p>
+        <p><strong>Employee Name: <span class="tab"></span>  @firstItem.Name</strong></p>
+    </div>
 }
 <br />
 
@@ -174,7 +181,7 @@ else
 {
     @Html.Hidden("regId", null, new { id = "viewregIDField" })
 
-@*    @Html.HiddenFor(m => m[0].REG_ID)*@
+    @*    @Html.HiddenFor(m => m[0].REG_ID)*@
 
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <label for="comment" style="font-weight: bold; color: #333;">Comment:</label><br>

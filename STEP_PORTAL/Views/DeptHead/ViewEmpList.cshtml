@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
-@using (Html.BeginForm("AddMarks", "ReportSuper", FormMethod.Post, new { id = "employeeForm" }))
+@using (Html.BeginForm("AddMarks", "ReportSuper", FormMethod.Post, new { id = "employeeForm", target = "_blank" }))
 {
     @Html.Hidden("regID", null, new { id = "regIDField" })
 }
@@ -67,9 +67,11 @@
                     <td>@employee.Designation</td>
                     <td>@employee.Name</td>
                     <td>@employee.EmployeeCode</td>
+                    <td><a target="_blank" href="../ReportSuper/AddMarks?RegId=@employee.RegId">Marks Entry</a></td>
 
-                    <td><a target="_blank" href="javascript:void(0);" onclick="setEmployeeCodeAndSubmit('@employee.RegId')">Marks Entry</a></td>
-                    @*  <td><a href="javascript:void(0);" onclick="setRegId('@employee.RegId')">View Marks</a></td>*@
+                    @*
+        <td><a href="javascript:void(0);" onclick="setEmployeeCodeAndSubmit('@employee.RegId')">Marks Entry</a></td>
+         <td><a href="javascript:void(0);" onclick="setRegId('@employee.RegId')">View Marks</a></td>*@
                 </tr>
                 }
             </tbody>
@@ -83,10 +85,10 @@
 </div>
 
 <script>
-    function setEmployeeCodeAndSubmit(code) {
-        document.getElementById("regIDField").value = code;
-        document.getElementById("employeeForm").submit();
-    }
+    //function setEmployeeCodeAndSubmit(code) {
+    //    document.getElementById("regIDField").value = code;
+    //    document.getElementById("employeeForm").submit();
+    //}
 
     function setRegId(regID) {
         document.getElementById("viewregIDField").value = regID;

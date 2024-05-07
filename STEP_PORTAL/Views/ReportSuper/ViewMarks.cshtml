@@ -8,7 +8,7 @@
 
 <body>
 
-    <h3>View Marks</h3>
+    <h3>View Marks and Comment</h3>
     <br />
 
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
@@ -82,8 +82,8 @@
 
     @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
     {
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
+        <div>
+            <table class="user-info-table">
                 <thead>
                     <tr>
                         <th>KRA</th>
@@ -96,60 +96,30 @@
                 <tbody>
                     @foreach (var item in Model.GroupedData)
                     {
-                        <tr>
-                            <td>@item.KRA</td>
-                            <td>
-                                @foreach (var kpi in item.KPIIs)
-                                {
-                                    <div>@kpi</div>
-                                    if (kpi != item.KPIIs.Last())
-                                    {
-                                        <hr />
-                                    }
-                                }
-                            </td>
-                            <td>
-                                @foreach (var kpi in item.KPIIs)
-                                {
-                                    var outcomeItem = Model.KraKpiOutcomeData.FirstOrDefault(m => m.KRA == item.KRA && m.KPI == kpi);
-                                    string outcome = outcomeItem != null ? outcomeItem.Outcome : null;
-                                    if (!string.IsNullOrEmpty(outcome))
-                                    {
-                                        <div>@outcome</div>
-                                        if (kpi != item.KPIIs.Last())
-                                        {
-                                            <hr />
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <div></div>
-                                    }
-                                }
-                            </td>
-                            <td style="vertical-align: middle;">
-                                @foreach (var kpi in item.KPIIs)
-                                {
-                                    var mark = Model.KraKpiOutcomeData.FirstOrDefault(m => m.KRA == item.KRA && m.KPI == kpi);
-                                    if (mark != null)
-                                    {
-                                        <div style="margin-bottom: 10px; margin-bottom: 10px;">@mark.Marks_Achieved</div>
-                                        if (kpi != item.KPIIs.Last())
-                                        {
-                                            <hr />
-                                            <br />
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <div></div>
-                                    }
-                                }
-                            </td>
-                            <td>
+                        var kpiCount = item.KPIIs.Count;
+                        for (var i = 0; i < kpiCount; i++)
+                        {
+                            var kpi = item.KPIIs[i];
+                            var outcomeItem = Model.KraKpiOutcomeData.FirstOrDefault(m => m.KRA == item.KRA && m.KPI == kpi);
+                            string outcome = outcomeItem != null ? outcomeItem.Outcome : null;
+                            var mark = outcomeItem != null ? outcomeItem.Marks_Achieved : 0;
+
+                    <tr>
+                        @if (i == 0)
+                        {
+                            <td rowspan=@kpiCount>@item.KRA</td>
+                        }
+                        <td>@kpi</td>
+                        <td>@outcome</td>
+                        <td style="text-align:center">@mark</td>
+                        @if (i == 0)
+                        {
+                            <td rowspan=@kpiCount style="text-align:center">
                                 @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
                             </td>
-                        </tr>
+                        }
+                    </tr>
+                        }
                     }
                 </tbody>
             </table>

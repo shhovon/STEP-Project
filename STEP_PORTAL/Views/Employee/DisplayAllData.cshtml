@@ -145,7 +145,8 @@
             </tr>
             <tr>
                 <td><strong>By When:</strong></td>
-                <td>@Model.TrainingNeed.By_When</td>
+@*                <td>@Model.TrainingNeed.By_When</td>*@
+                <td>@(Model.TrainingNeed.By_When.HasValue ? Model.TrainingNeed.By_When.Value.Date.ToString("dd-MM-yyyy") : "")</td>
             </tr>
             <tr>
                 <td><strong>Training Type:</strong></td>

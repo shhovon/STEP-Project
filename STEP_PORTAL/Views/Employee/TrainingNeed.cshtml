@@ -4,9 +4,15 @@
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
 <style>
     .card-body {
-       
         padding: 8px;
         border-radius: 8px;
         height: 70px;
@@ -31,20 +37,17 @@
         margin-bottom: 10px;
         margin-right: 10px;
     }
-	
-	
-
 </style>
 
 
-<div class="dropdown-container">           
-			
-			<label class="dropdown-label" for="taxPeriodDropdownMV"> Session:</label>
-			<label class="form-control"for="taxPeriodDropdownMV"> @Session["TaxPeriod"]</label>		
-   
-	
-        </div>
-		
+<div class="dropdown-container">
+
+    <label class="dropdown-label" for="taxPeriodDropdownMV"> Session:</label>
+    <label class="form-control" for="taxPeriodDropdownMV"> @Session["TaxPeriod"]</label>
+
+
+</div>
+
 @*      new navigation buttons   *@
 <div class="card" style=" background-color: transparent">
     <div id="menu_tab">
@@ -73,9 +76,9 @@
 
 <form id="trainingNeedForm">
     <div class="form-horizontal">
-	
+
         <h4>Add Training Need</h4>
-       
+
         <hr />
         <br />
         <div id="validationSummary" class="text-danger"></div>
@@ -152,18 +155,18 @@
                 <tbody>
                     @foreach (var training in trainingData)
                     {
-                        <tr>
-                            <td>@training.Title</td>
-                            <td>@training.By_When</td>
-                            <td>@training.Train_Type</td>
-                            <td>@training.Status</td>
-                            <td style="text-align: center; vertical-align: middle !important;">
-                                <button class="btn btn-danger delete-btn" data-title="@training.Title" data-by-when="@training.By_When.ToString()" data-type="@training.Train_Type" data-status="@training.Status">
-                                    <i class="ti-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-               }
+                    <tr>
+                        <td>@training.Title</td>
+                        <td>@(training.By_When.HasValue ? training.By_When.Value.Date.ToString("dd-MM-yyyy") : "")</td>
+                        <td>@training.Train_Type</td>
+                        <td>@training.Status</td>
+                        <td style="text-align: center; vertical-align: middle !important;">
+                            <button class="btn btn-danger delete-btn" data-title="@training.Title" data-by-when="@training.By_When.ToString()" data-type="@training.Train_Type" data-status="@training.Status">
+                                <i class="ti-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    }
                 </tbody>
             </table> }
         else
@@ -183,10 +186,10 @@
 <br />
 
 @*<div class="form-group">
-    <div class="col-md-offset-2 col-md-10">
-        <a href="@Url.Action("DisplayAllData", "Employee")" class="btn btn-primary submit-btn">Review Submission</a>
-    </div>
-</div>*@
+        <div class="col-md-offset-2 col-md-10">
+            <a href="@Url.Action("DisplayAllData", "Employee")" class="btn btn-primary submit-btn">Review Submission</a>
+        </div>
+    </div>*@
 
 @section scripts {
     <script>
