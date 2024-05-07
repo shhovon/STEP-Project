@@ -114,53 +114,75 @@ else
 @*main body start*@
 
 <form method="post" action="@Url.Action("DisplayKrasAndKpis", "Home")">
-    <table class="user-info-table"  id="numberInputTable" border="1">
-      
-            <tr>
-                <th>SL</th>
-                <th>KEY RESULT AREAS (KRA)<br />(Task and Personal Objectives)</th>
-                <th>KEY PERFORMANCE<br /> INDICATORS (KPI) <br /> (Determine how KRA's to be<br />measured)</th>
-                <th>KPI OUTCOME</th>
-            </tr>
+    <table class="user-info-table" id="numberInputTable" border="1">
 
-            <tbody>
-                @for (int i = 0; i < Model.Count; i++)
+        <tr>
+            <th>SL</th>
+            <th>KEY RESULT AREAS (KRA)<br />(Task and Personal Objectives)</th>
+            <th>KEY PERFORMANCE<br /> INDICATORS (KPI) <br /> (Determine how KRA's to be<br />measured)</th>
+            <th>KPI OUTCOME</th>
+        </tr>
+
+    @*    <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var item = Model[i];
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@item.KRA</td>
+                    <td>
+                        @for (int j = 0; j < item.KPIIs.Count; j++)
+                        {
+                            <div>
+                                @item.KPIIs[j]
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        @for (int j = 0; j < item.KPIOutcomes.Count; j++)
+                        {
+                            <div>
+                                <input type="hidden" name="SelectedKRA" value="@item.KRA" />
+                                <input type="hidden" name="SelectedKPI" value="@item.KPIIs[j]" />
+                                <input style="height:30px; width:250px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[j]" />
+                            </div>
+
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>*@
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                int sl = 1;
+                var kpiCount = item.KPIIs.Count;
+                for (var i = 0; i < kpiCount; i++)
                 {
-                    var item = Model[i];
-                    <tr>
-                        <td>@(i + 1)</td>
-                        <td>@item.KRA</td>
-                        <td>
-                            @for (int j = 0; j < item.KPIIs.Count; j++)
-                            {
-                                <div>
-                                    @item.KPIIs[j]
-                                </div>
-                                if (j < item.KPIIs.Count - 1)
-                                {
-                                    <hr>
-                                }
-                            }
-                        </td>
-                        <td>
-                            @for (int j = 0; j < item.KPIOutcomes.Count; j++)
-                            {
-                                <div>
-                                    <input type="hidden" name="SelectedKRA" value="@item.KRA" />
-                                    <input type="hidden" name="SelectedKPI" value="@item.KPIIs[j]" />
-                                    <input style="height:30px; width:250px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[j]" />
-                                </div>
-                                if (j < item.KPIOutcomes.Count - 1)
-                                {
-                                    <hr>
-                                }
-                               
-                            }
-                        </td>
-                    </tr>
+                    var kpi = item.KPIIs[i];
+
+            <tr>
+                @if (i == 0)
+                {
+                    <td rowspan=@kpiCount>@sl</td>
+                    <td rowspan=@kpiCount>@item.KRA</td>
                 }
-            </tbody>
-        </table>
+                <td>@kpi</td>
+                <td>
+                    @if (item.KPIOutcomes.Count > i)
+                    {
+                        <input type="hidden" name="SelectedKRA" value="@item.KRA" />
+                        <input type="hidden" name="SelectedKPI" value="@kpi" />
+                        <input style="height:30px; width:200px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[i]" />
+                    }
+                </td>
+            </tr>
+                }
+                sl++;
+            }
+        </tbody>
+    </table>
         <br />
         <button class="btn btn-primary" type="submit">Save</button>
 </form>
