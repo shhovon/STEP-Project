@@ -123,5 +123,95 @@ namespace STEP_PORTAL.Controllers
 
         }
 
+        public List<EmployeeInfo> GetEmployeeListByHOD(int deptHeadValue, int companyId)
+        {
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                var employees = db.Database.SqlQuery<EmployeeInfo>("exec prc_GetHODTeamMember @RegID, @CompID",
+                    new SqlParameter("@RegID", deptHeadValue),
+                    new SqlParameter("@CompID", companyId)).ToList();
+
+                return employees;
+            }
+        }
+
+        [CustomAuthorize]
+        public ActionResult ViewEmpListHOD()
+        {
+            List<EmployeeInfo> employees = new List<EmployeeInfo>();
+            int deptHeadValue;
+            int companyId = 0;
+
+            if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+            {
+                employees = GetEmployeeListByHOD(deptHeadValue, companyId);
+            }
+
+            List<CompanyViewModel> companies = GetCompanies();
+            ViewBag.Companies = new SelectList(companies, "ID", "Name");
+
+            List<string> topTaxPeriods = new List<string>();
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                topTaxPeriods = db.New_Tax_Period
+                                .OrderByDescending(t => t.TaxPeriod)
+                                .Select(t => t.TaxPeriod)
+                                .Take(2)
+                                .ToList();
+            }
+
+            var model = new EmployeeSessionViewModelClass
+            {
+                Employees = employees,
+                TopTaxPeriods = topTaxPeriods
+            };
+
+            ViewBag.SuccessMessage = TempData["SuccessMessage"];
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ViewEmpListHOD(int? companyId)
+        {
+            List<EmployeeInfo> employees = new List<EmployeeInfo>();
+            int deptHeadValue;
+
+            if (companyId != null && Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+            {
+                employees = GetEmployeeListByHOD(deptHeadValue, companyId.Value);
+            }
+            else
+            {
+                ViewBag.Message = "Select an unit";
+            }
+
+            List<CompanyViewModel> companies = GetCompanies();
+            ViewBag.Companies = new SelectList(companies, "ID", "Name", companyId);
+
+            List<string> topTaxPeriods = new List<string>();
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                topTaxPeriods = db.New_Tax_Period
+                                .OrderByDescending(t => t.TaxPeriod)
+                                .Select(t => t.TaxPeriod)
+                                .Take(2)
+                                .ToList();
+
+                string selectedTaxPeriod = Request.Form["selectedTaxPeriod"];
+                int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedTaxPeriod).Select(t => t.TaxPerID).FirstOrDefault();
+                Session["SelectedTaxPeriod"] = sessionID;
+            }
+
+            var model = new EmployeeSessionViewModelClass
+            {
+                Employees = employees,
+                TopTaxPeriods = topTaxPeriods
+            };
+
+            return View(model);
+
+        }
+
     }
 }

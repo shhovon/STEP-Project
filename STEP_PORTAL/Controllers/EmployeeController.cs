@@ -240,8 +240,7 @@ namespace STEP_PORTAL.Controllers
                 using (DB_STEPEntities db = new DB_STEPEntities())
                 {
                     int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
-                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId, selectedTaxPeriod)
-                    .Where(data => data.ApprovalSent != null)
+                    var approvalSent = db.prc_GetKraKpiOutcomeData(regId, selectedTaxPeriod).Where(data => data.ApprovalSent != null)
                     .Select(data => data.ApprovalSent)
                     .Distinct()
                     .ToList();
@@ -349,7 +348,7 @@ namespace STEP_PORTAL.Controllers
 
                 if (existingRecord != null)
                 {
-                    return Json(new { success = false, message = "Data already sent for approval!" });
+                    return Json(new { success = false, message = "You already sent this data for approval!" });
                 }
 
                 var newRecord = new tbl_StepMaster
@@ -364,7 +363,7 @@ namespace STEP_PORTAL.Controllers
 
             }
 
-            return Json(new { success = true, message = "Data sent for approval successfully!" });
+            return Json(new { success = true, message = "Successfully sent data for approval!" });
         }
 
 
