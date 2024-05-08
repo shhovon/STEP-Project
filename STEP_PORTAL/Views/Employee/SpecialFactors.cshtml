@@ -163,7 +163,17 @@
             });
         });
 
+
         function submitForm() {
+
+            var description = document.getElementById('Description').value.trim();
+            if (description === '') {
+                $('#descriptionValidation').html('Please enter a description');
+                return;
+            } else {
+                $('#descriptionValidation').html('');
+            }
+
             var formData = {
                 Description: $('#Description').val()
             };

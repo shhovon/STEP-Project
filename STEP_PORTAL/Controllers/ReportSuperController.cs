@@ -331,10 +331,6 @@ namespace STEP_PORTAL.Controllers
                 {
                     return Json(new { success = false, message = result.Message });
                 }
-
-/*                return RedirectToAction("ViewEmpList", "DeptHead");*/
-
-/*                return View();*/
             }
         }  
         

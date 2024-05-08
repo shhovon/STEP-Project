@@ -42,12 +42,13 @@ namespace STEP_PORTAL.Controllers
 
                         db.tblSpecial_Factor.Add(specialFactor);
                         db.SaveChanges();
-                        bool success = true;
-                        TempData["SuccessMessage"] = success ? "Special Factor saved successfully!" : "";
                         int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
 
                         var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
                         Session["TaxPeriod"] = taxPeriod;
+
+                        bool success = true;
+                        TempData["SuccessMessage"] = success ? "Special Factor saved successfully!" : "";
 
                         return RedirectToAction("TrainingNeed", "Employee");
                     }
@@ -190,8 +191,8 @@ namespace STEP_PORTAL.Controllers
                 return RedirectToAction("DisplayKrasAndKpis", "Home");
             }
 
-/*            try
-            {*/
+            try
+            {
                 using (DB_STEPEntities db = new DB_STEPEntities())
                 {
                     int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
@@ -207,16 +208,29 @@ namespace STEP_PORTAL.Controllers
                         return RedirectToAction("SpecialFactors");
                     }
 
-                    var session = db.tblSpecial_Factor.FirstOrDefault(sf => sf.Description == description);
-
-                    db.tblSpecial_Factor.Remove(session);
-                    db.SaveChanges();
+                    if (!string.IsNullOrEmpty(description))
+                    {
+                        var session = db.tblSpecial_Factor.FirstOrDefault(sf => sf.Description == description);
+                        if (session != null)
+                        {
+                            db.tblSpecial_Factor.Remove(session);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = "Special factor data not found for deletion.";
+                        }
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Description cannot be empty.";
+                    }
                 }
-/*            }
+            }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Error deleting session: " + ex.Message;
-            }*/
+                TempData["ErrorMessage"] = "Error deleting special factor: " + ex.Message;
+            }
 
             return RedirectToAction("SpecialFactors");
         }
@@ -231,8 +245,8 @@ namespace STEP_PORTAL.Controllers
                 return RedirectToAction("DisplayKrasAndKpis", "Home");
             }
 
-/*            try
-            {*/
+            try
+            {
                 DateTime? byWhen = null;
                 if (!string.IsNullOrEmpty(by_when))
                 {
@@ -241,7 +255,6 @@ namespace STEP_PORTAL.Controllers
                         byWhen = parsedDate;
                     }
                 }
-
 
                 using (DB_STEPEntities db = new DB_STEPEntities())
                 {
@@ -258,7 +271,10 @@ namespace STEP_PORTAL.Controllers
                     }
 
                     var session = db.tblTraining_Need.FirstOrDefault(tn =>
-                        tn.Title == title && tn.By_When == byWhen && tn.Train_Type == type && tn.Status == status);
+                        tn.Title == (string.IsNullOrEmpty(title) ? tn.Title : title) &&
+                        tn.By_When == byWhen &&
+                        tn.Train_Type == (string.IsNullOrEmpty(type) ? tn.Train_Type : type) &&
+                        tn.Status == (string.IsNullOrEmpty(status) ? tn.Status : status));
 
                     if (session != null)
                     {
@@ -270,11 +286,11 @@ namespace STEP_PORTAL.Controllers
                         TempData["ErrorMessage"] = "Training data not found for deletion.";
                     }
                 }
-/*            }
+            }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Error deleting training data: " + ex.Message;
-            }*/
+            }
 
             return RedirectToAction("TrainingNeed");
         }

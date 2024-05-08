@@ -4,12 +4,7 @@
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
-@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
-{
-    <div class="alert alert-success" role="alert">
-        @TempData["SuccessMessage"]
-    </div>
-}
+
 
 <style>
     .card-body {
@@ -38,6 +33,13 @@
         margin-right: 10px;
     }
 </style>
+
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
 
 
 <div class="dropdown-container">
@@ -155,17 +157,17 @@
                 <tbody>
                     @foreach (var training in trainingData)
                     {
-                    <tr>
-                        <td>@training.Title</td>
-                        <td>@(training.By_When.HasValue ? training.By_When.Value.Date.ToString("dd-MM-yyyy") : "")</td>
-                        <td>@training.Train_Type</td>
-                        <td>@training.Status</td>
-                        <td style="text-align: center; vertical-align: middle !important;">
-                            <button class="btn btn-danger delete-btn" data-title="@training.Title" data-by-when="@training.By_When.ToString()" data-type="@training.Train_Type" data-status="@training.Status">
-                                <i class="ti-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>@training.Title</td>
+                            <td>@(training.By_When.HasValue ? training.By_When.Value.Date.ToString("dd-MM-yyyy") : "")</td>
+                            <td>@training.Train_Type</td>
+                            <td>@training.Status</td>
+                            <td style="text-align: center; vertical-align: middle !important;">
+                                <button class="btn btn-danger delete-btn" data-title="@training.Title" data-by-when="@training.By_When.ToString()" data-type="@training.Train_Type" data-status="@training.Status">
+                                    <i class="ti-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table> }
@@ -212,6 +214,33 @@
         });
 
         function submitForm() {
+
+            var title = $('#Title').val().trim();
+            var byWhen = $('#By_When').val();
+            var trainType = $('#Train_Type option:selected').val();
+
+            if (title === '') {
+                $('#titleValidation').html('Please enter a title');
+                return;
+            } else {
+                $('#titleValidation').html('');
+            }
+
+            if (byWhen === '') {
+                $('#byWhenValidation').html('Please enter a date');
+                return;
+            } else {
+                $('#byWhenValidation').html('');
+            }
+
+            //if (trainType === '') {
+            //    $('#trainTypeValidation').html('Please select a training type');
+            //    return;
+            //} else {
+            //    $('#trainTypeValidation').html('');
+            //}
+
+
             var formData = {
                 Title: $('#Title').val(),
                 By_When: $('#By_When').val(),
@@ -236,18 +265,23 @@
             });
         }
 
-        function deleteTraining(trainingData) {
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("DeleteTraining", "Employee")',
-                data: trainingData,
-                success: function (data) {
-                    window.location.reload();
-                },
-                error: function (xhr, status, error) {
-                    alert('An error occurred while deleting the training data.');
-                }
-            });
+function deleteTraining(trainingData) {
+    $.ajax({
+        type: 'POST',
+        url: '@Url.Action("DeleteTraining", "Employee")',
+        data: {
+            title: trainingData.title || '',
+            by_when: trainingData.by_when || '',
+            type: trainingData.type || '',
+            status: trainingData.status || ''
+        },
+        success: function (data) {
+            window.location.reload();
+        },
+        error: function (xhr, status, error) {
+            alert('An error occurred while deleting the training data.');
         }
+    });
+}
     </script>
 }
