@@ -48,9 +48,11 @@ namespace STEP_PORTAL.Controllers
 
                         var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
                         Session["TaxPeriod"] = taxPeriod;
+
+                        return RedirectToAction("TrainingNeed", "Employee");
                     }
 
-                    return Json(new { success = true });
+/*                    return Json(new { success = true });*/
                 }
                 catch (Exception ex)
                 {
@@ -129,9 +131,11 @@ namespace STEP_PORTAL.Controllers
                         int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
                         var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
                         Session["TaxPeriod"] = taxPeriod;
+
+                        return RedirectToAction("DisplayAllData");
                     }
 
-                    return Json(new { success = true });
+/*                    return Json(new { success = true });*/
                 }
                 catch (Exception ex)
                 {
@@ -319,8 +323,8 @@ namespace STEP_PORTAL.Controllers
                                 .ToList();
 
 
-                var specialFactors = db.tblSpecial_Factor.FirstOrDefault(m => m.Reg_Id == regId);
-                var trainingNeed = db.tblTraining_Need.FirstOrDefault(m => m.Reg_Id == regId);
+                var specialFactors = db.tblSpecial_Factor.Where(m => m.Reg_Id == regId).ToList();
+                var trainingNeed = db.tblTraining_Need.Where(m => m.Reg_Id == regId).ToList();
 
                 var viewModel = new DisplayAllDataViewModel
                 {

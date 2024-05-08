@@ -173,7 +173,8 @@
                 url: '@Url.Action("SpecialFactors", "Employee")',
                 data: formData,
                 success: function (data) {
-                    window.location.reload();
+@*              window.location.reload();*@
+                window.location.href = '@Url.Action("TrainingNeed", "Employee")';
                 },
                 error: function (xhr, status, error) {
                     var errorMessage = xhr.responseText || 'An error occurred while submitting the form';

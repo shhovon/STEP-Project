@@ -10,6 +10,6 @@ public class DisplayAllDataViewModel
     public List<KraKpiViewModel> GroupedData { get; set; }
     public List<KraKpiOutcomeModel> KraKpiOutcomeData { get; set; }
     public List<KraKpiViewModel> StepData { get; set; }
-    public tblSpecial_Factor SpecialFactors { get; set; }
-    public tblTraining_Need TrainingNeed { get; set; }
+    public List<tblSpecial_Factor> SpecialFactors { get; set; }
+    public List<tblTraining_Need> TrainingNeed { get; set; }
 }

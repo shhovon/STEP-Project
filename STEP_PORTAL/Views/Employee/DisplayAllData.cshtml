@@ -8,6 +8,10 @@
     table thead th {
         height: 1px !important;
     }
+
+    tbody tr:not(:last-child) {
+        margin-bottom: 10px;
+    }
 </style>
 
 <h3 style="text-align:center;">Preview Data</h3>
@@ -38,30 +42,6 @@
 
 <br />
 
-@*<table class="table">
-        <thead>
-            <tr>
-                <th>Selected KRA</th>
-                <th>Selected KPI</th>
-                <th>KPI Outcome</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @if (Model != null && Model.StepData.Count > 0)
-            {
-                foreach (var item in Model.StepData)
-                {
-                    <tr>
-                        <td>@item.KRA</td>
-                        <td>@item.KPI</td>
-                        <td>@(item.KPI_OUTCOME != null ? item.KPI_OUTCOME : "")</td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>*@
-
 <table class="table">
     <thead>
         <tr>
@@ -80,21 +60,24 @@
                 for (var i = 0; i < kpiCount; i++)
                 {
                     var kpi = item.KPIIs[i];
-                <tr>
-                    @if (i == 0)
-                    {
-                    <td rowspan=@kpiCount>@item.KRA</td>
-                    }
-                    <td>@kpi</td>
-                    <td>
-                        @{
-                            var stepDataForKPI = Model.StepData.FirstOrDefault(s => s.KPI == kpi && s.KRA == item.KRA);
-                            var kpiOutcome = stepDataForKPI != null ? stepDataForKPI.KPI_OUTCOME : "";
+                    <tr>
+                        @if (i == 0)
+                        {
+                            <td rowspan=@kpiCount>@item.KRA</td>
                         }
-                        @kpiOutcome
-                    </td>
-                </tr>
+                        <td>@kpi</td>
+                        <td>
+                            @{
+                                var stepDataForKPI = Model.StepData.FirstOrDefault(s => s.KPI == kpi && s.KRA == item.KRA);
+                                var kpiOutcome = stepDataForKPI != null ? stepDataForKPI.KPI_OUTCOME : "";
+                            }
+                            @kpiOutcome
+                        </td>
+                    </tr>
                 }
+                @*                <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>*@
             }
         }
     </tbody>
@@ -104,52 +87,52 @@
 
 
 
-@if (Model.SpecialFactors != null)
+@if (Model.SpecialFactors != null && Model.SpecialFactors.Count > 0)
 {
     <table class="table">
         <thead>
             <tr>
-                <th colspan="2">Special Factors</th>
+                <th>Special Factors</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><strong>Description:</strong></td>
-                <td>@Model.SpecialFactors.Description</td>
-            </tr>
+            @foreach (var specialFactorItem in Model.SpecialFactors)
+            {
+                <tr>
+                    <td>@specialFactorItem.Description</td>
+                </tr>
+            }
         </tbody>
     </table>
 }
 
-@if (Model.TrainingNeed != null)
+
+@if (Model.TrainingNeed != null && Model.TrainingNeed.Count > 0)
 {
     <table class="table">
         <thead>
             <tr>
-                <th colspan="2">Training Need</th>
+                <th>Title</th>
+                <th>By When</th>
+                <th>Training Type</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><strong>Title:</strong></td>
-                <td>@Model.TrainingNeed.Title</td>
-            </tr>
-            <tr>
-                <td><strong>By When:</strong></td>
-@*                <td>@Model.TrainingNeed.By_When</td>*@
-                <td>@(Model.TrainingNeed.By_When.HasValue ? Model.TrainingNeed.By_When.Value.Date.ToString("dd-MM-yyyy") : "")</td>
-            </tr>
-            <tr>
-                <td><strong>Training Type:</strong></td>
-                <td>@Html.DisplayFor(model => model.TrainingNeed.Train_Type)</td>
-            </tr>
-            <tr>
-                <td><strong>Status:</strong></td>
-                <td>@Model.TrainingNeed.Status</td>
-            </tr>
+            @foreach (var trainingNeedItem in Model.TrainingNeed)
+            {
+                <tr>
+                    <td>@trainingNeedItem.Title</td>
+                    <td>@(trainingNeedItem.By_When.HasValue ? trainingNeedItem.By_When.Value.Date.ToString("dd-MM-yyyy") : "")</td>
+                    <td>@Html.DisplayFor(model => trainingNeedItem.Train_Type)</td>
+                    <td>@trainingNeedItem.Status</td>
+                </tr>
+            }
         </tbody>
     </table>
 }
+
+
 
 <br />
 <form id="submitForm" action="@Url.Action("SubmitForApproval", "Employee")" method="post">
