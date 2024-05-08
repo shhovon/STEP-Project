@@ -72,10 +72,10 @@
             <option value="" @(ViewBag.SelectedTaxPeriod == null ? "selected" : "")>Choose a Session</option>
             @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
             {
-                <option value="@taxPeriod" @(ViewBag.SelectedTaxPeriod == taxPeriod ? "selected" : "")>@taxPeriod</option>
+                <option value="@taxPeriod.TaxPerID">@taxPeriod.TaxPeriod</option>
             }
         </select>
-    </div>
+    </div>    
     <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" value="@ViewBag.SelectedTaxPeriod" />
 }
 else
@@ -102,8 +102,8 @@ else
 
         <input id="3" name="r" type="radio" />
         <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("TrainingNeed", "Employee")"> 3. Training</a></label>
-        <div></div>        
-        
+        <div></div>
+
         <input id="3" name="r" type="radio" />
         <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("DisplayAllData", "Employee")">4. Preview & Submit</a></label>
         <div></div>
@@ -115,6 +115,10 @@ else
 
 <form method="post" action="@Url.Action("DisplayKrasAndKpis", "Home")">
     <table class="user-info-table2" id="numberInputTable" border="1">
+        <h4>ACHIEVEMENT AGAINST AGREED OBJECTIVES </h4>
+
+        <hr />
+        <br />
 
         <tr>
             <th style="max-width:2px;">SL</th>
@@ -123,70 +127,82 @@ else
             <th>KPI OUTCOME</th>
         </tr>
 
-    @*    <tbody>
-            @for (int i = 0; i < Model.Count; i++)
-            {
-                var item = Model[i];
-                <tr>
-                    <td>@(i + 1)</td>
-                    <td>@item.KRA</td>
-                    <td>
-                        @for (int j = 0; j < item.KPIIs.Count; j++)
-                        {
-                            <div>
-                                @item.KPIIs[j]
-                            </div>
-                        }
-                    </td>
-                    <td>
-                        @for (int j = 0; j < item.KPIOutcomes.Count; j++)
-                        {
-                            <div>
-                                <input type="hidden" name="SelectedKRA" value="@item.KRA" />
-                                <input type="hidden" name="SelectedKPI" value="@item.KPIIs[j]" />
-                                <input style="height:30px; width:250px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[j]" />
-                            </div>
+        @*    <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    var item = Model[i];
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@item.KRA</td>
+                        <td>
+                            @for (int j = 0; j < item.KPIIs.Count; j++)
+                            {
+                                <div>
+                                    @item.KPIIs[j]
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            @for (int j = 0; j < item.KPIOutcomes.Count; j++)
+                            {
+                                <div>
+                                    <input type="hidden" name="SelectedKRA" value="@item.KRA" />
+                                    <input type="hidden" name="SelectedKPI" value="@item.KPIIs[j]" />
+                                    <input style="height:30px; width:250px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[j]" />
+                                </div>
 
-                        }
-                    </td>
-                </tr>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>*@
+
+        <tbody>
+            @{
+                int sl = 1;
             }
-        </tbody>*@
-
-    <tbody>
-        @{
-            int sl = 1;
-        }
-        @foreach (var item in Model)
-        {
-            var kpiCount = item.KPIIs.Count;
-            for (var i = 0; i < kpiCount; i++)
+            @if (Model != null)
             {
-                var kpi = item.KPIIs[i];
-
-                <tr>
-                    @if (i == 0)
+                foreach (var item in Model)
+                {
+                    var kpiCount = item.KPIIs.Count;
+                    for (var i = 0; i < kpiCount; i++)
                     {
-                        <td rowspan=@kpiCount>@sl</td>
-                        <td rowspan=@kpiCount>@item.KRA</td>
+                        var kpi = item.KPIIs[i];
+
+                        <tr>
+                            @if (i == 0)
+                            {
+                                <td rowspan=@kpiCount>@sl</td>
+                                <td rowspan=@kpiCount>@item.KRA</td>
+                            }
+                            <td>@kpi</td>
+                            <td>
+                                @if (item.KPIOutcomes.Count > i)
+                                {
+                                    <input type="hidden" name="SelectedKRA" value="@item.KRA" />
+                                    <input type="hidden" name="SelectedKPI" value="@kpi" />
+                                    <input style="height:30px; width:250px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[i]" />
+                                }
+                            </td>
+                        </tr>
                     }
-                    <td>@kpi</td>
-                    <td>
-                        @if (item.KPIOutcomes.Count > i)
-                        {
-                            <input type="hidden" name="SelectedKRA" value="@item.KRA" />
-                            <input type="hidden" name="SelectedKPI" value="@kpi" />
-                            <input style="height:30px; width:250px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[i]" />
-                        }
-                    </td>
-                </tr>
+                    sl++;
+                }
             }
-            sl++;
-        }
-    </tbody>
+        </tbody>
     </table>
-        <br />
+    <br />
+
+    @if (@ViewBag.ApprovalSent)
+    {
+        <button class="btn btn-primary" type="submit" hidden="hidden">Save</button>
+        <p>Already Sent for Approval</p>
+    }
+    else
+    {
         <button class="btn btn-primary" type="submit">Save</button>
+    }
 </form>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -194,7 +210,16 @@ else
 @section scripts {
     <script>
 
-        $(document).ready(function() {
+        $(document).ready(function () {
+
+
+         var session_id = $('#selectedTaxPeriod').val();
+
+            $('#taxPeriodDropdownMV').val(session_id);
+
+
+
+
     $('#taxPeriodDropdownMV').on('change', function() {
         var selectedSession = $(this).val();
 
@@ -206,6 +231,7 @@ else
                 success: function(response) {
                     if (response.success) {
                         console.log('Selected session updated successfully.');
+                        window.location.href = '@Url.Action("DisplayKrasAndKpis", "Home")';
                     } else {
                         console.error('Failed to update selected session.');
                     }

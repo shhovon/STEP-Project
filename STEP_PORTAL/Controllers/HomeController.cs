@@ -522,60 +522,63 @@ namespace STEP_DEMO.Controllers
             List<string> sessionIds;
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                sessionIds = (from vs in db.View_StepDetails
-                              join tax in db.New_Tax_Period on vs.SESSION_ID equals tax.TaxPerID
-                              where tax.KPI_Enty == true
-                              select tax.TaxPeriod).Distinct().ToList();
-
-                ViewBag.SessionIds = sessionIds;
-
-                var SessionIDKraKpi = from vs in db.View_StepDetails
-                                      join tax in db.New_Tax_Period on vs.SESSION_ID equals tax.TaxPerID
-                                      where tax.KPI_Enty == true
-                                      select new
-                                      {
-                                          vs.KRA,
-                                          vs.KPI,
-                                          vs.KPI_OUTCOME
-                                      };
-
-                ViewBag.SessionIDKraKpi = SessionIDKraKpi;
+                int RegID = int.Parse(Session["RegID"].ToString());
 
                 var last2session = (db.New_Tax_Period
                               .OrderByDescending(t => t.TaxPeriod)
-                              .Select(t => t.TaxPeriod).Take(2).ToList());
+                              .Take(2).ToList());
 
                 ViewBag.TopTaxPeriods = last2session;
-                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
+
+
+                var  SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
+                ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
+
+
+                var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                            new SqlParameter("@RegId", RegID),
+                            new SqlParameter("@SESSION_ID", SelectedTaxPeriod)).ToList();
+
+                if (kraKpiOutcomeData.Count > 0)
                 {
-
-                    // Get KRA and KPI data for the logged user
-                    var kraKpiData = (from kra in db.KRAs
-                                      join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
-                                      join st in db.STEPs on kpi.KPI_ID equals st.KPI_ID into stJoin
-                                      from st in stJoin.DefaultIfEmpty()
-                                      where kra.RegId == regId && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
-                                      orderby kra.KRA_ID ascending, kpi.KPI_ID ascending
-                                      select new { KRA = kra.KRA1, KPI = kpi.KPI1, KPIOutcome = st != null ? st.KPI_OUTCOME : null })
-                                      .ToList();
-
-
-
-                    // Grouping KPIs by KRA
-                    var groupedData = kraKpiData.GroupBy(x => x.KRA)
-                                                    .Select(g => new KraKpiViewModel
-                                                    {
-                                                        KRA = g.Key,
-                                                        KPIIs = g.Select(x => x.KPI).ToList(),
-                                                        KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
-                                                    })
-                                                    .ToList();
-
-
-                        return View(groupedData);
-
-
+                    Session["ApprovalSent"] = kraKpiOutcomeData[0].ApprovalSent;
+                    ViewBag.ApprovalSent = Session["ApprovalSent"];
                 }
+                else
+                {
+                    ViewBag.ApprovalSent = false;
+                }
+
+
+
+                // Get KRA and KPI data for the logged user
+                var kraKpiData = (from kra in db.KRAs
+                                  join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
+                                  join st in db.STEPs on kpi.KPI_ID equals st.KPI_ID into stJoin
+                                  from st in stJoin.DefaultIfEmpty()
+                                  where kra.RegId == RegID && st.SESSION_ID == SelectedTaxPeriod && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
+                                  orderby kra.KRA_ID ascending, kpi.KPI_ID ascending
+                                  select new { KRA = kra.KRA1, KPI = kpi.KPI1, KPIOutcome = st != null ? st.KPI_OUTCOME : null })
+                                  .ToList();
+
+
+
+                // Grouping KPIs by KRA
+                var groupedData = kraKpiData.GroupBy(x => x.KRA)
+                                                .Select(g => new KraKpiViewModel
+                                                {
+                                                    KRA = g.Key,
+                                                    KPIIs = g.Select(x => x.KPI).ToList(),
+                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
+                                                })
+                                                .ToList();
+
+
+
+
+                return View(groupedData);
+
             }
 
             return View();
@@ -602,6 +605,8 @@ namespace STEP_DEMO.Controllers
 
                         int kraId = db.KRAs.FirstOrDefault(k => k.KRA1 == selectedKRA)?.KRA_ID ?? 0;
                         int kpiId = db.KPIs.FirstOrDefault(k => k.KPI1 == selectedKPI)?.KPI_ID ?? 0;
+
+
                         int sessionID = (int)Session["SelectedTaxPeriod"];
 
                         var existingRecord = db.STEPs.FirstOrDefault(s => s.REG_ID == regId && s.SESSION_ID == sessionID && s.KRA_ID == kraId && s.KPI_ID == kpiId);
@@ -830,10 +835,10 @@ namespace STEP_DEMO.Controllers
         {
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedSession).Select(t => t.TaxPerID).FirstOrDefault();
-                Session["SelectedTaxPeriod"] = sessionID;
+                Session["SelectedTaxPeriod"] = selectedSession;
+                return Json(new { success = true });
             }
-            return Json(new { success = true });
+
         }
 
 

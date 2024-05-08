@@ -47,7 +47,7 @@ namespace STEP_PORTAL.Controllers
                         var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
                         Session["TaxPeriod"] = taxPeriod;
 
-                        bool success = true;
+                                                bool success = true;
                         TempData["SuccessMessage"] = success ? "Special Factor saved successfully!" : "";
 
                         return RedirectToAction("TrainingNeed", "Employee");
@@ -195,7 +195,7 @@ namespace STEP_PORTAL.Controllers
             {
                 using (DB_STEPEntities db = new DB_STEPEntities())
                 {
-                    int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
+                    int selectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
                     var approvalSent = db.prc_GetKraKpiOutcomeData(regId, selectedTaxPeriod)
                                         .Where(data => data.ApprovalSent != null)
                                         .Select(data => data.ApprovalSent)
@@ -258,7 +258,7 @@ namespace STEP_PORTAL.Controllers
 
                 using (DB_STEPEntities db = new DB_STEPEntities())
                 {
-                    int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
+                    int selectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
                     var approvalSent = db.prc_GetKraKpiOutcomeData(regId, selectedTaxPeriod).Where(data => data.ApprovalSent != null)
                     .Select(data => data.ApprovalSent)
                     .Distinct()
@@ -301,7 +301,7 @@ namespace STEP_PORTAL.Controllers
         public ActionResult DisplayAllData()
         {
             var regId = (int)Session["RegId"];
-            int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
+            int selectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
