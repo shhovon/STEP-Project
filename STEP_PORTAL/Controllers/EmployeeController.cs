@@ -285,6 +285,7 @@ namespace STEP_PORTAL.Controllers
         public ActionResult DisplayAllData()
         {
             var regId = (int)Session["RegId"];
+            int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
 
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
@@ -323,8 +324,8 @@ namespace STEP_PORTAL.Controllers
                                 .ToList();
 
 
-                var specialFactors = db.tblSpecial_Factor.Where(m => m.Reg_Id == regId).ToList();
-                var trainingNeed = db.tblTraining_Need.Where(m => m.Reg_Id == regId).ToList();
+                var specialFactors = db.tblSpecial_Factor.Where(m => m.Reg_Id == regId && m.Session_Id == selectedTaxPeriod).ToList();
+                var trainingNeed = db.tblTraining_Need.Where(m => m.Reg_Id == regId && m.Session_Id == selectedTaxPeriod).ToList();
 
                 var viewModel = new DisplayAllDataViewModel
                 {
