@@ -22,9 +22,10 @@ namespace STEP_PORTAL.Controllers
         [CustomAuthorize]
         public ActionResult AddMarks(string regId)
         {
-            //regId = HttpUtility.UrlDecode(regId);
             int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
             int deptHeadValue;
+            /*            int userRegid = (int)Session["RegId"];*/
+
 
             if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
             {
@@ -74,8 +75,8 @@ namespace STEP_PORTAL.Controllers
                          new SqlParameter("@SESSION_ID", Session["SelectedTaxPeriod"])).ToList();
 
                     ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
+                    ViewBag.RegId = RegId;
                     return View("KraKpiOutcomeView", kraKpiOutcomeData);
-
 
                 }
             }
@@ -159,8 +160,9 @@ namespace STEP_PORTAL.Controllers
 
         [CustomAuthorize]
         [HttpPost]
-        public ActionResult UpdateMarks(List<KraKpiOutcomeModel> model, List<MarksUpdateModel> marksUpdateModel, int regId)
+        public ActionResult UpdateMarks(List<KraKpiOutcomeModel> model, List<MarksUpdateModel> marksUpdateModel)
         {
+            int regId = Convert.ToInt32(Request.Form["regId"]);
             if (model != null && marksUpdateModel != null)
             {
                 using (DB_STEPEntities db = new DB_STEPEntities())
@@ -180,7 +182,10 @@ namespace STEP_PORTAL.Controllers
             }
             TempData["SuccessMessage"] = "Marks updated successfully!";
 
-            return RedirectToAction("AddMarks", new { RegId = regId });
+            string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+            return RedirectToAction("AddMarks", new { regId = encryptedRegId });
+
+            /*return RedirectToAction("AddMarks", new { RegId = regId });*/
         }
 
         protected string GetIPAddress()
@@ -297,8 +302,9 @@ namespace STEP_PORTAL.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveReportSuperComment(string comment, int regId)
+        public ActionResult SaveReportSuperComment(string comment)
         {
+            int regId = Convert.ToInt32(Request.Form["regId"]);
             int updatedBy = (int)Session["RegID"];
             int sessionID = (int)Session["SelectedTaxPeriod"];
             string statusType = "Report Super Comment";
