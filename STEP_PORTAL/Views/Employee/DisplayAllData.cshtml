@@ -4,6 +4,11 @@
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
+<style>
+    table thead th {
+        height: 1px !important;
+    }
+</style>
 
 <h3 style="text-align:center;">Preview Data</h3>
 <br />
@@ -71,39 +76,25 @@
         {
             foreach (var item in Model.GroupedData)
             {
+                var kpiCount = item.KPIIs.Count;
+                for (var i = 0; i < kpiCount; i++)
+                {
+                    var kpi = item.KPIIs[i];
                 <tr>
-                    <td>@item.KRA</td>
+                    @if (i == 0)
+                    {
+                    <td rowspan=@kpiCount>@item.KRA</td>
+                    }
+                    <td>@kpi</td>
                     <td>
-                        @for (int i = 0; i < item.KPIIs.Count; i++)
-                        {
-                            <div>@item.KPIIs[i]</div>
-                            if (i != item.KPIIs.Count - 1)
-                            {
-                                <hr>
-                            }
-
+                        @{
+                            var stepDataForKPI = Model.StepData.FirstOrDefault(s => s.KPI == kpi && s.KRA == item.KRA);
+                            var kpiOutcome = stepDataForKPI != null ? stepDataForKPI.KPI_OUTCOME : "";
                         }
-                        <br />
-                    </td>
-                    <td>
-                        @for (int i = 0; i < item.KPIIs.Count; i++)
-                        {
-                            var stepDataForKPI = Model.StepData.FirstOrDefault(s => s.KPI == item.KPIIs[i] && s.KRA == item.KRA);
-                            if (stepDataForKPI != null)
-                            {
-                                <div>@(stepDataForKPI.KPI_OUTCOME != null ? stepDataForKPI.KPI_OUTCOME : "")</div>
-                            }
-                            else
-                            {
-                                <div></div>
-                            }
-                            if (i != item.KPIIs.Count - 1)
-                            {
-                                <hr>
-                            }
-                        }
+                        @kpiOutcome
                     </td>
                 </tr>
+                }
             }
         }
     </tbody>
