@@ -196,8 +196,10 @@ else
 
     @if (@ViewBag.ApprovalSent)
     {
-        <button class="btn btn-primary" type="submit" hidden="hidden">Save</button>
-        <p>Already Sent for Approval</p>
+        <div class="alert alert-danger" role="alert">
+            <button class="btn btn-primary" type="submit" hidden="hidden">Save</button>
+            <i class="fas fa-info-circle"></i> Already Sent for Approval
+        </div>
     }
     else
     {

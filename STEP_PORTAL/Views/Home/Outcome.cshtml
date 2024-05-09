@@ -7,14 +7,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
     <title>Outcome</title>
+
+    <style>
+        .hide-link {
+            display: none !important;
+        }
+
+    </style>
 </head>
 <body>
 
-    <div class="form-group" style="float:right;">
+
+    @if (@ViewBag.ApprovalSent)
+    {
+        <div class="alert alert-danger" role="alert">
+            <div style=" text-align: center;">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary submit-btn hide-link">New</a>
+                <i class="fas fa-info-circle"></i> Already Sent for Approval
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="form-group" style="float:right;">
+            <div class="col-md-offset-3 col-md-10">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary submit-btn">New</a>
+            </div>
+        </div>
+    }
+
+@*    <div class="form-group" style="float:right;">
         <div class="col-md-offset-3 col-md-10">
             <a href="@Url.Action("Index", "Home")" class="btn btn-primary submit-btn">New</a>
         </div>
-    </div>
+    </div>*@
     <br />
     <br />
 

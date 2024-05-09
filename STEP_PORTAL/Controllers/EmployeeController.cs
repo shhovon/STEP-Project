@@ -9,6 +9,7 @@ using STEP_PORTAL.Helpers;
 using System.Web.Security;
 using System.Globalization;
 using STEP_DEMO.Models;
+using System.Data.SqlClient;
 
 namespace STEP_PORTAL.Controllers
 {
@@ -78,11 +79,26 @@ namespace STEP_PORTAL.Controllers
                     using (DB_STEPEntities db = new DB_STEPEntities())
                     {
                         int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
+                        int selectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
                         var addedDescriptions = db.tblSpecial_Factor
                             .Where(sf => sf.Session_Id == sessionIdInt && sf.Reg_Id == regId)
                             .Select(sf => sf.Description)
                             .ToList();
+
+                        var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                            new SqlParameter("@RegId", regId),
+                            new SqlParameter("@SESSION_ID", selectedTaxPeriod)).ToList();
+
+                        if (kraKpiOutcomeData.Count > 0)
+                        {
+                            Session["ApprovalSent"] = kraKpiOutcomeData[0].ApprovalSent;
+                            ViewBag.ApprovalSent = Session["ApprovalSent"];
+                        }
+                        else
+                        {
+                            ViewBag.ApprovalSent = false;
+                        }
 
                         var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
                         Session["TaxPeriod"] = taxPeriod;
@@ -161,10 +177,25 @@ namespace STEP_PORTAL.Controllers
                     using (DB_STEPEntities db = new DB_STEPEntities())
                     {
                         int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
+                        int selectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
                         var trainingData = db.tblTraining_Need
                             .Where(tn => tn.Session_Id == sessionIdInt && tn.Reg_Id == regId)
                             .ToList();
+
+                        var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                            new SqlParameter("@RegId", regId),
+                            new SqlParameter("@SESSION_ID", selectedTaxPeriod)).ToList();
+
+                        if (kraKpiOutcomeData.Count > 0)
+                        {
+                            Session["ApprovalSent"] = kraKpiOutcomeData[0].ApprovalSent;
+                            ViewBag.ApprovalSent = Session["ApprovalSent"];
+                        }
+                        else
+                        {
+                            ViewBag.ApprovalSent = false;
+                        }
 
                         var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
                         Session["TaxPeriod"] = taxPeriod;
@@ -201,6 +232,7 @@ namespace STEP_PORTAL.Controllers
                                         .Select(data => data.ApprovalSent)
                                         .Distinct()
                                         .ToList();
+
 
                     if (approvalSent.Any(x => x == true))
                     {
@@ -303,8 +335,11 @@ namespace STEP_PORTAL.Controllers
             var regId = (int)Session["RegId"];
             int selectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
+
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
+                ViewBag.ApprovalSent = Session["ApprovalSent"];
+
                 var kraKpiData = (from kra in db.KRAs
                                   join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
                                   where kra.RegId == regId && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
@@ -365,6 +400,23 @@ namespace STEP_PORTAL.Controllers
 
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
+
+                /* int selectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
+                                var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                                    new SqlParameter("@RegId", regId),
+                                    new SqlParameter("@SESSION_ID", selectedTaxPeriod)).ToList();
+
+                                if (kraKpiOutcomeData.Count > 0)
+                                {
+                                    Session["ApprovalSent"] = kraKpiOutcomeData[0].ApprovalSent;
+                                    ViewBag.ApprovalSent = Session["ApprovalSent"];
+                                }
+                                else
+                                {
+                                    ViewBag.ApprovalSent = false;
+                                }*/
+
+                ViewBag.ApprovalSent = Session["ApprovalSent"];
 
                 var existingRecord = db.tbl_StepMaster.FirstOrDefault(record =>
                                      record.SESSION_ID == sessionId && record.RegId == regId && record.ApprovalSent == true);

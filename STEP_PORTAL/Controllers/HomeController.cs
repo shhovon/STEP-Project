@@ -30,6 +30,9 @@ namespace STEP_DEMO.Controllers
                               new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
 
 
+                    ViewBag.ApprovalSent = Session["ApprovalSent"];
+
+
                     for (int i = 0; i < model.KRAs.Count; i++)
                     {
                         if (!string.IsNullOrEmpty(model.KRAs[i]))
@@ -88,6 +91,7 @@ namespace STEP_DEMO.Controllers
         [CustomAuthorize]
         public ActionResult Index()
         {
+            ViewBag.ApprovalSent = Session["ApprovalSent"];
             var viewModel = new KraKpiViewModel
             {
                 KRAs = new List<string>(),
@@ -124,7 +128,7 @@ namespace STEP_DEMO.Controllers
                                                     })
                                                     .ToList();
 
-
+                        ViewBag.ApprovalSent = Session["ApprovalSent"];
 
                         ViewBag.KraKpiData = groupedData;
 
@@ -252,6 +256,8 @@ namespace STEP_DEMO.Controllers
         {
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
+
+
                 if (ModelState.IsValid)
                 {
                     // retrieve the employee information based on the provided RegId
@@ -314,13 +320,25 @@ namespace STEP_DEMO.Controllers
                             Session["Role"] = employeeInfo.Role;
                             Session["SelectedTaxPeriod"] = 17;
 
-                            //int deptHeadValue;
+                            long regId;
 
-                            //if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
-                            //{
-                            //    var usersUnderdeptHead = db.tblUser_Registration.Where(u => u.DeptHead == deptHeadValue).ToList();
-                            //    var usersUnderReportSuper = db.tblUser_Registration.Where(u => u.ReportSuper == deptHeadValue).ToList();
-                            //}
+                            if (Session["RegID"] != null && long.TryParse(Session["RegID"].ToString(), out regId))
+                            {
+
+                                var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
+                                var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                                                new SqlParameter("@RegId", regId),
+                                                new SqlParameter("@SESSION_ID", SelectedTaxPeriod)).ToList();
+
+                                if (kraKpiOutcomeData.Count > 0)
+                                {
+                                    Session["ApprovalSent"] = kraKpiOutcomeData[0].ApprovalSent;
+                                }
+                                else
+                                {
+                                    Session["ApprovalSent"] = false;
+                                }
+                            }
 
                             ModelState.Clear();
                             return RedirectToAction("Dashboard", "Home");
@@ -535,25 +553,13 @@ namespace STEP_DEMO.Controllers
 
                 ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
 
-
-                var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
-                            new SqlParameter("@RegId", RegID),
-                            new SqlParameter("@SESSION_ID", SelectedTaxPeriod)).ToList();
-
-                if (kraKpiOutcomeData.Count > 0)
-                {
-                    Session["ApprovalSent"] = kraKpiOutcomeData[0].ApprovalSent;
-                    ViewBag.ApprovalSent = Session["ApprovalSent"];
-                }
-                else
-                {
-                    ViewBag.ApprovalSent = false;
-                }
+                ViewBag.ApprovalSent = Session["ApprovalSent"];
+           
 
 
 
-                // Get KRA and KPI data for the logged user
-                var kraKpiData = (from kra in db.KRAs
+            // Get KRA and KPI data for the logged user
+            var kraKpiData = (from kra in db.KRAs
                                   join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
                                   join st in db.STEPs on kpi.KPI_ID equals st.KPI_ID into stJoin
                                   from st in stJoin.DefaultIfEmpty()

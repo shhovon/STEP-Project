@@ -101,11 +101,23 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <button type="button" id="saveButton" class="btn btn-primary submit-btn">Save</button>
+        @if (@ViewBag.ApprovalSent)
+        {
+            <div class="alert alert-danger" role="alert">
+                <button class="btn btn-primary submit-btn" type="submit" id="saveButton" hidden="hidden">Save</button>
+                <i class="fas fa-info-circle"></i> Already Sent for Approval
             </div>
-        </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="button" id="saveButton" class="btn btn-primary submit-btn">Save</button>
+                </div>
+            </div>
+        }
+
+
     </div>
 </form>
 

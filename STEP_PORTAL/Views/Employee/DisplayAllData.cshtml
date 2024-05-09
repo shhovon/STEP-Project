@@ -139,8 +139,19 @@
 
 <br />
 <form id="submitForm" action="@Url.Action("SubmitForApproval", "Employee")" method="post">
-    <input type="hidden" />
-    <button type="submit" class="btn btn-primary" id="submitButton">Send For Approval</button>
+
+    @if (@ViewBag.ApprovalSent)
+    {
+        <div class="alert alert-danger" role="alert">
+            <button type="submit" hidden="hidden" class="btn btn-primary" id="submitButton">Send For Approval</button>
+            <i class="fas fa-info-circle"></i> Already Sent for Approval
+        </div>
+    }
+    else
+    {
+        <button class="btn btn-primary" id="submitButton" type="submit">Send For Approval</button>
+    }
+    
 </form>
 
 @section scripts {
