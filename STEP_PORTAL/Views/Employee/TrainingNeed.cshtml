@@ -174,14 +174,30 @@
                             <td>@training.Train_Type</td>
                             <td>@training.Status</td>
                             <td style="text-align: center; vertical-align: middle !important;">
-                                <button class="btn btn-danger delete-btn" data-title="@training.Title" data-by-when="@training.By_When.ToString()" data-type="@training.Train_Type" data-status="@training.Status">
-                                    <i class="ti-trash"></i>
-                                </button>
+                                @*  <button class="btn btn-danger delete-btn" data-title="@training.Title" data-by-when="@training.By_When.ToString()" data-type="@training.Train_Type" data-status="@training.Status">
+                                        <i class="ti-trash"></i>
+                                    </button>*@
+                                @if (@ViewBag.ApprovalSent)
+                                {
+                                    <button class="btn btn-danger delete-btn" hidden="hidden" data-title="@training.Title" data-by-when="@training.By_When.ToString()" data-type="@training.Train_Type" data-status="@training.Status">
+                                        <i class="ti-trash"></i>
+                                    </button>
+                                    <span class="alert-text text-danger">
+                                        <i class="fas fa-exclamation-triangle"></i> Data cannot be deleted
+                                    </span>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-danger delete-btn" data-title="@training.Title" data-by-when="@training.By_When.ToString()" data-type="@training.Train_Type" data-status="@training.Status">
+                                        <i class="ti-trash"></i>
+                                    </button>
+                                }
                             </td>
                         </tr>
                     }
                 </tbody>
-            </table> }
+            </table> 
+            }
         else
         {
             <p>No training data found</p>

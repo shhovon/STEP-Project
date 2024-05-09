@@ -39,6 +39,8 @@
         flex: 1;
         padding: 15px;
     }
+
+
 </style>
 
 
@@ -138,17 +140,34 @@
                     <tr>
                         <td>@description</td>
                         <td style="text-align: center; vertical-align: middle !important;">
-                            <button class="btn btn-danger delete-btn" data-description="@description">
+                            @* <button class="btn btn-danger delete-btn" data-description="@description">
                                 <i class="ti-trash"></i>
-                            </button>
+                            </button>*@
+                            @if (@ViewBag.ApprovalSent)
+                            {
+                                <button class="btn btn-danger delete-btn" hidden="hidden" data-description="@description">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <span class="alert-text text-danger">
+                                    <i class="fas fa-exclamation-triangle"></i> Data cannot be deleted
+                                </span>
+                            }
+                            else
+                            {
+                                <button class="btn btn-danger delete-btn" data-description="@description">
+                                    <i class="ti-trash"></i>
+                                </button>
+                            }
                         </td>
                     </tr>
-           }
+                }
             </tbody>
-        </table> }
+        </table>
+    }
+
     else
     {
-        <p>No descriptions found</p>
+    <p>No descriptions found</p>
     }
     <br />
 
