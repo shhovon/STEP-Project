@@ -559,39 +559,54 @@ namespace STEP_DEMO.Controllers
 
 
             // Get KRA and KPI data for the logged user
-            var kraKpiData = (from kra in db.KRAs
+/*            var kraKpiData = (from kra in db.KRAs
                                   join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
                                   join st in db.STEPs on kpi.KPI_ID equals st.KPI_ID into stJoin
                                   from st in stJoin.DefaultIfEmpty()
                                   where kra.RegId == RegID && st.SESSION_ID == SelectedTaxPeriod && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
                                   orderby kra.KRA_ID ascending, kpi.KPI_ID ascending
                                   select new { KRA = kra.KRA1, KPI = kpi.KPI1, KPIOutcome = st != null ? st.KPI_OUTCOME : null })
-                                  .ToList();
+                                  .ToList();*/
+
+                var kraKpiData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                                   new SqlParameter("RegId", RegID),
+                                   new SqlParameter("SESSION_ID", SelectedTaxPeriod)).ToList();
 
 
 
                 // Grouping KPIs by KRA
+                /*                var groupedData = kraKpiData.GroupBy(x => x.KRA)
+                                    .Select(g => new KraKpiViewModel
+                                    {
+                                        KRA = g.Key,
+                                        KPIIs = g.Select(x => x.KPI).ToList(),
+                                        KPIOutcomes = g.GroupBy(x => x.KPI)
+                                       .Select(group => group.Select(x => x.Outcome).ToList())
+                                       .ToList()
+                                    })
+                                    .ToList();*/
                 var groupedData = kraKpiData.GroupBy(x => x.KRA)
-                                                .Select(g => new KraKpiViewModel
-                                                {
-                                                    KRA = g.Key,
-                                                    KPIIs = g.Select(x => x.KPI).ToList(),
-                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
-                                                })
-                                                .ToList();
+                                .Select(g => new KraKpiViewModel
+                                {
+                                    KRA = g.Key,
+                                    KPIIs = g.Select(x => x.KPI).ToList(),
+                                    KPIOutcomes = g.Select(x => x.Outcome).ToList()
+                                })
+                                .ToList();
 
 
 
 
                 return View(groupedData);
 
-            }
 
-            return View();
+
+/*            return View();*/
+            }
         }
 
         [HttpPost]
-        public ActionResult DisplayKrasAndKpis(FormCollection form)
+        public ActionResult UpdateOutcomeEntry(FormCollection form)
         {
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
@@ -645,6 +660,9 @@ namespace STEP_DEMO.Controllers
 
             return RedirectToAction("SpecialFactors", "Employee");
         }
+
+
+
 
         [CustomAuthorize]
         [HttpPost]

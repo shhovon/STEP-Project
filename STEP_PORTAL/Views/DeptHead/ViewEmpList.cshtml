@@ -26,19 +26,24 @@
 <div class="dropdown-container">
     <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
     <br />
-    <select id="taxPeriodDropdownMV" class="form-control custom-select" name="selectedTaxPeriod">
-        <option value="" selected disabled>Choose a Session</option>
-        @foreach (var taxPeriod in Model.TopTaxPeriods)
+
+
+    <select id="taxPeriodDropdownMV" class="form-control custom-select">
+        <option value="" @(ViewBag.SelectedTaxPeriod == null ? "selected" : "")>Choose a Session</option>
+        @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
         {
-            <option value="@taxPeriod">@taxPeriod</option>
+            <option value="@taxPeriod.TaxPerID">@taxPeriod.TaxPeriod</option>
         }
-                </select>
- </div>
+    </select>
+    <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" value="@ViewBag.SelectedTaxPeriod" />
+    
+
+</div>
            <div class="form-group">
            @Html.DropDownList("companyId", ViewBag.Companies as SelectList, "Select an unit", new { @class = "form-control" })
            @Html.ValidationMessage("companyId", "", new { @class = "text-danger" })
            </div>
-          <button type="submit" class="btn btn-primary" id="submitButton" disabled>Search</button>}
+          <button type="submit" class="btn btn-primary" id="submitButton" >Search</button>}
 
 
 <br />
@@ -54,6 +59,7 @@
                     <th>Designation</th>
                     <th style="width:100%">Name</th>
                     <th>Employee Code</th>
+                    <th>Status</th>  
                     <th>View Marks</th>
                 </tr>
             </thead>
@@ -67,9 +73,17 @@
                     <td>@employee.Designation</td>
                     <td>@employee.Name</td>
                     <td>@employee.EmployeeCode</td>
+                    <td>@employee.EmpStatus</td>
                     @*<td><a target="_blank" href="../ReportSuper/AddMarks?RegId=@employee.RegId">Marks Entry</a></td>*@
-                    <td><a target="_blank" href="../ReportSuper/AddMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
+                    @if(@employee.EmpStatus == "ApprovalSent")
+                    {
+                        <td><a target="_blank" href="../ReportSuper/AddMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
 
+                    }
+                    else
+                    {
+                    <td>--</td>
+                    }
 
 
                     @*
@@ -87,11 +101,22 @@
     }
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
 <script>
     //function setEmployeeCodeAndSubmit(code) {
     //    document.getElementById("regIDField").value = code;
     //    document.getElementById("employeeForm").submit();
     //}
+
+    $(document).ready(function () {
+
+       
+        var session_id = $('#selectedTaxPeriod').val();
+        //alert(session_id);
+        $('#taxPeriodDropdownMV').val(session_id);
+    });
 
     function setRegId(regID) {
         document.getElementById("viewregIDField").value = regID;

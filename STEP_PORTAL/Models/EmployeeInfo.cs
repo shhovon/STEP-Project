@@ -21,5 +21,7 @@ namespace STEP_PORTAL.Models
         public string Designation   { get; set; }
         public string DesigAddi { get; set; }
         public string WStatus { get; set; }
+        public string EmpStatus { get; set; }
+        public string StatusValue { get; set; }
     }
 }

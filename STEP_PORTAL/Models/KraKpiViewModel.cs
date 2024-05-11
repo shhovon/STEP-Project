@@ -23,7 +23,9 @@ using System.Collections.Generic;
 {*/
     public class KraKpiViewModel
     {
-        public List<string> KPIOutcomes { get; set; }
+    public List<string> KPIOutcomes { get; set; }
+/*    public List<List<string>> KPIOutcomes { get; set; }*/
+    public List<string> KPIList { get; set; }
         public string KRA { get; set; }
         public int KRA_ID { get; set; }
         public int KPI_ID { get; set; }
@@ -41,7 +43,9 @@ using System.Collections.Generic;
             KRAs = new List<string>();
             KPIs = new List<List<string>>();
             KPI_IDs = new List<int>();
-        }
+            KPIIs = new List<string>();
+/*        KPIOutcomes = new List<List<string>>();*/
+    }
     }
 /*}
 */

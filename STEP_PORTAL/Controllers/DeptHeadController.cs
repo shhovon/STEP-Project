@@ -20,9 +20,15 @@ namespace STEP_PORTAL.Controllers
         {
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                var employees = db.Database.SqlQuery<EmployeeInfo>("exec prc_GetTeamMember @RegID, @CompID",
-                    new SqlParameter("@RegID", deptHeadValue),
-                    new SqlParameter("@CompID", companyId)).ToList();
+
+                var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
+
+                var employees = db.Database.SqlQuery<EmployeeInfo>("exec prc_GetTeamMember @CompID,@RegID,@SESSION_ID ",
+                      new SqlParameter("@CompID", companyId),
+                      new SqlParameter("@RegID", deptHeadValue),
+                     new SqlParameter("@SESSION_ID", SelectedTaxPeriod)
+                    ).ToList();
 
                 return employees;
             }
@@ -63,17 +69,23 @@ namespace STEP_PORTAL.Controllers
             List<string> topTaxPeriods = new List<string>();
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                topTaxPeriods = db.New_Tax_Period
-                                .OrderByDescending(t => t.TaxPeriod)
-                                .Select(t => t.TaxPeriod)
-                                .Take(2)
-                                .ToList();
+                var last2session = (db.New_Tax_Period
+              .OrderByDescending(t => t.TaxPeriod)
+              .Take(2).ToList());
+
+                ViewBag.TopTaxPeriods = last2session;
+
             }
+
+            var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
+            ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
+
+
 
             var model = new EmployeeSessionViewModelClass
             {
-                Employees = employees,
-                TopTaxPeriods = topTaxPeriods
+                Employees = employees              
             };
 
             ViewBag.SuccessMessage = TempData["SuccessMessage"];
@@ -102,15 +114,16 @@ namespace STEP_PORTAL.Controllers
             List<string> topTaxPeriods = new List<string>();
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                topTaxPeriods = db.New_Tax_Period
-                                .OrderByDescending(t => t.TaxPeriod)
-                                .Select(t => t.TaxPeriod)
-                                .Take(2)
-                                .ToList();
+                var last2session = (db.New_Tax_Period
+                             .OrderByDescending(t => t.TaxPeriod)
+                             .Take(2).ToList());
 
-                string selectedTaxPeriod = Request.Form["selectedTaxPeriod"];
-                int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedTaxPeriod).Select(t => t.TaxPerID).FirstOrDefault();
-                Session["SelectedTaxPeriod"] = sessionID;
+                ViewBag.TopTaxPeriods = last2session;
+
+                var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
+                ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
+
             }
 
             var model = new EmployeeSessionViewModelClass

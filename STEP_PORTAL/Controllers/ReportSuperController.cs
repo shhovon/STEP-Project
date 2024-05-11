@@ -160,19 +160,20 @@ namespace STEP_PORTAL.Controllers
 
         [CustomAuthorize]
         [HttpPost]
-        public ActionResult UpdateMarks(List<KraKpiOutcomeModel> model, List<MarksUpdateModel> marksUpdateModel)
+
+        public ActionResult UpdateMarks(List<KraKpiOutcomeModel> model)
         {
             int regId = Convert.ToInt32(Request.Form["regId"]);
-            if (model != null && marksUpdateModel != null)
+            if (model != null)
             {
                 using (DB_STEPEntities db = new DB_STEPEntities())
                 {
-                    foreach (var item in marksUpdateModel)
+                    foreach (var item in model)
                     {
-                        var outcomeEntity = db.STEPs.FirstOrDefault(o => o.KPI_OUTCOME == item.Outcome && o.REG_ID == regId);
+                        var outcomeEntity = db.STEPs.FirstOrDefault(o => o.KPI_ID == item.KPI_ID && o.REG_ID == regId && o.KPI_OUTCOME == item.Outcome);
                         if (outcomeEntity != null)
                         {
-                            outcomeEntity.Marks_Achieved = item.Marks;
+                            outcomeEntity.Marks_Achieved = item.SelectedMarks.Value;
                             db.Entry(outcomeEntity).State = EntityState.Modified;
                         }
                     }
@@ -230,13 +231,13 @@ namespace STEP_PORTAL.Controllers
                new SqlParameter("@SESSION_ID", selectedTaxPeriod)).ToList();
 
                 var groupedData = kraKpiOutcomeData.GroupBy(x => x.KRA)
-                                .Select(g => new KraKpiViewModel
-                                {
-                                    KRA = g.Key,
-                                    KPIIs = g.Select(x => x.KPI).ToList(),
-                                    KPIOutcomes = g.Select(x => x.KPI_OUTCOME).ToList()
-                                })
-                                .ToList();                
+                                                .Select(g => new KraKpiViewModel
+                                                {
+                                                    KRA = g.Key,
+                                                    KPIIs = g.Select(x => x.KPI).ToList(),
+                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
+                                                })
+                                                .ToList();
 
 
                 var viewModel = new DisplayAllDataViewModel

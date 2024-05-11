@@ -18,11 +18,14 @@ public class KraKpiOutcomeModel
         public List<string> KPIs { get; set; }
         public List<string> Outcomes { get; set; }
         public string KPI_OUTCOME { get; set; }
+        public string KPIOutcome { get; set; }
         public int Marks_Achieved { get; set; }
         public bool? ApprovalSent { get; set; }
         public bool? Lock { get; set; }
         public string ReportSuperComment { get; set; }
         public decimal? Attendance { get; set; }
         public decimal? Discipline { get; set; }
+        public int Marks { get; set; }
+        public int? SelectedMarks { get; set; }
 
 }

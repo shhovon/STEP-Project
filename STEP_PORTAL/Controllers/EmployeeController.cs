@@ -366,14 +366,13 @@ namespace STEP_PORTAL.Controllers
                                 }).ToList();
 
                 var groupedData = kraKpiData.GroupBy(x => x.KRA)
-                                .Select(g => new KraKpiViewModel
-                                {
-                                    KRA = g.Key,
-                                    KPIIs = g.Select(x => x.KPI).ToList(),
-                                    KPIOutcomes = g.Select(x => x.KPI_OUTCOME).ToList()
-                                })
-                                .ToList();
-
+                                                .Select(g => new KraKpiViewModel
+                                                {
+                                                    KRA = g.Key,
+                                                    KPIIs = g.Select(x => x.KPI).ToList(),
+                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
+                                                })
+                                                .ToList();
 
                 var specialFactors = db.tblSpecial_Factor.Where(m => m.Reg_Id == regId && m.Session_Id == selectedTaxPeriod).ToList();
                 var trainingNeed = db.tblTraining_Need.Where(m => m.Reg_Id == regId && m.Session_Id == selectedTaxPeriod).ToList();
@@ -401,40 +400,40 @@ namespace STEP_PORTAL.Controllers
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
 
-                /* int selectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
-                                var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
-                                    new SqlParameter("@RegId", regId),
-                                    new SqlParameter("@SESSION_ID", selectedTaxPeriod)).ToList();
-
-                                if (kraKpiOutcomeData.Count > 0)
-                                {
-                                    Session["ApprovalSent"] = kraKpiOutcomeData[0].ApprovalSent;
-                                    ViewBag.ApprovalSent = Session["ApprovalSent"];
-                                }
-                                else
-                                {
-                                    ViewBag.ApprovalSent = false;
-                                }*/
-
                 ViewBag.ApprovalSent = Session["ApprovalSent"];
 
-                var existingRecord = db.tbl_StepMaster.FirstOrDefault(record =>
-                                     record.SESSION_ID == sessionId && record.RegId == regId && record.ApprovalSent == true);
+                string ApprovalSent = Session["ApprovalSent"]?.ToString();
 
-                if (existingRecord != null)
+                int RegID = int.Parse(Session["RegID"].ToString());
+                int updatedBy = (int)Session["RegID"];
+                int sessionID = (int)Session["SelectedTaxPeriod"];
+                string statusType = "ApprovalSent";
+                string statusMessage = "";
+                DateTime updatedDate = DateTime.Now;
+
+                var result = db.Database.SqlQuery<StatusResult>(
+                    "EXEC prc_UpdateStatus @RegId, @SESSION_ID, @StatusType, @StatusValue, @StatusMessage, @Updated_date, @Updated_by",
+                    new SqlParameter("@RegId", regId),
+                    new SqlParameter("@SESSION_ID", sessionID),
+                    new SqlParameter("@StatusType", statusType),
+                    new SqlParameter("@StatusValue", DBNull.Value),
+                    new SqlParameter("@StatusMessage", statusMessage),
+                    new SqlParameter("@Updated_date", updatedDate),
+                    new SqlParameter("@Updated_by", updatedBy)).FirstOrDefault();
+
+              
+
+                if (result != null)
                 {
-                    return Json(new { success = false, message = "You already sent this data for approval!" });
+                    if (result.Status)
+                    {
+                        return Json(new { success = true, message = result.Message });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = result.Message });
+                    }
                 }
-
-                var newRecord = new tbl_StepMaster
-                {
-                    SESSION_ID = sessionId,
-                    RegId = regId,
-                    ApprovalSent = true
-                };
-
-                db.tbl_StepMaster.Add(newRecord);
-                db.SaveChanges();
 
             }
 

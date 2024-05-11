@@ -113,7 +113,7 @@ else
 
 @*main body start*@
 
-<form method="post" action="@Url.Action("DisplayKrasAndKpis", "Home")">
+<form method="post" action="@Url.Action("UpdateOutcomeEntry", "Home")">
     <table class="user-info-table2" id="numberInputTable" border="1">
         <h4>ACHIEVEMENT AGAINST AGREED OBJECTIVES </h4>
 
@@ -128,34 +128,34 @@ else
         </tr>
 
         @*    <tbody>
-                @for (int i = 0; i < Model.Count; i++)
-                {
-                    var item = Model[i];
-                    <tr>
-                        <td>@(i + 1)</td>
-                        <td>@item.KRA</td>
-                        <td>
-                            @for (int j = 0; j < item.KPIIs.Count; j++)
-                            {
-                                <div>
-                                    @item.KPIIs[j]
-                                </div>
-                            }
-                        </td>
-                        <td>
-                            @for (int j = 0; j < item.KPIOutcomes.Count; j++)
-                            {
-                                <div>
-                                    <input type="hidden" name="SelectedKRA" value="@item.KRA" />
-                                    <input type="hidden" name="SelectedKPI" value="@item.KPIIs[j]" />
-                                    <input style="height:30px; width:250px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[j]" />
-                                </div>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var item = Model[i];
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@item.KRA</td>
+                    <td>
+                        @for (int j = 0; j < item.KPIIs.Count; j++)
+                        {
+                            <div>
+                                @item.KPIIs[j]
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        @for (int j = 0; j < item.KPIOutcomes.Count; j++)
+                        {
+                            <div>
+                                <input type="hidden" name="SelectedKRA" value="@item.KRA" />
+                                <input type="hidden" name="SelectedKPI" value="@item.KPIIs[j]" />
+                                <input style="height:30px; width:250px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[j]" />
+                            </div>
 
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>*@
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>*@
 
         <tbody>
             @{
