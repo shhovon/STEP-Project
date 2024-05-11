@@ -217,17 +217,11 @@ namespace STEP_PORTAL.Controllers
 
                 ViewBag.TopTaxPeriods = last2session;
 
-
-                int? selectedTaxPeriod = Session["SelectedTaxPeriod"] as int?;
-/*                if (selectedTaxPeriod == null)
-                {
-                    ViewBag.ErrorMessage = "Choose session first";
-                    return View();
-                }*/
+                int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
                 kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                new SqlParameter("@RegId", regId),
-               new SqlParameter("@SESSION_ID", selectedTaxPeriod)).ToList();
+               new SqlParameter("@SESSION_ID", sessionID)).ToList();
 
                 var groupedData = kraKpiOutcomeData.GroupBy(x => x.KRA)
                                                 .Select(g => new KraKpiViewModel
