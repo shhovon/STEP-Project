@@ -45,40 +45,7 @@
         <p><strong>Employee Code: <span class="tab2"></span> @Session["EmployeeCode"]</strong></p>
         <p><strong>Employee Name: <span class="tab"></span> @Session["Name"]</strong></p>
     </div>
-    <br />
-
-    @*   @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
-        {
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>KRA</th>
-                            <th>KPI</th>
-                            <th>Outcome</th>
-                            <th>Performance Marks</th>
-                            <th>Total Average</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.KraKpiOutcomeData)
-                        {
-                            <tr>
-                                <td>@item.KRA</td>
-                                <td>@item.KPI</td>
-                                <td>@item.Outcome</td>
-                                <td>@item.Marks_Achieved</td>
-                                <td>@item.AVG_Marks_Achieved</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-        else
-        {
-            <p>No marks data available</p>
-        }*@
+    <br />  
 
     @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
     {

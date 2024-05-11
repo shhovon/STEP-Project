@@ -261,23 +261,6 @@ namespace STEP_DEMO.Controllers
                 if (ModelState.IsValid)
                 {
                     // retrieve the employee information based on the provided RegId
-                    //var employeeCompanyInfo = (from emp in db.Employee_Information
-                    //                           join com in db.Company_Information on emp.ComID equals com.ID
-                    //                           select new { emp.EmployeeCode, emp.ComID }).ToList();
-
-                    //var employeeRegistrationInfo = (from reg in db.tblUser_Registration
-                    //                                join emp in db.Employee_Information on reg.RegId equals emp.RegId
-                    //                                select new { emp.EmployeeCode, reg.RegId }).ToList();
-
-                    //var loggedInEmployeeCode = "MGT-" + model.EmployeeCode;
-                    //int cmid =  model.ComID;
-
-                    //var employeeInfo = (from empComp in employeeCompanyInfo
-                    //                    join empReg in employeeRegistrationInfo on empComp.EmployeeCode equals empReg.EmployeeCode
-                    //                    where empComp.EmployeeCode == loggedInEmployeeCode
-                    //                    select new { empComp.EmployeeCode, empComp.ComID, empReg.RegId }).FirstOrDefault();
-
-
                     var employeeInfo = db.Database.SqlQuery<EmployeeInfo>(
                                    "prc_EmployeeInfoByEmpCode @ComID, @EmpCode",
                                    new SqlParameter("@ComID", model.ComID),
@@ -286,13 +269,6 @@ namespace STEP_DEMO.Controllers
 
                     if (employeeInfo != null)
                     {
-                      //  var empCode = employeeInfo.EmployeeCode;
-                      //  int comId = employeeInfo.ComID;
-
-                      //  if (comId == model.ComID)
-                      //  {
-                           // var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == employeeInfo.RegId);
-
                         var user = db.Database.SqlQuery<User_RegistrationInfo>(
                                    "prc_User_Registration  @RegID",
                                    new SqlParameter("@RegID", employeeInfo.RegId)).FirstOrDefault();
@@ -401,20 +377,6 @@ namespace STEP_DEMO.Controllers
 
                 if (Session["RegID"] != null && long.TryParse(Session["RegID"].ToString(), out regId))
                 {
-                    //var userInfo = (from empInfo in db.Employee_Information
-                    //                join reg in db.tblUser_Registration
-                    //                on empInfo.RegId equals reg.RegId
-                    //                where empInfo.RegId == regId
-                    //                select new
-                    //                {
-                    //                    EmployeeCode = empInfo.EmployeeCode,
-                    //                    Name = empInfo.Name,
-                    //                    Department = empInfo.Department,
-                    //                    Section = empInfo.Section,
-                    //                    Designation = empInfo.Designation,
-                    //                    Role = reg.Role
-                    //                }).FirstOrDefault();
-
 
                     var userInfo = db.Database.SqlQuery<EmployeeInfo>(
                                   "prc_EmployeeInfoByRegID @RegID",
@@ -424,30 +386,15 @@ namespace STEP_DEMO.Controllers
 
                     if (userInfo != null)
                     {
-
-                        //var employeeCode = userInfo.EmployeeCode;
-                        //var name = userInfo.Name;
-                        //var department = userInfo.Department;
-                        //var section = userInfo.Section;
-                        //var designation = userInfo.Designation;
-
                         Session["EmployeeCode"] = userInfo.EmployeeCode;
                         Session["Name"] = userInfo.Name;
                         Session["Department"] = userInfo.Department;
                         Session["Section"] = userInfo.Section;
-                        Session["Designation"] = userInfo.Designation;
-                        
+                        Session["Designation"] = userInfo.Designation;                      
                     }
                 }
 
-/*                var emailID = Session["EmailID"].ToString();
-                var MobileNoPerson = Session["MobileNoPerson"].ToString();
-                ViewBag.RegID = regID;
-                ViewBag.EmailID = emailID;
-                ViewBag.MobileNoPerson = MobileNoPerson;*/
-
-
-                /* get menu by prc */
+                                 /* get menu by prc */
 
                 List<UserMenu> UserMenu = new List<UserMenu>();
                 UserMenu = db.Database.SqlQuery<UserMenu>("exec prc_UserMenu  {0}", regID).ToList();
@@ -536,8 +483,6 @@ namespace STEP_DEMO.Controllers
         [CustomAuthorize]
         public ActionResult DisplayKrasAndKpis()
         {
-            int regId;
-            List<string> sessionIds;
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 int RegID = int.Parse(Session["RegID"].ToString());
@@ -559,32 +504,11 @@ namespace STEP_DEMO.Controllers
 
 
             // Get KRA and KPI data for the logged user
-/*            var kraKpiData = (from kra in db.KRAs
-                                  join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
-                                  join st in db.STEPs on kpi.KPI_ID equals st.KPI_ID into stJoin
-                                  from st in stJoin.DefaultIfEmpty()
-                                  where kra.RegId == RegID && st.SESSION_ID == SelectedTaxPeriod && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
-                                  orderby kra.KRA_ID ascending, kpi.KPI_ID ascending
-                                  select new { KRA = kra.KRA1, KPI = kpi.KPI1, KPIOutcome = st != null ? st.KPI_OUTCOME : null })
-                                  .ToList();*/
 
                 var kraKpiData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                                    new SqlParameter("RegId", RegID),
                                    new SqlParameter("SESSION_ID", SelectedTaxPeriod)).ToList();
 
-
-
-                // Grouping KPIs by KRA
-                /*                var groupedData = kraKpiData.GroupBy(x => x.KRA)
-                                    .Select(g => new KraKpiViewModel
-                                    {
-                                        KRA = g.Key,
-                                        KPIIs = g.Select(x => x.KPI).ToList(),
-                                        KPIOutcomes = g.GroupBy(x => x.KPI)
-                                       .Select(group => group.Select(x => x.Outcome).ToList())
-                                       .ToList()
-                                    })
-                                    .ToList();*/
                 var groupedData = kraKpiData.GroupBy(x => x.KRA)
                                 .Select(g => new KraKpiViewModel
                                 {
