@@ -537,7 +537,6 @@ namespace STEP_DEMO.Controllers
                 int regId;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
-
                     var selectedKRAs = form.GetValues("SelectedKRA");
                     var selectedKPIs = form.GetValues("SelectedKPI");
                     var kpiOutcomes = form.GetValues("KPIOutcome");
@@ -552,7 +551,7 @@ namespace STEP_DEMO.Controllers
                         int kpiId = db.KPIs.FirstOrDefault(k => k.KPI1 == selectedKPI)?.KPI_ID ?? 0;
 
 
-                        int sessionID = (int)Session["SelectedTaxPeriod"];
+                        int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
                         var existingRecord = db.STEPs.FirstOrDefault(s => s.REG_ID == regId && s.SESSION_ID == sessionID && s.KRA_ID == kraId && s.KPI_ID == kpiId);
 
@@ -745,7 +744,8 @@ namespace STEP_DEMO.Controllers
             {
                 try
                 {
-                    int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];
+/*                    int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];*/
+                    int selectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
                     var approvalSent = db.prc_GetKraKpiOutcomeData(regId, selectedTaxPeriod)
                         .Where(data => data.ApprovalSent != null)

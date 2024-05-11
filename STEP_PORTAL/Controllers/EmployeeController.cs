@@ -340,22 +340,10 @@ namespace STEP_PORTAL.Controllers
             {
                 ViewBag.ApprovalSent = Session["ApprovalSent"];
 
-                var kraKpiData = (from kra in db.KRAs
-                                  join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
-                                  where kra.RegId == regId && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
-                                  orderby kra.KRA_ID ascending, kpi.KPI_ID ascending
-                                  select new KraKpiOutcomeModel
-                                  {
-                                      KRA_ID = kra.KRA_ID,
-                                      KPI_ID = kpi.KPI_ID,
-                                      KRA = kra.KRA1,
-                                      KPI = kpi.KPI1
-                                  }).ToList();
-
                 var stepData = (from s in db.STEPs
                                 join k in db.KRAs on s.KRA_ID equals k.KRA_ID
                                 join kp in db.KPIs on s.KPI_ID equals kp.KPI_ID
-                                where s.REG_ID == regId
+                                where s.REG_ID == regId && s.SESSION_ID == selectedTaxPeriod
                                 select new KraKpiViewModel
                                 {
                                     KRA = k.KRA1,
@@ -364,6 +352,11 @@ namespace STEP_PORTAL.Controllers
                                     KRA_ID = k.KRA_ID,
                                     KPI_ID = kp.KPI_ID
                                 }).ToList();
+
+
+                var kraKpiData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                   new SqlParameter("RegId", regId),
+                   new SqlParameter("SESSION_ID", selectedTaxPeriod)).ToList();
 
                 var groupedData = kraKpiData.GroupBy(x => x.KRA)
                                                 .Select(g => new KraKpiViewModel
@@ -421,8 +414,7 @@ namespace STEP_PORTAL.Controllers
                     new SqlParameter("@Updated_date", updatedDate),
                     new SqlParameter("@Updated_by", updatedBy)).FirstOrDefault();
 
-              
-
+             
                 if (result != null)
                 {
                     if (result.Status)

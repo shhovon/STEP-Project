@@ -368,14 +368,15 @@ namespace STEP_PORTAL.Controllers
 
         public ActionResult GetReportSuperComment()
         {
-            if (Session["SelectedTaxPeriod"] == null)
+/*            if (Session["SelectedTaxPeriod"] == null)
             {
                 ViewBag.ErrorMessage = "Choose session first";
                 return Json(new { SupervisorComment = "" }, JsonRequestBehavior.AllowGet);
-            }
+            }*/
 
             int regId = (int)Session["RegID"];
-            int sessionID = (int)Session["SelectedTaxPeriod"];
+/*            int sessionID = (int)Session["SelectedTaxPeriod"];*/
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
             string supervisorComment = "";
 
@@ -393,14 +394,15 @@ namespace STEP_PORTAL.Controllers
         
         public ActionResult GetUserComment()
         {
-            if (Session["SelectedTaxPeriod"] == null)
+/*            if (Session["SelectedTaxPeriod"] == null)
             {
                 ViewBag.ErrorMessage = "Choose session first";
                 return Json(new { SupervisorComment = "" }, JsonRequestBehavior.AllowGet);
-            }
+            }*/
 
             int regId = (int)Session["RegID"];
-            int sessionID = (int)Session["SelectedTaxPeriod"];
+/*            int sessionID = (int)Session["SelectedTaxPeriod"];*/
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
             string userComment = "";
 
@@ -418,13 +420,15 @@ namespace STEP_PORTAL.Controllers
         [HttpPost]
         public ActionResult GetReportSuperOwnComment(int regId)
         {
-            if (Session["SelectedTaxPeriod"] == null)
+/*            if (Session["SelectedTaxPeriod"] == null)
             {
                 ViewBag.ErrorMessage = "Choose session first";
                 return Json(new { SupervisorComment = "" }, JsonRequestBehavior.AllowGet);
-            }
+            }*/
 
-            int sessionID = (int)Session["SelectedTaxPeriod"];
+/*            int sessionID = (int)Session["SelectedTaxPeriod"];*/
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
 
             string supervisorComment = "";
 
