@@ -387,7 +387,7 @@ namespace STEP_PORTAL.Controllers
         [HttpPost] 
         public ActionResult SubmitForApproval()
         {
-            var sessionId = (int)Session["selectedTaxPeriod"];
+            int sessionId = int.Parse(Session["SelectedTaxPeriod"].ToString());
             var regId = (int)Session["RegId"];
 
             using (DB_STEPEntities db = new DB_STEPEntities())
@@ -399,7 +399,7 @@ namespace STEP_PORTAL.Controllers
 
                 int RegID = int.Parse(Session["RegID"].ToString());
                 int updatedBy = (int)Session["RegID"];
-                int sessionID = (int)Session["SelectedTaxPeriod"];
+                int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
                 string statusType = "ApprovalSent";
                 string statusMessage = "";
                 DateTime updatedDate = DateTime.Now;

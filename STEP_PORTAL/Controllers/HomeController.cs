@@ -500,9 +500,6 @@ namespace STEP_DEMO.Controllers
 
                 ViewBag.ApprovalSent = Session["ApprovalSent"];
            
-
-
-
             // Get KRA and KPI data for the logged user
 
                 var kraKpiData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
@@ -518,12 +515,7 @@ namespace STEP_DEMO.Controllers
                                 })
                                 .ToList();
 
-
-
-
                 return View(groupedData);
-
-
 
 /*            return View();*/
             }
@@ -547,8 +539,21 @@ namespace STEP_DEMO.Controllers
                         string selectedKPI = selectedKPIs[i];
                         string outcome = kpiOutcomes[i];
 
-                        int kraId = db.KRAs.FirstOrDefault(k => k.KRA1 == selectedKRA)?.KRA_ID ?? 0;
-                        int kpiId = db.KPIs.FirstOrDefault(k => k.KPI1 == selectedKPI)?.KPI_ID ?? 0;
+                        /* var kraKpiIds = db.KRAs
+                                       .Join(db.KPIs, kra => kra.KRA_ID, kpi => kpi.KRA_ID, (kra, kpi) => new { KRA = kra, KPI = kpi })
+                                       .Where(x => x.KRA.RegId == regId && x.KRA.KRA1 == selectedKRA && x.KPI.KPI1 == selectedKPI)
+                                       .Select(x => new { kraId = x.KRA.KRA_ID, kpiId = x.KPI.KPI_ID })
+                                       .FirstOrDefault();*/
+
+                        var kraKpiData = db.Database.SqlQuery<KraKpiOutcomeModel>(
+                            "prc_GetkrakpiID @regId, @selectedKRA, @selectedKPI",
+                            new SqlParameter("regId", regId),
+                            new SqlParameter("selectedKRA", selectedKRA),
+                            new SqlParameter("selectedKPI", selectedKPI)
+                        ).FirstOrDefault();
+
+                        int kraId = kraKpiData.kraId;
+                        int kpiId = kraKpiData.kpiId;
 
 
                         int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
@@ -577,14 +582,11 @@ namespace STEP_DEMO.Controllers
                     db.SaveChanges();
                     bool success = true;
                     TempData["SuccessMessage"] = success ? "Outcome Data saved successfully!" : "";
-                    /* ViewBag.Success = success ? true : (bool?)null;*/
                 }
             }
 
             return RedirectToAction("SpecialFactors", "Employee");
         }
-
-
 
 
         [CustomAuthorize]

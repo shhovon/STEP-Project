@@ -5,6 +5,8 @@ public class KraKpiOutcomeModel
         public int KRA_ID { get; set; }
         public int RegId { get; set; }
         public int KPI_ID { get; set; }
+        public int kraId { get; set; }
+        public int kpiId { get; set; }
         public int SESSION_ID { get; set; }
         public string KRA { get; set; }
         public string KPI { get; set; }
