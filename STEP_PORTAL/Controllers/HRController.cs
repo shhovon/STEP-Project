@@ -30,6 +30,20 @@ namespace STEP_DEMO.Controllers
             }
         }
 
+        public List<EmployeeInfo> GetEmployeeListBySearchHR(int deptHeadValue, int companyId, string DepartmentDropdown, string SectionDropdown)
+        {
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                var employees = db.Database.SqlQuery<EmployeeInfo>("exec prc_SearchEmployeeByHR @RegID, @CompID, @DepartmentName, @SectionName",
+                    new SqlParameter("@RegID", deptHeadValue),
+                    new SqlParameter("@CompID", companyId),
+                    new SqlParameter("@DepartmentName", DepartmentDropdown),
+                    new SqlParameter("@SectionName", SectionDropdown)).ToList();
+
+                return employees;
+            }
+        }
+
         private List<CompanyViewModel> GetCompanies()
         {
             List<CompanyViewModel> companies = new List<CompanyViewModel>();
@@ -112,35 +126,34 @@ namespace STEP_DEMO.Controllers
         }
 
         [HttpPost]
-        public ActionResult ViewEmpListHR(int? companyId)
+        public ActionResult ViewEmpListHR(int? companyId, string DepartmentDropdown, string SectionDropdown)
         {
             List<EmployeeInfo> employees = new List<EmployeeInfo>();
-            int deptHeadValue;
 
-            if (companyId != null && Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+            if (companyId != null && Session["RegID"] != null)
             {
-                employees = GetEmployeeListByDeptHead(deptHeadValue, companyId.Value);
-                List<DeptSecViewModel> departments = GetDepartmentsAndSections(companyId.Value);
-                ViewBag.Departments = departments;
-            }
-            else
-            {
-                ViewBag.Message = "Select an unit";
+                int deptHeadValue;
+                if (int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+                {
+                    employees = GetEmployeeListBySearchHR(deptHeadValue, companyId.Value, DepartmentDropdown, SectionDropdown);
+                }
             }
 
             List<CompanyViewModel> companies = GetCompanies();
             ViewBag.Companies = new SelectList(companies, "ID", "Name", companyId);
+            List<DeptSecViewModel> departments = GetDepartmentsAndSections(1);
+            ViewBag.Departments = departments;
 
             List<string> topTaxPeriods = new List<string>();
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                var last2session = (db.New_Tax_Period
-                             .OrderByDescending(t => t.TaxPeriod)
-                             .Take(2).ToList());
+                var last2session = db.New_Tax_Period
+                    .OrderByDescending(t => t.TaxPeriod)
+                    .Take(2).ToList();
+
                 ViewBag.TopTaxPeriods = last2session;
 
                 var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
-
                 ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
             }
 
@@ -151,8 +164,8 @@ namespace STEP_DEMO.Controllers
             };
 
             return View(model);
-
         }
+
 
         [CustomAuthorize]
         public ActionResult AddMarksHR()

@@ -46,7 +46,7 @@
         @Html.DropDownList("SectionDropdown", Enumerable.Empty<SelectListItem>(), "Select Section", new { @class = "form-control" })
     </div>
 
-    <button type="submit" class="btn btn-primary" id="submitButton" disabled>Search</button>
+    <button type="submit" class="btn btn-primary" id="submitButton" >Search</button>
 }
 
 
@@ -125,6 +125,11 @@
             submitButton.disabled = true;
         }
     }
+
+@*    $('#SectionDropdown').change(function () {
+        $('#viewEmpListForm').submit();
+    });*@
+
 
     $('#DepartmentDropdown').change(function () {
         var selectedDepartment = $(this).val();
