@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
-@using (Html.BeginForm("AddMarks", "ReportSuper", FormMethod.Post, new { id = "employeeForm" }))
+@using (Html.BeginForm("AddMarks", "ReportSuper", FormMethod.Post, new { id = "employeeForm", target = "_blank" }))
 {
     @Html.Hidden("regID", null, new { id = "regIDField" })
 }
@@ -17,23 +17,25 @@
     @Html.Hidden("regID", null, new { id = "viewregIDField" })
 }
 
-<h3 style="text-align:center;">Team Member List</h3>
+<h3 style="text-align:center;">HOD Team Member List</h3>
 <br />
 <br />
 
 @using (Html.BeginForm("ViewEmpListHOD", "DeptHead", FormMethod.Post, new { id = "viewEmpListForm" }))
 {
-    <div class="dropdown-container">
-        <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
-        <br />
-        <select id="taxPeriodDropdownMV" class="form-control custom-select" name="selectedTaxPeriod">
-            <option value="" selected disabled>Choose a Session</option>
-            @foreach (var taxPeriod in Model.TopTaxPeriods)
-            {
-                <option value="@taxPeriod">@taxPeriod</option>
-            }
-        </select>
-    </div>
+<div class="dropdown-container">
+    <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
+    <br />
+    <select id="taxPeriodDropdownMV" class="form-control custom-select">
+        <option value="" @(ViewBag.SelectedTaxPeriod == null ? "selected" : "")>Choose a Session</option>
+        @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
+        {
+            <option value="@taxPeriod.TaxPerID">@taxPeriod.TaxPeriod</option>
+        }
+    </select>
+    <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" value="@ViewBag.SelectedTaxPeriod" />
+</div>
+
     <div class="form-group">
         @Html.DropDownList("companyId", ViewBag.Companies as SelectList, "Select an unit", new { @class = "form-control" })
         @Html.ValidationMessage("companyId", "", new { @class = "text-danger" })
@@ -94,11 +96,20 @@
     }
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <script>
-    function setEmployeeCodeAndSubmit(code) {
-        document.getElementById("regIDField").value = code;
-        document.getElementById("employeeForm").submit();
-    }
+    //function setEmployeeCodeAndSubmit(code) {
+    //    document.getElementById("regIDField").value = code;
+    //    document.getElementById("employeeForm").submit();
+    //}
+
+    $(document).ready(function () {
+
+
+        var session_id = $('#selectedTaxPeriod').val();
+        $('#taxPeriodDropdownMV').val(session_id);
+    });
 
     function setRegId(regID) {
         document.getElementById("viewregIDField").value = regID;
