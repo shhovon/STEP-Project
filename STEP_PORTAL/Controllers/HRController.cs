@@ -32,13 +32,15 @@ namespace STEP_DEMO.Controllers
 
         public List<EmployeeInfo> GetEmployeeListBySearchHR(int deptHeadValue, int companyId, string DepartmentDropdown, string SectionDropdown)
         {
+            var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                var employees = db.Database.SqlQuery<EmployeeInfo>("exec prc_SearchEmployeeByHR @RegID, @CompID, @DepartmentName, @SectionName",
+                var employees = db.Database.SqlQuery<EmployeeInfo>("exec prc_SearchEmployeeByHR @RegID, @CompID, @DepartmentName, @SectionName, @SESSION_ID",
                     new SqlParameter("@RegID", deptHeadValue),
                     new SqlParameter("@CompID", companyId),
                     new SqlParameter("@DepartmentName", DepartmentDropdown),
-                    new SqlParameter("@SectionName", SectionDropdown)).ToList();
+                    new SqlParameter("@SectionName", SectionDropdown),
+                    new SqlParameter("@SESSION_ID", SelectedTaxPeriod)).ToList();
 
                 return employees;
             }
@@ -113,6 +115,8 @@ namespace STEP_DEMO.Controllers
             var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
             ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
+            string selectedSection = null;
+            ViewBag.SelectedSection = selectedSection;
 
             var model = new EmployeeSessionViewModelClass
             {
@@ -152,11 +156,11 @@ namespace STEP_DEMO.Controllers
                     .Take(2).ToList();
 
                 ViewBag.TopTaxPeriods = last2session;
-
                 var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
                 ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
             }
 
+            ViewBag.SelectedSection = SectionDropdown;
             var model = new EmployeeSessionViewModelClass
             {
                 Employees = employees,
@@ -168,26 +172,72 @@ namespace STEP_DEMO.Controllers
 
 
         [CustomAuthorize]
-        public ActionResult AddMarksHR()
+        public ActionResult AddMarksHR(string regId)
         {
-            List<EmployeeViewModel> employeeInfo = new List<EmployeeViewModel>();
-            using (DB_STEPEntities db = new DB_STEPEntities())
+            int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+            int deptHeadValue;
+            /*            int userRegid = (int)Session["RegId"];*/
+
+
+            if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
             {
-                int deptHeadValue;
-                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+                using (DB_STEPEntities db = new DB_STEPEntities())
                 {
-                    employeeInfo = db.Database.SqlQuery<EmployeeViewModel>(
-                               "prc_GetEmployeeListByDeptHead @DeptHeadValue",
-                               new SqlParameter("@DeptHeadValue", "123")).ToList();
+                    var last2session = (db.New_Tax_Period
+                                 .OrderByDescending(t => t.TaxPeriod)
+                                 .Select(t => t.TaxPeriod).Take(2).ToList());
+
+                    ViewBag.TopTaxPeriods = last2session;
+
+                    string selectedTaxPeriod = Session["SelectedTaxPeriod"] as string;
+
+                    string employeeID = Request.Form["employeeCode"];
+                    int regID = (int)Session["RegID"];
+
+                    // insert marks history
+                    tblMarksEntryHistory logEntry = new tblMarksEntryHistory
+                    {
+                        SupervisorID = deptHeadValue,
+                        EmployeeID = employeeID,
+                        UpdateTime = DateTime.Now,
+                        UserIP = GetIPAddress(),
+
+                    };
+                    db.tblMarksEntryHistories.Add(logEntry);
+                    db.SaveChanges();
+
+
+                    var userInfo = db.Database.SqlQuery<EmployeeInfo>(
+                          "prc_EmployeeInfoByRegID @RegID",
+                          new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
+
+                    var model = new KraKpiOutcomeModel
+                    {
+                        EmployeeCode = userInfo.EmployeeCode,
+                        Name = userInfo.Name
+                    };
+
+                    ViewBag.Designation = userInfo.Designation;
+
+                    var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>
+                        ("exec prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                         new SqlParameter("@RegId", RegId),
+                         new SqlParameter("@SESSION_ID", Session["SelectedTaxPeriod"])).ToList();
+
+                    ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
+                    ViewBag.RegId = RegId;
+                    return View("KraKpiOutcomeViewHR", kraKpiOutcomeData);
+
                 }
             }
 
-            return View(employeeInfo);
+            return null;
+
         }
 
         [CustomAuthorize]
         [HttpPost]
-        public ActionResult AddMarksHR(int? RegId)
+        public ActionResult AddMarksHR2(int? RegId)
         {
             // if (!string.IsNullOrEmpty(RegId))
             {
@@ -255,25 +305,32 @@ namespace STEP_DEMO.Controllers
 
         [CustomAuthorize]
         [HttpPost]
-        public ActionResult UpdateMarks(List<KraKpiOutcomeModel> model, List<MarksUpdateModel> marksUpdateModel, int regId)
+        public ActionResult UpdateMarks(List<KraKpiOutcomeModel> model)
         {
-            if (model != null && marksUpdateModel != null)
+            int regId = Convert.ToInt32(Request.Form["regId"]);
+            if (model != null)
             {
                 using (DB_STEPEntities db = new DB_STEPEntities())
                 {
-                    foreach (var item in marksUpdateModel)
+                    foreach (var item in model)
                     {
-                        var outcomeEntity = db.STEPs.FirstOrDefault(o => o.KPI_OUTCOME == item.Outcome && o.REG_ID == regId);
+                        var outcomeEntity = db.STEPs.FirstOrDefault(o => o.KPI_ID == item.KPI_ID && o.REG_ID == regId && o.KPI_OUTCOME == item.Outcome);
                         if (outcomeEntity != null)
                         {
-                            outcomeEntity.Marks_Achieved = item.Marks;
+                            outcomeEntity.Marks_Achieved = item.SelectedMarks.Value;
                             db.Entry(outcomeEntity).State = EntityState.Modified;
                         }
                     }
                     db.SaveChanges();
+
                 }
             }
-            return RedirectToAction("ViewEmpListHR", "HR");
+            TempData["SuccessMessage"] = "Marks updated successfully!";
+
+            string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+            return RedirectToAction("AddMarksHR", new { regId = encryptedRegId });
+
+            /*return RedirectToAction("AddMarks", new { RegId = regId });*/
         }
 
         protected string GetIPAddress()

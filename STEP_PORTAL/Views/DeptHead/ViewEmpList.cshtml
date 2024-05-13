@@ -1,8 +1,6 @@
 ﻿@*@model List<STEP_PORTAL.Models.EmployeeInfo>*@
 @model EmployeeSessionViewModelClass
 
-
-
 <head>
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
@@ -66,14 +64,12 @@
                 @foreach (var employee in Model.Employees)
                 {
                 <tr>
-                    @* <td><a href="javascript:void(0);" onclick="setEmployeeCodeAndSubmit('@employee.RegId')">@employee.Name</a></td>*@
                     <td>@employee.Department</td>
                     <td>@employee.Section</td>
                     <td>@employee.Designation</td>
                     <td>@employee.Name</td>
                     <td>@employee.EmployeeCode</td>
                     <td>@employee.EmpStatus</td>
-                    @*<td><a target="_blank" href="../ReportSuper/AddMarks?RegId=@employee.RegId">Marks Entry</a></td>*@
                     @if(@employee.EmpStatus == "ApprovalSent")
                     {
                         <td><a target="_blank" href="../ReportSuper/AddMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
@@ -108,9 +104,7 @@
     //    document.getElementById("employeeForm").submit();
     //}
 
-    $(document).ready(function () {
-
-       
+    $(document).ready(function () { 
         var session_id = $('#selectedTaxPeriod').val();
         //alert(session_id);
         $('#taxPeriodDropdownMV').val(session_id);
@@ -137,8 +131,7 @@
         if (selectedSession && selectedCompany) {
             submitButton.disabled = false;
         } else {
-            submitButton.disabled = true;
-        }
+            submitButton.disabled = true;        }
     }
 
 

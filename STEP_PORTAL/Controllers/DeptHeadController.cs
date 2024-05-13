@@ -78,10 +78,7 @@ namespace STEP_PORTAL.Controllers
             }
 
             var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
-
             ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
-
-
 
             var model = new EmployeeSessionViewModelClass
             {
@@ -119,11 +116,8 @@ namespace STEP_PORTAL.Controllers
                              .Take(2).ToList());
 
                 ViewBag.TopTaxPeriods = last2session;
-
                 var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
-
                 ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
-
             }
 
             var model = new EmployeeSessionViewModelClass
@@ -177,7 +171,6 @@ namespace STEP_PORTAL.Controllers
             }
 
             var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
-
             ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
 
             var model = new EmployeeSessionViewModelClass
