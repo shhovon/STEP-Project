@@ -67,8 +67,6 @@ namespace STEP_PORTAL.Controllers
 
                     ViewBag.Designation = userInfo.Designation;
 
-                    /*int? SESSION_ID = db.New_Tax_Period.Where(t => t.TaxPeriod == sessionId).Select(t => t.TaxPerID).FirstOrDefault();*/
-
                     var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>
                         ("exec prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                          new SqlParameter("@RegId", RegId),
@@ -132,8 +130,6 @@ namespace STEP_PORTAL.Controllers
                         };
 
                         ViewBag.Designation = userInfo.Designation;
-
-                        /*int? SESSION_ID = db.New_Tax_Period.Where(t => t.TaxPeriod == sessionId).Select(t => t.TaxPerID).FirstOrDefault();*/
 
                         var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>
                             ("exec prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
@@ -300,7 +296,7 @@ namespace STEP_PORTAL.Controllers
         {
             int regId = Convert.ToInt32(Request.Form["regId"]);
             int updatedBy = (int)Session["RegID"];
-            int sessionID = (int)Session["SelectedTaxPeriod"];
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
             string statusType = "Report Super Comment";
             string statusMessage = comment;
             DateTime updatedDate = DateTime.Now;
@@ -332,7 +328,7 @@ namespace STEP_PORTAL.Controllers
         public ActionResult SaveUserComment(string comment)
         {
             int updatedBy = (int)Session["RegID"];
-            int sessionID = (int)Session["SelectedTaxPeriod"];
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
             string statusType = "Employee Comment";
             string statusMessage = comment;
             DateTime updatedDate = DateTime.Now;
@@ -369,7 +365,6 @@ namespace STEP_PORTAL.Controllers
             }*/
 
             int regId = (int)Session["RegID"];
-/*            int sessionID = (int)Session["SelectedTaxPeriod"];*/
             int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
             string supervisorComment = "";
@@ -395,7 +390,6 @@ namespace STEP_PORTAL.Controllers
             }*/
 
             int regId = (int)Session["RegID"];
-/*            int sessionID = (int)Session["SelectedTaxPeriod"];*/
             int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
             string userComment = "";
@@ -420,7 +414,6 @@ namespace STEP_PORTAL.Controllers
                 return Json(new { SupervisorComment = "" }, JsonRequestBehavior.AllowGet);
             }*/
 
-/*            int sessionID = (int)Session["SelectedTaxPeriod"];*/
             int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
 

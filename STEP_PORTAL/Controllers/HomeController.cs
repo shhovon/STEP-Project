@@ -102,28 +102,25 @@ namespace STEP_DEMO.Controllers
         [CustomAuthorize]
         public ActionResult Outcome()
         {
-
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 int regId;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
-                  //  var user = db.tblUser_Registration.FirstOrDefault(u => u.RegId == regId);
 
-                  //  if (user != null)
-                    {
                         // Get KRA and KPI data for the logged user
                         var kraKpiData = (from kra in db.KRAs
                                           join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
                                           where kra.RegId == regId && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
                                           orderby kra.KRA_ID ascending, kpi.KPI_ID ascending
-                                          select new { KRA = kra.KRA1, KPI = kpi.KPI1 }).ToList();
+                                          select new { KRA = kra.KRA1, KPI = kpi.KPI1, KRA_ID = kra.KRA_ID }).ToList();
 
                         // Grouping KPIs by KRA
-                        var groupedData = kraKpiData.GroupBy(x => x.KRA)
+                        var groupedData = kraKpiData.GroupBy(x => new { x.KRA, x.KRA_ID })
                                                     .Select(g => new KraKpiViewModel
                                                     {
-                                                        KRA = g.Key,
+                                                        KRA = g.Key.KRA,
+                                                        KRA_ID = g.Key.KRA_ID,
                                                         KPIIs = g.Select(x => x.KPI).ToList()
                                                     })
                                                     .ToList();
@@ -132,11 +129,26 @@ namespace STEP_DEMO.Controllers
 
                         ViewBag.KraKpiData = groupedData;
 
-                    }
                 }
             }
 
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult DeleteKRA(int kraId)
+        {
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                var kra = db.KRAs.Find(kraId);
+                var kpis = db.KPIs.Where(k => k.KRA_ID == kraId);
+
+                db.KPIs.RemoveRange(kpis);
+                db.KRAs.Remove(kra);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Outcome");
         }
 
 

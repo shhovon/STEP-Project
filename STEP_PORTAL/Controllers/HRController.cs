@@ -72,6 +72,10 @@ namespace STEP_DEMO.Controllers
                                 .ToList();
             }
 
+            var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
+            ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
+
             var model = new EmployeeSessionViewModelClass
             {
                 Employees = employees,

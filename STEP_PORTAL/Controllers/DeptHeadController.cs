@@ -138,11 +138,15 @@ namespace STEP_PORTAL.Controllers
 
         public List<EmployeeInfo> GetEmployeeListByHOD(int deptHeadValue, int companyId)
         {
+            var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                var employees = db.Database.SqlQuery<EmployeeInfo>("exec prc_GetHODTeamMember @RegID, @CompID",
-                    new SqlParameter("@RegID", deptHeadValue),
-                    new SqlParameter("@CompID", companyId)).ToList();
+
+                var employees = db.Database.SqlQuery<EmployeeInfo>("exec prc_GetHODTeamMember @RegID,@CompID,@SESSION_ID ",
+                      new SqlParameter("@RegID", deptHeadValue),
+                      new SqlParameter("@CompID", companyId),
+                     new SqlParameter("@SESSION_ID", SelectedTaxPeriod)
+                    ).ToList();
 
                 return employees;
             }
@@ -172,6 +176,10 @@ namespace STEP_PORTAL.Controllers
                                 .Take(2)
                                 .ToList();
             }
+
+            var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
+            ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
 
             var model = new EmployeeSessionViewModelClass
             {
@@ -211,9 +219,14 @@ namespace STEP_PORTAL.Controllers
                                 .Take(2)
                                 .ToList();
 
-                string selectedTaxPeriod = Request.Form["selectedTaxPeriod"];
-                int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedTaxPeriod).Select(t => t.TaxPerID).FirstOrDefault();
-                Session["SelectedTaxPeriod"] = sessionID;
+                /*  string selectedTaxPeriod = Request.Form["selectedTaxPeriod"];
+                  int? sessionID = db.New_Tax_Period.Where(t => t.TaxPeriod == selectedTaxPeriod).Select(t => t.TaxPerID).FirstOrDefault();
+                  Session["SelectedTaxPeriod"] = sessionID;*/
+
+                var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
+                ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
+
             }
 
             var model = new EmployeeSessionViewModelClass

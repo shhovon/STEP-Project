@@ -30,22 +30,23 @@ namespace STEP_PORTAL.Controllers
                 try
                 {
                     var regId = (int)Session["RegId"];
-                    var sessionId = Session["selectedTaxPeriod"].ToString();
+                    int sessionId = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
                     using (DB_STEPEntities db = new DB_STEPEntities())
                     {
                         var specialFactor = new tblSpecial_Factor
                         {
                             Reg_Id = regId,
-                            Session_Id = int.Parse(sessionId),
+                            Session_Id = sessionId,
                             Description = model.Description
                         };
 
                         db.tblSpecial_Factor.Add(specialFactor);
                         db.SaveChanges();
-                        int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
 
-                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
+                        int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
+                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionID).Select(t => t.TaxPeriod).FirstOrDefault();
                         Session["TaxPeriod"] = taxPeriod;
 
                                                 bool success = true;
@@ -72,17 +73,17 @@ namespace STEP_PORTAL.Controllers
             try
             {
                 var regId = (int)Session["RegId"];
-                var sessionId = Session["selectedTaxPeriod"]?.ToString();
+                int sessionId = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
-/*                if (sessionId != null)*/
+                /*                if (sessionId != null)*/
                 {
                     using (DB_STEPEntities db = new DB_STEPEntities())
                     {
-                        int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
+
                         int selectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
                         var addedDescriptions = db.tblSpecial_Factor
-                            .Where(sf => sf.Session_Id == sessionIdInt && sf.Reg_Id == regId)
+                            .Where(sf => sf.Session_Id == sessionId && sf.Reg_Id == regId)
                             .Select(sf => sf.Description)
                             .ToList();
 
@@ -100,7 +101,7 @@ namespace STEP_PORTAL.Controllers
                             ViewBag.ApprovalSent = false;
                         }
 
-                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
+                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionId).Select(t => t.TaxPeriod).FirstOrDefault();
                         Session["TaxPeriod"] = taxPeriod;
 
                         ViewBag.AddedDescriptions = addedDescriptions;
@@ -128,14 +129,14 @@ namespace STEP_PORTAL.Controllers
                 try
                 {
                     var regId = (int)Session["RegId"];
-                    var sessionId = Session["selectedTaxPeriod"].ToString();
+                    int sessionId = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
                     using (DB_STEPEntities db = new DB_STEPEntities())
                     {
                         var training = new tblTraining_Need
                         {
                             Reg_Id = regId,
-                            Session_Id = int.Parse(sessionId),
+                            Session_Id = sessionId,
                             Title = model.Title,
                             By_When = model.By_When,
                             Train_Type = model.Train_Type,
@@ -145,8 +146,7 @@ namespace STEP_PORTAL.Controllers
                         db.tblTraining_Need.Add(training);
                         db.SaveChanges();
 
-                        int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
-                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
+                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionId).Select(t => t.TaxPeriod).FirstOrDefault();
                         Session["TaxPeriod"] = taxPeriod;
 
                         return RedirectToAction("DisplayAllData");
@@ -170,17 +170,16 @@ namespace STEP_PORTAL.Controllers
             try
             {
                 var regId = (int)Session["RegId"];
-                var sessionId = Session["selectedTaxPeriod"]?.ToString();
+                int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
-/*                if (sessionId != null)*/
+                /*                if (sessionId != null)*/
                 {
                     using (DB_STEPEntities db = new DB_STEPEntities())
                     {
-                        int? sessionIdInt = int.TryParse(sessionId, out int parsedSessionId) ? parsedSessionId : (int?)null;
                         int selectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
                         var trainingData = db.tblTraining_Need
-                            .Where(tn => tn.Session_Id == sessionIdInt && tn.Reg_Id == regId)
+                            .Where(tn => tn.Session_Id == sessionID && tn.Reg_Id == regId)
                             .ToList();
 
                         var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
@@ -197,7 +196,7 @@ namespace STEP_PORTAL.Controllers
                             ViewBag.ApprovalSent = false;
                         }
 
-                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionIdInt).Select(t => t.TaxPeriod).FirstOrDefault();
+                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionID).Select(t => t.TaxPeriod).FirstOrDefault();
                         Session["TaxPeriod"] = taxPeriod;
 
                         Session["TrainingData"] = trainingData;
@@ -400,6 +399,7 @@ namespace STEP_PORTAL.Controllers
                 int RegID = int.Parse(Session["RegID"].ToString());
                 int updatedBy = (int)Session["RegID"];
                 int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
                 string statusType = "ApprovalSent";
                 string statusMessage = "";
                 DateTime updatedDate = DateTime.Now;

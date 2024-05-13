@@ -27,7 +27,6 @@
     <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
     <br />
 
-
     <select id="taxPeriodDropdownMV" class="form-control custom-select">
         <option value="" @(ViewBag.SelectedTaxPeriod == null ? "selected" : "")>Choose a Session</option>
         @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
@@ -78,7 +77,6 @@
                     @if(@employee.EmpStatus == "ApprovalSent")
                     {
                         <td><a target="_blank" href="../ReportSuper/AddMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
-
                     }
                     else
                     {
