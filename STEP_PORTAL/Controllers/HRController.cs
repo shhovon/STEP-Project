@@ -176,8 +176,6 @@ namespace STEP_DEMO.Controllers
         {
             int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
             int deptHeadValue;
-            /*            int userRegid = (int)Session["RegId"];*/
-
 
             if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
             {
@@ -417,30 +415,31 @@ namespace STEP_DEMO.Controllers
             return View(marksData);
         }
 
-        public ActionResult SaveAttendance(int attendance, int regId)
+        public ActionResult SaveAttendance(int attendance, string regId)
         {
+            int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
             int sessionID = (int)Session["SelectedTaxPeriod"];
             DateTime updatedDate = DateTime.Now;
 
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                var existingRecord = db.tbl_StepMaster.FirstOrDefault(s => s.SESSION_ID == sessionID && s.RegId == regId);
+                var existingRecord = db.tbl_StepMaster.FirstOrDefault(s => s.SESSION_ID == sessionID && s.RegId == RegId);
 
                 if (existingRecord != null)
                 {
                     existingRecord.Attendance = attendance;
                     existingRecord.Updated_date = DateTime.Now;
-                    existingRecord.Updated_by = regId.ToString();
+                    existingRecord.Updated_by = RegId.ToString();
                 }
                 else
                 {
                     var newRecord = new tbl_StepMaster
                     {
                         SESSION_ID = sessionID,
-                        RegId = regId,
+                        RegId = RegId,
                         Attendance = attendance,
                         Updated_date = DateTime.Now,
-                        Updated_by = regId.ToString()
+                        Updated_by = RegId.ToString()
                     };
 
                     db.tbl_StepMaster.Add(newRecord);
@@ -448,36 +447,38 @@ namespace STEP_DEMO.Controllers
                     db.SaveChanges();
             }
             TempData["SuccessMessage"] = "Attendance marks saved successfully!";
-/*            ViewBag.SuccessMessage = "Attendance marks saved successfully!";*/
 
-            return RedirectToAction("ViewEmpListHR", "HR");
+            string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+            return RedirectToAction("AddMarksHR", new { regId = encryptedRegId });
+/*            return RedirectToAction("ViewEmpListHR", "HR");*/
         }
 
         [HttpPost]
-        public ActionResult SaveDiscipline(int discipline, int regId)
+        public ActionResult SaveDiscipline(int discipline, string regId)
         {
+            int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
             int sessionID = (int)Session["SelectedTaxPeriod"];
             DateTime updatedDate = DateTime.Now;
 
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
-                var existingRecord = db.tbl_StepMaster.FirstOrDefault(s => s.SESSION_ID == sessionID && s.RegId == regId);
+                var existingRecord = db.tbl_StepMaster.FirstOrDefault(s => s.SESSION_ID == sessionID && s.RegId == RegId);
 
                 if (existingRecord != null)
                 {
                     existingRecord.Discipline = discipline;
                     existingRecord.Updated_date = DateTime.Now;
-                    existingRecord.Updated_by = regId.ToString();
+                    existingRecord.Updated_by = RegId.ToString();
                 }
                 else
                 {
                     var newRecord = new tbl_StepMaster
                     {
                         SESSION_ID = sessionID,
-                        RegId = regId,
+                        RegId = RegId,
                         Discipline = discipline,
                         Updated_date = DateTime.Now,
-                        Updated_by = regId.ToString()
+                        Updated_by = RegId.ToString()
                     };
 
                     db.tbl_StepMaster.Add(newRecord);
@@ -486,9 +487,11 @@ namespace STEP_DEMO.Controllers
             }
 
             TempData["SuccessMessage"] = "Discipline marks saved successfully!";
-/*            ViewBag.SuccessMessage = "Discipline marks saved successfully!";*/
+            /*            ViewBag.SuccessMessage = "Discipline marks saved successfully!";*/
 
-            return RedirectToAction("ViewEmpListHR", "HR");
+            /* return RedirectToAction("ViewEmpListHR", "HR");*/
+            string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+            return RedirectToAction("AddMarksHR", new { regId = encryptedRegId });
         }
     }
 }
