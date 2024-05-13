@@ -23,23 +23,29 @@
 
 @using (Html.BeginForm("ViewEmpListHR", "HR", FormMethod.Post, new { id = "viewEmpListForm" }))
 {
-<div class="dropdown-container">
-    <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
-    <br />
-    <select id="taxPeriodDropdownMV" class="form-control custom-select">
-        <option value="" @(ViewBag.SelectedTaxPeriod == null ? "selected" : "")>Choose a Session</option>
-        @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
-        {
-            <option value="@taxPeriod.TaxPerID">@taxPeriod.TaxPeriod</option>
-        }
-    </select>
-    <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" value="@ViewBag.SelectedTaxPeriod" />
-</div>
+    <div class="dropdown-container">
+        <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
+        <br />
+        <select id="taxPeriodDropdownMV" class="form-control custom-select">
+            <option value="" @(ViewBag.SelectedTaxPeriod == null ? "selected" : "")>Choose a Session</option>
+            @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
+            {
+                <option value="@taxPeriod.TaxPerID">@taxPeriod.TaxPeriod</option>
+            }
+        </select>
+        <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" value="@ViewBag.SelectedTaxPeriod" />
+    </div>
 
     <div class="form-group">
         @Html.DropDownList("companyId", ViewBag.Companies as SelectList, "Select an unit", new { @class = "form-control" })
         @Html.ValidationMessage("companyId", "", new { @class = "text-danger" })
     </div>
+
+    <div>
+        @Html.DropDownList("DepartmentDropdown", new SelectList(ViewBag.Departments, "DepartmentName", "DepartmentName"), "Select Department", new { @class = "form-control" })
+        @Html.DropDownList("SectionDropdown", Enumerable.Empty<SelectListItem>(), "Select Section", new { @class = "form-control" })
+    </div>
+
     <button type="submit" class="btn btn-primary" id="submitButton" disabled>Search</button>
 }
 
@@ -92,7 +98,8 @@
     $(document).ready(function () {
         var session_id = $('#selectedTaxPeriod').val();
         $('#taxPeriodDropdownMV').val(session_id);
-    });
+        });
+
 
     function setRegId(regID) {
         document.getElementById("viewregIDField").value = regID;
@@ -119,5 +126,19 @@
         }
     }
 
+    $('#DepartmentDropdown').change(function () {
+        var selectedDepartment = $(this).val();
+        //alert(selectedDepartment);
+        var departments = @Html.Raw(Json.Encode(ViewBag.Departments));
+        var selectedDepartmentData = departments.find(d => d.DepartmentName === selectedDepartment);
+        //console.log(selectedDepartmentData);
 
+        $('#SectionDropdown').empty();
+
+        if (selectedDepartmentData && selectedDepartmentData.Sections) {
+            $.each(selectedDepartmentData.Sections, function (index, section) {
+                $('#SectionDropdown').append($('<option>').text(section).attr('value', section));
+            });
+        }
+    });
 </script>

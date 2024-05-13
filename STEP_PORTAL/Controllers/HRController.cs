@@ -47,6 +47,27 @@ namespace STEP_DEMO.Controllers
             return companies;
         }
 
+        public List<DeptSecViewModel> GetDepartmentsAndSections(int companyId)
+        {
+            List<DeptSecViewModel> departments = new List<DeptSecViewModel>();
+
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                var deptSections = db.Database.SqlQuery<DeptSecViewModel>("exec prc_GetDeptAndSec @CompanyId", new SqlParameter("@CompanyId", companyId)).ToList();
+
+                departments = deptSections
+                    .GroupBy(ds => ds.DepartmentName)
+                    .Select(g => new DeptSecViewModel
+                    {
+                        DepartmentName = g.Key,
+                        Sections = g.Select(s => s.SectionName).Distinct().ToList()
+                    })
+                    .ToList();
+            }
+
+            return departments;
+        }
+
         [CustomAuthorize]
         public ActionResult ViewEmpListHR()
         {
@@ -61,6 +82,8 @@ namespace STEP_DEMO.Controllers
 
             List<CompanyViewModel> companies = GetCompanies();
             ViewBag.Companies = new SelectList(companies, "ID", "Name");
+            List<DeptSecViewModel> departments = GetDepartmentsAndSections(1);
+            ViewBag.Departments = departments;
 
             List<string> topTaxPeriods = new List<string>();
             using (DB_STEPEntities db = new DB_STEPEntities())
@@ -97,6 +120,8 @@ namespace STEP_DEMO.Controllers
             if (companyId != null && Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
             {
                 employees = GetEmployeeListByDeptHead(deptHeadValue, companyId.Value);
+                List<DeptSecViewModel> departments = GetDepartmentsAndSections(companyId.Value);
+                ViewBag.Departments = departments;
             }
             else
             {
