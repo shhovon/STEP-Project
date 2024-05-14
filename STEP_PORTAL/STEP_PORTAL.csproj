@@ -2108,6 +2108,7 @@
     <Content Include="Views\HR\KraKpiOutcomeViewHR.cshtml" />
     <Content Include="Views\DeptHead\ViewEmpListHOD.cshtml" />
     <Content Include="Views\DeptHead\ViewEmpMarks.cshtml" />
+    <Content Include="Views\HR\CorpHR.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

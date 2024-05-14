@@ -512,5 +512,11 @@ namespace STEP_DEMO.Controllers
             string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
             return RedirectToAction("AddMarksHR", new { regId = encryptedRegId });
         }
+
+        public ActionResult CorpHR()
+        {
+            return View();
+        }
+
     }
 }

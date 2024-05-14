@@ -110,6 +110,12 @@
             <label for="comment" style="font-weight: bold; color: #333;">HOD Comment:</label><br>
             <input type="text" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
             <br>
+            <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
+            <input type="text" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <br>
+            <label for="comment" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
+            <input type="number" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <br>
             <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
         </div>
     }
@@ -168,18 +174,6 @@
             console.error('Error fetching supervisor comment!');
         }
         });
-
-        @*$.ajax({
-        url: '@Url.Action("GetUserComment", "ReportSuper")',
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            $('#UserComment').val(data.UserComment);
-        },
-        error: function() {
-            console.error('Error fetching employee comment!');
-        }
-    });*@
 
         $(function() {
             $('form').submit(function(event) {
