@@ -1,5 +1,4 @@
-﻿@*@model List<KraKpiOutcomeModel>*@
-@model DisplayAllDataViewModel
+﻿@model DisplayAllDataViewModel
 
 
 <head>
@@ -8,7 +7,7 @@
 
 <body>
 
-    <h3>View Marks and Comment</h3>
+    <h3>View Employee Marks and Report Supervisor Comment</h3>
     <br />
 
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
@@ -30,10 +29,10 @@
 
     <br />
     <div>
-        <p><strong>Employee Code: <span class="tab2"></span> @Session["EmployeeCode"]</strong></p>
-        <p><strong>Employee Name: <span class="tab"></span> @Session["Name"]</strong></p>
+        <p><strong>Employee Code: <span class="tab2"></span> @Session["EmployeeCodeInd"]</strong></p>
+        <p><strong>Employee Name: <span class="tab"></span> @Session["NameInd"]</strong></p>
     </div>
-    <br />  
+    <br />
 
     @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
     {
@@ -59,21 +58,21 @@
                             string outcome = outcomeItem != null ? outcomeItem.Outcome : null;
                             var mark = outcomeItem != null ? outcomeItem.Marks_Achieved : 0;
 
-                    <tr>
-                        @if (i == 0)
-                        {
-                            <td rowspan=@kpiCount>@item.KRA</td>
-                        }
-                        <td>@kpi</td>
-                        <td>@outcome</td>
-                        <td style="text-align:center">@mark</td>
-                        @if (i == 0)
-                        {
-                            <td rowspan=@kpiCount style="text-align:center">
-                                @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
-                            </td>
-                        }
-                    </tr>
+                            <tr>
+                                @if (i == 0)
+                                {
+                                    <td rowspan=@kpiCount>@item.KRA</td>
+                                }
+                                <td>@kpi</td>
+                                <td>@outcome</td>
+                                <td style="text-align:center">@mark</td>
+                                @if (i == 0)
+                                {
+                                    <td rowspan=@kpiCount style="text-align:center">
+                                        @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
+                                    </td>
+                                }
+                            </tr>
                         }
                     }
                 </tbody>
@@ -89,20 +88,27 @@
     <br /><br />
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
-        <input type="text" disabled id="comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.SupervisorComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
         <br>
     </div>
     <br />
 
-    @using (Html.BeginForm("SaveUserComment", "ReportSuper", FormMethod.Post))
+    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <label for="comment" style="font-weight: bold; color: #333;">User's Comment:</label><br>
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.UserComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br>
+    </div>
+    <br />
+
+    @using (Html.BeginForm("SaveHODComment", "ReportSuper", FormMethod.Post))
     {
         @Html.Hidden("regId", null, new { id = "viewregIDField" })
 
         @* @Html.HiddenFor(m => m[0].REG_ID)*@
 
         <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <label for="comment" style="font-weight: bold; color: #333;">Comment:</label><br>
-            <input type="text" id="UserComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <label for="comment" style="font-weight: bold; color: #333;">HOD Comment:</label><br>
+            <input type="text" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
             <br>
             <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
         </div>
@@ -163,7 +169,7 @@
         }
         });
 
-        $.ajax({
+        @*$.ajax({
         url: '@Url.Action("GetUserComment", "ReportSuper")',
         type: 'GET',
         dataType: 'json',
@@ -173,7 +179,7 @@
         error: function() {
             console.error('Error fetching employee comment!');
         }
-    });
+    });*@
 
         $(function() {
             $('form').submit(function(event) {
@@ -182,7 +188,7 @@
                 var formData = $(this).serialize();
 
                 $.ajax({
-                    url: '@Url.Action("SaveUserComment", "ReportSuper")',
+                    url: '@Url.Action("SaveHODComment", "DeptHead")',
                     type: 'POST',
                     data: formData,
                     success: function(response) {

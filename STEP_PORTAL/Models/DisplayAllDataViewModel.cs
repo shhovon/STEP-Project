@@ -12,4 +12,7 @@ public class DisplayAllDataViewModel
     public List<KraKpiViewModel> StepData { get; set; }
     public List<tblSpecial_Factor> SpecialFactors { get; set; }
     public List<tblTraining_Need> TrainingNeed { get; set; }
+
+    public string SupervisorComment { get; set; }
+    public string UserComment { get; set; }
 }

@@ -24,8 +24,6 @@ namespace STEP_PORTAL.Controllers
         {
             int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
             int deptHeadValue;
-            /*            int userRegid = (int)Session["RegId"];*/
-
 
             if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
             {

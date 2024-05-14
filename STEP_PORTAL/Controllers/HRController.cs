@@ -174,7 +174,26 @@ namespace STEP_DEMO.Controllers
         [CustomAuthorize]
         public ActionResult AddMarksHR(string regId)
         {
+/*            int regIdValue = 0;*/
             int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+
+/*            string RegId = STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId);
+            if (!string.IsNullOrEmpty(RegId))
+            {
+                if (int.TryParse(RegId, out regIdValue))
+                {
+                    // Conversion successful, use regIdValue
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+
+            }*/
+
             int deptHeadValue;
 
             if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
@@ -415,6 +434,7 @@ namespace STEP_DEMO.Controllers
             return View(marksData);
         }
 
+        [HttpPost]
         public ActionResult SaveAttendance(int attendance, string regId)
         {
             int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
@@ -487,7 +507,6 @@ namespace STEP_DEMO.Controllers
             }
 
             TempData["SuccessMessage"] = "Discipline marks saved successfully!";
-            /*            ViewBag.SuccessMessage = "Discipline marks saved successfully!";*/
 
             /* return RedirectToAction("ViewEmpListHR", "HR");*/
             string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());

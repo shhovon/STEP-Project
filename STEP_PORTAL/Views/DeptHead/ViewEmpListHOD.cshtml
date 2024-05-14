@@ -65,7 +65,6 @@
                 @foreach (var employee in Model.Employees)
                 {
                 <tr>
-                    @* <td><a href="javascript:void(0);" onclick="setEmployeeCodeAndSubmit('@employee.RegId')">@employee.Name</a></td>*@
                     <td>@employee.Department</td>
                     <td>@employee.Section</td>
                     <td>@employee.Designation</td>
@@ -75,7 +74,7 @@
 
 @*                    @if (@employee.EmpStatus == "Supervisor_Comment" || @employee.EmpStatus == "User_Comment")
                     {*@
-                        <td><a target="_blank" href="../ReportSuper/AddMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Comment Entry</a></td>
+                        <td><a target="_blank" href="../DeptHead/ViewEmpMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Comment Entry</a></td>
                         
 @*                    }
                     else
