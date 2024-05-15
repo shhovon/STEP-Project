@@ -41,7 +41,12 @@ namespace STEP_DEMO.Controllers
                             {
                                 KRA1 = model.KRAs[i],
                                 RegId = regId,
-                                Section_Name = userInfo.Section
+                                Section_Name = userInfo.Section,
+                                SessionId = 17,
+                                Created_By = regId.ToString(),
+                                Created_date = DateTime.Now,
+                                Updated_date = DateTime.Now,
+                                Updated_by = regId.ToString()
                             };
 
                             db.KRAs.Add(kra);
@@ -56,7 +61,11 @@ namespace STEP_DEMO.Controllers
                                         KPI kpi = new KPI
                                         {
                                             KPI1 = kpiName,
-                                            KRA_ID = kra.KRA_ID
+                                            KRA_ID = kra.KRA_ID,
+                                            Created_date = DateTime.Now,
+                                            Created_By = regId.ToString(),
+                                            Updated_by = regId.ToString(),
+                                            Updated_date = DateTime.Now
                                         };
                                         db.KPIs.Add(kpi);
                                     }
@@ -584,7 +593,11 @@ namespace STEP_DEMO.Controllers
                                 KRA_ID = kraId,
                                 KPI_ID = kpiId,
                                 KPI_OUTCOME = outcome,
-                                SESSION_ID = sessionID
+                                SESSION_ID = sessionID,
+                                Created_date = DateTime.Now,
+                                Created_By = regId.ToString(),
+                                Updated_by = regId.ToString(),
+                                Updated_date = DateTime.Now
                             };
 
                             db.STEPs.Add(kpiOutcome);

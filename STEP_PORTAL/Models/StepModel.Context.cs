@@ -14,8 +14,7 @@ namespace STEP_DEMO.Models
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    using STEP_PORTAL.Models;
-
+    
     public partial class DB_STEPEntities : DbContext
     {
         public DB_STEPEntities()
@@ -131,17 +130,21 @@ namespace STEP_DEMO.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKraKpiOutcomeData_Result>("prc_GetKraKpiOutcomeData", regIdParameter, sESSION_IDParameter);
         }
     
-        public virtual ObjectResult<prc_GetTeamMember_Result> prc_GetTeamMember(Nullable<int> regID, Nullable<int> compID)
+        public virtual ObjectResult<prc_GetTeamMember_Result> prc_GetTeamMember(Nullable<int> compID, Nullable<int> regID, Nullable<int> sESSION_ID)
         {
-            var regIDParameter = regID.HasValue ?
-                new ObjectParameter("RegID", regID) :
-                new ObjectParameter("RegID", typeof(int));
-    
             var compIDParameter = compID.HasValue ?
                 new ObjectParameter("CompID", compID) :
                 new ObjectParameter("CompID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetTeamMember_Result>("prc_GetTeamMember", regIDParameter, compIDParameter);
+            var regIDParameter = regID.HasValue ?
+                new ObjectParameter("RegID", regID) :
+                new ObjectParameter("RegID", typeof(int));
+    
+            var sESSION_IDParameter = sESSION_ID.HasValue ?
+                new ObjectParameter("SESSION_ID", sESSION_ID) :
+                new ObjectParameter("SESSION_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetTeamMember_Result>("prc_GetTeamMember", compIDParameter, regIDParameter, sESSION_IDParameter);
         }
     
         public virtual int prc_UpdateOutcomeMarks(string kpiOutcome, Nullable<int> marksAchieved)

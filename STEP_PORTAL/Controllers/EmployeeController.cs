@@ -38,7 +38,11 @@ namespace STEP_PORTAL.Controllers
                         {
                             Reg_Id = regId,
                             Session_Id = sessionId,
-                            Description = model.Description
+                            Description = model.Description,
+                            Created_date = DateTime.Now,
+                            Created_By = regId.ToString(),
+                            Updated_by = regId.ToString(),
+                            Updated_date = DateTime.Now
                         };
 
                         db.tblSpecial_Factor.Add(specialFactor);
@@ -140,7 +144,11 @@ namespace STEP_PORTAL.Controllers
                             Title = model.Title,
                             By_When = model.By_When,
                             Train_Type = model.Train_Type,
-                            Status = model.Status
+                            Status = model.Status,
+                            Created_date = DateTime.Now,
+                            Created_By = regId.ToString(),
+                            Updated_by = regId.ToString(),
+                            Updated_date = DateTime.Now
                         };
 
                         db.tblTraining_Need.Add(training);

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace STEP_PORTAL.Models
+namespace STEP_DEMO.Models
 {
     using System;
     using System.Collections.Generic;

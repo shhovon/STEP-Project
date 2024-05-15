@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DB_STEPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DB_STEPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'DB_STEP.dbo.Company_Information' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Company_Information">
@@ -73,6 +73,7 @@ warning 6002: The table/view 'DB_STEP.dbo.Company_Information' does not have a p
           <Property Name="Created_By" Type="varchar" MaxLength="50" />
           <Property Name="Updated_date" Type="datetime" />
           <Property Name="Updated_by" Type="varchar" MaxLength="50" />
+          <Property Name="SessionId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'DB_STEP.dbo.New_Tax_Period' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -276,8 +277,9 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Parameter Name="SESSION_ID" Type="int" Mode="In" />
         </Function>
         <Function Name="prc_GetTeamMember" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="RegID" Type="int" Mode="In" />
           <Parameter Name="CompID" Type="int" Mode="In" />
+          <Parameter Name="RegID" Type="int" Mode="In" />
+          <Parameter Name="SESSION_ID" Type="int" Mode="In" />
         </Function>
         <Function Name="prc_UpdateOutcomeMarks" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="KpiOutcome" Type="nvarchar" Mode="In" />
@@ -373,8 +375,7 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
     FROM [dbo].[View_StepDetails] AS [View_StepDetails]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DB_STEPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -402,6 +403,7 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Updated_date" Type="DateTime" Precision="3" />
           <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SessionId" Type="Int32" />
         </EntityType>
         <EntityType Name="STEP">
           <Key>
@@ -632,16 +634,16 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
             <Parameter Name="EmpCode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="prc_EmployeeInfoByRegID" ReturnType="Collection(DB_STEPModel.prc_EmployeeInfoByRegID_Result)">
-            <Parameter Name="RegID" Mode="In" Type="Int32" />
+          <Parameter Name="RegID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_EmployeeInfoByRegIDs" ReturnType="Collection(DB_STEPModel.prc_EmployeeInfoByRegIDs_Result)">
-            <Parameter Name="RegID" Mode="In" Type="String" />
+          <Parameter Name="RegID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="prc_GetEmployeeListByDeptHead" ReturnType="Collection(DB_STEPModel.prc_GetEmployeeListByDeptHead_Result)">
-            <Parameter Name="DeptHeadValue" Mode="In" Type="Int32" />
+          <Parameter Name="DeptHeadValue" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_GetEmployeesByCompany">
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+          <Parameter Name="CompanyId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_GetKPIOutcomeByRegIdOrSectionName" ReturnType="Collection(DB_STEPModel.prc_GetKPIOutcomeByRegIdOrSectionName_Result)">
             <Parameter Name="RegId" Mode="In" Type="Int32" />
@@ -656,18 +658,19 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
             <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_GetTeamMember" ReturnType="Collection(DB_STEPModel.prc_GetTeamMember_Result)">
-            <Parameter Name="RegID" Mode="In" Type="Int32" />
             <Parameter Name="CompID" Mode="In" Type="Int32" />
+            <Parameter Name="RegID" Mode="In" Type="Int32" />
+            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_UpdateOutcomeMarks">
             <Parameter Name="KpiOutcome" Mode="In" Type="String" />
             <Parameter Name="MarksAchieved" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_User_Registration" ReturnType="Collection(DB_STEPModel.prc_User_Registration_Result)">
-            <Parameter Name="RegID" Mode="In" Type="Int32" />
+          <Parameter Name="RegID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_UserMenu" ReturnType="Collection(DB_STEPModel.prc_UserMenu_Result)">
-            <Parameter Name="RegId" Mode="In" Type="String" />
+          <Parameter Name="RegId" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="prc_EmployeeInfoByEmpCode_Result">
@@ -838,6 +841,7 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <EntitySetMapping Name="KRAs">
             <EntityTypeMapping TypeName="DB_STEPModel.KRA">
               <MappingFragment StoreEntitySet="KRA">
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
                 <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
                 <ScalarProperty Name="KRA1" ColumnName="KRA" />
                 <ScalarProperty Name="RegId" ColumnName="RegId" />
