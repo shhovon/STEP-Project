@@ -7,14 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace STEP_DEMO.Models
+namespace STEP_PORTAL.Models
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    
+    using STEP_DEMO.Models;
+
     public partial class DB_STEPEntities : DbContext
     {
         public DB_STEPEntities()

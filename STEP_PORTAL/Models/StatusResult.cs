@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace STEP_DEMO.Models
+namespace STEP_PORTAL.Models
 {
     public class StatusResult
     {

@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 using System.Data.Entity.SqlServer;
 using STEP_DEMO.Models;
 
-namespace STEP_DEMO.Controllers
+namespace STEP_PORTAL.Controllers
 {
     public class HomeController : Controller
     {
@@ -584,6 +584,10 @@ namespace STEP_DEMO.Controllers
                         if (existingRecord != null)
                         {
                             existingRecord.KPI_OUTCOME = outcome;
+                            existingRecord.Created_date = DateTime.Now;
+                            existingRecord.Created_By = regId.ToString();
+                            existingRecord.Updated_by = regId.ToString();
+                            existingRecord.Updated_date = DateTime.Now;
                         }
                         else
                         {

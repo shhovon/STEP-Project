@@ -1,5 +1,6 @@
 ﻿@model STEP_PORTAL.Models.tblSpecial_Factor
 
+
 <head>
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
@@ -141,8 +142,8 @@
                         <td>@description</td>
                         <td style="text-align: center; vertical-align: middle !important;">
                             @* <button class="btn btn-danger delete-btn" data-description="@description">
-                                <i class="ti-trash"></i>
-                            </button>*@
+                                    <i class="ti-trash"></i>
+                                </button>*@
                             @if (@ViewBag.ApprovalSent)
                             {
                                 <button class="btn btn-danger delete-btn" hidden="hidden" data-description="@description">
@@ -167,7 +168,7 @@
 
     else
     {
-    <p>No descriptions found</p>
+        <p>No descriptions found</p>
     }
     <br />
 

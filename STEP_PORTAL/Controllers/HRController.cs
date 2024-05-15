@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace STEP_DEMO.Controllers
+namespace STEP_PORTAL.Controllers
 {
     public class HRController : Controller
     {
