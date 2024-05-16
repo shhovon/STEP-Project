@@ -249,6 +249,7 @@ namespace STEP_PORTAL.Controllers
 
                 Session["EmployeeCodeInd"] = userInfo.EmployeeCode;
                 Session["NameInd"] = userInfo.Name;
+                Session["DesignationInd"] = userInfo.Designation;
 
                 kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                new SqlParameter("@RegId", RegId),
@@ -280,15 +281,15 @@ namespace STEP_PORTAL.Controllers
                     GroupedData = groupedData
                 };
 
-                if (comments != null)
+                if (comments != null && comment != null)
                 {
                     viewModel.SupervisorComment = comment.Supervisor_Comment;
                     viewModel.UserComment = comment.User_Comment;
                 }
                 else
                 {
-                    ViewBag.SupervisorComment = null;
-                    ViewBag.UserComment = null;
+                    viewModel.SupervisorComment = null;
+                    viewModel.UserComment = null;
                 }
 
                 return View(viewModel);

@@ -560,25 +560,17 @@ namespace STEP_PORTAL.Controllers
                         string selectedKPI = selectedKPIs[i];
                         string outcome = kpiOutcomes[i];
 
-                        /* var kraKpiIds = db.KRAs
-                                       .Join(db.KPIs, kra => kra.KRA_ID, kpi => kpi.KRA_ID, (kra, kpi) => new { KRA = kra, KPI = kpi })
-                                       .Where(x => x.KRA.RegId == regId && x.KRA.KRA1 == selectedKRA && x.KPI.KPI1 == selectedKPI)
-                                       .Select(x => new { kraId = x.KRA.KRA_ID, kpiId = x.KPI.KPI_ID })
-                                       .FirstOrDefault();*/
-
                         var kraKpiData = db.Database.SqlQuery<KraKpiOutcomeModel>(
                             "prc_GetkrakpiID @regId, @selectedKRA, @selectedKPI",
                             new SqlParameter("regId", regId),
                             new SqlParameter("selectedKRA", selectedKRA),
-                            new SqlParameter("selectedKPI", selectedKPI)
-                        ).FirstOrDefault();
+                            new SqlParameter("selectedKPI", selectedKPI)).FirstOrDefault();
 
                         int kraId = kraKpiData.kraId;
                         int kpiId = kraKpiData.kpiId;
 
 
                         int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
-
                         var existingRecord = db.STEPs.FirstOrDefault(s => s.REG_ID == regId && s.SESSION_ID == sessionID && s.KRA_ID == kraId && s.KPI_ID == kpiId);
 
                         if (existingRecord != null)
