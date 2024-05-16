@@ -10,6 +10,7 @@
 
     @{
         int sumOfAverages = 0;
+        int totalKraCount = Model.GroupedData.Count();
     }
 
     <h3>View Employee Marks and Report Supervisor Comment</h3>
@@ -94,7 +95,7 @@
                         }
                         <tr>
                             <td colspan="4" style="text-align:center"><strong>Total Average:</strong></td>
-                            <td style="text-align:center"><strong>@(sumOfAverages)</strong></td>
+                            <td style="text-align:center"><strong>@(sumOfAverages / totalKraCount)</strong></td>
                         </tr>
                     </tbody>
                 </table>
