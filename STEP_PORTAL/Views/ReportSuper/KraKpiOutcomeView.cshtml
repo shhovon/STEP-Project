@@ -13,6 +13,10 @@
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
+@*@{
+    int sumOfAverages = 0;
+}*@
+
 <a href="@Url.Action("ViewEmpList", "DeptHead")" class="btn btn-primary" style="text-decoration: none;">
     <span>Search Again</span>
 </a>
@@ -166,6 +170,10 @@
                             i++;
                         }
                     }
+@*                    <tr>
+                        <td colspan="4" style="text-align:center"><strong>Total Average:</strong></td>
+                        <td style="text-align:center"><strong>@(sumOfAverages)</strong></td>
+                    </tr>*@
                 </tbody>
             </table>
             <input type="submit" value="Save Marks" />
@@ -186,20 +194,20 @@ else
 {
     <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
 
-        @*@Html.HiddenFor(m => m[0].REG_ID)*@
+    @*@Html.HiddenFor(m => m[0].REG_ID)*@
 
-        <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <label for="comment" style="font-weight: bold; color: #333;">Comment:</label><br>
-            <input type="text" id="comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            <br>
-            <input type="submit" id="reportSuperForm" value="Submit & Lock" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
-        </div>
-    }
+    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <label for="comment" style="font-weight: bold; color: #333;">Comment:</label><br>
+        <input type="text" id="comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br>
+        <input type="submit" id="reportSuperForm" value="Submit & Lock" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+    </div>
+}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    @section scripts {
-        <script>
+@section scripts {
+    <script>
         $(document).ready(function () {
             var kraAverages = {};
             $(".marks-select").on("change", function () {
@@ -294,13 +302,13 @@ else
             $('#reportSuperForm').submit(function (event) {
                 event.preventDefault();
                 var formData = $(this).serialize();
-                
+
                 $.ajax({
                     url: '@Url.Action("SaveReportSuperComment", "ReportSuper")',
                     type: 'POST',
                     data: formData,
                     success: function (response) {
-                       
+
                         if (response.success) {
                             alert(response.message);
                         } else {
@@ -314,5 +322,5 @@ else
                 });
             });
         });
-        </script>
-    }
+    </script>
+}

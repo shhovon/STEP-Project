@@ -7,6 +7,11 @@
 
 <body>
 
+
+    @{
+        int sumOfAverages = 0;
+    }
+
     <h3>View Employee Marks and Report Supervisor Comment</h3>
     <br />
 
@@ -25,13 +30,18 @@
             display: inline-block;
             margin-left: 45px;
         }
+
+        .tab3 {
+            display: inline-block;
+            margin-left: 66px;
+        }
     </style>
 
     <br />
     <div>
         <p><strong>Employee Code: <span class="tab2"></span> @Session["EmployeeCodeInd"]</strong></p>
         <p><strong>Employee Name: <span class="tab"></span> @Session["NameInd"]</strong></p>
-        <p><strong>Designation: <span class="tab2"></span>  @Session["DesignationInd"]</strong></p>
+        <p><strong>Designation: <span class="tab3"></span>  @Session["DesignationInd"]</strong></p>
     </div>
     <br />
 
@@ -40,47 +50,55 @@
         <div>
             <button id="toggleButton" class="btn btn-primary" onclick="toggleTable()">View Marks</button>
             <div id="tableContainer" style="display: none;">
-            <table class="user-info-table">
-                <thead>
-                    <tr>
-                        <th>KRA</th>
-                        <th>KPI</th>
-                        <th>Outcome</th>
-                        <th>Performance Marks</th>
-                        <th>Total Average</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.GroupedData)
-                    {
-                        var kpiCount = item.KPIIs.Count;
-                        for (var i = 0; i < kpiCount; i++)
+                <table class="user-info-table">
+                    <thead>
+                        <tr>
+                            <th>KRA</th>
+                            <th>KPI</th>
+                            <th>Outcome</th>
+                            <th>Performance Marks</th>
+                            <th>Total Average</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.GroupedData)
                         {
-                            var kpi = item.KPIIs[i];
-                            var outcomeItem = Model.KraKpiOutcomeData.FirstOrDefault(m => m.KRA == item.KRA && m.KPI == kpi);
-                            string outcome = outcomeItem != null ? outcomeItem.Outcome : null;
-                            var mark = outcomeItem != null ? outcomeItem.Marks_Achieved : 0;
+                            var kpiCount = item.KPIIs.Count;
+                            for (var i = 0; i < kpiCount; i++)
+                            {
+                                var kpi = item.KPIIs[i];
+                                var outcomeItem = Model.KraKpiOutcomeData.FirstOrDefault(m => m.KRA == item.KRA && m.KPI == kpi);
+                                string outcome = outcomeItem != null ? outcomeItem.Outcome : null;
+                                var mark = outcomeItem != null ? outcomeItem.Marks_Achieved : 0;
 
-                            <tr>
-                                @if (i == 0)
-                                {
-                                    <td rowspan=@kpiCount>@item.KRA</td>
-                                }
-                                <td>@kpi</td>
-                                <td>@outcome</td>
-                                <td style="text-align:center">@mark</td>
-                                @if (i == 0)
-                                {
-                                    <td rowspan=@kpiCount style="text-align:center">
-                                        @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
-                                    </td>
-                                }
-                            </tr>
+                                <tr>
+                                    @if (i == 0)
+                                    {
+                                        <td rowspan=@kpiCount>@item.KRA</td>
+                                    }
+                                    <td>@kpi</td>
+                                    <td>@outcome</td>
+                                    <td style="text-align:center">@mark</td>
+                                    @if (i == 0)
+                                    {
+                                        <td rowspan=@kpiCount style="text-align:center">
+                                            @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
+                                            @{
+                                                decimal MarskAverage = Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count;
+                                                sumOfAverages += (int)Math.Round(MarskAverage);
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                            }
                         }
-                    }
-                </tbody>
-            </table>
-                </div>
+                        <tr>
+                            <td colspan="4" style="text-align:center"><strong>Total Average:</strong></td>
+                            <td style="text-align:center"><strong>@(sumOfAverages)</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     }
     else
@@ -89,37 +107,37 @@
     }
 
     <br /><br />
-          <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-              <table border="1">
-                  <tr>
-                      <td colspan="5" align="center">
-                          <h5>1.5 OVERALL PERFORMANCE RATING ACHIEVED: <input disabled type="text"></h5>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>
-                          <h6>5 - OUTSTANDING</h6>
-                          <p>Exceeded performance in all agreed upon objectives/KRAs and have gone far beyond what is expected.</p>
-                      </td>
-                      <td>
-                          <h6>4 - ABOVE TARGET</h6>
-                          <p>Consistently accomplished objectives/KRAs and also have delivered results that exceeded some targets.</p>
-                      </td>
-                      <td>
-                          <h6>3 - ON TARGET</h6>
-                          <p>Achieved all objectives/KRAs or has exceeded target in some critical KRAs with one less critical area under achieved.</p>
-                      </td>
-                      <td>
-                          <h6>2 - NEARLY THERE</h6>
-                          <p>Achieved most of the objectives/KRAs but not all.</p>
-                      </td>
-                      <td>
-                          <h6>1 - UNDER PERFORMING</h6>
-                          <p>Could not achieve a number of agreed objectives/KRAs.</p>
-                      </td>
-                  </tr>
-              </table>
-          </div>
+    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <table border="1">
+            <tr>
+                <td colspan="5" align="center">
+                    <h5>1.5 OVERALL PERFORMANCE RATING ACHIEVED: <input value="" class="tab" disabled type="text"></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h6>5 - OUTSTANDING</h6>
+                    <p>Exceeded performance in all agreed upon objectives/KRAs and have gone far beyond what is expected.</p>
+                </td>
+                <td>
+                    <h6>4 - ABOVE TARGET</h6>
+                    <p>Consistently accomplished objectives/KRAs and also have delivered results that exceeded some targets.</p>
+                </td>
+                <td>
+                    <h6>3 - ON TARGET</h6>
+                    <p>Achieved all objectives/KRAs or has exceeded target in some critical KRAs with one less critical area under achieved.</p>
+                </td>
+                <td>
+                    <h6>2 - NEARLY THERE</h6>
+                    <p>Achieved most of the objectives/KRAs but not all.</p>
+                </td>
+                <td>
+                    <h6>1 - UNDER PERFORMING</h6>
+                    <p>Could not achieve a number of agreed objectives/KRAs.</p>
+                </td>
+            </tr>
+        </table>
+    </div>
     <br /><br />
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
@@ -141,24 +159,24 @@
 
         @* @Html.HiddenFor(m => m[0].REG_ID)*@
 
-<div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-    <label for="comment" style="font-weight: bold; color: #333;">HOD Comment:</label><br>
-    <input type="text" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-    <br>
-    <p><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
-    <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
-    <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            @foreach (var designation in Model.Designations)
-            {
-                <option value="@designation.Designation">@designation.Designation</option>
-            }
-    </select>
-    <br>
-    <label for="comment" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
-    <input type="number" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-    <br>
-    <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
-</div>
+        <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <label for="comment" style="font-weight: bold; color: #333;">HOD Comment:</label><br>
+            <input type="text" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <br>
+            <p><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
+            <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
+            <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                @foreach (var designation in Model.Designations)
+                {
+                    <option value="@designation.Designation">@designation.Designation</option>
+                }
+            </select>
+            <br>
+            <label for="comment" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
+            <input type="number" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <br>
+            <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+        </div>
     }
 
 </body>
