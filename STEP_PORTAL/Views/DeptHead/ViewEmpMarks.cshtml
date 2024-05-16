@@ -148,11 +148,10 @@
     <p><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
     <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
     <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-        <option value="junior">Junior Developer</option>
-        <option value="senior">Senior Developer</option>
-        <option value="lead">Lead Developer</option>
-        <option value="manager">Manager</option>
-        <option value="director">Director</option>
+            @foreach (var designation in Model.Designations)
+            {
+                <option value="@designation.Designation">@designation.Designation</option>
+            }
     </select>
     <br>
     <label for="comment" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>

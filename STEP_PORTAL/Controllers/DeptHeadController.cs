@@ -273,12 +273,13 @@ namespace STEP_PORTAL.Controllers
                                                     KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
                                                 })
                                                 .ToList();
-
+                var designations = db.Database.SqlQuery<DesignationModel>("prc_GetDesignations").ToList();
 
                 var viewModel = new DisplayAllDataViewModel
                 {
                     KraKpiOutcomeData = kraKpiOutcomeData,
-                    GroupedData = groupedData
+                    GroupedData = groupedData,
+                    Designations = designations
                 };
 
                 if (comments != null && comment != null)

@@ -173,6 +173,7 @@
     <Compile Include="Models\CustomAuthorize.cs" />
     <Compile Include="Models\CustomErrorHandler.cs" />
     <Compile Include="Models\DeptSecViewModel.cs" />
+    <Compile Include="Models\DesignationModel.cs" />
     <Compile Include="Models\DisplayAllDataViewModel.cs" />
     <Compile Include="Models\KPI.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
