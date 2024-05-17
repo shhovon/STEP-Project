@@ -33,7 +33,7 @@
         <p><strong>Employee Code: <span class="tab2"></span> @Session["EmployeeCode"]</strong></p>
         <p><strong>Employee Name: <span class="tab"></span> @Session["Name"]</strong></p>
     </div>
-    <br />  
+    <br />
 
     @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
     {
@@ -59,21 +59,21 @@
                             string outcome = outcomeItem != null ? outcomeItem.Outcome : null;
                             var mark = outcomeItem != null ? outcomeItem.Marks_Achieved : 0;
 
-                    <tr>
-                        @if (i == 0)
-                        {
-                            <td rowspan=@kpiCount>@item.KRA</td>
-                        }
-                        <td>@kpi</td>
-                        <td>@outcome</td>
-                        <td style="text-align:center">@mark</td>
-                        @if (i == 0)
-                        {
-                            <td rowspan=@kpiCount style="text-align:center">
-                                @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
-                            </td>
-                        }
-                    </tr>
+                            <tr>
+                                @if (i == 0)
+                                {
+                                    <td rowspan=@kpiCount>@item.KRA</td>
+                                }
+                                <td>@kpi</td>
+                                <td>@outcome</td>
+                                <td style="text-align:center">@mark</td>
+                                @if (i == 0)
+                                {
+                                    <td rowspan=@kpiCount style="text-align:center">
+                                        @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
+                                    </td>
+                                }
+                            </tr>
                         }
                     }
                 </tbody>
@@ -82,7 +82,9 @@
     }
     else
     {
-        <p>No marks data available</p>
+        <div class="alert alert-danger" role="alert">
+            <i class="fas fa-info-circle"></i>No marks data available
+        </div>
     }
 
 
