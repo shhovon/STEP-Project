@@ -104,97 +104,99 @@
     }
     else
     {
-        <p>No marks data available</p>
-    }
+            <div class="alert alert-danger" role="alert">
+            <i class="fas fa-info-circle"></i>No marks data available
+            </div>
+            }
 
-    <br /><br />
-    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <table border="1">
-            <tr>
-                <td colspan="5" align="center">
-                    <h5>
-                        1.5 OVERALL PERFORMANCE RATING ACHIEVED:
-                        @{
-                            decimal? kpiAvg = null;
-                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0)
-                            {
-                                kpiAvg = Model.KraKpiOutcomeData[0].KPI_AVG;
-                            }
-                            int displayValue = kpiAvg.HasValue ? (int)kpiAvg.Value : 0;
+            <br /><br />
+            <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <table border="1">
+                    <tr>
+                        <td colspan="5" align="center">
+                            <h5>
+                                1.5 OVERALL PERFORMANCE RATING ACHIEVED:
+                                @{
+                                    decimal? kpiAvg = null;
+                                    if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0)
+                                    {
+                                        kpiAvg = Model.KraKpiOutcomeData[0].KPI_AVG;
+                                    }
+                                    int displayValue = kpiAvg.HasValue ? (int)kpiAvg.Value : 0;
+                                }
+                                <input style="text-align:center; width:30px;"
+                                       value="@displayValue"
+                                       class="tab" disabled type="text">
+                            </h5>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>5 - OUTSTANDING</h6>
+                            <p>Exceeded performance in all agreed upon objectives/KRAs and have gone far beyond what is expected.</p>
+                        </td>
+                        <td>
+                            <h6>4 - ABOVE TARGET</h6>
+                            <p>Consistently accomplished objectives/KRAs and also have delivered results that exceeded some targets.</p>
+                        </td>
+                        <td>
+                            <h6>3 - ON TARGET</h6>
+                            <p>Achieved all objectives/KRAs or has exceeded target in some critical KRAs with one less critical area under achieved.</p>
+                        </td>
+                        <td>
+                            <h6>2 - NEARLY THERE</h6>
+                            <p>Achieved most of the objectives/KRAs but not all.</p>
+                        </td>
+                        <td>
+                            <h6>1 - UNDER PERFORMING</h6>
+                            <p>Could not achieve a number of agreed objectives/KRAs.</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br /><br />
+            <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
+                <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.SupervisorComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                <br>
+            </div>
+            <br />
+
+            <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <label for="comment" style="font-weight: bold; color: #333;">User's Comment:</label><br>
+                <input type="text" disabled id="UserComment" name="UserComment" value="@Model.UserComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                <br>
+            </div>
+            <br />
+
+            @using (Html.BeginForm("SaveHODComment", "ReportSuper", FormMethod.Post))
+            {
+                @Html.Hidden("regId", null, new { id = "viewregIDField" })
+
+                @* @Html.HiddenFor(m => m[0].REG_ID)*@
+
+                <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <label for="comment" style="font-weight: bold; color: #333;">HOD Comment:</label><br>
+                    <input type="text" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                    <br>
+                    <p style="color:Highlight;"><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
+                    <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
+                    <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                        @foreach (var designation in Model.Designations)
+                        {
+                            <option value="@designation.Designation">@designation.Designation</option>
                         }
-                        <input style="text-align:center; width:30px;"
-                               value="@displayValue"
-                               class="tab" disabled type="text">
-                    </h5>
-                </td>
+                    </select>
+                    <br>
+                    <label for="comment" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
+                    <input type="number" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                    <br>
+                    <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+                </div>
+            }
 
-            </tr>
-            <tr>
-                <td>
-                    <h6>5 - OUTSTANDING</h6>
-                    <p>Exceeded performance in all agreed upon objectives/KRAs and have gone far beyond what is expected.</p>
-                </td>
-                <td>
-                    <h6>4 - ABOVE TARGET</h6>
-                    <p>Consistently accomplished objectives/KRAs and also have delivered results that exceeded some targets.</p>
-                </td>
-                <td>
-                    <h6>3 - ON TARGET</h6>
-                    <p>Achieved all objectives/KRAs or has exceeded target in some critical KRAs with one less critical area under achieved.</p>
-                </td>
-                <td>
-                    <h6>2 - NEARLY THERE</h6>
-                    <p>Achieved most of the objectives/KRAs but not all.</p>
-                </td>
-                <td>
-                    <h6>1 - UNDER PERFORMING</h6>
-                    <p>Could not achieve a number of agreed objectives/KRAs.</p>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <br /><br />
-    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
-        <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.SupervisorComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-        <br>
-    </div>
-    <br />
-
-    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <label for="comment" style="font-weight: bold; color: #333;">User's Comment:</label><br>
-        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.UserComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-        <br>
-    </div>
-    <br />
-
-    @using (Html.BeginForm("SaveHODComment", "ReportSuper", FormMethod.Post))
-    {
-        @Html.Hidden("regId", null, new { id = "viewregIDField" })
-
-        @* @Html.HiddenFor(m => m[0].REG_ID)*@
-
-        <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <label for="comment" style="font-weight: bold; color: #333;">HOD Comment:</label><br>
-            <input type="text" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            <br>
-            <p style="color:Highlight;"><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
-            <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
-            <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-                @foreach (var designation in Model.Designations)
-                {
-                    <option value="@designation.Designation">@designation.Designation</option>
-                }
-            </select>
-            <br>
-            <label for="comment" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
-            <input type="number" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            <br>
-            <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
-        </div>
-    }
-
-</body>
+    </body>
 
 @section scripts {
     <script>
