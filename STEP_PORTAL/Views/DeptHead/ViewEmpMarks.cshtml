@@ -9,7 +9,7 @@
 
 
     @{
-        int sumOfAverages = 0;
+        decimal sumOfAverages = 0;
         int totalKraCount = Model.GroupedData.Count();
     }
 
@@ -86,16 +86,20 @@
                                             @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
                                             @{
                                                 decimal MarskAverage = Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count;
-                                                sumOfAverages += (int)Math.Round(MarskAverage);
+                                                if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0)
+                                                {
+                                                    sumOfAverages = Model.KraKpiOutcomeData[0].KPI_AVG.Value;
+                                                }
                                             }
                                         </td>
-                                    }
+                                                }
                                 </tr>
                             }
                         }
                         <tr>
-                            <td colspan="4" style="text-align:center"><strong>Total Average:</strong></td>
-                            <td style="text-align:center"><strong>@(sumOfAverages / totalKraCount)</strong></td>
+                            <td colspan="4" style="text-align: center; background-color: Highlight; color: white;"><strong>Average Cumulative Score of KRA’s / @totalKraCount
+                              </strong></td>
+                            <td style="text-align: center; background-color: Highlight; color: white;"><strong>@sumOfAverages</strong></td>
                         </tr>
                     </tbody>
                 </table>
@@ -176,7 +180,7 @@
                                 ratingAvg = (int)Model.KraKpiOutcomeData[0].Rating_Achieved;
                             }
                         }
-                        <input style="text-align: center; width: 30px; background-color: Highlight; color: white;"
+                        <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
                                value="@ratingAvg"
                                class="tab" disabled type="text">
                     </h5>
