@@ -113,7 +113,7 @@
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <table border="1">
             <tr>
-                <td colspan="5" align="center">
+                <td colspan="5" align="center" style="color:Highlight;">
                     <h5>
                         1.2. Performance Assessment (Rate relevant rating)
                         @{
@@ -123,7 +123,7 @@
                                 totalAvg = (Model.KraKpiOutcomeData[0].Attendance + Model.KraKpiOutcomeData[0].Discipline) /2 ;
                             }
                         }
-                        <input style="text-align:center; width:50px;"
+                        <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
                                value="@totalAvg"
                                class="tab" disabled type="text">
                     </h5>
@@ -166,7 +166,7 @@
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <table border="1">
             <tr>
-                <td colspan="5" align="center">
+                <td colspan="5" align="center" style="color:Highlight;">
                     <h5>
                         1.5 OVERALL PERFORMANCE RATING ACHIEVED:
                         @{
@@ -176,7 +176,7 @@
                                 ratingAvg = (int)Model.KraKpiOutcomeData[0].Rating_Achieved;
                             }
                         }
-                        <input style="text-align:center; width:30px;"
+                        <input style="text-align: center; width: 30px; background-color: Highlight; color: white;"
                                value="@ratingAvg"
                                class="tab" disabled type="text">
                     </h5>
