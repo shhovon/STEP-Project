@@ -13,6 +13,7 @@ public class KraKpiOutcomeModel
         public int REG_ID { get; set; }
         public decimal AVG_Marks_Achieved { get; set; }
         public decimal? KPI_AVG { get; set; }
+        public decimal? Rating_Achieved { get; set; }
         public string EmployeeCode { get; set; }
         public string Section_Name { get; set; }
         public string Name { get; set; }

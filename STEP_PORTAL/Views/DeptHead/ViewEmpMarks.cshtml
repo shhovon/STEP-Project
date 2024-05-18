@@ -117,15 +117,14 @@
                             <h5>
                                 1.5 OVERALL PERFORMANCE RATING ACHIEVED:
                                 @{
-                                    decimal? kpiAvg = null;
+                                    decimal? ratingAvg = null;
                                     if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0)
                                     {
-                                        kpiAvg = Model.KraKpiOutcomeData[0].KPI_AVG;
+                                        ratingAvg = (int)Model.KraKpiOutcomeData[0].Rating_Achieved;
                                     }
-                                    int displayValue = kpiAvg.HasValue ? (int)kpiAvg.Value : 0;
                                 }
                                 <input style="text-align:center; width:30px;"
-                                       value="@displayValue"
+                                       value="@ratingAvg"
                                        class="tab" disabled type="text">
                             </h5>
                         </td>
