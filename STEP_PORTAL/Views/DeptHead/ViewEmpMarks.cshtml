@@ -126,6 +126,10 @@
                             {
                                 sumOfAverages = Model.KraKpiOutcomeData[0].KPI_AVG.Value;
                             }
+                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0)
+                            {
+                                totalAvg = (Model.KraKpiOutcomeData[0].Attendance + Model.KraKpiOutcomeData[0].Discipline) / 2;
+                            }
 
                         }
                         <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
