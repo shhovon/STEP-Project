@@ -13,7 +13,7 @@
         int totalKraCount = Model.GroupedData.Count();
     }
 
-    <h3>View Employee Marks and Report Supervisor Comment</h3>
+    <h3>HR & Admin Final Recommendation</h3>
     <br />
 
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
@@ -37,45 +37,6 @@
             margin-left: 66px;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            border: 1px solid #000;
-            padding: 20px;
-        }
-
-        .section-title {
-            font-weight: bold;
-            color: #000;
-            margin-bottom: 10px;
-        }
-
-        .recommendations h2 {
-            color: red;
-            margin: 0;
-            margin-bottom: 10px;
-        }
-
-        .recommendations p {
-            margin: 10px 0;
-        }
-
-        .recommendations input {
-            border: none;
-            width: 150px;
-        }
-
-        .recommendations .amount {
-            width: 100px;
-        }
-
-        .recommendations .effective-date {
-            width: 120px;
-        }
     </style>
 
     <br />
@@ -218,7 +179,7 @@
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <table border="1">
             <tr>
-                <td colspan="5" align="center" style="color:Highlight;">
+                <td colspan="5" align="center" style="color: Highlight;">
                     <h5>
                         1.5 Overall Performance Rating Achieved:
                         @{
@@ -237,23 +198,23 @@
             </tr>
             <tr>
                 <td style="text-align: left; vertical-align: top;">
-                    <h6 style="margin-top: 0;">5 - OUTSTANDING</h6>
+                    <h6 style="margin-top: 0;  padding-top: 10px;">5 - OUTSTANDING</h6>
                     <p>Exceeded performance in all agreed upon objectives /KRAs and have gone far beyond what is expected.</p>
                 </td>
                 <td style="text-align: left; vertical-align: top;">
-                    <h6 style="margin-top: 0;">4 - ABOVE TARGET</h6>
+                    <h6 style="margin-top: 0; padding-top: 10px;">4 - ABOVE TARGET</h6>
                     <p>Consistently accomplished objectives/KRAs and also have delivered results that exceeded some targets.</p>
                 </td>
                 <td style="text-align: left; vertical-align: top;">
-                    <h6 style="margin-top: 0;">3 - ON TARGET</h6>
+                    <h6 style="margin-top: 0; padding-top: 10px;">3 - ON TARGET</h6>
                     <p>Achieved all objectives /KRAs or has exceeded target in some critical KRAs with one less critical area under achieved.</p>
                 </td>
                 <td style="text-align: left; vertical-align: top;">
-                    <h6 style="margin-top: 0;">2 - NEARLY THERE</h6>
+                    <h6 style="margin-top: 0; padding-top: 10px;">2 - NEARLY THERE</h6>
                     <p>Achieved most of the objectives/KRAs but not all.</p>
                 </td>
                 <td style="text-align: left; vertical-align: top;">
-                    <h6 style="margin-top: 0;">1 - UNDER PERFORMING</h6>
+                    <h6 style="margin-top: 0; padding-top: 10px;">1 - UNDER PERFORMING</h6>
                     <p>Could not achieve a number of agreed objectives/KRAs.</p>
                 </td>
             </tr>
