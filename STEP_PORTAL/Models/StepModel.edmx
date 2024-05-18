@@ -221,6 +221,20 @@ warning 6002: The table/view 'DB_STEP.dbo.tblMenu' does not have a primary key d
           <Property Name="UserIP" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="ComputerName" Type="varchar" MaxLength="20" />
         </EntityType>
+        <EntityType Name="tblUserRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegId" Type="int" />
+          <Property Name="Role" Type="int" />
+          <Property Name="ComIDs" Type="varchar" MaxLength="50" />
+          <Property Name="YSNActive" Type="bit" />
+          <Property Name="Created_date" Type="datetime" />
+          <Property Name="Created_By" Type="varchar" MaxLength="50" />
+          <Property Name="Updated_date" Type="datetime" />
+          <Property Name="Updated_by" Type="varchar" MaxLength="50" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_StepDetails">
@@ -248,6 +262,17 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Property Name="Updated_date" Type="datetime" />
           <Property Name="Updated_by" Type="varchar" MaxLength="50" />
         </EntityType>
+        <Function Name="fnSplitString" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="string" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="delimiter" Type="char" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="splitdata" Type="nvarchar(max)" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <Function Name="prc_EmployeeInfoByEmpCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompID" Type="int" Mode="In" />
           <Parameter Name="EmpCode" Type="varchar" Mode="In" />
@@ -258,11 +283,24 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
         <Function Name="prc_EmployeeInfoByRegIDs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RegID" Type="varchar(max)" Mode="In" />
         </Function>
+        <Function Name="prc_GetDeptAndSec" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prc_GetDesignations" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="prc_GetEmployeeByHR" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegID" Type="int" Mode="In" />
+          <Parameter Name="CompID" Type="int" Mode="In" />
+        </Function>
         <Function Name="prc_GetEmployeeListByDeptHead" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="DeptHeadValue" Type="int" Mode="In" />
         </Function>
         <Function Name="prc_GetEmployeesByCompany" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prc_GetHODTeamMember" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegID" Type="int" Mode="In" />
+          <Parameter Name="CompID" Type="int" Mode="In" />
+          <Parameter Name="SESSION_ID" Type="int" Mode="In" />
         </Function>
         <Function Name="prc_GetKPIOutcomeByRegIdOrSectionName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RegId" Type="int" Mode="In" />
@@ -271,6 +309,15 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
         <Function Name="prc_GetKraKpiByRegIdOrSectionName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RegId" Type="int" Mode="In" />
           <Parameter Name="SectionName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="prc_GetKraKpiData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegID" Type="int" Mode="In" />
+          <Parameter Name="SelectedTaxPeriod" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prc_GetkrakpiID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="regId" Type="int" Mode="In" />
+          <Parameter Name="selectedKRA" Type="varchar" Mode="In" />
+          <Parameter Name="selectedKPI" Type="varchar" Mode="In" />
         </Function>
         <Function Name="prc_GetKraKpiOutcomeData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RegId" Type="int" Mode="In" />
@@ -281,9 +328,29 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Parameter Name="RegID" Type="int" Mode="In" />
           <Parameter Name="SESSION_ID" Type="int" Mode="In" />
         </Function>
+        <Function Name="prc_SearchEmployeeByHR" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegID" Type="int" Mode="In" />
+          <Parameter Name="CompID" Type="int" Mode="In" />
+          <Parameter Name="DepartmentName" Type="nvarchar" Mode="In" />
+          <Parameter Name="SectionName" Type="nvarchar" Mode="In" />
+          <Parameter Name="SESSION_ID" Type="int" Mode="In" />
+        </Function>
         <Function Name="prc_UpdateOutcomeMarks" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="KpiOutcome" Type="nvarchar" Mode="In" />
           <Parameter Name="MarksAchieved" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prc_UpdateRating" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegId" Type="int" Mode="In" />
+          <Parameter Name="SESSION_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prc_UpdateStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegId" Type="int" Mode="In" />
+          <Parameter Name="SESSION_ID" Type="int" Mode="In" />
+          <Parameter Name="StatusType" Type="varchar" Mode="In" />
+          <Parameter Name="StatusValue" Type="varchar" Mode="In" />
+          <Parameter Name="StatusMessage" Type="varchar" Mode="In" />
+          <Parameter Name="Updated_date" Type="datetime" Mode="In" />
+          <Parameter Name="Updated_by" Type="varchar" Mode="In" />
         </Function>
         <Function Name="prc_User_Registration" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RegID" Type="int" Mode="In" />
@@ -302,6 +369,7 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <EntitySet Name="tblTraining_Need" EntityType="Self.tblTraining_Need" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUser_LogInfo" EntityType="Self.tblUser_LogInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserLogHistory" EntityType="Self.tblUserLogHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserRole" EntityType="Self.tblUserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Company_Information" EntityType="Self.Company_Information" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Company_Information].[ID] AS [ID], 
@@ -672,6 +740,53 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <FunctionImport Name="prc_UserMenu" ReturnType="Collection(DB_STEPModel.prc_UserMenu_Result)">
           <Parameter Name="RegId" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="tblUserRoles" EntityType="DB_STEPModel.tblUserRole" />
+          <FunctionImport Name="fnSplitString" IsComposable="true" ReturnType="Collection(String)">
+            <Parameter Name="string" Mode="In" Type="String" />
+            <Parameter Name="delimiter" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetDeptAndSec" ReturnType="Collection(DB_STEPModel.prc_GetDeptAndSec_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetDesignations" ReturnType="Collection(DB_STEPModel.prc_GetDesignations_Result)" />
+          <FunctionImport Name="prc_GetEmployeeByHR" ReturnType="Collection(DB_STEPModel.prc_GetEmployeeByHR_Result)">
+            <Parameter Name="RegID" Mode="In" Type="Int32" />
+            <Parameter Name="CompID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetHODTeamMember" ReturnType="Collection(DB_STEPModel.prc_GetHODTeamMember_Result)">
+            <Parameter Name="RegID" Mode="In" Type="Int32" />
+            <Parameter Name="CompID" Mode="In" Type="Int32" />
+            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetKraKpiData" ReturnType="Collection(DB_STEPModel.prc_GetKraKpiData_Result)">
+            <Parameter Name="RegID" Mode="In" Type="Int32" />
+            <Parameter Name="SelectedTaxPeriod" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetkrakpiID" ReturnType="Collection(DB_STEPModel.prc_GetkrakpiID_Result)">
+            <Parameter Name="regId" Mode="In" Type="Int32" />
+            <Parameter Name="selectedKRA" Mode="In" Type="String" />
+            <Parameter Name="selectedKPI" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prc_SearchEmployeeByHR" ReturnType="Collection(DB_STEPModel.prc_SearchEmployeeByHR_Result)">
+            <Parameter Name="RegID" Mode="In" Type="Int32" />
+            <Parameter Name="CompID" Mode="In" Type="Int32" />
+            <Parameter Name="DepartmentName" Mode="In" Type="String" />
+            <Parameter Name="SectionName" Mode="In" Type="String" />
+            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_UpdateRating">
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_UpdateStatus">
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
+            <Parameter Name="StatusType" Mode="In" Type="String" />
+            <Parameter Name="StatusValue" Mode="In" Type="String" />
+            <Parameter Name="StatusMessage" Mode="In" Type="String" />
+            <Parameter Name="Updated_date" Mode="In" Type="DateTime" />
+            <Parameter Name="Updated_by" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="prc_EmployeeInfoByEmpCode_Result">
           <Property Type="Int32" Name="RegId" Nullable="false" />
@@ -818,6 +933,105 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Property Type="String" Name="Menu_URL" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Menu_Icon" Nullable="true" MaxLength="50" />
           <Property Type="Boolean" Name="YsnActive" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="tblUserRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RegId" Type="Int32" />
+          <Property Name="Role" Type="Int32" />
+          <Property Name="ComIDs" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="YSNActive" Type="Boolean" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="prc_GetDeptAndSec_Result">
+          <Property Type="String" Name="DepartmentName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="SectionName" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="prc_GetDesignations_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Byte" Name="ComID" Nullable="false" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="Status" Nullable="false" />
+          <Property Type="String" Name="wstatus" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="prc_GetEmployeeByHR_Result">
+          <Property Type="Int32" Name="RegId" Nullable="true" />
+          <Property Type="Int32" Name="ComID" Nullable="false" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="FathersName" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Religion" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="PreAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="PerAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="NID" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="District" Nullable="false" MaxLength="25" />
+          <Property Type="DateTime" Name="JoiningDate" Nullable="false" Precision="16" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DesigAddi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WStatus" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="prc_GetHODTeamMember_Result">
+          <Property Type="Int32" Name="RegId" Nullable="true" />
+          <Property Type="Int32" Name="ComID" Nullable="true" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="FathersName" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Religion" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="PreAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="PerAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="NID" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="District" Nullable="false" MaxLength="25" />
+          <Property Type="DateTime" Name="JoiningDate" Nullable="false" Precision="16" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DesigAddi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WStatus" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="EmpStatus" Nullable="false" MaxLength="23" />
+          <Property Type="String" Name="StatusValue" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+        <ComplexType Name="prc_GetKraKpiData_Result">
+          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="KPIOutcome" Nullable="true" MaxLength="2000" />
+        </ComplexType>
+        <ComplexType Name="prc_GetkrakpiID_Result">
+          <Property Type="Int32" Name="kraId" Nullable="false" />
+          <Property Type="Int32" Name="kpiId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="prc_SearchEmployeeByHR_Result">
+          <Property Type="Int32" Name="RegId" Nullable="true" />
+          <Property Type="Int32" Name="ComID" Nullable="false" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="FathersName" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Religion" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="PreAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="PerAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="NID" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="District" Nullable="false" MaxLength="25" />
+          <Property Type="DateTime" Name="JoiningDate" Nullable="false" Precision="16" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DesigAddi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WStatus" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="EmpStatus" Nullable="false" MaxLength="23" />
+          <Property Type="String" Name="StatusValue" Nullable="true" MaxLength="4000" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1246,6 +1460,137 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="tblUserRoles">
+            <EntityTypeMapping TypeName="DB_STEPModel.tblUserRole">
+              <MappingFragment StoreEntitySet="tblUserRole">
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="YSNActive" ColumnName="YSNActive" />
+                <ScalarProperty Name="ComIDs" ColumnName="ComIDs" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="fnSplitString" FunctionName="DB_STEPModel.Store.fnSplitString" />
+          <FunctionImportMapping FunctionImportName="prc_GetDeptAndSec" FunctionName="DB_STEPModel.Store.prc_GetDeptAndSec">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetDeptAndSec_Result">
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetDesignations" FunctionName="DB_STEPModel.Store.prc_GetDesignations">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetDesignations_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ComID" ColumnName="ComID" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="wstatus" ColumnName="wstatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetEmployeeByHR" FunctionName="DB_STEPModel.Store.prc_GetEmployeeByHR">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetEmployeeByHR_Result">
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="ComID" ColumnName="ComID" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FathersName" ColumnName="FathersName" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Religion" ColumnName="Religion" />
+                <ScalarProperty Name="PreAddress" ColumnName="PreAddress" />
+                <ScalarProperty Name="PerAddress" ColumnName="PerAddress" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="DesigAddi" ColumnName="DesigAddi" />
+                <ScalarProperty Name="WStatus" ColumnName="WStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetHODTeamMember" FunctionName="DB_STEPModel.Store.prc_GetHODTeamMember">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetHODTeamMember_Result">
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="ComID" ColumnName="ComID" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FathersName" ColumnName="FathersName" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Religion" ColumnName="Religion" />
+                <ScalarProperty Name="PreAddress" ColumnName="PreAddress" />
+                <ScalarProperty Name="PerAddress" ColumnName="PerAddress" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="DesigAddi" ColumnName="DesigAddi" />
+                <ScalarProperty Name="WStatus" ColumnName="WStatus" />
+                <ScalarProperty Name="EmpStatus" ColumnName="EmpStatus" />
+                <ScalarProperty Name="StatusValue" ColumnName="StatusValue" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetKraKpiData" FunctionName="DB_STEPModel.Store.prc_GetKraKpiData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetKraKpiData_Result">
+                <ScalarProperty Name="KRA" ColumnName="KRA" />
+                <ScalarProperty Name="KPI" ColumnName="KPI" />
+                <ScalarProperty Name="KPIOutcome" ColumnName="KPIOutcome" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetkrakpiID" FunctionName="DB_STEPModel.Store.prc_GetkrakpiID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetkrakpiID_Result">
+                <ScalarProperty Name="kraId" ColumnName="kraId" />
+                <ScalarProperty Name="kpiId" ColumnName="kpiId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_SearchEmployeeByHR" FunctionName="DB_STEPModel.Store.prc_SearchEmployeeByHR">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_SearchEmployeeByHR_Result">
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="ComID" ColumnName="ComID" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FathersName" ColumnName="FathersName" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Religion" ColumnName="Religion" />
+                <ScalarProperty Name="PreAddress" ColumnName="PreAddress" />
+                <ScalarProperty Name="PerAddress" ColumnName="PerAddress" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="DesigAddi" ColumnName="DesigAddi" />
+                <ScalarProperty Name="WStatus" ColumnName="WStatus" />
+                <ScalarProperty Name="EmpStatus" ColumnName="EmpStatus" />
+                <ScalarProperty Name="StatusValue" ColumnName="StatusValue" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_UpdateRating" FunctionName="DB_STEPModel.Store.prc_UpdateRating" />
+          <FunctionImportMapping FunctionImportName="prc_UpdateStatus" FunctionName="DB_STEPModel.Store.prc_UpdateStatus" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

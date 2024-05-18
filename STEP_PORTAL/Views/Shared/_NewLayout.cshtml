@@ -95,45 +95,48 @@
 
                     @*                    NEW NAVBAR                *@
 
-                    @* @{
-
-            if (ViewBag.UserMenus != null)
-            {
-                var UserMenus = ViewBag.UserMenus as IEnumerable<STEP_PORTAL.Models.UserMenu>;
-                foreach (var Menus in UserMenus)
-                {
-                    if (Menus.Main_Menu_Id == "0")
-                    {
-                        var SubMenus = UserMenus.Where(p => p.Main_Menu_Id == Menus.ID.ToString()).ToList();
-                        if (SubMenus.Count > 0)
-                        {
-                            <li class="nav-item">
-                                <a href="" class="" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i style="padding-right:5px" class="icon-layout menu-icon-@Menus.Menu_Icon"></i>@Menus.Menu_Name
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="">
-                                    @{
-                                        foreach (var Menu in SubMenus)
-                                        {
-                                            <li><a class="" href=" @Menu.Menu_URL"> @Menu.Menu_Name</a></li>
-                                        }
+                    @{
+@*                            var userMenus = ViewBag.UserMenus as IEnumerable<STEP_PORTAL.Models.UserMenu>;*@
+                            var userMenus = Session["AssignedMenuItems"] as List<UserMenu>;
+                            foreach (var menu in userMenus)
+                            {
+                                if (menu.Main_Menu_Id == "0")
+                                {
+                                    var subMenus = userMenus.Where(p => p.Main_Menu_Id == menu.ID.ToString()).ToList();
+                                    if (subMenus.Count > 0)
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="collapse" href="#menu-@menu.ID" aria-expanded="false" aria-controls="menu-@menu.ID">
+                                                <i class="icon-layout menu-icon"></i>
+                                                <span class="menu-title">@menu.Menu_Name</span>
+                                                <i class="menu-arrow"></i>
+                                            </a>
+                                            <div class="collapse" id="menu-@menu.ID">
+                                                <ul class="nav flex-column sub-menu">
+                                                    @{
+                                                        foreach (var subMenu in subMenus)
+                                                        {
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="@Url.Action(subMenu.Menu_URL)">@subMenu.Menu_Name</a>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </li>
                                     }
-                                </ul>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="dropdown">
-                                <a href=" @Menus.Menu_URL">
-                                    <i style="padding-right:5px" class="glyphicon glyphicon-@Menus.Menu_Icon"></i>@Menus.Menu_Name
-                                </a>
-                            </li>
-                        }
+                                    else
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="@Url.Action(menu.Menu_URL)">
+                                                <i class="icon-layout menu-icon"></i>
+                                                <span class="menu-title">@menu.Menu_Name</span>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                            }
                     }
-                }
-            }
-        }*@
 
 
 
@@ -217,39 +220,38 @@
 
                     @*STATIC LAYOUT*@
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Dashboard", "Home")">
-                            <i class="icon-grid menu-icon"></i>
-                            <span class="menu-title">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-                            <i class="icon-layout menu-icon"></i>
-                            <span class="menu-title">KRA/KPI Entry</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="ui-basic">
-                            <ul class="nav flex-column sub-menu">
-                                @*<li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "Home")">Master Data Entry</a></li>*@
-                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Outcome", "Home")">View List of KRA/KPI</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-                            <i class="icon-columns menu-icon"></i>
-                            <span class="menu-title">KPI Outcome Entry</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="form-elements">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"><a class="nav-link" href="@Url.Action("DisplayKrasAndKpis", "Home")">Current Year</a></li>
-                                @*<li class="nav-item"><a class="nav-link" href="@Url.Action("DisplayKrasAndKpis", "Home")">Next Year</a></li>*@
-                            </ul>
-                        </div>
-                    </li>
-
+                    <!--<li class="nav-item">
+        <a class="nav-link" href="Url.Action("Dashboard", "Home")">
+            <i class="icon-grid menu-icon"></i>
+            <span class="menu-title">Dashboard</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <i class="icon-layout menu-icon"></i>
+            <span class="menu-title">KRA/KPI Entry</span>
+            <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="ui-basic">
+            <ul class="nav flex-column sub-menu">-->
+                    @*<li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "Home")">Master Data Entry</a></li>*@
+                    <!--<li class="nav-item"> <a class="nav-link" href="Url.Action("Outcome", "Home")">View List of KRA/KPI</a></li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+            <i class="icon-columns menu-icon"></i>
+            <span class="menu-title">KPI Outcome Entry</span>
+            <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="form-elements">
+            <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="Url.Action("DisplayKrasAndKpis", "Home")">Current Year</a></li>-->
+                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("DisplayKrasAndKpis", "Home")">Next Year</a></li>*@
+                    <!--</ul>
+        </div>
+    </li>-->
                     @*        <li class="nav-item">
             <a class="nav-link" href="@Url.Action("SpecialFactors", "Employee")">
                 <i class="icon-paper menu-icon"></i>
@@ -263,45 +265,45 @@
             </a>
         </li>*@
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ViewEmpList", "DeptHead")">
-                            <i class="icon-paper menu-icon"></i>
-                            <span class="menu-title">Add Performance Marks</span>
-                        </a>
-                    </li>
+                    @*                    <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("ViewEmpList", "DeptHead")">
+                <i class="icon-paper menu-icon"></i>
+                <span class="menu-title">Add Performance Marks</span>
+            </a>
+        </li>*@
                     @*        <li class="nav-item">
             <a class="nav-link" href="@Url.Action("AddMarks", "ReportSuper")">
                 <i class="icon-paper menu-icon"></i>
                 <span class="menu-title">Add Performance Marks</span>
             </a>
         </li>*@
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ViewMarks", "ReportSuper")">
-                            <i class="icon-paper menu-icon"></i>
-                            <span class="menu-title">View Performance Marks</span>
-                        </a>
-                    </li>
+                    @*           <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("ViewMarks", "ReportSuper")">
+                <i class="icon-paper menu-icon"></i>
+                <span class="menu-title">View Performance Marks</span>
+            </a>
+        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ViewEmpListHR", "HR")">
-                            <i class="icon-paper menu-icon"></i>
-                            <span class="menu-title">HR Add Performance Marks</span>
-                        </a>
-                    </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("ViewEmpListHR", "HR")">
+                <i class="icon-paper menu-icon"></i>
+                <span class="menu-title">HR Add Performance Marks</span>
+            </a>
+        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ViewEmpListHOD", "DeptHead")">
-                            <i class="icon-paper menu-icon"></i>
-                            <span class="menu-title">HOD View Employees</span>
-                        </a>
-                    </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("ViewEmpListHOD", "DeptHead")">
+                <i class="icon-paper menu-icon"></i>
+                <span class="menu-title">HOD View Employees</span>
+            </a>
+        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("CorpHR", "HR")">
-                            <i class="icon-paper menu-icon"></i>
-                            <span class="menu-title">Corporate HR</span>
-                        </a>
-                    </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("CorpHR", "HR")">
+                <i class="icon-paper menu-icon"></i>
+                <span class="menu-title">Corporate HR</span>
+            </a>
+        </li>*@
 
 
                 </ul>

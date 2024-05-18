@@ -11,9 +11,9 @@ namespace STEP_DEMO.Models
 {
     using System;
     
-    public partial class prc_GetTeamMember_Result
+    public partial class prc_GetEmployeeByHR_Result
     {
-        public int RegId { get; set; }
+        public Nullable<int> RegId { get; set; }
         public int ComID { get; set; }
         public string EmployeeCode { get; set; }
         public string Name { get; set; }

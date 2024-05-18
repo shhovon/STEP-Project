@@ -254,74 +254,6 @@ namespace STEP_PORTAL.Controllers
 
         [CustomAuthorize]
         [HttpPost]
-        public ActionResult AddMarksHR2(int? RegId)
-        {
-            // if (!string.IsNullOrEmpty(RegId))
-            {
-                int deptHeadValue;
-
-                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
-                {
-                    using (DB_STEPEntities db = new DB_STEPEntities())
-                    {
-                        var last2session = (db.New_Tax_Period
-                                     .OrderByDescending(t => t.TaxPeriod)
-                                     .Select(t => t.TaxPeriod).Take(2).ToList());
-
-                        ViewBag.TopTaxPeriods = last2session;
-
-                        string selectedTaxPeriod = Session["SelectedTaxPeriod"] as string;
-
-                        string employeeID = Request.Form["employeeCode"];
-                        int regID = (int)Session["RegID"];
-
-                        // insert marks history
-                        tblMarksEntryHistory logEntry = new tblMarksEntryHistory
-                        {
-                            SupervisorID = deptHeadValue,
-                            EmployeeID = employeeID,
-                            UpdateTime = DateTime.Now,
-                            UserIP = GetIPAddress(),
-
-                        };
-                        db.tblMarksEntryHistories.Add(logEntry);
-                        db.SaveChanges();
-
-
-                        var userInfo = db.Database.SqlQuery<EmployeeInfo>(
-                              "prc_EmployeeInfoByRegID @RegID",
-                              new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
-
-                        var model = new KraKpiOutcomeModel
-                        {
-                            EmployeeCode = userInfo.EmployeeCode,
-                            Name = userInfo.Name
-                        };
-
-                        ViewBag.Designation = userInfo.Designation;
-
-                        /*int? SESSION_ID = db.New_Tax_Period.Where(t => t.TaxPeriod == sessionId).Select(t => t.TaxPerID).FirstOrDefault();*/
-
-                        var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>
-                            ("exec prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
-                             new SqlParameter("@RegId", RegId),
-                             new SqlParameter("@SESSION_ID", Session["SelectedTaxPeriod"])).ToList();
-
-                        ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
-                        return View("KraKpiOutcomeViewHR", kraKpiOutcomeData);
-/*                        return PartialView("~/Views/HR/KraKpiOutcomeViewHR.cshtml", kraKpiOutcomeData);*/
-
-                    }
-                }
-            }
-
-            ViewBag.SuccessMessage = "Marks updated successfully!";
-            return RedirectToAction("ViewEmpListHR", "HR");
-        }
-
-
-        [CustomAuthorize]
-        [HttpPost]
         public ActionResult UpdateMarks(List<KraKpiOutcomeModel> model)
         {
             int regId = Convert.ToInt32(Request.Form["regId"]);
@@ -513,9 +445,160 @@ namespace STEP_PORTAL.Controllers
             return RedirectToAction("AddMarksHR", new { regId = encryptedRegId });
         }
 
+        [CustomAuthorize]
         public ActionResult CorpHR()
         {
-            return View();
+            List<EmployeeInfo> employees = new List<EmployeeInfo>();
+            int deptHeadValue;
+            int companyId = 0;
+
+            if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+            {
+                employees = GetEmployeeListByDeptHead(deptHeadValue, companyId);
+            }
+
+            List<CompanyViewModel> companies = GetCompanies();
+            ViewBag.Companies = new SelectList(companies, "ID", "Name");
+            List<DeptSecViewModel> departments = GetDepartmentsAndSections(1);
+            ViewBag.Departments = departments;
+
+            List<string> topTaxPeriods = new List<string>();
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                var last2session = (db.New_Tax_Period
+              .OrderByDescending(t => t.TaxPeriod)
+              .Take(2).ToList());
+
+                ViewBag.TopTaxPeriods = last2session;
+
+            }
+
+            var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
+            ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
+            string selectedSection = null;
+            ViewBag.SelectedSection = selectedSection;
+
+            var model = new EmployeeSessionViewModelClass
+            {
+                Employees = employees,
+                TopTaxPeriods = topTaxPeriods
+            };
+
+            ViewBag.SuccessMessage = TempData["SuccessMessage"];
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CorpHR(int? companyId, string DepartmentDropdown, string SectionDropdown)
+        {
+            List<EmployeeInfo> employees = new List<EmployeeInfo>();
+
+            if (companyId != null && Session["RegID"] != null)
+            {
+                int deptHeadValue;
+                if (int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+                {
+                    employees = GetEmployeeListBySearchHR(deptHeadValue, companyId.Value, DepartmentDropdown, SectionDropdown);
+                }
+            }
+
+            List<CompanyViewModel> companies = GetCompanies();
+            ViewBag.Companies = new SelectList(companies, "ID", "Name", companyId);
+            List<DeptSecViewModel> departments = GetDepartmentsAndSections(1);
+            ViewBag.Departments = departments;
+
+            List<string> topTaxPeriods = new List<string>();
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                var last2session = db.New_Tax_Period
+                    .OrderByDescending(t => t.TaxPeriod)
+                    .Take(2).ToList();
+
+                ViewBag.TopTaxPeriods = last2session;
+                var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
+                ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
+            }
+
+            ViewBag.SelectedSection = SectionDropdown;
+            var model = new EmployeeSessionViewModelClass
+            {
+                Employees = employees,
+                TopTaxPeriods = topTaxPeriods
+            };
+
+            return View(model);
+        }
+
+
+        [CustomAuthorize]
+        public ActionResult FinalRecommendation(string regId)
+        {
+            int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+            List<KraKpiOutcomeModel> kraKpiOutcomeData;
+            using (var db = new DB_STEPEntities())
+            {
+                var last2session = (db.New_Tax_Period
+                                   .OrderByDescending(t => t.TaxPeriod)
+                                   .Select(t => t.TaxPeriod).Take(2).ToList());
+
+                ViewBag.TopTaxPeriods = last2session;
+                int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
+                var userInfo = db.Database.SqlQuery<EmployeeInfo>(
+                                "prc_EmployeeInfoByRegID @RegID",
+                                new SqlParameter("@RegID", RegId)).FirstOrDefault();
+
+                Session["EmployeeCodeInd"] = userInfo.EmployeeCode;
+                Session["NameInd"] = userInfo.Name;
+                Session["DesignationInd"] = userInfo.Designation;
+
+                kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+               new SqlParameter("@RegId", RegId),
+               new SqlParameter("@SESSION_ID", sessionID)).ToList();
+
+                var comments = from step in db.tbl_StepMaster
+                               where step.RegId == RegId
+                               select new
+                               {
+                                   step.Supervisor_Comment,
+                                   step.User_Comment
+                               };
+
+                var comment = comments.FirstOrDefault();
+
+                var groupedData = kraKpiOutcomeData.GroupBy(x => x.KRA)
+                                                .Select(g => new KraKpiViewModel
+                                                {
+                                                    KRA = g.Key,
+                                                    KPIIs = g.Select(x => x.KPI).ToList(),
+                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
+                                                })
+                                                .ToList();
+                var designations = db.Database.SqlQuery<DesignationModel>("prc_GetDesignations").ToList();
+
+                var viewModel = new DisplayAllDataViewModel
+                {
+                    KraKpiOutcomeData = kraKpiOutcomeData,
+                    GroupedData = groupedData,
+                    Designations = designations
+                };
+
+                if (comments != null && comment != null)
+                {
+                    viewModel.SupervisorComment = comment.Supervisor_Comment;
+                    viewModel.UserComment = comment.User_Comment;
+                }
+                else
+                {
+                    viewModel.SupervisorComment = null;
+                    viewModel.UserComment = null;
+                }
+
+                return View(viewModel);
+            }
+
         }
 
     }

@@ -1,83 +1,143 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@*@model List<STEP_PORTAL.Models.EmployeeInfo>*@
+@model EmployeeSessionViewModelClass
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comments and Proposal Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        .container {
-            width: 60%;
-            margin: auto;
-            border: 1px solid #000;
-            padding: 20px;
-        }
-
-        .header {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .sub-header {
-            color: red;
-            margin-bottom: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 10px;
-        }
-
-            .form-group label {
-                display: block;
-                margin-bottom: 5px;
-            }
-
-            .form-group input[type="text"] {
-                width: 100%;
-                padding: 5px;
-                box-sizing: border-box;
-            }
-
-        .sign-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-            .sign-section div {
-                width: 45%;
-            }
-    </style>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
-<body>
-    @using (Html.BeginForm("CorpHR", "HR", FormMethod.Post))
-    {
-        @Html.Hidden("regId", null, new { id = "viewregIDField" })
-        <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <div class="container">
-                <div class="header">
-                    FINAL RECOMMENDATIONS
-                </div>
-                <div class="sub-header">
-                    Corporate HR & Admin
-                </div>
-                <br />
-                    <label for="promote" style="font-weight: bold; color: #333;">1. Promote as</label><br>
-                    <input type="text" id="promote" name="promote" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-                    <br>
-                    <label for="increment" style="font-weight: bold; color: #333;">2. Proceed with annual increment of BDT</label><br>
-                    <input type="number" id="increment" name="increment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-                    <br>
-                    <label for="effdate" style="font-weight: bold; color: #333;">3. Effective Date</label><br>
-                    <input type="date" id="effdate" name="effdate" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            </div>
-            <input type="submit" class="btn btn-primary" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
-            </div>
-            }
-    </body>
-</html>
 
+@using (Html.BeginForm("CorpHR", "HR", FormMethod.Post, new { id = "employeeForm", target = "_blank" }))
+{
+    @Html.Hidden("regID", null, new { id = "regIDField" })
+}
+
+@using (Html.BeginForm("ViewMarks", "ReportSuper", FormMethod.Post, new { id = "viewMarksForm" }))
+{
+    @Html.Hidden("regID", null, new { id = "viewregIDField" })
+}
+
+<h3 style="text-align:center;">Corporate HR Dashboard</h3>
+
+@using (Html.BeginForm("CorpHR", "HR", FormMethod.Post, new { id = "viewEmpListForm" }))
+{
+    <div class="dropdown-container">
+        <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
+        <br />
+        <select id="taxPeriodDropdownMV" class="form-control custom-select">
+            <option value="" @(ViewBag.SelectedTaxPeriod == null ? "selected" : "")>Choose a Session</option>
+            @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
+            {
+                <option value="@taxPeriod.TaxPerID">@taxPeriod.TaxPeriod</option>
+            }
+        </select>
+        <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" value="@ViewBag.SelectedTaxPeriod" />
+    </div>
+
+    <div class="form-group">
+        @Html.DropDownList("companyId", ViewBag.Companies as SelectList, "Select an unit", new { @class = "form-control" })
+        @Html.ValidationMessage("companyId", "", new { @class = "text-danger" })
+        @Html.DropDownList("DepartmentDropdown", new SelectList(ViewBag.Departments, "DepartmentName", "DepartmentName"), "Select Department", new { @class = "form-control" })
+        @Html.DropDownList("SectionDropdown", Enumerable.Empty<SelectListItem>(), "Select Section", new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="submitButton">Search</button>
+}
+
+
+<br />
+<br />
+<div class="user-info-container">
+    @if (Model != null && Model.Employees.Count > 0)
+    {
+        <table class="user-info-table">
+            <thead>
+                <tr>
+                    <th style="width: 100% ">Department</th>
+                    <th>Section</th>
+                    <th>Designation</th>
+                    <th style="width:100%">Name</th>
+                    <th>Employee Code</th>
+                    <th>Status</th>
+                    <th>View Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model.Employees)
+                {
+                    <tr>
+                        <td>@employee.Department</td>
+                        <td>@employee.Section</td>
+                        <td>@employee.Designation</td>
+                        <td>@employee.Name</td>
+                        <td>@employee.EmployeeCode</td>
+                        <td>@employee.EmpStatus</td>
+                        <td><a target="_blank" href="../HR/FinalRecommendation?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <p>No employees found</p>
+    }
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        var session_id = $('#selectedTaxPeriod').val();
+        $('#taxPeriodDropdownMV').val(session_id);
+        });
+
+
+    function setRegId(regID) {
+        document.getElementById("viewregIDField").value = regID;
+        document.getElementById("viewMarksForm").submit();
+    }
+
+    // store session value
+
+    var dropdown = document.getElementById("taxPeriodDropdownMV");
+    var companyDropdown = document.querySelector("select[name='companyId']");
+    var submitButton = document.getElementById("submitButton");
+
+    dropdown.addEventListener("change", enableSubmitButton);
+    companyDropdown.addEventListener("change", enableSubmitButton);
+
+    function enableSubmitButton() {
+        var selectedSession = dropdown.value;
+        var selectedCompany = companyDropdown.value;
+
+        if (selectedSession && selectedCompany) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
+
+
+    $('#DepartmentDropdown').change(function () {
+        var selectedDepartment = $(this).val();
+        //alert(selectedDepartment);
+        var departments = @Html.Raw(Json.Encode(ViewBag.Departments));
+        var selectedDepartmentData = departments.find(d => d.DepartmentName === selectedDepartment);
+        //console.log(selectedDepartmentData);
+        var currentlySelectedSection = $('#SectionDropdown').val();
+        console.log(currentlySelectedSection);
+
+        $('#SectionDropdown').empty();
+
+        if (selectedDepartmentData && selectedDepartmentData.Sections) {
+            $.each(selectedDepartmentData.Sections, function (index, section) {
+                $('#SectionDropdown').append($('<option>').text(section).attr('value', section));
+                if (section === currentlySelectedSection) {
+                    option.attr('selected', 'selected');
+                }
+                $('#SectionDropdown').append(option);
+            });
+        }
+    });
+</script>

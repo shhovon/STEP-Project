@@ -10,15 +10,14 @@
 namespace STEP_DEMO.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class tblMenu
+    public partial class prc_GetDesignations_Result
     {
         public int ID { get; set; }
-        public string Main_Menu_Id { get; set; }
-        public string Menu_Name { get; set; }
-        public string Menu_URL { get; set; }
-        public string Menu_Icon { get; set; }
-        public Nullable<bool> YsnActive { get; set; }
+        public byte ComID { get; set; }
+        public string Designation { get; set; }
+        public string Category { get; set; }
+        public byte Status { get; set; }
+        public string wstatus { get; set; }
     }
 }

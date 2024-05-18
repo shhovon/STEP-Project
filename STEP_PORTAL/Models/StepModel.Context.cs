@@ -7,15 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace STEP_PORTAL.Models
+namespace STEP_DEMO.Models
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    using STEP_DEMO.Models;
-
+    
     public partial class DB_STEPEntities : DbContext
     {
         public DB_STEPEntities()
@@ -42,6 +41,7 @@ namespace STEP_PORTAL.Models
         public virtual DbSet<New_Tax_Period> New_Tax_Period { get; set; }
         public virtual DbSet<tblMenu> tblMenus { get; set; }
         public virtual DbSet<View_StepDetails> View_StepDetails { get; set; }
+        public virtual DbSet<tblUserRole> tblUserRoles { get; set; }
     
         public virtual ObjectResult<prc_EmployeeInfoByEmpCode_Result> prc_EmployeeInfoByEmpCode(Nullable<int> compID, string empCode)
         {
@@ -177,6 +177,165 @@ namespace STEP_PORTAL.Models
                 new ObjectParameter("RegId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_UserMenu_Result>("prc_UserMenu", regIdParameter);
+        }
+    
+        [DbFunction("DB_STEPEntities", "fnSplitString")]
+        public virtual IQueryable<string> fnSplitString(string @string, string delimiter)
+        {
+            var stringParameter = @string != null ?
+                new ObjectParameter("string", @string) :
+                new ObjectParameter("string", typeof(string));
+    
+            var delimiterParameter = delimiter != null ?
+                new ObjectParameter("delimiter", delimiter) :
+                new ObjectParameter("delimiter", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<string>("[DB_STEPEntities].[fnSplitString](@string, @delimiter)", stringParameter, delimiterParameter);
+        }
+    
+        public virtual ObjectResult<prc_GetDeptAndSec_Result> prc_GetDeptAndSec(Nullable<int> companyId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetDeptAndSec_Result>("prc_GetDeptAndSec", companyIdParameter);
+        }
+    
+        public virtual ObjectResult<prc_GetDesignations_Result> prc_GetDesignations()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetDesignations_Result>("prc_GetDesignations");
+        }
+    
+        public virtual ObjectResult<prc_GetEmployeeByHR_Result> prc_GetEmployeeByHR(Nullable<int> regID, Nullable<int> compID)
+        {
+            var regIDParameter = regID.HasValue ?
+                new ObjectParameter("RegID", regID) :
+                new ObjectParameter("RegID", typeof(int));
+    
+            var compIDParameter = compID.HasValue ?
+                new ObjectParameter("CompID", compID) :
+                new ObjectParameter("CompID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetEmployeeByHR_Result>("prc_GetEmployeeByHR", regIDParameter, compIDParameter);
+        }
+    
+        public virtual ObjectResult<prc_GetHODTeamMember_Result> prc_GetHODTeamMember(Nullable<int> regID, Nullable<int> compID, Nullable<int> sESSION_ID)
+        {
+            var regIDParameter = regID.HasValue ?
+                new ObjectParameter("RegID", regID) :
+                new ObjectParameter("RegID", typeof(int));
+    
+            var compIDParameter = compID.HasValue ?
+                new ObjectParameter("CompID", compID) :
+                new ObjectParameter("CompID", typeof(int));
+    
+            var sESSION_IDParameter = sESSION_ID.HasValue ?
+                new ObjectParameter("SESSION_ID", sESSION_ID) :
+                new ObjectParameter("SESSION_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetHODTeamMember_Result>("prc_GetHODTeamMember", regIDParameter, compIDParameter, sESSION_IDParameter);
+        }
+    
+        public virtual ObjectResult<prc_GetKraKpiData_Result> prc_GetKraKpiData(Nullable<int> regID, Nullable<int> selectedTaxPeriod)
+        {
+            var regIDParameter = regID.HasValue ?
+                new ObjectParameter("RegID", regID) :
+                new ObjectParameter("RegID", typeof(int));
+    
+            var selectedTaxPeriodParameter = selectedTaxPeriod.HasValue ?
+                new ObjectParameter("SelectedTaxPeriod", selectedTaxPeriod) :
+                new ObjectParameter("SelectedTaxPeriod", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKraKpiData_Result>("prc_GetKraKpiData", regIDParameter, selectedTaxPeriodParameter);
+        }
+    
+        public virtual ObjectResult<prc_GetkrakpiID_Result> prc_GetkrakpiID(Nullable<int> regId, string selectedKRA, string selectedKPI)
+        {
+            var regIdParameter = regId.HasValue ?
+                new ObjectParameter("regId", regId) :
+                new ObjectParameter("regId", typeof(int));
+    
+            var selectedKRAParameter = selectedKRA != null ?
+                new ObjectParameter("selectedKRA", selectedKRA) :
+                new ObjectParameter("selectedKRA", typeof(string));
+    
+            var selectedKPIParameter = selectedKPI != null ?
+                new ObjectParameter("selectedKPI", selectedKPI) :
+                new ObjectParameter("selectedKPI", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetkrakpiID_Result>("prc_GetkrakpiID", regIdParameter, selectedKRAParameter, selectedKPIParameter);
+        }
+    
+        public virtual ObjectResult<prc_SearchEmployeeByHR_Result> prc_SearchEmployeeByHR(Nullable<int> regID, Nullable<int> compID, string departmentName, string sectionName, Nullable<int> sESSION_ID)
+        {
+            var regIDParameter = regID.HasValue ?
+                new ObjectParameter("RegID", regID) :
+                new ObjectParameter("RegID", typeof(int));
+    
+            var compIDParameter = compID.HasValue ?
+                new ObjectParameter("CompID", compID) :
+                new ObjectParameter("CompID", typeof(int));
+    
+            var departmentNameParameter = departmentName != null ?
+                new ObjectParameter("DepartmentName", departmentName) :
+                new ObjectParameter("DepartmentName", typeof(string));
+    
+            var sectionNameParameter = sectionName != null ?
+                new ObjectParameter("SectionName", sectionName) :
+                new ObjectParameter("SectionName", typeof(string));
+    
+            var sESSION_IDParameter = sESSION_ID.HasValue ?
+                new ObjectParameter("SESSION_ID", sESSION_ID) :
+                new ObjectParameter("SESSION_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_SearchEmployeeByHR_Result>("prc_SearchEmployeeByHR", regIDParameter, compIDParameter, departmentNameParameter, sectionNameParameter, sESSION_IDParameter);
+        }
+    
+        public virtual int prc_UpdateRating(Nullable<int> regId, Nullable<int> sESSION_ID)
+        {
+            var regIdParameter = regId.HasValue ?
+                new ObjectParameter("RegId", regId) :
+                new ObjectParameter("RegId", typeof(int));
+    
+            var sESSION_IDParameter = sESSION_ID.HasValue ?
+                new ObjectParameter("SESSION_ID", sESSION_ID) :
+                new ObjectParameter("SESSION_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prc_UpdateRating", regIdParameter, sESSION_IDParameter);
+        }
+    
+        public virtual int prc_UpdateStatus(Nullable<int> regId, Nullable<int> sESSION_ID, string statusType, string statusValue, string statusMessage, Nullable<System.DateTime> updated_date, string updated_by)
+        {
+            var regIdParameter = regId.HasValue ?
+                new ObjectParameter("RegId", regId) :
+                new ObjectParameter("RegId", typeof(int));
+    
+            var sESSION_IDParameter = sESSION_ID.HasValue ?
+                new ObjectParameter("SESSION_ID", sESSION_ID) :
+                new ObjectParameter("SESSION_ID", typeof(int));
+    
+            var statusTypeParameter = statusType != null ?
+                new ObjectParameter("StatusType", statusType) :
+                new ObjectParameter("StatusType", typeof(string));
+    
+            var statusValueParameter = statusValue != null ?
+                new ObjectParameter("StatusValue", statusValue) :
+                new ObjectParameter("StatusValue", typeof(string));
+    
+            var statusMessageParameter = statusMessage != null ?
+                new ObjectParameter("StatusMessage", statusMessage) :
+                new ObjectParameter("StatusMessage", typeof(string));
+    
+            var updated_dateParameter = updated_date.HasValue ?
+                new ObjectParameter("Updated_date", updated_date) :
+                new ObjectParameter("Updated_date", typeof(System.DateTime));
+    
+            var updated_byParameter = updated_by != null ?
+                new ObjectParameter("Updated_by", updated_by) :
+                new ObjectParameter("Updated_by", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prc_UpdateStatus", regIdParameter, sESSION_IDParameter, statusTypeParameter, statusValueParameter, statusMessageParameter, updated_dateParameter, updated_byParameter);
         }
     }
 }

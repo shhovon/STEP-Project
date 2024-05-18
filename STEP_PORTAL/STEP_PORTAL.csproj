@@ -195,7 +195,19 @@
     <Compile Include="Models\prc_EmployeeInfoByRegID_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\prc_GetDeptAndSec_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetDesignations_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetEmployeeByHR_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\prc_GetEmployeeListByDeptHead_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetHODTeamMember_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_GetKPIOutcomeByRegIdOrSectionName_Result.cs">
@@ -204,10 +216,19 @@
     <Compile Include="Models\prc_GetKraKpiByRegIdOrSectionName_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\prc_GetKraKpiData_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetkrakpiID_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\prc_GetKraKpiOutcomeData_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_GetTeamMember_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_SearchEmployeeByHR_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_UserMenu_Result.cs">
@@ -253,6 +274,9 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblUserLogHistory.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblUserRole.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblUser_LogInfo.cs">
@@ -2092,7 +2116,6 @@
     <Content Include="Views\Home\Outcome.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
-    <Content Include="Views\Home\OutcomeNew.cshtml" />
     <Content Include="Views\Shared\_NewLayout.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\DeptHead\ViewEmpList.cshtml" />
@@ -2111,6 +2134,7 @@
     <Content Include="Views\DeptHead\ViewEmpListHOD.cshtml" />
     <Content Include="Views\DeptHead\ViewEmpMarks.cshtml" />
     <Content Include="Views\HR\CorpHR.cshtml" />
+    <Content Include="Views\HR\FinalRecommendation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

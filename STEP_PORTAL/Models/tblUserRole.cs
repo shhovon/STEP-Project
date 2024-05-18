@@ -12,13 +12,16 @@ namespace STEP_DEMO.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tblMenu
+    public partial class tblUserRole
     {
         public int ID { get; set; }
-        public string Main_Menu_Id { get; set; }
-        public string Menu_Name { get; set; }
-        public string Menu_URL { get; set; }
-        public string Menu_Icon { get; set; }
-        public Nullable<bool> YsnActive { get; set; }
+        public Nullable<int> RegId { get; set; }
+        public Nullable<int> Role { get; set; }
+        public string ComIDs { get; set; }
+        public Nullable<bool> YSNActive { get; set; }
+        public Nullable<System.DateTime> Created_date { get; set; }
+        public string Created_By { get; set; }
+        public Nullable<System.DateTime> Updated_date { get; set; }
+        public string Updated_by { get; set; }
     }
 }

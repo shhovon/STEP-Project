@@ -36,6 +36,46 @@
             display: inline-block;
             margin-left: 66px;
         }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            border: 1px solid #000;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .recommendations h2 {
+            color: red;
+            margin: 0;
+            margin-bottom: 10px;
+        }
+
+        .recommendations p {
+            margin: 10px 0;
+        }
+
+        .recommendations input {
+            border: none;
+            width: 150px;
+        }
+
+        .recommendations .amount {
+            width: 100px;
+        }
+
+        .recommendations .effective-date {
+            width: 120px;
+        }
     </style>
 
     <br />
@@ -219,47 +259,26 @@
             </tr>
         </table>
     </div>
-    <br /><br />
-
-    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
-        <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.SupervisorComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-        <br>
-    </div>
     <br />
-
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <label for="comment" style="font-weight: bold; color: #333;">User's Comment:</label><br>
-        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.UserComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <p style="color:Highlight;"><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
+        <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
+        <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            @foreach (var designation in Model.Designations)
+            {
+                <option value="@designation.Designation">@designation.Designation</option>
+            }
+        </select>
         <br>
+        <label for="comment" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
+        <input type="number" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br>
+        <label for="comment" style="font-weight: bold; color: #333;">Effective date:</label><br>
+        <input type="date" id="date" name="date" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br>
+        <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
     </div>
-    <br />
 
-    @using (Html.BeginForm("SaveHODComment", "ReportSuper", FormMethod.Post))
-    {
-        @Html.Hidden("regId", null, new { id = "viewregIDField" })
-
-        @* @Html.HiddenFor(m => m[0].REG_ID)*@
-
-        <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <label for="comment" style="font-weight: bold; color: #333;">HOD Comment:</label><br>
-            <input type="text" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            <br>
-            <p style="color:Highlight;"><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
-            <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
-            <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-                @foreach (var designation in Model.Designations)
-                {
-                    <option value="@designation.Designation">@designation.Designation</option>
-                }
-            </select>
-            <br>
-            <label for="comment" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
-            <input type="number" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            <br>
-            <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
-        </div>
-    }
 
 </body>
 

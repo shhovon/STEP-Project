@@ -11,10 +11,10 @@ namespace STEP_DEMO.Models
 {
     using System;
     
-    public partial class prc_GetTeamMember_Result
+    public partial class prc_GetHODTeamMember_Result
     {
-        public int RegId { get; set; }
-        public int ComID { get; set; }
+        public Nullable<int> RegId { get; set; }
+        public Nullable<int> ComID { get; set; }
         public string EmployeeCode { get; set; }
         public string Name { get; set; }
         public string FathersName { get; set; }
@@ -31,5 +31,7 @@ namespace STEP_DEMO.Models
         public string Designation { get; set; }
         public string DesigAddi { get; set; }
         public string WStatus { get; set; }
+        public string EmpStatus { get; set; }
+        public string StatusValue { get; set; }
     }
 }
