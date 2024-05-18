@@ -158,6 +158,7 @@ namespace STEP_PORTAL.Controllers
         public ActionResult UpdateMarks(List<KraKpiOutcomeModel> model)
         {
             int regId = Convert.ToInt32(Request.Form["regId"]);
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
             if (model != null)
             {
                 using (DB_STEPEntities db = new DB_STEPEntities())
@@ -171,7 +172,19 @@ namespace STEP_PORTAL.Controllers
                             db.Entry(outcomeEntity).State = EntityState.Modified;
                         }
                     }
+
                     db.SaveChanges();
+/*                    var rating = db.Database.SqlQuery<UpdateRatingModel>("prc_UpdateRating @RegId, @SESSION_ID",
+                                   new SqlParameter("@RegId", regId),
+                                   new SqlParameter("@SESSION_ID", sessionID)).ToList();*/
+
+                    db.Database.ExecuteSqlCommand(
+                        "EXEC [dbo].[prc_UpdateRating] @RegId, @SESSION_ID",
+                        new SqlParameter("@RegId", regId),
+                        new SqlParameter("@SESSION_ID", sessionID)
+                    );
+
+                    //transaction.Commit();
 
                 }
             }

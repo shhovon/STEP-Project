@@ -261,6 +261,7 @@
     <Compile Include="Models\tbl_StepMaster.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UpdateRatingModel.cs" />
     <Compile Include="Models\User_RegistrationInfo.cs" />
     <Compile Include="Models\EmployeeInfo.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
