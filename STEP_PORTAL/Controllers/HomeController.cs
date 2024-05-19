@@ -207,13 +207,17 @@ namespace STEP_PORTAL.Controllers
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 int regId;
+                int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
 
                         // Get KRA and KPI data for the logged user
                         var kraKpiData = (from kra in db.KRAs
                                           join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
-                                          where kra.RegId == regId && !string.IsNullOrEmpty(kra.KRA1) && !string.IsNullOrEmpty(kpi.KPI1)
+                                          where kra.RegId == regId
+                                          && kra.SessionId == sessionID
+                                          && !string.IsNullOrEmpty(kra.KRA1) 
+                                          && !string.IsNullOrEmpty(kpi.KPI1)                            
                                           orderby kra.KRA_ID ascending, kpi.KPI_ID ascending
                                           select new { KRA = kra.KRA1, KPI = kpi.KPI1, KRA_ID = kra.KRA_ID }).ToList();
 
