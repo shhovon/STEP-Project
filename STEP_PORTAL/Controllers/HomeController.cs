@@ -109,6 +109,99 @@ namespace STEP_PORTAL.Controllers
         }
 
         [CustomAuthorize]
+        [HttpPost]
+        public ActionResult KraKpiNextYear(KraKpiViewModel model)
+        {
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                int regId;
+                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
+                {
+
+                    var userInfo = db.Database.SqlQuery<EmployeeInfo>(
+                              "prc_EmployeeInfoByRegID @RegID",
+                              new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
+
+
+                    ViewBag.ApprovalSent = Session["ApprovalSent"];
+
+
+                    for (int i = 0; i < model.KRAs.Count; i++)
+                    {
+                        if (!string.IsNullOrEmpty(model.KRAs[i]))
+                        {
+                            KRA kra = new KRA
+                            {
+                                KRA1 = model.KRAs[i],
+                                RegId = regId,
+                                Section_Name = userInfo.Section,
+                                SessionId = 18,
+                                Created_By = regId.ToString(),
+                                Created_date = DateTime.Now,
+                                Updated_date = DateTime.Now,
+                                Updated_by = regId.ToString()
+                            };
+
+                            db.KRAs.Add(kra);
+                            db.SaveChanges();
+
+                            if (model.KPIs != null && model.KPIs.Count > i && model.KPIs[i] != null)
+                            {
+                                foreach (var kpiName in model.KPIs[i])
+                                {
+                                    if (!string.IsNullOrEmpty(kpiName))
+                                    {
+                                        KPI kpi = new KPI
+                                        {
+                                            KPI1 = kpiName,
+                                            KRA_ID = kra.KRA_ID,
+                                            Created_date = DateTime.Now,
+                                            Created_By = regId.ToString(),
+                                            Updated_by = regId.ToString(),
+                                            Updated_date = DateTime.Now
+                                        };
+                                        db.KPIs.Add(kpi);
+                                    }
+                                    db.SaveChanges();
+                                    //TempData["Message"] = "Successfully Saved";
+                                }
+                            }
+                        }
+                    }
+                }
+
+                var kraKpiData = (from kra in db.KRAs
+                                  join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
+                                  orderby kra.KRA_ID descending, kpi.KPI_ID descending
+                                  select new { KRA = kra.KRA1, KPI = kpi.KPI1 }).Take(5).ToList();
+
+                // grouping KPIs by KRA
+                var groupedData = kraKpiData.GroupBy(x => x.KRA)
+                                            .Select(g => new KraKpiViewModel
+                                            {
+                                                KRA = g.Key,
+                                                KPIIs = g.Select(x => x.KPI).ToList()
+                                            })
+                                            .ToList();
+                var lastFiveKRAs = db.KRAs.OrderByDescending(k => k.KRA_ID).Take(5).ToList();
+                ViewBag.KraKpiData = groupedData;
+            }
+
+            return RedirectToAction("KraKpiNextYear", "Home");
+        }
+
+        [CustomAuthorize]
+        public ActionResult KraKpiNextYear()
+        {
+            ViewBag.ApprovalSent = Session["ApprovalSent"];
+            var viewModel = new KraKpiViewModel
+            {
+                KRAs = new List<string>(),
+            };
+            return View(viewModel);
+        }
+
+        [CustomAuthorize]
         public ActionResult Outcome()
         {
             using (DB_STEPEntities db = new DB_STEPEntities())
