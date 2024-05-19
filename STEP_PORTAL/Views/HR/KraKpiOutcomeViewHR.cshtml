@@ -1,274 +1,359 @@
-﻿@model DisplayAllDataViewModel
+﻿@model List<KraKpiOutcomeModel>
 
+@{
+    var firstItem = Model.FirstOrDefault();
+}
+
+@{
+    var marksUpdateModel = new List<MarksUpdateModel>();
+}
 
 <head>
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
-<body>
+<a href="@Url.Action("ViewEmpListHR", "HR")" class="btn btn-primary" style="text-decoration: none;">
+    <span>Search Again</span>
+</a>
+<br />
+<br />
+<br />
 
-
-    @{
-        decimal sumOfAverages = 0;
-        int totalKraCount = Model.GroupedData.Count();
+<style>
+    .tab {
+        display: inline-block;
+        margin-left: 40px;
     }
 
-    <h3>View Employee Marks and Report Supervisor Comment</h3>
-    <br />
-
-    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
-    {
-        <script>alert('@ViewBag.ErrorMessage');</script>
+    .tab2 {
+        display: inline-block;
+        margin-left: 45px;
     }
+</style>
 
-    <style>
-        .tab {
-            display: inline-block;
-            margin-left: 40px;
-        }
 
-        .tab2 {
-            display: inline-block;
-            margin-left: 45px;
-        }
-
-        .tab3 {
-            display: inline-block;
-            margin-left: 66px;
-        }
-    </style>
-
-    <br />
+@if (firstItem != null)
+{
     <div>
-        <p><strong>Employee Code: <span class="tab2"></span> @Session["EmployeeCodeInd"]</strong></p>
-        <p><strong>Employee Name: <span class="tab"></span> @Session["NameInd"]</strong></p>
-        <p><strong>Designation: <span class="tab3"></span>  @Session["DesignationInd"]</strong></p>
+        <p><strong>Employee Code: <span class="tab2"></span> @firstItem.EmployeeCode</strong></p>
+        <p><strong>Employee Name: <span class="tab"></span>  @firstItem.Name</strong></p>
     </div>
-    <br />
+}
+<br />
 
-    @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
-    {
-        <div>
-            <button id="toggleButton" class="btn btn-primary" onclick="toggleTable()">View Marks</button>
-            <div id="tableContainer" style="display: none;">
-                <table class="user-info-table">
-                    <thead>
-                        <tr>
-                            <th>KRA</th>
-                            <th>KPI</th>
-                            <th>Outcome</th>
-                            <th>Performance Marks</th>
-                            <th>Total Average</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.GroupedData)
+@if (Model != null && Model.Count > 0)
+{
+    <div class="table-responsive">
+        @using (Html.BeginForm("UpdateMarks", "ReportSuper", FormMethod.Post))
+        {
+            @Html.Hidden("regId", null, new { id = "viewregIDField" })
+
+            @Html.HiddenFor(m => m[0].REG_ID)
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>KRA</th>
+                        <th>KPI</th>
+                        <th>Outcome</th>
+                        <th>Performance Marks</th>
+                        <th>Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count;)
+                    {
+                        var kra = Model[i].KRA;
+                        var kraCount = Model.Count(m => m.KRA == kra);
+                        for (int j = 0; j < kraCount; j++)
                         {
-                            var kpiCount = item.KPIIs.Count;
-                            for (var i = 0; i < kpiCount; i++)
+                            var marksModel = new MarksUpdateModel
                             {
-                                var kpi = item.KPIIs[i];
-                                var outcomeItem = Model.KraKpiOutcomeData.FirstOrDefault(m => m.KRA == item.KRA && m.KPI == kpi);
-                                string outcome = outcomeItem != null ? outcomeItem.Outcome : null;
-                                var mark = outcomeItem != null ? outcomeItem.Marks_Achieved : 0;
+                                Outcome = Model[i].Outcome,
+                                Marks = 0
+                            };
+                            marksUpdateModel.Add(marksModel);
 
-                                <tr>
-                                    @if (i == 0)
-                                    {
-                                        <td rowspan=@kpiCount>@item.KRA</td>
-                                    }
-                                    <td>@kpi</td>
-                                    <td>@outcome</td>
-                                    <td style="text-align:center">@mark</td>
-                                    @if (i == 0)
-                                    {
-                                        <td rowspan=@kpiCount style="text-align:center">
-                                            @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
-                                            @{
-                                                decimal MarskAverage = Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count;
-                                                if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null && Model.KraKpiOutcomeData[0].KPI_AVG.HasValue)
-                                                {
-                                                    sumOfAverages = Model.KraKpiOutcomeData[0].KPI_AVG.Value;
-                                                }
-                                            }
-                                        </td>
-                                    }
-                                </tr>
-                            }
-                        }
-                        <tr>
-                            <td colspan="4" style="text-align: center; background-color: Highlight; color: white;">
-                                <strong>
-                                    Average Cumulative Score of KRA’s / @totalKraCount
-                                </strong>
-                            </td>
-                            <td style="text-align: center; background-color: Highlight; color: white;"><strong>@sumOfAverages</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    }
-    else
-    {
-        <div class="alert alert-danger" role="alert">
-            <i class="fas fa-info-circle"></i>No marks data available
-        </div>
-    }
+                            <tr>
+                                @if (j == 0)
+                                {
+                                    <td rowspan="@kraCount">@Model[i].KRA</td>
+                                }
+                                <td>@Model[i].KPI</td>
+                                <td>@Model[i].Outcome</td>
+                                <td>
+                                    <select name="@("marksUpdateModel[" + (marksUpdateModel.Count - 1) + "].Marks")" class="marks-select" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome">
+                                        @if (@Model[i].Marks_Achieved == 0)
+                                        {
+                                            <option value="0" selected>0</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="0">0</option>
+                                        }
 
-    <br /><br />
-    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <table border="1">
-            <tr>
-                <td colspan="5" align="center" style="color:Highlight;">
-                    <h5>
-                        1.2 Performance Assessment:
-                        @{
-                            decimal? totalAvg = null;
-                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null && Model.KraKpiOutcomeData[0].KPI_AVG.HasValue)
-                            {
-                                sumOfAverages = Model.KraKpiOutcomeData[0].KPI_AVG.Value;
-                            }
-                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0)
-                            {
-                                totalAvg = (Model.KraKpiOutcomeData[0].Attendance + Model.KraKpiOutcomeData[0].Discipline) / 2;
-                            }
 
-                        }
-                        <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
-                               value="@totalAvg"
-                               class="tab" disabled type="text">
-                    </h5>
-                </td>
+                                        @if (@Model[i].Marks_Achieved == 1)
+                                        {
+                                            <option value="1" selected>1</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="1">1</option>
+                                        }
 
-            </tr>
-            <tr>
-                <td>
-                    @{
-                        decimal? attendance = null;
-                        if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0)
-                        {
-                            attendance = (int)Model.KraKpiOutcomeData[0].Attendance;
+                                        @if (@Model[i].Marks_Achieved == 2)
+                                        {
+                                            <option value="2" selected>2</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="2">2</option>
+                                        }
+
+                                        @if (@Model[i].Marks_Achieved == 3)
+                                        {
+                                            <option value="3" selected>3</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="3">3</option>
+                                        }
+
+                                        @if (@Model[i].Marks_Achieved == 4)
+                                        {
+                                            <option value="4" selected>4</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="4">4</option>
+                                        }
+
+                                        @if (@Model[i].Marks_Achieved == 5)
+                                        {
+                                            <option value="5" selected>5</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="5">5</option>
+                                        }
+
+                                    </select>
+                                    <input type="hidden" name="@("marksUpdateModel[" + i + "].Outcome")" value="@Model[i].Outcome" />
+                                </td>
+                                @if (j == 0)
+                                {
+                                    <td rowspan="@kraCount">
+                                        <input type="text" class="average-input" value="@Model[i].AVG_Marks_Achieved" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome" readonly />
+                                    </td>
+                                }
+                            </tr>
+                            i++;
                         }
                     }
-                    <h6>
-                        1.	Attendance: <input style="text-align:center; width:30px;"
-                                                value="@attendance"
-                                                class="tab" disabled type="text">
-                    </h6>
-                </td>
-                <td>
-                    @{
-                        decimal? discipline = null;
-                        if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0)
-                        {
-                            discipline = (int)Model.KraKpiOutcomeData[0].Discipline;
-                        }
-                    }
-                    <h6>
-                        2.	Discipline: <input style="text-align:center; width:30px;"
-                                                value="@discipline"
-                                                class="tab" disabled type="text">
-                    </h6>
-                </td>
-            </tr>
-        </table>
+                </tbody>
+            </table>
+            <input type="submit" value="Update Marks" />
+        }
     </div>
-    <br />
-    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <table border="1">
-            <tr>
-                <td colspan="5" align="center" style="color:Highlight;">
-                    <h5>
-                        1.5 Overall Performance Rating Achieved:
-                        @{
-                            decimal? ratingAvg = null;
-                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null && Model.KraKpiOutcomeData[0].KPI_AVG.HasValue)
-                            {
-                                ratingAvg = (int)Model.KraKpiOutcomeData[0].Rating_Achieved;
-                            }
-                        }
-                        <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
-                               value="@ratingAvg"
-                               class="tab" disabled type="text">
-                    </h5>
-                </td>
-
-            </tr>
-            <tr>
-                <td style="text-align: left; vertical-align: top;">
-                    <h6 style="margin-top: 0;">5 - OUTSTANDING</h6>
-                    <p>Exceeded performance in all agreed upon objectives /KRAs and have gone far beyond what is expected.</p>
-                </td>
-                <td style="text-align: left; vertical-align: top;">
-                    <h6 style="margin-top: 0;">4 - ABOVE TARGET</h6>
-                    <p>Consistently accomplished objectives/KRAs and also have delivered results that exceeded some targets.</p>
-                </td>
-                <td style="text-align: left; vertical-align: top;">
-                    <h6 style="margin-top: 0;">3 - ON TARGET</h6>
-                    <p>Achieved all objectives /KRAs or has exceeded target in some critical KRAs with one less critical area under achieved.</p>
-                </td>
-                <td style="text-align: left; vertical-align: top;">
-                    <h6 style="margin-top: 0;">2 - NEARLY THERE</h6>
-                    <p>Achieved most of the objectives/KRAs but not all.</p>
-                </td>
-                <td style="text-align: left; vertical-align: top;">
-                    <h6 style="margin-top: 0;">1 - UNDER PERFORMING</h6>
-                    <p>Could not achieve a number of agreed objectives/KRAs.</p>
-                </td>
-            </tr>
-        </table>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        No data found!
     </div>
-    <br /><br />
+}
 
-    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
-        <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.SupervisorComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-        <br>
-    </div>
-    <br />
+<br />
+<br />
 
-    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <label for="comment" style="font-weight: bold; color: #333;">User's Comment:</label><br>
-        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.UserComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-        <br>
-    </div>
-    <br />
-
-    @using (Html.BeginForm("SaveHODComment", "ReportSuper", FormMethod.Post))
-    {
-        @Html.Hidden("regId", null, new { id = "viewregIDField" })
-
-        @* @Html.HiddenFor(m => m[0].REG_ID)*@
-
-        <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <label for="comment" style="font-weight: bold; color: #333;">HOD Comment:</label><br>
-            <input type="text" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            <br>
-            <p style="color:Highlight;"><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
-            <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
-            <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-                @foreach (var designation in Model.Designations)
+<table border="1" style="width: 120%; border-collapse: collapse;">
+    <tr>
+        <td style="width: 20%; padding: 10px; font-weight: bold; vertical-align: middle;">1. Attendance</td>
+        <td style="width: 10%; padding: 10px; vertical-align: top;">
+            <form id="attendanceForm" action="@Url.Action("SaveAttendance", "HR")" method="post">
+                @* @Html.Hidden("regId", firstItem.REG_ID)*@
+                @if (firstItem != null)
                 {
-                    <option value="@designation.Designation">@designation.Designation</option>
+                    @Html.Hidden("regId", firstItem.REG_ID)
                 }
-            </select>
-            <br>
-            <label for="comment" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
-            <input type="number" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            <br>
-            <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
-        </div>
-    }
+                else
+                {
+                    @Html.Hidden("regId", null)
+                }
 
-</body>
+                <label for="attendance" style="font-weight: bold; color: #333;"></label><br>
+                <select id="attendance" name="attendance" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+                    @*                                <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>*@
+
+                    @if (firstItem != null)
+                    {
+                        <option value="0" @(firstItem.Attendance != null && Convert.ToInt32(firstItem.Attendance) == 0 ? "selected" : "")>0</option>
+                        <option value="1" @(firstItem.Attendance != null && Convert.ToInt32(firstItem.Attendance) == 1 ? "selected" : "")>1</option>
+                        <option value="2" @(firstItem.Attendance != null && Convert.ToInt32(firstItem.Attendance) == 2 ? "selected" : "")>2</option>
+                        <option value="3" @(firstItem.Attendance != null && Convert.ToInt32(firstItem.Attendance) == 3 ? "selected" : "")>3</option>
+                        <option value="4" @(firstItem.Attendance != null && Convert.ToInt32(firstItem.Attendance) == 4 ? "selected" : "")>4</option>
+                        <option value="5" @(firstItem.Attendance != null && Convert.ToInt32(firstItem.Attendance) == 5 ? "selected" : "")>5</option>
+                    }
+                    else
+                    {
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    }
+
+                </select>
+                <br>
+                <input type="submit" value="Save" style="background-color: #007bff; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer;">
+            </form>
+        </td>
+        <td style="padding: 5px; width: 70%; ">
+            <ul style="list-style-type: none; margin: 0; padding: 0; text-align: left ;padding-left: 10px">
+                <li><strong>5</strong> = No late for work or absence record during the appraisal period.</li>
+                <li><strong>4</strong> = 1 time or less of late work or 1/2 times or less of early leave (1/2 day) during the appraisal period.</li>
+                <li><strong>3</strong> = 2 times or more of late work or 1 time or more of early leave (1/2 day) during the appraisal period.</li>
+                <li><strong>2</strong> = 3 times or more of absence record during the appraisal period or more than 24 times late at work or more than 24 times of early leave (1/2day) during the appraisal period.</li>
+                <li><strong>1</strong> = Habitual late, absence & early leave (As per job card during the appraisal period).</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 10px; font-weight: bold; vertical-align: middle;">2. Discipline</td>
+        <td style="padding: 10px; vertical-align: top;">
+            <form id="disciplineForm" action="@Url.Action("SaveDiscipline", "HR")" method="post">
+                @* @Html.Hidden("regId", firstItem.REG_ID)*@
+                @if (firstItem != null)
+                {
+                    @Html.Hidden("regId", firstItem.REG_ID)
+                }
+                else
+                {
+                    @Html.Hidden("regId", null)
+                }
+                <label for="discipline" style="font-weight: bold; color: #333;"></label><br>
+                <select id="discipline" name="discipline" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+                    @*                    <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>*@
+
+                    @if (firstItem != null)
+                    {
+                        <option value="0" @(firstItem.Discipline != null && Convert.ToInt32(firstItem.Discipline) == 0 ? "selected" : "")>0</option>
+                        <option value="1" @(firstItem.Discipline != null && Convert.ToInt32(firstItem.Discipline) == 1 ? "selected" : "")>1</option>
+                        <option value="2" @(firstItem.Discipline != null && Convert.ToInt32(firstItem.Discipline) == 2 ? "selected" : "")>2</option>
+                        <option value="3" @(firstItem.Discipline != null && Convert.ToInt32(firstItem.Discipline) == 3 ? "selected" : "")>3</option>
+                        <option value="4" @(firstItem.Discipline != null && Convert.ToInt32(firstItem.Discipline) == 4 ? "selected" : "")>4</option>
+                        <option value="5" @(firstItem.Discipline != null && Convert.ToInt32(firstItem.Discipline) == 5 ? "selected" : "")>5</option>
+                    }
+                    else
+                    {
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    }
+                </select>
+                <br>
+                <input type="submit" value="Save" style="background-color: #007bff; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer;">
+            </form>
+        </td>
+        <td style="padding: 10px;text-align:left">
+            <ul style="list-style-type: none; margin: 0; padding-left: 10px;">
+                <li><strong>5</strong> = Follows supervisor/always follow supervisor's all instructions.</li>
+                <li><strong>4</strong> = Verbal warning.</li>
+                <li><strong>3</strong> = Written warning.</li>
+                <li><strong>2</strong> = Written warning with suspension.</li>
+                <li><strong>1</strong> = Termination.</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+
+
+
+
+
+
+
+@*<div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+
+    </div>*@
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 @section scripts {
     <script>
+        $(document).ready(function () {
+            var kraAverages = {};
+            $(".marks-select").on("change", function () {
+                var kra = $(this).data("kra");
+                var outcome = $(this).data("outcome");
+                var selectedValue = parseInt($(this).val());
+
+                console.log("KRA:", kra);
+                console.log("Outcome:", outcome);
+                console.log("Selected Value:", selectedValue);
+
+                calculateAverage(kra);
+            });
+
+            function calculateAverage(kra) {
+                var totalMarks = 0;
+                var rowCount = 0;
+
+                $(".marks-select[data-kra='" + kra + "']").each(function () {
+                    var marks = parseInt($(this).val());
+                    if (!isNaN(marks)) {
+                        totalMarks += marks;
+                        rowCount++;
+                    }
+                });
+
+                if (rowCount > 0) {
+                    var average = totalMarks / rowCount;
+                    console.log("Average for KRA " + kra + ": " + average.toFixed(2));
+
+                    kraAverages[kra] = average;
+
+                    $(".average-input[data-kra='" + kra + "']").val(average.toFixed(2));
+                }
+            }
+@*
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage) {
+            alert(successMessage);
+        }
+        });*@
+
+        $(document).ready(function () {
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage) {
+            alert(successMessage);
+        }
+    });
+
+        // filter data function
         $(function () {
             $('#taxPeriodDropdownMV').change(function () {
                 var selectedSession = $(this).val();
-                console.log(selectedSession);
 
                 $.ajax({
                     url: '@Url.Action("GetFilteredMarksData", "Home")',
@@ -276,8 +361,6 @@
                     data: { selectedSession: selectedSession },
                     success: function (response) {
                         $('tbody').empty();
-                        var totalMarks = 0;
-                        var count = 0;
 
                         response.forEach(function (item) {
                             var newRow = '<tr>' +
@@ -286,16 +369,14 @@
                                 '<td></td>' +
                                 '</tr>';
 
-                            totalMarks += item.Marks_Achieved;
-                            console.log(totalMarks);
-                            count++;
                             $('tbody').append(newRow);
                         });
 
-                        var average = totalMarks / count;
-                        $('#averageMarks').text(average.toFixed(2));
-                        console.log(average);
-                        $('tfoot td:nth-child(3)').text(average.toFixed(2));
+                        if (response.length > 0) {
+                            $('table thead').show();
+                        } else {
+                            $('table thead').hide();
+                        }
                     },
                     error: function (xhr, status, error) {
                         console.error(error);
@@ -303,57 +384,7 @@
                 });
             });
         });
-
-        $.ajax({
-        url: '@Url.Action("GetReportSuperComment", "ReportSuper")',
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            $('#comment').val(data.SupervisorComment);
-        },
-        error: function() {
-            console.error('Error fetching supervisor comment!');
-        }
-        });
-
-        $(function() {
-            $('form').submit(function(event) {
-                event.preventDefault();
-
-                var formData = $(this).serialize();
-
-                $.ajax({
-                    url: '@Url.Action("SaveHODComment", "DeptHead")',
-                    type: 'POST',
-                    data: formData,
-                    success: function(response) {
-                        if (response.success) {
-                            alert(response.message);
-                        } else {
-                            alert(response.message);
-                        }
-                    },
-                    error: function() {
-                        alert('An error occurred while saving the comment!');
-                    }
-                });
-            });
-        });
-
-        // table toggle
-
-        function toggleTable() {
-            var tableContainer = document.getElementById("tableContainer");
-            var toggleButton = document.getElementById("toggleButton");
-            if (tableContainer.style.display === "none") {
-                tableContainer.style.display = "block";
-                toggleButton.textContent = "Minimize Marks";
-            } else {
-                tableContainer.style.display = "none";
-                toggleButton.textContent = "View Marks";
-            }
-        }
-
     </script>
 }
+
 
