@@ -246,9 +246,14 @@ namespace STEP_PORTAL.Controllers
                                 "prc_EmployeeInfoByRegID @RegID",
                                 new SqlParameter("@RegID", RegId)).FirstOrDefault();
 
+                var userSL = db.Database.SqlQuery<EmployeeInfo>(
+                "prc_GetEmployeeServiceLength @RegID",
+                new SqlParameter("@RegID", RegId)).FirstOrDefault();
+
                 Session["EmployeeCodeInd"] = userInfo.EmployeeCode;
                 Session["NameInd"] = userInfo.Name;
                 Session["DesignationInd"] = userInfo.Designation;
+                Session["ServiceOfLength"] = userSL.Service_Length;
 
                 kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>("prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                new SqlParameter("@RegId", RegId),
@@ -305,7 +310,8 @@ namespace STEP_PORTAL.Controllers
             int updatedBy = (int)Session["RegID"];
             int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
             string statusType = "HOD Comment";
-            string statusMessage = $"{comment},{promotion},{incrementValue}";
+            string updatedComment = comment.Replace(",", " ");
+            string statusMessage = $"{updatedComment},{promotion},{incrementValue}";
             DateTime updatedDate = DateTime.Now;
 
             using (DB_STEPEntities db = new DB_STEPEntities())

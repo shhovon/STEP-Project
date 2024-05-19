@@ -255,6 +255,7 @@
             <input type="text" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
             <br>
             <p style="color:Highlight;"><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
+            <p style="color:Highlight;"><strong>Service of Length:  @Session["ServiceOfLength"]</strong></p>
             <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
             <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
                 @foreach (var designation in Model.Designations)
