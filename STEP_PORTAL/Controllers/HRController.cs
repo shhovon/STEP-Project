@@ -174,6 +174,15 @@ namespace STEP_PORTAL.Controllers
         [CustomAuthorize]
         public ActionResult AddMarksHR(string regId)
         {
+/*            int RegId;
+            try
+            {
+                RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+            }
+            catch (FormatException)
+            {
+                RegId = 0;
+            }*/
             int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
             int deptHeadValue;
 
@@ -381,8 +390,8 @@ namespace STEP_PORTAL.Controllers
             }
             TempData["SuccessMessage"] = "Attendance marks saved successfully!";
 
-            string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
-            return RedirectToAction("AddMarksHR", new { regId = encryptedRegId });
+           // string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+            return RedirectToAction("AddMarksHR", new { regId = regId });
 /*            return RedirectToAction("ViewEmpListHR", "HR");*/
         }
 
@@ -422,8 +431,8 @@ namespace STEP_PORTAL.Controllers
             TempData["SuccessMessage"] = "Discipline marks saved successfully!";
 
             /* return RedirectToAction("ViewEmpListHR", "HR");*/
-            string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
-            return RedirectToAction("AddMarksHR", new { regId = encryptedRegId });
+            //string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+            return RedirectToAction("AddMarksHR", new { regId = regId });
         }
 
         [CustomAuthorize]
@@ -466,7 +475,10 @@ namespace STEP_PORTAL.Controllers
                 TopTaxPeriods = topTaxPeriods
             };
 
-            ViewBag.SuccessMessage = TempData["SuccessMessage"];
+            if (TempData["SuccessMessage"] != null)
+            {
+                ViewBag.SuccessMessage = TempData["SuccessMessage"].ToString();
+            }
 
             return View(model);
         }

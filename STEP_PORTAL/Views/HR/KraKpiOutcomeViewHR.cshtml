@@ -5,7 +5,7 @@
 }
 
 @{
-    var marksUpdateModel = new List<MarksUpdateModel>();
+    var marksUpdateModel = new List<KraKpiOutcomeModel>();
 }
 
 <head>
@@ -44,11 +44,13 @@
 @if (Model != null && Model.Count > 0)
 {
     <div class="table-responsive">
-        @using (Html.BeginForm("UpdateMarks", "ReportSuper", FormMethod.Post))
-        {
-            @Html.Hidden("regId", null, new { id = "viewregIDField" })
 
-            @Html.HiddenFor(m => m[0].REG_ID)
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
@@ -66,7 +68,7 @@
                         var kraCount = Model.Count(m => m.KRA == kra);
                         for (int j = 0; j < kraCount; j++)
                         {
-                            var marksModel = new MarksUpdateModel
+                            var marksModel = new KraKpiOutcomeModel
                             {
                                 Outcome = Model[i].Outcome,
                                 Marks = 0
@@ -81,7 +83,8 @@
                                 <td>@Model[i].KPI</td>
                                 <td>@Model[i].Outcome</td>
                                 <td>
-                                    <select name="@("marksUpdateModel[" + (marksUpdateModel.Count - 1) + "].Marks")" class="marks-select" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome">
+                                    @* <select name="@("marksUpdateModel[" + (marksUpdateModel.Count - 1) + "].Marks")" class="marks-select" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome">*@
+                                    <select name="@("model[" + i + "].SelectedMarks")" class="marks-select" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome">
                                         @if (@Model[i].Marks_Achieved == 0)
                                         {
                                             <option value="0" selected>0</option>
@@ -142,7 +145,9 @@
                                         }
 
                                     </select>
-                                    <input type="hidden" name="@("marksUpdateModel[" + i + "].Outcome")" value="@Model[i].Outcome" />
+                                    @* <input type="hidden" name="@("marksUpdateModel[" + i + "].Outcome")" value="@Model[i].Outcome" />*@
+                                    <input type="hidden" name="@("model[" + i + "].Outcome")" value="@Model[i].Outcome" />
+                                    <input type="hidden" name="@("model[" + i + "].KPI_ID")" value="@Model[i].KPI_ID" />
                                 </td>
                                 @if (j == 0)
                                 {
@@ -154,9 +159,13 @@
                             i++;
                         }
                     }
+                    @*                    <tr>
+                            <td colspan="4" style="text-align:center"><strong>Total Average:</strong></td>
+                            <td style="text-align:center"><strong>@(sumOfAverages)</strong></td>
+                        </tr>*@
                 </tbody>
             </table>
-            <input type="submit" value="Update Marks" />
+            <input type="submit" value="Save Marks" />
         }
     </div>
 }
@@ -336,19 +345,13 @@ else
                     $(".average-input[data-kra='" + kra + "']").val(average.toFixed(2));
                 }
             }
-@*
-        var successMessage = '@TempData["SuccessMessage"]';
-        if (successMessage) {
-            alert(successMessage);
-        }
-        });*@
 
-        $(document).ready(function () {
         var successMessage = '@TempData["SuccessMessage"]';
         if (successMessage) {
             alert(successMessage);
         }
-    });
+        });
+
 
         // filter data function
         $(function () {

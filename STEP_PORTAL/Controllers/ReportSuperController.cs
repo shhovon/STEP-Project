@@ -72,6 +72,7 @@ namespace STEP_PORTAL.Controllers
 
                     ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
                     ViewBag.RegId = RegId;
+
                     return View("KraKpiOutcomeView", kraKpiOutcomeData);
 
                 }
