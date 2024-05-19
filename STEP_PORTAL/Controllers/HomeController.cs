@@ -22,6 +22,7 @@ namespace STEP_PORTAL.Controllers
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 int regId;
+                int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
 
@@ -42,7 +43,7 @@ namespace STEP_PORTAL.Controllers
                                 KRA1 = model.KRAs[i],
                                 RegId = regId,
                                 Section_Name = userInfo.Section,
-                                SessionId = 17,
+                                SessionId = sessionID,
                                 Created_By = regId.ToString(),
                                 Created_date = DateTime.Now,
                                 Updated_date = DateTime.Now,
