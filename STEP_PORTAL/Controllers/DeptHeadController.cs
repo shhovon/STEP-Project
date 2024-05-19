@@ -273,6 +273,7 @@ namespace STEP_PORTAL.Controllers
                                                 })
                                                 .ToList();
                 var designations = db.Database.SqlQuery<DesignationModel>("prc_GetDesignations").ToList();
+                ViewBag.RegId = RegId;
 
                 var viewModel = new DisplayAllDataViewModel
                 {
@@ -298,25 +299,26 @@ namespace STEP_PORTAL.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveHODComment(string comment)
+        public ActionResult SaveHODComment(string comment, string promotion, int incrementValue)
         {
+            int regId = Convert.ToInt32(Request.Form["regId"]);
             int updatedBy = (int)Session["RegID"];
             int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
             string statusType = "HOD Comment";
-            string statusMessage = comment;
+            string statusMessage = $"{comment},{promotion},{incrementValue}";
             DateTime updatedDate = DateTime.Now;
 
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 var result = db.Database.SqlQuery<StatusResult>(
-                    "EXEC prc_UpdateStatus @RegId, @SESSION_ID, @StatusType, @StatusValue, @StatusMessage, @Updated_date, @Updated_by",
-                    new SqlParameter("@RegId", updatedBy),
-                    new SqlParameter("@SESSION_ID", sessionID),
-                    new SqlParameter("@StatusType", statusType),
-                    new SqlParameter("@StatusValue", DBNull.Value),
-                    new SqlParameter("@StatusMessage", statusMessage),
-                    new SqlParameter("@Updated_date", updatedDate),
-                    new SqlParameter("@Updated_by", updatedBy)).FirstOrDefault();
+                            "exec prc_UpdateStatus @RegId, @SESSION_ID, @StatusType, @StatusValue, @StatusMessage, @Updated_date, @Updated_by",
+                            new SqlParameter("@RegId", regId),
+                            new SqlParameter("@SESSION_ID", sessionID),
+                            new SqlParameter("@StatusType", statusType),
+                            new SqlParameter("@StatusValue", DBNull.Value),
+                            new SqlParameter("@StatusMessage", statusMessage),
+                            new SqlParameter("@Updated_date", updatedDate),
+                            new SqlParameter("@Updated_by", updatedBy)).FirstOrDefault();
 
                 if (result.Status)
                 {

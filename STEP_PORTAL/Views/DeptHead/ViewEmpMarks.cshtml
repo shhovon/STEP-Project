@@ -5,6 +5,16 @@
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
+@using (Html.BeginForm("ViewEmpMarks", "DeptHead", FormMethod.Post, new { id = "employeeForm", target = "_blank" }))
+{
+    @Html.Hidden("regID", null, new { id = "regIDField" })
+}
+
+@using (Html.BeginForm("ViewEmpMarks", "DeptHead", FormMethod.Post, new { id = "viewMarksForm" }))
+{
+    @Html.Hidden("regID", null, new { id = "viewregIDField" })
+}
+
 <body>
 
 
@@ -92,13 +102,16 @@
                                                 }
                                             }
                                         </td>
-                                                }
+                                    }
                                 </tr>
-                                                    }
-                                                }
+                            }
+                        }
                         <tr>
-                            <td colspan="4" style="text-align: center; background-color: Highlight; color: white;"><strong>Average Cumulative Score of KRA’s / @totalKraCount
-                              </strong></td>
+                            <td colspan="4" style="text-align: center; background-color: Highlight; color: white;">
+                                <strong>
+                                    Average Cumulative Score of KRA’s / @totalKraCount
+                                </strong>
+                            </td>
                             <td style="text-align: center; background-color: Highlight; color: white;"><strong>@sumOfAverages</strong></td>
                         </tr>
                     </tbody>
@@ -232,11 +245,10 @@
     </div>
     <br />
 
-    @using (Html.BeginForm("SaveHODComment", "ReportSuper", FormMethod.Post))
+    @*    @using (Html.BeginForm("SaveHODComment", "DeptHead", FormMethod.Post))*@
+    @using (Html.BeginForm("SaveHODComment", "DeptHead", new { regId = ViewBag.RegId }, FormMethod.Post, new { id = "reportSuperForm" }))
     {
-        @Html.Hidden("regId", null, new { id = "viewregIDField" })
-
-        @* @Html.HiddenFor(m => m[0].REG_ID)*@
+        <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
 
         <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <label for="comment" style="font-weight: bold; color: #333;">HOD Comment:</label><br>
@@ -252,7 +264,7 @@
             </select>
             <br>
             <label for="comment" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
-            <input type="number" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <input type="number" id="incrementValue" name="incrementValue" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
             <br>
             <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
         </div>
@@ -313,7 +325,7 @@
         }
         });
 
-        $(function() {
+@*        $(function() {
             $('form').submit(function(event) {
                 event.preventDefault();
 
@@ -329,6 +341,31 @@
                         } else {
                             alert(response.message);
                         }
+                    },
+                    error: function() {
+                        alert('An error occurred while saving the comment!');
+                    }
+                });
+            });
+        });*@
+
+               $(function() {
+            $('#reportSuperForm').submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: '@Url.Action("SaveHODComment", "DeptHead")',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+
+                        if (response.success) {
+                            alert(response.message);
+                        } else {
+                            alert(response.message);
+                        }
+/*                        alert(JSON.stringify(response));*/
                     },
                     error: function() {
                         alert('An error occurred while saving the comment!');
