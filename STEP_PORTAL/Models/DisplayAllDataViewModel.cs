@@ -16,4 +16,7 @@ public class DisplayAllDataViewModel
 
     public string SupervisorComment { get; set; }
     public string UserComment { get; set; }
+    public string HOOcomment { get; set; }
+    public string HOOpromotion { get; set; }
+    public int HOOincrement { get; set; }
 }

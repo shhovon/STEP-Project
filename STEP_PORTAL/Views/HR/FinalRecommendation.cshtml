@@ -5,6 +5,16 @@
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
+@using (Html.BeginForm("FinalRecommendation", "HR", FormMethod.Post, new { id = "employeeForm", target = "_blank" }))
+{
+    @Html.Hidden("regID", null, new { id = "regIDField" })
+}
+
+@using (Html.BeginForm("FinalRecommendation", "HR", FormMethod.Post, new { id = "viewMarksForm" }))
+{
+    @Html.Hidden("regID", null, new { id = "viewregIDField" })
+}
+
 <body>
 
 
@@ -36,7 +46,6 @@
             display: inline-block;
             margin-left: 66px;
         }
-
     </style>
 
     <br />
@@ -220,26 +229,62 @@
             </tr>
         </table>
     </div>
+    <br /><br />
+
+    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
+        <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.SupervisorComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br>
+    </div>
+    <br />
+
+    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <label for="comment" style="font-weight: bold; color: #333;">User's Comment:</label><br>
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.UserComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br>
+    </div>
     <br />
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <p style="color:Highlight;"><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
-        <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
-        <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-            @foreach (var designation in Model.Designations)
-            {
-                <option value="@designation.Designation">@designation.Designation</option>
-            }
-        </select>
+        <label for="comment" style="font-weight: bold; color: #333;">HOD's Comment:</label><br>
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.HOOcomment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
         <br>
-        <label for="comment" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
-        <input type="number" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <label for="comment" style="font-weight: bold; color: #333;">HOD's Proposed Promotion:</label><br>
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.HOOpromotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
         <br>
-        <label for="comment" style="font-weight: bold; color: #333;">Effective date:</label><br>
-        <input type="date" id="date" name="date" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-        <br>
-        <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+        <label for="comment" style="font-weight: bold; color: #333;">HOD's Proposed Increment:</label><br>
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.HOOincrement" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
     </div>
 
+
+    <br />
+    <br />
+    @using (Html.BeginForm("SaveHRComment", "HR", new { regId = ViewBag.RegId }, FormMethod.Post, new { id = "HRForm" }))
+    {
+        <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+        <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <label for="HRComment" style="font-weight: bold; color: #333;">Final Comment:</label><br>
+            <input type="text" id="HRComment" name="HRComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <br />
+            <p style="color:Highlight;"><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
+            <p style="color:Highlight;"><strong>Service of Length:  @Session["ServiceOfLength"]</strong></p>
+            <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
+            <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                @foreach (var designation in Model.Designations)
+                {
+                    <option value="@designation.Designation">@designation.Designation</option>
+                }
+            </select>
+            <br>
+            <label for="incrementValue" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
+            <input type="number" id="incrementValue" name="incrementValue" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <br>
+            <label for="effdate" style="font-weight: bold; color: #333;">Effective date:</label><br>
+            <input type="date" id="effdate" value="@DateTime.Now.ToString("dd/MM/yyyy")" name="effdate" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <br>
+            <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+        </div>
+    }
 
 </body>
 
@@ -296,17 +341,17 @@
         }
         });
 
-        $(function() {
-            $('form').submit(function(event) {
+          $(function() {
+              $('#HRForm').submit(function (event) {
                 event.preventDefault();
-
                 var formData = $(this).serialize();
 
                 $.ajax({
-                    url: '@Url.Action("SaveHODComment", "DeptHead")',
+                    url: '@Url.Action("SaveHRComment", "HR")',
                     type: 'POST',
                     data: formData,
-                    success: function(response) {
+                    success: function (response) {
+
                         if (response.success) {
                             alert(response.message);
                         } else {

@@ -563,10 +563,19 @@ namespace STEP_PORTAL.Controllers
                                select new
                                {
                                    step.Supervisor_Comment,
-                                   step.User_Comment
+                                   step.User_Comment,
+                                   step.HOD_Comment,
+                                   step.HOD_Propose_Promotion,
+                                   step.HOD_Propose_Incr
                                };
 
                 var comment = comments.FirstOrDefault();
+
+                var userSL = db.Database.SqlQuery<EmployeeInfo>(
+                                "prc_GetEmployeeServiceLength @RegID",
+                                new SqlParameter("@RegID", RegId)).FirstOrDefault();
+                Session["ServiceOfLength"] = userSL.Service_Length;
+                ViewBag.RegId = RegId;
 
                 var groupedData = kraKpiOutcomeData.GroupBy(x => x.KRA)
                                                 .Select(g => new KraKpiViewModel
@@ -589,16 +598,57 @@ namespace STEP_PORTAL.Controllers
                 {
                     viewModel.SupervisorComment = comment.Supervisor_Comment;
                     viewModel.UserComment = comment.User_Comment;
+                    viewModel.HOOcomment = comment.HOD_Comment;
+                    viewModel.HOOpromotion = comment.HOD_Propose_Promotion;
+                    viewModel.HOOincrement = (int)comment.HOD_Propose_Incr;
                 }
                 else
                 {
                     viewModel.SupervisorComment = null;
                     viewModel.UserComment = null;
+                    viewModel.HOOcomment = null;
+                    viewModel.HOOpromotion = null;
+                    viewModel.HOOincrement = 0;
                 }
 
                 return View(viewModel);
             }
 
+        }
+
+        [HttpPost]
+        public ActionResult SaveHRComment(string HRComment, string promotion, int incrementValue, DateTime effdate)
+        {
+            int regId = Convert.ToInt32(Request.Form["regId"]);
+            int updatedBy = (int)Session["RegID"];
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+            string statusType = "HR Comment";
+            string updatedComment = HRComment.Replace(",", " ");
+            string statusMessage = $"{updatedComment},{incrementValue},{promotion},{effdate}";
+            DateTime updatedDate = DateTime.Now;
+            effdate = effdate.Date;
+
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+                var result = db.Database.SqlQuery<StatusResult>(
+                            "exec prc_UpdateStatus @RegId, @SESSION_ID, @StatusType, @StatusValue, @StatusMessage, @Updated_date, @Updated_by",
+                            new SqlParameter("@RegId", regId),
+                            new SqlParameter("@SESSION_ID", sessionID),
+                            new SqlParameter("@StatusType", statusType),
+                            new SqlParameter("@StatusValue", DBNull.Value),
+                            new SqlParameter("@StatusMessage", statusMessage),
+                            new SqlParameter("@Updated_date", updatedDate),
+                            new SqlParameter("@Updated_by", updatedBy)).FirstOrDefault();
+
+                if (result.Status)
+                {
+                    return Json(new { success = true, message = result.Message });
+                }
+                else
+                {
+                    return Json(new { success = false, message = result.Message });
+                }
+            }
         }
 
     }
