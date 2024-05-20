@@ -564,9 +564,9 @@ namespace STEP_PORTAL.Controllers
 
                 var comment = comments.FirstOrDefault();
 
-                var userSL = db.Database.SqlQuery<EmployeeInfo>(
-                                "prc_GetEmployeeServiceLength @RegID",
+                var userSL = db.Database.SqlQuery<EmployeeInfo>("prc_GetEmployeeServiceLength @RegID",
                                 new SqlParameter("@RegID", RegId)).FirstOrDefault();
+
                 Session["ServiceOfLength"] = userSL.Service_Length;
                 ViewBag.RegId = RegId;
 
@@ -578,6 +578,7 @@ namespace STEP_PORTAL.Controllers
                                                     KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
                                                 })
                                                 .ToList();
+
                 var designations = db.Database.SqlQuery<DesignationModel>("prc_GetDesignations").ToList();
 
                 var viewModel = new DisplayAllDataViewModel

@@ -119,25 +119,18 @@
     }
 
 
-    $('#DepartmentDropdown').change(function () {
-        var selectedDepartment = $(this).val();
-        //alert(selectedDepartment);
-        var departments = @Html.Raw(Json.Encode(ViewBag.Departments));
-        var selectedDepartmentData = departments.find(d => d.DepartmentName === selectedDepartment);
-        //console.log(selectedDepartmentData);
-        var currentlySelectedSection = $('#SectionDropdown').val();
-        console.log(currentlySelectedSection);
+   $('#DepartmentDropdown').change(function () {
+    var selectedDepartment = $(this).val();
+    var departments = @Html.Raw(Json.Encode(ViewBag.Departments));
+    var selectedDepartmentData = departments.find(d => d.DepartmentName === selectedDepartment);
 
-        $('#SectionDropdown').empty();
+    $('#SectionDropdown').empty();
+    //$('#SectionDropdown').append($('<option>').text('Select Section').val(''));
 
-        if (selectedDepartmentData && selectedDepartmentData.Sections) {
-            $.each(selectedDepartmentData.Sections, function (index, section) {
-                $('#SectionDropdown').append($('<option>').text(section).attr('value', section));
-                if (section === currentlySelectedSection) {
-                    option.attr('selected', 'selected');
-                }
-                $('#SectionDropdown').append(option);
-            });
-        }
-    });
+    if (selectedDepartmentData && selectedDepartmentData.Sections) {
+        $.each(selectedDepartmentData.Sections, function (index, section) {
+            $('#SectionDropdown').append($('<option>').text(section).val(section));
+        });
+    }
+});
 </script>
