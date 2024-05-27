@@ -1,4 +1,5 @@
-﻿using STEP_DEMO.Models;
+﻿
+
 using STEP_PORTAL.Models;
 using System;
 using System.Collections.Generic;
@@ -207,7 +208,11 @@ namespace STEP_PORTAL.Controllers
 
                     var userInfo = db.Database.SqlQuery<EmployeeInfo>(
                           "prc_EmployeeInfoByRegID @RegID",
-                          new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
+                          new SqlParameter("@RegID", RegId)).FirstOrDefault();
+
+                    Session["EmployeeCodeInd"] = userInfo.EmployeeCode;
+                    Session["NameInd"] = userInfo.Name;
+                    Session["DesignationInd"] = userInfo.Designation;
 
                     var model = new KraKpiOutcomeModel
                     {
@@ -238,6 +243,7 @@ namespace STEP_PORTAL.Controllers
         public ActionResult UpdateMarks(List<KraKpiOutcomeModel> model)
         {
             int regId = Convert.ToInt32(Request.Form["regId"]);
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
             if (model != null)
             {
                 using (DB_STEPEntities db = new DB_STEPEntities())
@@ -252,6 +258,12 @@ namespace STEP_PORTAL.Controllers
                         }
                     }
                     db.SaveChanges();
+
+                    db.Database.ExecuteSqlCommand(
+                            "exec prc_UpdateRating @RegId, @SESSION_ID",
+                            new SqlParameter("@RegId", regId),
+                            new SqlParameter("@SESSION_ID", sessionID)
+                        );
 
                 }
             }
@@ -381,8 +393,8 @@ namespace STEP_PORTAL.Controllers
             }
             TempData["SuccessMessage"] = "Attendance marks saved successfully!";
 
-            string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
-            return RedirectToAction("AddMarksHR", new { regId = encryptedRegId });
+            //string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+            return RedirectToAction("AddMarksHR", new { regId = regId });
 /*            return RedirectToAction("ViewEmpListHR", "HR");*/
         }
 
@@ -422,8 +434,8 @@ namespace STEP_PORTAL.Controllers
             TempData["SuccessMessage"] = "Discipline marks saved successfully!";
 
             /* return RedirectToAction("ViewEmpListHR", "HR");*/
-            string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
-            return RedirectToAction("AddMarksHR", new { regId = encryptedRegId });
+            //string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+            return RedirectToAction("AddMarksHR", new { regId = regId });
         }
 
         [CustomAuthorize]
@@ -476,7 +488,13 @@ namespace STEP_PORTAL.Controllers
         {
             List<EmployeeInfo> employees = new List<EmployeeInfo>();
 
-            if (companyId != null && Session["RegID"] != null)
+            if (companyId.HasValue)
+            {
+                Session["CompanyId"] = companyId.Value;
+            }
+
+
+                if (companyId != null && Session["RegID"] != null)
             {
                 int deptHeadValue;
                 if (int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
@@ -563,7 +581,8 @@ namespace STEP_PORTAL.Controllers
                                                 {
                                                     KRA = g.Key,
                                                     KPIIs = g.Select(x => x.KPI).ToList(),
-                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
+                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList(),
+                                                    AllRemarks = g.Select(x => x.Remarks).ToList()
                                                 })
                                                 .ToList();
                 var designations = db.Database.SqlQuery<DesignationModel>("prc_GetDesignations").ToList();
@@ -629,6 +648,23 @@ namespace STEP_PORTAL.Controllers
                 {
                     return Json(new { success = false, message = result.Message });
                 }
+            }
+        }
+
+        public ActionResult GetEmployeeReport(int regId, int comID, string DepartmentDropdown, string SectionDropdown, int sessionId)
+        {
+            using (var db = new DB_STEPEntities())
+            {
+                var EmpReportData = db.Database.SqlQuery<EmployeeReportModel>(
+                    "exec prc_SearchEmployeeByHR @RegID, @CompID, @DepartmentName, @SectionName, @SESSION_ID",
+                    new SqlParameter("@RegID", regId),
+                    new SqlParameter("@CompID", comID), 
+                    new SqlParameter("@DepartmentName", DepartmentDropdown),
+                    new SqlParameter("@SectionName", SectionDropdown),
+                    new SqlParameter("@SESSION_ID", sessionId)).ToList();
+
+
+                return Json(EmpReportData, JsonRequestBehavior.AllowGet);
             }
         }
 

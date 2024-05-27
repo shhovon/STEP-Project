@@ -1,4 +1,4 @@
-﻿using STEP_DEMO.Models;
+﻿using STEP_PORTAL.Models;
 using STEP_PORTAL.Models;
 using System;
 using System.Collections.Generic;
@@ -274,7 +274,8 @@ namespace STEP_PORTAL.Controllers
                                                 {
                                                     KRA = g.Key,
                                                     KPIIs = g.Select(x => x.KPI).ToList(),
-                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
+                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList(),
+                                                    AllRemarks = g.Select(x=>x.Remarks).ToList()
                                                 })
                                                 .ToList();
                 var designations = db.Database.SqlQuery<DesignationModel>("prc_GetDesignations").ToList();

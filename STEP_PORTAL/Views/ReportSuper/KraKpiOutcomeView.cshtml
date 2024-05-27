@@ -2,6 +2,11 @@
 
 @{
     var firstItem = Model.FirstOrDefault();
+    decimal averageKpiAvg = 0;
+    if (Model != null && Model.Any())
+    {
+        averageKpiAvg = Model.Average(m => m.KPI_AVG ?? 0);
+    }
 }
 
 @{
@@ -9,13 +14,11 @@
 }
 
 
+
 <head>
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
-@*@{
-    int sumOfAverages = 0;
-}*@
 
 <a href="@Url.Action("ViewEmpList", "DeptHead")" class="btn btn-primary" style="text-decoration: none;">
     <span>Search Again</span>
@@ -68,6 +71,7 @@
                         <th>KRA</th>
                         <th>KPI</th>
                         <th>Outcome</th>
+                        <th>Remarks</th>
                         <th>Performance Marks</th>
                         <th>Average</th>
                     </tr>
@@ -93,8 +97,8 @@
                                 }
                                 <td>@Model[i].KPI</td>
                                 <td>@Model[i].Outcome</td>
+                                <td><input type="text" name="@("model[" + i + "].Remarks")" value="@Model[i].Remarks" /></td>
                                 <td>
-                                    @* <select name="@("marksUpdateModel[" + (marksUpdateModel.Count - 1) + "].Marks")" class="marks-select" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome">*@
                                     <select name="@("model[" + i + "].SelectedMarks")" class="marks-select" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome">
                                         @if (@Model[i].Marks_Achieved == 0)
                                         {
@@ -170,10 +174,14 @@
                             i++;
                         }
                     }
-@*                    <tr>
-                        <td colspan="4" style="text-align:center"><strong>Total Average:</strong></td>
-                        <td style="text-align:center"><strong>@(sumOfAverages)</strong></td>
-                    </tr>*@
+                    <tr>
+                        <td colspan="5" style="text-align: center; background-color: Highlight; color: white;">
+                            <strong>
+                                Average Cumulative Score of KRA’s
+                            </strong>
+                        </td>
+                        <td style="text-align: center; background-color: Highlight; color: white;"><strong>@averageKpiAvg</strong></td>
+                    </tr>
                 </tbody>
             </table>
             <input type="submit" value="Save Marks" />

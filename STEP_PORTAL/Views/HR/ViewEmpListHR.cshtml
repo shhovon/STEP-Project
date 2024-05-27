@@ -15,7 +15,7 @@
     @Html.Hidden("regID", null, new { id = "viewregIDField" })
 }
 
-<h3 style="text-align:center;">All Employees List</h3>
+<h3 style="text-align:center;">All Employees List (Unit HR)</h3>
 
 @using (Html.BeginForm("ViewEmpListHR", "HR", FormMethod.Post, new { id = "viewEmpListForm" }))
 {
@@ -39,7 +39,8 @@
         @Html.DropDownList("SectionDropdown", Enumerable.Empty<SelectListItem>(), "Select Section", new { @class = "form-control" })
     </div>
 
-    <button type="submit" class="btn btn-primary" id="submitButton" >Search</button>
+    <button type="submit" class="btn btn-primary" id="submitButton">Search</button>
+    <button type="button" class="btn btn-primary" id="generatePdfButton" style="display:none;">Generate PDF</button>
 }
 
 
@@ -63,19 +64,23 @@
             <tbody>
                 @foreach (var employee in Model.Employees)
                 {
-                <tr>
-                    <td>@employee.Department</td>
-                    <td>@employee.Section</td>
-                    <td>@employee.Designation</td>
-                    <td>@employee.Name</td>
-                    <td>@employee.EmployeeCode</td>
-                    <td>@employee.EmpStatus</td>
-                    <td><a target="_blank" href="../HR/AddMarksHR?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
-                </tr>
+                    <tr>
+                        <td>@employee.Department</td>
+                        <td>@employee.Section</td>
+                        <td>@employee.Designation</td>
+                        <td>@employee.Name</td>
+                        <td>@employee.EmployeeCode</td>
+                        <td>@employee.EmpStatus</td>
+                        @* <td><a target="_blank" href="../HR/AddMarksHR?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>*@
+                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>
+                    </tr>
                 }
             </tbody>
 
         </table>
+        <script>
+            document.getElementById("generatePdfButton").style.display = "inline-block";
+        </script>
     }
     else
     {
@@ -119,25 +124,54 @@
     }
 
 
+
     $('#DepartmentDropdown').change(function () {
         var selectedDepartment = $(this).val();
-        //alert(selectedDepartment);
         var departments = @Html.Raw(Json.Encode(ViewBag.Departments));
         var selectedDepartmentData = departments.find(d => d.DepartmentName === selectedDepartment);
-        //console.log(selectedDepartmentData);
-        var currentlySelectedSection = $('#SectionDropdown').val();
-        console.log(currentlySelectedSection);
 
         $('#SectionDropdown').empty();
+        //$('#SectionDropdown').append($('<option>').text('Select Section').val(''));
 
         if (selectedDepartmentData && selectedDepartmentData.Sections) {
             $.each(selectedDepartmentData.Sections, function (index, section) {
-                $('#SectionDropdown').append($('<option>').text(section).attr('value', section));
-                if (section === currentlySelectedSection) {
-                    option.attr('selected', 'selected');
-                }
-                $('#SectionDropdown').append(option);
+                $('#SectionDropdown').append($('<option>').text(section).val(section));
             });
         }
+    });
+
+    // check auth
+
+    function checkAuthAndRedirect(regId, empRegId) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckAuth", "ReportSuper")',
+            data: {
+                regId: regId,
+                empRegId: empRegId,
+                sessionId: $('#selectedTaxPeriod').val(),
+                type: 'AddMarksHR'
+            },
+            success: function(response) {
+                if (response.status) {
+                    window.open('../HR/AddMarksHR?regId=' + encodeURIComponent(response.encryptedRegId), '_blank');
+                } else {
+                    alert('You do not have authorization to access this page!');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking authorization!');
+            }
+        });
+    }
+
+        // generate pdf
+
+    $(document).ready(function () {
+        $('#generatePdfButton').on('click', function () {
+            var form = $('#viewEmpListForm');
+            form.attr('action', '@Url.Action("GeneratePdf", "ReportSuper")');
+            form.submit();
+        });
     });
 </script>

@@ -21,26 +21,28 @@
 
 @using (Html.BeginForm("ViewEmpList", "DeptHead", FormMethod.Post, new { id = "viewEmpListForm" }))
 {
-<div class="dropdown-container">
-    <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
-    <br />
+    <div class="dropdown-container">
+        <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
+        <br />
 
-    <select id="taxPeriodDropdownMV" class="form-control custom-select">
-        <option value="" @(ViewBag.SelectedTaxPeriod == null ? "selected" : "")>Choose a Session</option>
-        @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
-        {
-            <option value="@taxPeriod.TaxPerID">@taxPeriod.TaxPeriod</option>
-        }
-    </select>
-    <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" value="@ViewBag.SelectedTaxPeriod" />
-    
+        <select id="taxPeriodDropdownMV" class="form-control custom-select">
+            <option value="" @(ViewBag.SelectedTaxPeriod == null ? "selected" : "")>Choose a Session</option>
+            @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
+            {
+                <option value="@taxPeriod.TaxPerID">@taxPeriod.TaxPeriod</option>
+            }
+        </select>
+        <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" value="@ViewBag.SelectedTaxPeriod" />
 
-</div>
-           <div class="form-group">
-           @Html.DropDownList("companyId", ViewBag.Companies as SelectList, "Select an unit", new { @class = "form-control" })
-           @Html.ValidationMessage("companyId", "", new { @class = "text-danger" })
-           </div>
-          <button type="submit" class="btn btn-primary" id="submitButton" >Search</button>}
+
+    </div>
+    <div class="form-group">
+        @Html.DropDownList("companyId", ViewBag.Companies as SelectList, "Select an unit", new { @class = "form-control" })
+        @Html.ValidationMessage("companyId", "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-primary" id="submitButton">Search</button>
+    <button type="button" class="btn btn-primary" id="generatePdfButton" style="display:none;">Generate PDF</button>
+}
 
 
 <br />
@@ -56,38 +58,43 @@
                     <th>Designation</th>
                     <th style="width:100%">Name</th>
                     <th>Employee Code</th>
-                    <th>Status</th>  
+                    <th>Status</th>
                     <th>View Marks</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var employee in Model.Employees)
                 {
-                <tr>
-                    <td>@employee.Department</td>
-                    <td>@employee.Section</td>
-                    <td>@employee.Designation</td>
-                    <td>@employee.Name</td>
-                    <td>@employee.EmployeeCode</td>
-                    <td>@employee.EmpStatus</td>
-                    @if(@employee.EmpStatus == "ApprovalSent")
-                    {
-                        <td><a target="_blank" href="../ReportSuper/AddMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
-                    }
-                    else
-                    {
-                    <td>--</td>
-                    }
-
-
-                    @*
-        <td><a href="javascript:void(0);" onclick="setEmployeeCodeAndSubmit('@employee.RegId')">Marks Entry</a></td>
-         <td><a href="javascript:void(0);" onclick="setRegId('@employee.RegId')">View Marks</a></td>*@
-                </tr>
+                    <tr>
+                        <td>@employee.Department</td>
+                        <td>@employee.Section</td>
+                        <td>@employee.Designation</td>
+                        <td>@employee.Name</td>
+                        <td>@employee.EmployeeCode</td>
+                        <td>@employee.EmpStatus</td>
+                        @*@if(@employee.EmpStatus == "ApprovalSent")
+                            {
+                                <td><a target="_blank" href="../ReportSuper/AddMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
+                            }
+                            else
+                            {
+                            <td>--</td>
+                            }*@
+                        @if (@employee.EmpStatus == "ApprovalSent")
+                        {
+                            <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>
+                        }
+                        else
+                        {
+                            <td>--</td>
+                        }
+                    </tr>
                 }
             </tbody>
-
         </table>
+        <script>
+            document.getElementById("generatePdfButton").style.display = "inline-block";
+        </script>
     }
     else
     {
@@ -104,7 +111,7 @@
     //    document.getElementById("employeeForm").submit();
     //}
 
-    $(document).ready(function () { 
+    $(document).ready(function () {
         var session_id = $('#selectedTaxPeriod').val();
         //alert(session_id);
         $('#taxPeriodDropdownMV').val(session_id);
@@ -133,6 +140,41 @@
         } else {
             submitButton.disabled = true;        }
     }
+
+    // check auth
+
+    function checkAuthAndRedirect(regId, empRegId) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckAuth", "ReportSuper")',
+            data: {
+                regId: regId,
+                empRegId: empRegId,
+                sessionId: $('#selectedTaxPeriod').val(),
+                type: 'AddMarksRS'
+            },
+            success: function(response) {
+                if (response.status) {
+                    window.open('../ReportSuper/AddMarks?regId=' + encodeURIComponent(response.encryptedRegId), '_blank');
+                } else {
+                    alert('You do not have authorization to access this page!');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking authorization!');
+            }
+        });
+    }
+
+    // generate pdf
+
+    $(document).ready(function () {
+        $('#generatePdfButton').on('click', function () {
+            var form = $('#viewEmpListForm');
+            form.attr('action', '@Url.Action("GeneratePdf", "ReportSuper")');
+            form.submit();
+        });
+    });
 
 
 </script>

@@ -1,11 +1,14 @@
-﻿using Newtonsoft.Json;
-using STEP_DEMO.Models;
+﻿
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using STEP_PORTAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -44,10 +47,9 @@ namespace STEP_PORTAL.Controllers
                     tblMarksEntryHistory logEntry = new tblMarksEntryHistory
                     {
                         SupervisorID = deptHeadValue,
-                        EmployeeID = employeeID,
+                        EmployeeID = RegId.ToString(),
                         UpdateTime = DateTime.Now,
                         UserIP = GetIPAddress(),
-
                     };
                     db.tblMarksEntryHistories.Add(logEntry);
                     db.SaveChanges();
@@ -69,6 +71,7 @@ namespace STEP_PORTAL.Controllers
                         ("exec prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                          new SqlParameter("@RegId", RegId),
                          new SqlParameter("@SESSION_ID", Session["SelectedTaxPeriod"])).ToList();
+
 
                     ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
                     ViewBag.RegId = RegId;
@@ -169,22 +172,32 @@ namespace STEP_PORTAL.Controllers
                         if (outcomeEntity != null)
                         {
                             outcomeEntity.Marks_Achieved = item.SelectedMarks.Value;
+                            outcomeEntity.Remarks = item.Remarks;
                             db.Entry(outcomeEntity).State = EntityState.Modified;
                         }
                     }
 
                     db.SaveChanges();
-/*                    var rating = db.Database.SqlQuery<UpdateRatingModel>("prc_UpdateRating @RegId, @SESSION_ID",
-                                   new SqlParameter("@RegId", regId),
-                                   new SqlParameter("@SESSION_ID", sessionID)).ToList();*/
 
                     db.Database.ExecuteSqlCommand(
-                        "EXEC [dbo].[prc_UpdateRating] @RegId, @SESSION_ID",
+                        "exec prc_UpdateRating @RegId, @SESSION_ID",
                         new SqlParameter("@RegId", regId),
                         new SqlParameter("@SESSION_ID", sessionID)
                     );
 
-                    //transaction.Commit();
+                    var updatedData = db.Database.SqlQuery<KraKpiOutcomeModel>(
+                        "exec prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                        new SqlParameter("@RegId", regId),
+                        new SqlParameter("@SESSION_ID", sessionID)).ToList();
+
+                    foreach (var updatedItem in updatedData)
+                    {
+                        var existingItem = model.FirstOrDefault(m => m.KPI_ID == updatedItem.KPI_ID);
+                        if (existingItem != null)
+                        {
+                            existingItem.Remarks = updatedItem.Remarks;
+                        }
+                    }
 
                 }
             }
@@ -235,7 +248,8 @@ namespace STEP_PORTAL.Controllers
                                                 {
                                                     KRA = g.Key,
                                                     KPIIs = g.Select(x => x.KPI).ToList(),
-                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
+                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList(),
+                                                    AllRemarks = g.Select(x => x.Remarks).ToList()
                                                 })
                                                 .ToList();
 
@@ -440,6 +454,106 @@ namespace STEP_PORTAL.Controllers
 
             return Json(new { SupervisorComment = supervisorComment }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult CheckAuth(int regId, int empRegId, int sessionId, string type)
+        {
+            using (var db = new DB_STEPEntities())
+            {
+                var result = db.Database.SqlQuery<StatusResult>("exec prc_CheckAuth @RegId, @SESSION_ID, @Type, @EmpRegId",
+                    new SqlParameter("RegId", regId),
+                    new SqlParameter("SESSION_ID", sessionId),
+                    new SqlParameter("Type", type),
+                    new SqlParameter("EmpRegId", empRegId)
+                ).FirstOrDefault();
+
+                if (result != null && result.Status)
+                {
+                    return Json(new { status = true, encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(empRegId.ToString()) });
+                }
+                else
+                {
+                    return Json(new { status = false });
+                }
+            }
+        }
+
+        public List<EmployeeInfo> GetEmployeeListByDeptHead(int deptHeadValue, int companyId)
+        {
+            using (DB_STEPEntities db = new DB_STEPEntities())
+            {
+
+                var SelectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
+
+                var employees = db.Database.SqlQuery<EmployeeInfo>("exec prc_GetEmployeeByHR @RegID, @CompID",
+                      new SqlParameter("@RegID", deptHeadValue),
+                      new SqlParameter("@CompID", companyId)
+                    ).ToList();
+
+                return employees;
+            }
+        }
+
+        // generate pdf
+
+        [HttpPost]
+        public ActionResult GeneratePdf(int? companyId)
+        {
+            if (!companyId.HasValue || Session["RegID"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid request");
+            }
+
+            int deptHeadValue;
+            if (!int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid request");
+            }
+
+            List<EmployeeInfo> employees = GetEmployeeListByDeptHead(deptHeadValue, companyId.Value);
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Document document = new Document(PageSize.A4, 36, 36, 36, 36); 
+                PdfWriter writer = PdfWriter.GetInstance(document, ms);
+                document.Open();
+
+                Paragraph title = new Paragraph("Employee List\n\n", FontFactory.GetFont("Arial", 16, Font.BOLD));
+                title.Alignment = Element.ALIGN_CENTER;
+                document.Add(title);
+
+                PdfPTable table = new PdfPTable(6);
+                table.WidthPercentage = 100;
+                table.SetWidths(new float[] { 1.5f, 1.5f, 1.5f, 2f, 1.5f, 1.5f }); // Adjust column widths
+
+                table.AddCell(new PdfPCell(new Phrase("Department", FontFactory.GetFont("Arial", 11, Font.BOLD))) { HorizontalAlignment = Element.ALIGN_CENTER });
+                table.AddCell(new PdfPCell(new Phrase("Section", FontFactory.GetFont("Arial", 11, Font.BOLD))) { HorizontalAlignment = Element.ALIGN_CENTER });
+                table.AddCell(new PdfPCell(new Phrase("Designation", FontFactory.GetFont("Arial", 11, Font.BOLD))) { HorizontalAlignment = Element.ALIGN_CENTER });
+                table.AddCell(new PdfPCell(new Phrase("Name", FontFactory.GetFont("Arial", 11, Font.BOLD))) { HorizontalAlignment = Element.ALIGN_CENTER });
+                table.AddCell(new PdfPCell(new Phrase("Employee Code", FontFactory.GetFont("Arial", 11, Font.BOLD))) { HorizontalAlignment = Element.ALIGN_CENTER });
+                table.AddCell(new PdfPCell(new Phrase("Status", FontFactory.GetFont("Arial", 11, Font.BOLD))) { HorizontalAlignment = Element.ALIGN_CENTER });
+
+                foreach (var employee in employees)
+                {
+                    table.AddCell(new PdfPCell(new Phrase(employee.Department, FontFactory.GetFont("Arial", 10))) { HorizontalAlignment = Element.ALIGN_LEFT });
+                    table.AddCell(new PdfPCell(new Phrase(employee.Section, FontFactory.GetFont("Arial", 10))) { HorizontalAlignment = Element.ALIGN_LEFT });
+                    table.AddCell(new PdfPCell(new Phrase(employee.Designation, FontFactory.GetFont("Arial", 10))) { HorizontalAlignment = Element.ALIGN_LEFT });
+                    table.AddCell(new PdfPCell(new Phrase(employee.Name, FontFactory.GetFont("Arial", 10))) { HorizontalAlignment = Element.ALIGN_LEFT });
+                    table.AddCell(new PdfPCell(new Phrase(employee.EmployeeCode, FontFactory.GetFont("Arial", 10))) { HorizontalAlignment = Element.ALIGN_LEFT });
+                    table.AddCell(new PdfPCell(new Phrase(employee.EmpStatus, FontFactory.GetFont("Arial", 10))) { HorizontalAlignment = Element.ALIGN_LEFT });
+                }
+
+                document.Add(table);
+                document.Close();
+                writer.Close();
+
+                byte[] file = ms.ToArray();
+
+                return File(file, "application/pdf", "EmployeeList.pdf");
+            }
+        }
+
 
 
     }

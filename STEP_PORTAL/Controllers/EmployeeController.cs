@@ -8,8 +8,8 @@ using System.Web.Mvc;
 using STEP_PORTAL.Helpers;
 using System.Web.Security;
 using System.Globalization;
-using STEP_DEMO.Models;
 using System.Data.SqlClient;
+using STEP_PORTAL.Models;
 
 namespace STEP_PORTAL.Controllers
 {
@@ -157,7 +157,7 @@ namespace STEP_PORTAL.Controllers
                         var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionId).Select(t => t.TaxPeriod).FirstOrDefault();
                         Session["TaxPeriod"] = taxPeriod;
 
-                        return RedirectToAction("DisplayAllData");
+                        return RedirectToAction("KraKpiNextYear", "Home");
                     }
 
 /*                    return Json(new { success = true });*/

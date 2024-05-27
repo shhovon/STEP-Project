@@ -74,8 +74,16 @@
 
 @*                    @if (@employee.EmpStatus == "Supervisor_Comment" || @employee.EmpStatus == "User_Comment")
                     {*@
-                        <td><a target="_blank" href="../DeptHead/ViewEmpMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Comment Entry</a></td>
+                       @* <td><a target="_blank" href="../DeptHead/ViewEmpMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Comment Entry</a></td>*@
                         
+@*                    }
+                    else
+                    {
+                        <td>--</td>
+                    }*@
+@*                    @if(@employee.EmpStatus == "ApprovalSent")
+                    {*@
+                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>
 @*                    }
                     else
                     {
@@ -129,6 +137,31 @@
         } else {
             submitButton.disabled = true;
         }
+    }
+
+    // check auth
+
+    function checkAuthAndRedirect(regId, empRegId) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckAuth", "ReportSuper")',
+            data: {
+                regId: regId,
+                empRegId: empRegId,
+                sessionId: $('#selectedTaxPeriod').val(),
+                type: 'AddMarksHOD'
+            },
+            success: function(response) {
+                if (response.status) {
+                    window.open('../DeptHead/ViewEmpMarks?regId=' + encodeURIComponent(response.encryptedRegId), '_blank');
+                } else {
+                    alert('You do not have authorization to access this page!');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking authorization!');
+            }
+        });
     }
 
 

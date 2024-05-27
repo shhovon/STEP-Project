@@ -17,6 +17,7 @@
 
 <body>
 
+    <button class="btn btn-primary" style="float:right;" id="exportToExcelBtn">Export to Excel</button>
 
     @{
         decimal sumOfAverages = 0;
@@ -30,6 +31,7 @@
     {
         <script>alert('@ViewBag.ErrorMessage');</script>
     }
+
 
     <style>
         .tab {
@@ -67,6 +69,7 @@
                             <th>KRA</th>
                             <th>KPI</th>
                             <th>Outcome</th>
+                            <th>Report Super Remarks</th>
                             <th>Performance Marks</th>
                             <th>Total Average</th>
                         </tr>
@@ -89,6 +92,7 @@
                                     }
                                     <td>@kpi</td>
                                     <td>@outcome</td>
+                                    <td>@item.AllRemarks[i]</td>
                                     <td style="text-align:center">@mark</td>
                                     @if (i == 0)
                                     {
@@ -107,7 +111,7 @@
                             }
                         }
                         <tr>
-                            <td colspan="4" style="text-align: center; background-color: Highlight; color: white;">
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white;">
                                 <strong>
                                     Average Cumulative Score of KRA’s / @totalKraCount
                                 </strong>
@@ -288,6 +292,8 @@
 
 </body>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+
 @section scripts {
     <script>
         $(function () {
@@ -377,6 +383,36 @@
                 tableContainer.style.display = "none";
                 toggleButton.textContent = "View Marks";
             }
+        }
+
+        // export to excel
+
+         $(function () {
+            $('#exportToExcelBtn').click(function () {
+                exportToExcel();
+            });
+        });
+
+        function exportToExcel() {
+
+            var regId = @ViewBag.RegId;
+            var sessionId = @Session["SelectedTaxPeriod"];
+
+            $.ajax({
+                url: '@Url.Action("GetEmployeeReport", "HR")',
+                type: 'GET',
+                data: { regId: regId, sessionId: sessionId },
+                success: function (data) {
+                    var worksheet = XLSX.utils.json_to_sheet(data);
+                    var workbook = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+                    XLSX.writeFile(workbook, 'EmployeeSummaryReport.xlsx');
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
         }
 
     </script>
