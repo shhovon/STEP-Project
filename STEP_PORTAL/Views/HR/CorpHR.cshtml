@@ -126,6 +126,7 @@
     }
 
 
+<<<<<<< HEAD
     $('#DepartmentDropdown').change(function () {
         var selectedDepartment = $(this).val();
         var departments = @Html.Raw(Json.Encode(ViewBag.Departments));
@@ -179,4 +180,20 @@
     });
 
 
+=======
+   $('#DepartmentDropdown').change(function () {
+    var selectedDepartment = $(this).val();
+    var departments = @Html.Raw(Json.Encode(ViewBag.Departments));
+    var selectedDepartmentData = departments.find(d => d.DepartmentName === selectedDepartment);
+
+    $('#SectionDropdown').empty();
+    //$('#SectionDropdown').append($('<option>').text('Select Section').val(''));
+
+    if (selectedDepartmentData && selectedDepartmentData.Sections) {
+        $.each(selectedDepartmentData.Sections, function (index, section) {
+            $('#SectionDropdown').append($('<option>').text(section).val(section));
+        });
+    }
+});
+>>>>>>> 2fb5633e7882b0cde4cce6838b80756d8d12b3e8
 </script>
