@@ -119,6 +119,7 @@ namespace STEP_PORTAL.Controllers
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 int regId;
+<<<<<<< HEAD
                 int NextYrSessionID = (int.Parse(Session["SelectedTaxPeriod"].ToString()) + 1);
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
@@ -132,6 +133,15 @@ namespace STEP_PORTAL.Controllers
                                       "prc_GetKraKpiData @RegID, @SessionID",
                                       new SqlParameter("@RegID", Session["RegID"]),
                                       new SqlParameter("@SessionID", NextYrSessionID)).ToList();
+=======
+                if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
+                {
+                    var kraKpiData = (from kra in db.KRAs
+                                      join kpi in db.KPIs on kra.KRA_ID equals kpi.KRA_ID
+                                      where kra.RegId == regId && kra.SessionId == 18
+                                      orderby kra.KRA_ID
+                                      select new { kra.KRA_ID, kra.KRA1, kra.Duration, kpi.KPI_ID, kpi.KPI1 }).ToList();
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
 
 
                     viewModel.DefaultKRAs = Enumerable.Repeat("", 5).ToList();
@@ -139,6 +149,7 @@ namespace STEP_PORTAL.Controllers
                     viewModel.DefaultDurations = Enumerable.Repeat((DateTime?)null, 5).ToList();
 
 
+<<<<<<< HEAD
                     viewModel.SessionId = kraKpiDataPrc.Select(k => k.SessionId).FirstOrDefault();
 
 
@@ -159,6 +170,18 @@ namespace STEP_PORTAL.Controllers
                     viewModel.KPI_IDs = kraKpiDataPrc.GroupBy(k => k.KRA_ID)
                                                      .Select(g => g.Select(k => k.KPI_ID).ToList())
                                                      .ToList();
+=======
+
+                    viewModel.KRA_IDs = kraKpiData.Select(k => k.KRA_ID).Distinct().ToList();
+                    viewModel.KRAs = kraKpiData.Select(k => k.KRA1).Distinct().ToList();
+                    viewModel.Durations = kraKpiData.GroupBy(k => k.KRA_ID).Select(g => g.First().Duration).ToList();
+                    viewModel.KPIs = kraKpiData.GroupBy(k => k.KRA_ID)
+                                               .Select(g => g.Select(k => k.KPI1).ToList())
+                                               .ToList();
+                    viewModel.KPI_IDs = kraKpiData.GroupBy(k => k.KRA_ID)
+                                                  .Select(g => g.Select(k => k.KPI_ID).ToList())
+                                                  .ToList();
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
                 }
             }
 
@@ -175,6 +198,7 @@ namespace STEP_PORTAL.Controllers
                 int regId;
                 if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out regId))
                 {
+<<<<<<< HEAD
                     //var userInfo = db.Database.SqlQuery<EmployeeInfo>(
                     //              "prc_EmployeeInfoByRegID @RegID",
                     //              new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
@@ -257,7 +281,71 @@ namespace STEP_PORTAL.Controllers
                                         db.KPIs.Add(kpi);
                                     }
                                     db.SaveChanges();
+=======
+                    var userInfo = db.Database.SqlQuery<EmployeeInfo>(
+                                  "prc_EmployeeInfoByRegID @RegID",
+                                  new SqlParameter("@RegID", Session["RegID"])).FirstOrDefault();
+
+                    ViewBag.ApprovalSent = Session["ApprovalSent"];
+
+                    for (int i = 0; i < model.KRAs.Count; i++)
+                    {
+                        KRA kra;
+                        if (model.KRA_IDs.Count > i && model.KRA_IDs[i] > 0)
+                        {
+                            kra = db.KRAs.Find(model.KRA_IDs[i]);
+                            kra.KRA1 = model.KRAs[i];
+                            kra.Duration = model.Durations[i];
+                            kra.Updated_date = DateTime.Now;
+                            kra.Updated_by = regId.ToString();
+                        }
+                        else
+                        {
+                            kra = new KRA
+                            {
+                                KRA1 = model.KRAs[i],
+                                RegId = regId,
+                                Section_Name = userInfo.Section,
+                                SessionId = 18,
+                                Duration = model.Durations[i],
+                                Created_By = regId.ToString(),
+                                Created_date = DateTime.Now,
+                                Updated_date = DateTime.Now,
+                                Updated_by = regId.ToString()
+                            };
+                            db.KRAs.Add(kra);
+                            db.SaveChanges();
+                            model.KRA_IDs.Add(kra.KRA_ID);
+                        }
+
+                        if (model.KPIs != null && model.KPIs.Count > i && model.KPIs[i] != null)
+                        {
+                            var existingKpis = db.KPIs.Where(k => k.KRA_ID == kra.KRA_ID).ToList();
+                            for (int j = 0; j < model.KPIs[i].Count; j++)
+                            {
+                                if (existingKpis.Count > j)
+                                {
+                                    var kpi = existingKpis[j];
+                                    kpi.KPI1 = model.KPIs[i][j];
+                                    kpi.Updated_date = DateTime.Now;
+                                    kpi.Updated_by = regId.ToString();
+                                    db.Entry(kpi).State = System.Data.Entity.EntityState.Modified;
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
                                 }
+                                else
+                                {
+                                    KPI kpi = new KPI
+                                    {
+                                        KPI1 = model.KPIs[i][j],
+                                        KRA_ID = kra.KRA_ID,
+                                        Created_date = DateTime.Now,
+                                        Created_By = regId.ToString(),
+                                        Updated_by = regId.ToString(),
+                                        Updated_date = DateTime.Now
+                                    };
+                                    db.KPIs.Add(kpi);
+                                }
+                                db.SaveChanges();
                             }
                         }
                     }
@@ -267,7 +355,10 @@ namespace STEP_PORTAL.Controllers
             return RedirectToAction("DisplayAllData", "Employee");
         }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
 
         [CustomAuthorize]
         public ActionResult ViewKraKpi()
@@ -331,6 +422,7 @@ namespace STEP_PORTAL.Controllers
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 var companies = db.Company_Information
+<<<<<<< HEAD
                                   .OrderBy(c => c.Name)
                                   .Select(c => new SelectListItem
                                   {
@@ -339,6 +431,14 @@ namespace STEP_PORTAL.Controllers
                                   })
                                   .ToList();
 
+=======
+                                   .Select(c => new SelectListItem
+                                   {
+                                       Value = c.ID.ToString(),
+                                       Text = c.Name
+                                   })
+                                   .ToList();
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
 
                 ViewBag.Companies = companies;
 
@@ -525,6 +625,11 @@ namespace STEP_PORTAL.Controllers
                 ViewBag.SelectedTaxPeriod = SelectedTaxPeriod;
 
                 ViewBag.ApprovalSent = Session["ApprovalSent"];
+<<<<<<< HEAD
+=======
+
+                // Get KRA and KPI data for the logged user
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
 
                 // Get KRA and KPI data for the logged user
 
@@ -667,6 +772,10 @@ namespace STEP_PORTAL.Controllers
             {
                 try
                 {
+<<<<<<< HEAD
+=======
+                    /*                    int selectedTaxPeriod = (int)Session["SelectedTaxPeriod"];*/
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
                     int selectedTaxPeriod = int.Parse(Session["SelectedTaxPeriod"].ToString());
 
                     var approvalSent = db.prc_GetKraKpiOutcomeData(regId, selectedTaxPeriod)

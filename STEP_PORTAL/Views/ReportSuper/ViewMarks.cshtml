@@ -86,9 +86,23 @@
                                         sumOfAverages = Model.KraKpiOutcomeData[0].KPI_AVG.Value;
                                     }
                                 }
+<<<<<<< HEAD
                             </td>
                         }
                     </tr>
+=======
+                                <td>@kpi</td>
+                                <td>@outcome</td>
+                                <td>@item.AllRemarks[i]</td>
+                                <td style="text-align:center">@mark</td>
+                                @if (i == 0)
+                                {
+                                    <td rowspan=@kpiCount style="text-align:center">
+                                        @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
+                                    </td>
+                                }
+                            </tr>
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
                         }
                     }
                     <tr>

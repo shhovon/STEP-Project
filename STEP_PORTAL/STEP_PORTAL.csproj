@@ -189,7 +189,10 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KraKpiCombinedModel.cs" />
+<<<<<<< HEAD
     <Compile Include="Models\KraKpiData.cs" />
+=======
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
     <Compile Include="Models\KraKpiViewModelCollection.cs" />
     <Compile Include="Models\MarksUpdateModel.cs" />
     <Compile Include="Models\New_Tax_Period.cs">

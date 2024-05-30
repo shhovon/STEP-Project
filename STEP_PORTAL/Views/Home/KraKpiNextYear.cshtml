@@ -34,7 +34,11 @@
 
             <!-- Selected by default -->
 
+<<<<<<< HEAD
             <input id="1" name="r" type="radio" />
+=======
+            <input id="1" name="r" type="radio"  />
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
             <label class="collapse" for="1"><a href="@Url.Action("DisplayKrasAndKpis", "Home")"> 1. Outcome Entry</a></label>
             <div></div>
 
@@ -46,7 +50,11 @@
             <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("TrainingNeed", "Employee")"> 3. Training</a></label>
             <div></div>
 
+<<<<<<< HEAD
             <input id="3" name="r" type="radio" checked />
+=======
+            <input id="3" name="r" type="radio" checked/>
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
             <label class="collapse" for="1"><a href="@Url.Action("KraKpiNextYear", "Home")">4. Next Year's Entry</a></label>
             <div></div>
 
@@ -77,10 +85,13 @@
                         <tr>
                             <td style="vertical-align:middle">@(i + 1)</td>
                             <td style="vertical-align:middle;">
+<<<<<<< HEAD
 
                                 <input type="hidden" id="SessionId" name="SessionId" value="@Model.SessionId" />
 
 
+=======
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
                                 @if (i < Model.KRA_IDs.Count)
                                 {
                                     <input type="hidden" id="KRA_IDs_@(i)" name="KRA_IDs[@i]" value="@Model.KRA_IDs[i]" />
@@ -90,7 +101,11 @@
                             <td>
                                 @if (i < Model.KPIs.Count)
                                 {
+<<<<<<< HEAD
                                     for (int j = 0; j < 3; j++)
+=======
+                                    for (int j = 0; j < Model.KPIs[i].Count; j++)
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
                                     {
                                         <div>
                                             @if (i < Model.KPI_IDs.Count && j < Model.KPI_IDs[i].Count)
@@ -121,6 +136,7 @@
 
             <br />
 
+<<<<<<< HEAD
             if (ViewBag.ApprovalSent != null && (bool)ViewBag.ApprovalSent)
             {
                 <div class="alert alert-danger" role="alert">
@@ -139,6 +155,11 @@
         }
     </div>
 
+=======
+            <input type="submit" value="Save" class="btn btn-primary submit-btn" />
+        }
+    </div>
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
     <hr />
 </body>
 </html>

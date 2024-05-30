@@ -182,9 +182,23 @@ namespace STEP_PORTAL.Controllers
         [CustomAuthorize]
         public ActionResult AddMarksHR(string regId)
         {
+<<<<<<< HEAD
             int RegId = int.Parse(Session["RegID"].ToString());
             int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
             int EmpRegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+=======
+/*            int RegId;
+            try
+            {
+                RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+            }
+            catch (FormatException)
+            {
+                RegId = 0;
+            }*/
+            int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+            int deptHeadValue;
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
 
                 using (DB_STEPEntities db = new DB_STEPEntities())
                 {
@@ -228,7 +242,11 @@ namespace STEP_PORTAL.Controllers
 
                     var userInfo = db.Database.SqlQuery<EmployeeInfo>(
                           "prc_EmployeeInfoByRegID @RegID",
+<<<<<<< HEAD
                           new SqlParameter("@RegID", EmpRegId)).FirstOrDefault();
+=======
+                          new SqlParameter("@RegID", RegId)).FirstOrDefault();
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
 
                     Session["EmployeeCodeInd"] = userInfo.EmployeeCode;
                     Session["NameInd"] = userInfo.Name;
@@ -413,7 +431,15 @@ namespace STEP_PORTAL.Controllers
             }
             TempData["SuccessMessage"] = "Attendance marks saved successfully!";
 
+<<<<<<< HEAD
             //string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+=======
+<<<<<<< HEAD
+            //string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+=======
+           // string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+>>>>>>> 2fb5633e7882b0cde4cce6838b80756d8d12b3e8
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
             return RedirectToAction("AddMarksHR", new { regId = regId });
 /*            return RedirectToAction("ViewEmpListHR", "HR");*/
         }
@@ -498,7 +524,10 @@ namespace STEP_PORTAL.Controllers
                 TopTaxPeriods = topTaxPeriods
             };
 
-            ViewBag.SuccessMessage = TempData["SuccessMessage"];
+            if (TempData["SuccessMessage"] != null)
+            {
+                ViewBag.SuccessMessage = TempData["SuccessMessage"].ToString();
+            }
 
             return View(model);
         }
@@ -606,9 +635,15 @@ namespace STEP_PORTAL.Controllers
 
                 var comment = comments.FirstOrDefault();
 
+<<<<<<< HEAD
                 var userSL = db.Database.SqlQuery<EmployeeInfo>(
                                 "prc_GetEmployeeServiceLength @RegID",
                                 new SqlParameter("@RegID", EmpRegId)).FirstOrDefault();
+=======
+                var userSL = db.Database.SqlQuery<EmployeeInfo>("prc_GetEmployeeServiceLength @RegID",
+                                new SqlParameter("@RegID", RegId)).FirstOrDefault();
+
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
                 Session["ServiceOfLength"] = userSL.Service_Length;
                 ViewBag.RegId = EmpRegId;
 
@@ -621,6 +656,7 @@ namespace STEP_PORTAL.Controllers
                                                     AllRemarks = g.Select(x => x.Remarks).ToList()
                                                 })
                                                 .ToList();
+
                 var designations = db.Database.SqlQuery<DesignationModel>("prc_GetDesignations").ToList();
 
                 var viewModel = new DisplayAllDataViewModel

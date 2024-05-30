@@ -91,6 +91,7 @@ namespace STEP_PORTAL.Controllers
 
                     ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
                     ViewBag.RegId = RegId;
+
                     return View("KraKpiOutcomeView", kraKpiOutcomeData);
 
                 }
@@ -400,6 +401,7 @@ namespace STEP_PORTAL.Controllers
             return Json(new { SupervisorComment = supervisorComment }, JsonRequestBehavior.AllowGet);
         }
 
+<<<<<<< HEAD
         /*        [HttpPost]
       public JsonResult CheckAuth(int regId, int empRegId, int sessionId, string type)
                {
@@ -424,6 +426,30 @@ namespace STEP_PORTAL.Controllers
                }*/
 
 
+=======
+        [HttpPost]
+        public JsonResult CheckAuth(int regId, int empRegId, int sessionId, string type)
+        {
+            using (var db = new DB_STEPEntities())
+            {
+                var result = db.Database.SqlQuery<StatusResult>("exec prc_CheckAuth @RegId, @SESSION_ID, @Type, @EmpRegId",
+                    new SqlParameter("RegId", regId),
+                    new SqlParameter("SESSION_ID", sessionId),
+                    new SqlParameter("Type", type),
+                    new SqlParameter("EmpRegId", empRegId)
+                ).FirstOrDefault();
+
+                if (result != null && result.Status)
+                {
+                    return Json(new { status = true, encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(empRegId.ToString()) });
+                }
+                else
+                {
+                    return Json(new { status = false });
+                }
+            }
+        }
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
 
         public List<EmployeeInfo> GetEmployeeListByDeptHead(int deptHeadValue, int companyId)
         {
@@ -501,6 +527,7 @@ namespace STEP_PORTAL.Controllers
             }
         }
 
+<<<<<<< HEAD
         // revert 
 
         [HttpPost]
@@ -537,6 +564,8 @@ namespace STEP_PORTAL.Controllers
             }
 
         }
+=======
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
 
 
     }
