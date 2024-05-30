@@ -31,6 +31,17 @@
         <script>alert('@ViewBag.ErrorMessage');</script>
     }
 
+    @if (ViewBag.AuthorizationMessage != null)
+    {
+        <script>
+        setTimeout(function() {
+            alert('@Html.Raw(ViewBag.AuthorizationMessage)');
+            window.location.href = '@Url.Action("Dashboard", "Home")';
+        }, 2000);
+        </script>
+        return;
+    }
+
     <style>
         .tab {
             display: inline-block;
@@ -67,6 +78,7 @@
                             <th>KRA</th>
                             <th>KPI</th>
                             <th>Outcome</th>
+                            <th>Remarks</th>
                             <th>Performance Marks</th>
                             <th>Total Average</th>
                         </tr>
@@ -89,6 +101,7 @@
                                     }
                                     <td>@kpi</td>
                                     <td>@outcome</td>
+                                    <td>@item.AllRemarks[i]</td>
                                     <td style="text-align:center">@mark</td>
                                     @if (i == 0)
                                     {
@@ -107,7 +120,7 @@
                             }
                         }
                         <tr>
-                            <td colspan="4" style="text-align: center; background-color: Highlight; color: white;">
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
                                 <strong>
                                     Average Cumulative Score of KRA’s / @totalKraCount
                                 </strong>
@@ -193,9 +206,11 @@
                         1.5 Overall Performance Rating Achieved:
                         @{
                             decimal? ratingAvg = null;
+                            decimal defaultAvg = 0;
                             if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null && Model.KraKpiOutcomeData[0].KPI_AVG.HasValue)
                             {
-                                ratingAvg = (int)Model.KraKpiOutcomeData[0].Rating_Achieved;
+                                ratingAvg = Model.KraKpiOutcomeData[0].Rating_Achieved.HasValue ?
+                                            (int)Model.KraKpiOutcomeData[0].Rating_Achieved.Value : defaultAvg;
                             }
                         }
                         <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"

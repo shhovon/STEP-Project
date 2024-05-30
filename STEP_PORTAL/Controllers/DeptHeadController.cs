@@ -1,4 +1,4 @@
-﻿using STEP_DEMO.Models;
+﻿using STEP_PORTAL.Models;
 using STEP_PORTAL.Models;
 using System;
 using System.Collections.Generic;
@@ -40,23 +40,27 @@ namespace STEP_PORTAL.Controllers
             using (DB_STEPEntities db = new DB_STEPEntities())
             {
                 companies = db.Company_Information
+                              .OrderBy(c => c.Name)
                               .Select(c => new CompanyViewModel
                               {
                                   ID = c.ID,
                                   Name = c.Name
                               })
                               .ToList();
+
             }
 
             return companies;
         }
 
         [CustomAuthorize]
-        public ActionResult ViewEmpList()
+        public ActionResult ViewEmpListRS()
         {
             List<EmployeeInfo> employees = new List<EmployeeInfo>();
             int deptHeadValue;
             int companyId = 0;
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
 
             if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
             {
@@ -91,7 +95,7 @@ namespace STEP_PORTAL.Controllers
         }
 
         [HttpPost]
-        public ActionResult ViewEmpList(int? companyId)
+        public ActionResult ViewEmpListRS(int? companyId)
         {
             List<EmployeeInfo> employees = new List<EmployeeInfo>();
             int deptHeadValue;
@@ -232,15 +236,32 @@ namespace STEP_PORTAL.Controllers
         public ActionResult ViewEmpMarks(string regId)
         {
             int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+            int deptHeadValue = int.Parse(Session["RegID"].ToString());
+
             List<KraKpiOutcomeModel> kraKpiOutcomeData;
             using (var db = new DB_STEPEntities())
             {
+                var authResult = db.Database.SqlQuery<StatusResult>(
+                        "exec prc_CheckAuth @RegId, @SESSION_ID, @Type, @EmpRegId",
+                        new SqlParameter("@RegId", deptHeadValue),
+                        new SqlParameter("@SESSION_ID", sessionID),
+                        new SqlParameter("@Type", "AddMarksHOD"),
+                        new SqlParameter("@EmpRegId", RegId)
+                    ).FirstOrDefault();
+
+                if (authResult == null || !authResult.Status)
+                {
+                    ViewBag.AuthorizationMessage = authResult?.Message ?? "Unauthorized access";
+                    return RedirectToAction("Dashboard", "Home");
+                }
+
                 var last2session = (db.New_Tax_Period
                                    .OrderByDescending(t => t.TaxPeriod)
                                    .Select(t => t.TaxPeriod).Take(2).ToList());
 
                 ViewBag.TopTaxPeriods = last2session;
-                int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+
 
                 var userInfo = db.Database.SqlQuery<EmployeeInfo>(
                                 "prc_EmployeeInfoByRegID @RegID",
@@ -274,7 +295,8 @@ namespace STEP_PORTAL.Controllers
                                                 {
                                                     KRA = g.Key,
                                                     KPIIs = g.Select(x => x.KPI).ToList(),
-                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
+                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList(),
+                                                    AllRemarks = g.Select(x=>x.Remarks).ToList()
                                                 })
                                                 .ToList();
                 var designations = db.Database.SqlQuery<DesignationModel>("prc_GetDesignations").ToList();

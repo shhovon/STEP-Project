@@ -8,6 +8,12 @@
 
 <body>
 
+    @{
+        decimal sumOfAverages = 0;
+        int totalKraCount = Model.GroupedData.Count();
+
+    }
+
     <h3>View Marks and Comment</h3>
     <br />
 
@@ -44,6 +50,7 @@
                         <th>KRA</th>
                         <th>KPI</th>
                         <th>Outcome</th>
+                        <th>Remarks</th>
                         <th>Performance Marks</th>
                         <th>Total Average</th>
                     </tr>
@@ -59,23 +66,39 @@
                             string outcome = outcomeItem != null ? outcomeItem.Outcome : null;
                             var mark = outcomeItem != null ? outcomeItem.Marks_Achieved : 0;
 
-                            <tr>
-                                @if (i == 0)
-                                {
-                                    <td rowspan=@kpiCount>@item.KRA</td>
+                    <tr>
+                        @if (i == 0)
+                        {
+                            <td rowspan=@kpiCount>@item.KRA</td>
+                        }
+                        <td>@kpi</td>
+                        <td>@outcome</td>
+                        <td>@item.AllRemarks[i]</td>
+                        <td style="text-align:center">@mark</td>
+                        @if (i == 0)
+                        {
+                            <td rowspan=@kpiCount style="text-align:center">
+                                @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
+                                @{
+                                    decimal MarskAverage = Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count;
+                                    if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null && Model.KraKpiOutcomeData[0].KPI_AVG.HasValue)
+                                    {
+                                        sumOfAverages = Model.KraKpiOutcomeData[0].KPI_AVG.Value;
+                                    }
                                 }
-                                <td>@kpi</td>
-                                <td>@outcome</td>
-                                <td style="text-align:center">@mark</td>
-                                @if (i == 0)
-                                {
-                                    <td rowspan=@kpiCount style="text-align:center">
-                                        @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
-                                    </td>
-                                }
-                            </tr>
+                            </td>
+                        }
+                    </tr>
                         }
                     }
+                    <tr>
+                        <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+                            <strong>
+                                Average Cumulative Score of KRA’s / @totalKraCount
+                            </strong>
+                        </td>
+                        <td style="text-align: center; background-color: Highlight; color: white;"><strong>@sumOfAverages</strong></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
