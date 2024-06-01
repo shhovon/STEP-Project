@@ -1,4 +1,8 @@
 ﻿using STEP_PORTAL.Models;
+<<<<<<< HEAD
+=======
+using STEP_PORTAL.Models;
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
 using System.Collections.Generic;
 
 public class DisplayAllDataViewModel

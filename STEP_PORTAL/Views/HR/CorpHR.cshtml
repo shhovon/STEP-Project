@@ -72,8 +72,16 @@
                         <td>@employee.Name</td>
                         <td>@employee.EmployeeCode</td>
                         <td>@employee.EmpStatus</td>
+<<<<<<< HEAD
                         <td><a target="_blank" href="../HR/FinalRecommendation?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
                         @*<td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>*@
+<<<<<<< HEAD
+=======
+=======
+                        @*<td><a target="_blank" href="../HR/FinalRecommendation?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>*@
+                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
                     </tr>
                 }
             </tbody>
@@ -126,6 +134,7 @@
     }
 
 
+<<<<<<< HEAD
     $('#DepartmentDropdown').change(function () {
         var selectedDepartment = $(this).val();
         var departments = @Html.Raw(Json.Encode(ViewBag.Departments));
@@ -143,6 +152,37 @@
 
     // Export to Excel
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+        // check auth
+
+    function checkAuthAndRedirect(regId, empRegId) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckAuth", "ReportSuper")',
+            data: {
+                regId: regId,
+                empRegId: empRegId,
+                sessionId: $('#selectedTaxPeriod').val(),
+                type: 'AddMarksCHR'
+            },
+            success: function(response) {
+                if (response.status) {
+                    window.open('../HR/FinalRecommendation?regId=' + encodeURIComponent(response.encryptedRegId), '_blank');
+                } else {
+                    alert('You do not have authorization to access this page!');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking authorization!');
+            }
+        });
+    }
+
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
     // generate pdf
 
     $(document).ready(function () {
@@ -154,4 +194,26 @@
     });
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+   $('#DepartmentDropdown').change(function () {
+    var selectedDepartment = $(this).val();
+    var departments = @Html.Raw(Json.Encode(ViewBag.Departments));
+    var selectedDepartmentData = departments.find(d => d.DepartmentName === selectedDepartment);
+
+    $('#SectionDropdown').empty();
+    //$('#SectionDropdown').append($('<option>').text('Select Section').val(''));
+
+    if (selectedDepartmentData && selectedDepartmentData.Sections) {
+        $.each(selectedDepartmentData.Sections, function (index, section) {
+            $('#SectionDropdown').append($('<option>').text(section).val(section));
+        });
+    }
+});
+>>>>>>> 2fb5633e7882b0cde4cce6838b80756d8d12b3e8
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
 </script>
