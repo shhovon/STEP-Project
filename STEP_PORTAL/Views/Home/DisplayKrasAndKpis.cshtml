@@ -75,7 +75,7 @@
                 <option value="@taxPeriod.TaxPerID">@taxPeriod.TaxPeriod</option>
             }
         </select>
-    </div>    
+    </div>
     <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" value="@ViewBag.SelectedTaxPeriod" />
 }
 else
@@ -105,6 +105,10 @@ else
         <div></div>
 
         <input id="3" name="r" type="radio" />
+        <label class="collapse" for="1"><a href="@Url.Action("KraKpiNextYear", "Home")">4. Next Year's Entry</a></label>
+        <div></div>
+
+        <input id="3" name="r" type="radio" />
         <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("DisplayAllData", "Employee")">4. Preview & Submit</a></label>
         <div></div>
     </div>
@@ -114,7 +118,7 @@ else
 @*main body start*@
 
 <form method="post" action="@Url.Action("UpdateOutcomeEntry", "Home")">
-    <table class="user-info-table2" id="numberInputTable" border="1">
+    <table class="user-info-table2" id="tblMain" border="1">
         <h4>1.1 ACHIEVEMENT AGAINST AGREED OBJECTIVES </h4>
 
         <hr />
@@ -127,35 +131,7 @@ else
             <th>KPI OUTCOME</th>
         </tr>
 
-        @*    <tbody>
-            @for (int i = 0; i < Model.Count; i++)
-            {
-                var item = Model[i];
-                <tr>
-                    <td>@(i + 1)</td>
-                    <td>@item.KRA</td>
-                    <td>
-                        @for (int j = 0; j < item.KPIIs.Count; j++)
-                        {
-                            <div>
-                                @item.KPIIs[j]
-                            </div>
-                        }
-                    </td>
-                    <td>
-                        @for (int j = 0; j < item.KPIOutcomes.Count; j++)
-                        {
-                            <div>
-                                <input type="hidden" name="SelectedKRA" value="@item.KRA" />
-                                <input type="hidden" name="SelectedKPI" value="@item.KPIIs[j]" />
-                                <input style="height:30px; width:250px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[j]" />
-                            </div>
 
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>*@
 
         <tbody>
             @{
@@ -165,52 +141,188 @@ else
             {
                 foreach (var item in Model)
                 {
+                    if (@item.Section_Name == "0")
+                    {
+                        continue;
+                    }
+
                     var kpiCount = item.KPIIs.Count;
-                    for (var i = 0; i < kpiCount; i++)
+                <tbody>
+
+
+                    @for (var i = 0; i < kpiCount; i++)
                     {
                         var kpi = item.KPIIs[i];
 
+
+
+                    <tr>
+
+                        @if (i == 0)
+                        {
+
+                            <td rowspan=@kpiCount>@sl</td>
+
+                            <td rowspan=@kpiCount>@item.KRAs[i]  </td>
+                        }
+                        <td>@kpi</td>
+                        <td>
+                            @if (item.KPIOutcomes.Count > i)
+                            {
+                                <input type="hidden" name="SelectedSession" value="@item.Section_Name" />
+                                <input type="hidden" name="SelectedKRA" value="@item.KRA_ID" />
+                                <input type="hidden" name="SelectedKPI" value="@item.KPI_IDss[i]" />
+                                <input style="height:30px; width:250px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[i]" />
+                            }
+
+                        </td>
+                        @if (i == 0)
+                        {
+@*                            <td rowspan=@kpiCount><a class="deleteRowButton"> <strong>X</strong></a></td>*@
+                            if (@ViewBag.ApprovalSent)
+                            {
+                                <td hidden="hidden" rowspan=@kpiCount><a class="deleteRowButton"> <strong>X</strong></a></td>
+                            }
+                            else
+                            {
+                                <td rowspan=@kpiCount><a class="deleteRowButton"> <strong>X</strong></a></td>
+                            }
+
+                        }
+                    </tr>
+
+
+                    }
+                </tbody>
+
+                sl++;
+            }
+        }
+            </tbody>
+
+            <tbody id="tblMain_tbody">
+            </tbody>
+        </table>
+
+    <br />
+
+        @if (@ViewBag.ApprovalSent)
+        {
+            <div class="alert alert-danger" role="alert">
+                <button class="btn btn-primary" type="submit" hidden="hidden">Save</button>
+                <i class="fas fa-info-circle"></i> Already Sent for Approval
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-success2" role="alert" style="text-align:right">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        }
+
+        <br />
+
+
+        <table class="user-info-table2" id="numberInputTable" border="1" style="background-color:#d9e8f5;">
+
+            <div class="alert alert-success" role="alert">
+                KPI List (At first Add To Your List)
+            </div>
+
+            <tbody>
+                @{
+                    sl = 1;
+                }
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+
+                        if (@item.Section_Name != "0")
+                        {
+                            continue;
+                        }
+
+
+                        var kpiCount = item.KPIIs.Count;
+                    <tbody>
+
+
+                        @for (var i = 0; i < kpiCount; i++)
+                        {
+                            var kpi = item.KPIIs[i];
+
+
+
                         <tr>
+
                             @if (i == 0)
                             {
-                                <td rowspan=@kpiCount>@sl</td>
-                                <td rowspan=@kpiCount>@item.KRA</td>
+
+                                <td rowspan=@kpiCount></td>
+
+                                <td rowspan=@kpiCount>@item.KRAs[i]</td>
                             }
                             <td>@kpi</td>
                             <td>
                                 @if (item.KPIOutcomes.Count > i)
                                 {
-                                    <input type="hidden" name="SelectedKRA" value="@item.KRA" />
-                                    <input type="hidden" name="SelectedKPI" value="@kpi" />
-                                    <input style="height:30px; width:250px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[i]" />
+                                    <input type="hidden" name="SelectedSession" value="@item.Section_Name" />
+                                    <input type="hidden" name="SelectedKRA" value="@item.KRA_ID" />
+                                    <input type="hidden" name="SelectedKPI" value="@item.KPI_IDss[i]" />
+                                    <div name="KPIOutcomesdiv"></div>
+                                    <p>____</p>
+
                                 }
+
                             </td>
+                            @if (i == 0)
+                            {
+@*                                <td rowspan=@kpiCount>
+                                    <a class="AddRowButton" name="AddRowButton">
+                                        <strong>Add</strong>
+                                    </a>
+                                </td>*@
+                                if (@ViewBag.ApprovalSent)
+                                {
+                                    <td hidden="hidden" rowspan=@kpiCount>
+                                        <a class="AddRowButton" name="AddRowButton">
+                                            <strong>Add</strong>
+                                        </a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td rowspan=@kpiCount>
+                                        <a class="AddRowButton" name="AddRowButton">
+                                            <strong>Add</strong>
+                                        </a>
+                                    </td>
+                                }
+
+                            }
                         </tr>
-                    }
+
+
+
+                        }
+                    </tbody>
+
                     sl++;
                 }
             }
-        </tbody>
-    </table>
-    <br />
+                </tbody>
 
-    @if (@ViewBag.ApprovalSent)
-    {
-        <div class="alert alert-danger" role="alert">
-            <button class="btn btn-primary" type="submit" hidden="hidden">Save</button>
-            <i class="fas fa-info-circle"></i> Already Sent for Approval
-        </div>
-    }
-    else
-    {
-        <button class="btn btn-primary" type="submit">Save</button>
-    }
-</form>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            </table>
+            <br />
 
-@section scripts {
-    <script>
+        </form>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+        @section scripts {
+            <script>
 
         $(document).ready(function () {
 
@@ -219,6 +331,93 @@ else
 
             $('#taxPeriodDropdownMV').val(session_id);
 
+
+            $(document).ready(function () {
+                $('.deleteRowButton').click(DeleteRow);
+            });
+
+            $(document).ready(function () {
+                $('.AddRowButton').click(AddRow);
+            });
+
+
+             function DeleteRow() {
+
+
+
+                var kraId = $(this).parents('tr').find('[name=SelectedKRA]').val();
+
+
+                console.log(kraId);
+
+                //Delete from Database
+
+                $.ajax({
+                url: '@Url.Action("DeleteOutcome", "Home")',
+                type: 'POST',
+                    data: { kraId: kraId },
+                success: function(response) {
+                    if (response.success) {
+                        console.log('DeleteOutcome successfully.');
+                    } else {
+                        console.error('Failed to DeleteOutcome.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', error);
+                }
+                });
+
+                 //Delete from HTML
+
+                $(this).parents('tbody').remove();
+
+
+
+            }
+
+
+
+
+            function AddRow() {
+
+
+                var kraId = $(this).parents('tr').find('[name=SelectedKRA]').val();
+
+                console.log(kraId);
+
+
+                  //append to Main
+
+
+
+                $(this).parents('tbody').find('[name=SelectedSession]').each(function () {
+                    $(this).val(session_id);
+                });
+
+
+
+                $(this).parents('tr').find('[name=AddRowButton]').text("");
+               // $("[name=KPIOutcomesdiv]").append("<input style='height:30px; width:250px;' type='text' name='KPIOutcome'  />");
+
+
+
+                var row = $(this).parents('tbody').html()
+
+                $(this).parents('tbody').find('[name=SelectedSession]').each(function () {
+                    row = row.replace("____", "<input style='height:30px; width:250px;' type='text' name='KPIOutcome'  />");
+                });
+
+               // $("#tblMain tbody").append(row);
+                $("#tblMain_tbody").append(row);
+
+
+                  //Delete from HTML
+                $(this).parents('tbody').remove();
+
+
+
+            }
 
 
 
@@ -246,8 +445,8 @@ else
     });
 });
 
-    </script>
-}
+            </script>
+        }
 
 
 

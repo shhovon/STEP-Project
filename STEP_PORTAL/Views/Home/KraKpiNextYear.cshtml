@@ -16,12 +16,6 @@
             display: inline-block;
         }
 
-@*        .submit-btn {
-            width: auto;
-            padding: 10px 20px;
-            font-size: 16px;
-        }*@
-
         #kra-kpi-table {
             margin-top: 20px;
         }
@@ -33,6 +27,35 @@
     </style>
 </head>
 <body>
+    @*      new navigation buttons   *@
+
+    <div class="card" style=" background-color: transparent;">
+        <div id="menu_tab">
+
+            <!-- Selected by default -->
+
+            <input id="1" name="r" type="radio" />
+            <label class="collapse" for="1"><a href="@Url.Action("DisplayKrasAndKpis", "Home")"> 1. Outcome Entry</a></label>
+            <div></div>
+
+            <input id="2" name="r" type="radio" />
+            <label class="collapse" for="2"> <a id="specialFactorsBtn" href="@Url.Action("SpecialFactors", "Employee")"> 2. Special Factor</a></label>
+            <div></div>
+
+            <input id="3" name="r" type="radio" />
+            <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("TrainingNeed", "Employee")"> 3. Training</a></label>
+            <div></div>
+
+            <input id="3" name="r" type="radio" checked />
+            <label class="collapse" for="1"><a href="@Url.Action("KraKpiNextYear", "Home")">4. Next Year's Entry</a></label>
+            <div></div>
+
+            <input id="4" name="r" type="radio" />
+            <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("DisplayAllData", "Employee")">5. Preview & Submit</a></label>
+            <div></div>
+        </div>
+    </div>
+    <br />
     <div class="container mt-4">
         <h4>Next Year's KRA and KPI Entry</h4>
         <br />
@@ -45,29 +68,51 @@
                         <th>SL</th>
                         <th>KEY RESULT AREAS (KRA)<br>(Task and Personal Objectives)</th>
                         <th>KEY PERFORMANCE INDICATORS (KPI)<br>(Determine how KRA's to be measured)</th>
+                        <th>Completion Deadline</th>
                     </tr>
                 </thead>
                 <tbody>
                     @for (int i = 0; i < 5; i++)
                     {
                         <tr>
-                            <td>@(i + 1)</td>
-                            <td>
-                                <input type="text" id="KRAs_@(i)" name="KRAs[@i]" class="form-control" />
+                            <td style="vertical-align:middle">@(i + 1)</td>
+                            <td style="vertical-align:middle;">
+
+                                <input type="hidden" id="SessionId" name="SessionId" value="@Model.SessionId" />
+
+
+                                @if (i < Model.KRA_IDs.Count)
+                                {
+                                    <input type="hidden" id="KRA_IDs_@(i)" name="KRA_IDs[@i]" value="@Model.KRA_IDs[i]" />
+                                }
+                                <input type="text" id="KRAs_@(i)" name="KRAs[@i]" class="form-control" value="@(i < Model.KRAs.Count ? Model.KRAs[i] : "")" />
                             </td>
                             <td>
-                                <div>
-                                    <label for="KPI">A</label>
-                                    <textarea id="KPIs_@(i)_0" name="KPIs[@i][0]" class="form-control kpi-textarea"></textarea>
-                                </div>
-                                <div>
-                                    <label for="KPI">B</label>
-                                    <textarea id="KPIs_@(i)_1" name="KPIs[@i][1]" class="form-control kpi-textarea"></textarea>
-                                </div>
-                                <div>
-                                    <label for="KPI">C</label>
-                                    <textarea id="KPIs_@(i)_2" name="KPIs[@i][2]" class="form-control kpi-textarea"></textarea>
-                                </div>
+                                @if (i < Model.KPIs.Count)
+                                {
+                                    for (int j = 0; j < 3; j++)
+                                    {
+                                        <div>
+                                            @if (i < Model.KPI_IDs.Count && j < Model.KPI_IDs[i].Count)
+                                            {
+                                                <input type="hidden" id="KPI_IDs_@(i)_@(j)" name="KPI_IDs[@i][@j]" value="@Model.KPI_IDs[i][j]" />
+                                            }
+                                            <textarea id="KPIs_@(i)_@(j)" name="KPIs[@i][@j]" class="form-control kpi-textarea">@(i < Model.KPIs.Count && j < Model.KPIs[i].Count ? Model.KPIs[i][j] : "")</textarea>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    for (int j = 0; j < 3; j++)
+                                    {
+                                        <div>
+                                            <textarea id="KPIs_@(i)_@(j)" name="KPIs[@i][@j]" class="form-control kpi-textarea"></textarea>
+                                        </div>
+                                    }
+                                }
+                            </td>
+                            <td style="vertical-align:middle">
+                                <input type="date" id="Durations_@(i)" name="Durations[@i]" class="form-control" value="@(i < Model.Durations.Count && Model.Durations[i] != null ? Model.Durations[i].Value.ToString("yyyy-MM-dd") : "")" />
                             </td>
                         </tr>
                     }
@@ -76,10 +121,24 @@
 
             <br />
 
-                <input type="submit" value="Save" class="btn btn-primary submit-btn" />
+            if (ViewBag.ApprovalSent != null && (bool)ViewBag.ApprovalSent)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <input type="submit" hidden="hidden" value="Save" class="btn btn-primary submit-btn" />
+                    <i class="fas fa-info-circle"></i> Already Sent for Approval
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-primary submit-btn" />
+                    </div>
+                </div>
+            }
         }
     </div>
-    <hr />
 
+    <hr />
 </body>
 </html>
