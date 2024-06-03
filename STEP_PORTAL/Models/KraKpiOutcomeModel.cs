@@ -41,11 +41,22 @@ public class KraKpiOutcomeModel
         public string Final_Propose_Promotion { get; set; }
         public int? Final_Propose_Incr { get; set; }
         public DateTime? Effect_Date { get; set; }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
         public List<DateTime?> Durations { get; set; }
         public DateTime? Duration { get; set; }
 
     // public string Remarks { get; set; }
     public string Remarks { get; set; }
+<<<<<<< HEAD
+=======
+=======
+       // public string Remarks { get; set; }
+        public string Remarks { get; set; }
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 
 /*    public KraKpiOutcomeModel()
     {

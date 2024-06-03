@@ -28,7 +28,14 @@ namespace STEP_PORTAL.Controllers
             int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
             int deptHeadValue;
             int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+<<<<<<< HEAD
             STEP_DEMO.Controllers.DataController DC = new STEP_DEMO.Controllers.DataController();
+=======
+<<<<<<< HEAD
+            STEP_DEMO.Controllers.DataController DC = new STEP_DEMO.Controllers.DataController();
+=======
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 
             if (Session["RegID"] != null && int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
             {
@@ -107,9 +114,17 @@ namespace STEP_PORTAL.Controllers
                            })
                            .ToList();
 
+<<<<<<< HEAD
 
                     ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
                     ViewBag.RegId = RegId;
+=======
+
+
+                    ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
+                    ViewBag.RegId = RegId;
+<<<<<<< HEAD
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 /*                    return View("KraKpiOutcomeView", kraKpiOutcomeData);*/
 
                     var viewModel = new DisplayAllDataViewModel
@@ -124,6 +139,13 @@ namespace STEP_PORTAL.Controllers
 
                     //return View(viewModel);
                     return View("KraKpiOutcomeView", viewModel);
+<<<<<<< HEAD
+=======
+=======
+
+                    return View("KraKpiOutcomeView", kraKpiOutcomeData);
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 
                 }
             }
@@ -157,13 +179,26 @@ namespace STEP_PORTAL.Controllers
 
                     db.SaveChanges();
 
+<<<<<<< HEAD
                     var status = DC.UpdateRating(regId, sessionID);
 
+                    var updatedData = db.Database.SqlQuery<KraKpiOutcomeModel>(
+                        "exec prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+=======
+                    db.Database.ExecuteSqlCommand(
+                        "exec prc_UpdateRating @RegId, @SESSION_ID",
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+                        new SqlParameter("@RegId", regId),
+                        new SqlParameter("@SESSION_ID", sessionID)).ToList();
+
+<<<<<<< HEAD
+=======
                     var updatedData = db.Database.SqlQuery<KraKpiOutcomeModel>(
                         "exec prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
                         new SqlParameter("@RegId", regId),
                         new SqlParameter("@SESSION_ID", sessionID)).ToList();
 
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
                     foreach (var updatedItem in updatedData)
                     {
                         var existingItem = model.FirstOrDefault(m => m.KPI_ID == updatedItem.KPI_ID);
@@ -442,6 +477,13 @@ namespace STEP_PORTAL.Controllers
             return Json(new { SupervisorComment = supervisorComment }, JsonRequestBehavior.AllowGet);
         }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
         /*        [HttpPost]
       public JsonResult CheckAuth(int regId, int empRegId, int sessionId, string type)
                {
@@ -466,6 +508,36 @@ namespace STEP_PORTAL.Controllers
                }*/
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+        [HttpPost]
+        public JsonResult CheckAuth(int regId, int empRegId, int sessionId, string type)
+        {
+            using (var db = new DB_STEPEntities())
+            {
+                var result = db.Database.SqlQuery<StatusResult>("exec prc_CheckAuth @RegId, @SESSION_ID, @Type, @EmpRegId",
+                    new SqlParameter("RegId", regId),
+                    new SqlParameter("SESSION_ID", sessionId),
+                    new SqlParameter("Type", type),
+                    new SqlParameter("EmpRegId", empRegId)
+                ).FirstOrDefault();
+
+                if (result != null && result.Status)
+                {
+                    return Json(new { status = true, encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(empRegId.ToString()) });
+                }
+                else
+                {
+                    return Json(new { status = false });
+                }
+            }
+        }
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 
         public List<EmployeeInfo> GetEmployeeListByDeptHead(int deptHeadValue, int companyId)
         {
@@ -543,6 +615,13 @@ namespace STEP_PORTAL.Controllers
             }
         }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
         // revert 
 
         [HttpPost]
@@ -579,6 +658,14 @@ namespace STEP_PORTAL.Controllers
             }
 
         }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 
 
     }

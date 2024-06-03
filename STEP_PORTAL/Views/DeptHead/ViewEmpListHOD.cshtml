@@ -74,7 +74,7 @@
 
 @*                    @if (@employee.EmpStatus == "Supervisor_Comment" || @employee.EmpStatus == "User_Comment")
                     {*@
-                        <td><a target="_blank" href="../DeptHead/ViewEmpMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Comment Entry</a></td>
+                       @* <td><a target="_blank" href="../DeptHead/ViewEmpMarks?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Comment Entry</a></td>*@
                         
 @*                    }
                     else
@@ -83,7 +83,19 @@
                     }*@
 @*                    @if(@employee.EmpStatus == "ApprovalSent")
                     {*@
+<<<<<<< HEAD
 @*                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>*@
+=======
+<<<<<<< HEAD
+@*                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>*@
+=======
+<<<<<<< HEAD
+@*                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>*@
+=======
+                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 @*                    }
                     else
                     {
@@ -139,4 +151,39 @@
         }
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    // check auth
+
+    function checkAuthAndRedirect(regId, empRegId) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckAuth", "ReportSuper")',
+            data: {
+                regId: regId,
+                empRegId: empRegId,
+                sessionId: $('#selectedTaxPeriod').val(),
+                type: 'AddMarksHOD'
+            },
+            success: function(response) {
+                if (response.status) {
+                    window.open('../DeptHead/ViewEmpMarks?regId=' + encodeURIComponent(response.encryptedRegId), '_blank');
+                } else {
+                    alert('You do not have authorization to access this page!');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking authorization!');
+            }
+        });
+    }
+
+
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 </script>

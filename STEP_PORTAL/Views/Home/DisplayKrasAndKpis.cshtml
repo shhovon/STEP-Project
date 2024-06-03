@@ -156,6 +156,13 @@ else
 
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
                     <tr>
 
                         @if (i == 0)
@@ -254,14 +261,40 @@ else
 
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
                         <tr>
 
                             @if (i == 0)
                             {
 
+<<<<<<< HEAD
                                 <td rowspan=@kpiCount></td>
 
                                 <td rowspan=@kpiCount>@item.KRAs[i]</td>
+=======
+<<<<<<< HEAD
+                                <td rowspan=@kpiCount></td>
+
+                                <td rowspan=@kpiCount>@item.KRAs[i]</td>
+=======
+<<<<<<< HEAD
+                                <td rowspan=@kpiCount></td>
+
+                                <td rowspan=@kpiCount>@item.KRAs[i]</td>
+=======
+                                <td rowspan=@kpiCount>@sl</td>
+
+                                <td rowspan=@kpiCount>@item.KRAs[i]  </td>
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
                             }
                             <td>@kpi</td>
                             <td>
@@ -270,14 +303,37 @@ else
                                     <input type="hidden" name="SelectedSession" value="@item.Section_Name" />
                                     <input type="hidden" name="SelectedKRA" value="@item.KRA_ID" />
                                     <input type="hidden" name="SelectedKPI" value="@item.KPI_IDss[i]" />
+<<<<<<< HEAD
                                     <div name="KPIOutcomesdiv"></div>
                                     <p>____</p>
 
+=======
+<<<<<<< HEAD
+                                    <div name="KPIOutcomesdiv"></div>
+                                    <p>____</p>
+
+=======
+<<<<<<< HEAD
+                                    <div name="KPIOutcomesdiv"></div>
+                                    <p>____</p>
+
+=======
+                                    <input style="height:30px; width:250px;" type="text" name="KPIOutcome" value="@item.KPIOutcomes[i]" />
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
                                 }
 
                             </td>
                             @if (i == 0)
                             {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 @*                                <td rowspan=@kpiCount>
                                     <a class="AddRowButton" name="AddRowButton">
                                         <strong>Add</strong>
@@ -299,11 +355,125 @@ else
                                         </a>
                                     </td>
                                 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+                                <td rowspan=@kpiCount><a class="deleteRowButton"> <strong>X  </strong></a></td>
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 
                             }
                         </tr>
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+                    }
+                </tbody>
+
+                sl++;
+            }
+        }
+            </tbody>
+
+            <tbody id="tblMain_tbody">
+            </tbody>
+        </table>
+
+
+
+        @if (@ViewBag.ApprovalSent)
+        {
+            <div class="alert alert-danger" role="alert">
+                <button class="btn btn-primary" type="submit" hidden="hidden">Save</button>
+                <i class="fas fa-info-circle"></i> Already Sent for Approval
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-success2" role="alert" style="text-align:right">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        }
+
+        <br />
+
+
+        <table class="user-info-table2" id="numberInputTable" border="1" style="background-color:#d9e8f5;">
+
+            <div class="alert alert-success" role="alert">
+                KPI List (At first Add To Your List)
+            </div>
+
+            <tbody>
+                @{
+                    sl = 1;
+                }
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+
+                        if (@item.Section_Name != "0")
+                        {
+                            continue;
+                        }
+
+
+                        var kpiCount = item.KPIIs.Count;
+                    <tbody>
+
+
+                        @for (var i = 0; i < kpiCount; i++)
+                        {
+                            var kpi = item.KPIIs[i];
+
+
+
+                            <tr>
+
+                                @if (i == 0)
+                                {
+
+                                    <td rowspan=@kpiCount></td>
+
+                                    <td rowspan=@kpiCount>@item.KRAs[i]</td>
+                                }
+                                <td>@kpi</td>
+                                <td>
+                                    @if (item.KPIOutcomes.Count > i)
+                                    {
+                                        <input type="hidden" name="SelectedSession" value="@item.Section_Name" />
+                                        <input type="hidden" name="SelectedKRA" value="@item.KRA_ID" />
+                                        <input type="hidden" name="SelectedKPI" value="@item.KPI_IDs[i]" />
+                                        <div name="KPIOutcomesdiv"></div>
+                                        <p>____</p>
+
+                                    }
+
+                                </td>
+                                @if (i == 0)
+                                {
+                                    <td rowspan=@kpiCount>
+                                        <a class="AddRowButton" name="AddRowButton">
+                                            <strong>Add</strong>
+                                        </a>
+                                    </td>
+
+                                }
+                            </tr>
+
+
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 
                         }
                     </tbody>

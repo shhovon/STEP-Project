@@ -167,6 +167,7 @@ namespace STEP_DEMO.Controllers
         }
 
 
+<<<<<<< HEAD
         public StatusResult UpdateRating(int regId, int sessionID)
         {
 
@@ -195,6 +196,8 @@ namespace STEP_DEMO.Controllers
 
 
 
+=======
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 
     }
 }

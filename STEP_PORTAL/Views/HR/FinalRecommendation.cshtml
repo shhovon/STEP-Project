@@ -124,7 +124,19 @@
                             }
                         }
                         <tr>
+<<<<<<< HEAD
                             <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white;">
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
                                 <strong>
                                     Average Cumulative Score of KRA’s / @totalKraCount
                                 </strong>
@@ -247,7 +259,26 @@
                 <td colspan="5" align="center" style="color: Highlight;">
                     <h5>
                         1.5 Overall Performance Rating Achieved:
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+                        @{
+                            decimal? ratingAvg = null;
+                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null)
+                            {
+                                var kraKpiOutcomeData = Model.KraKpiOutcomeData[0];
+                                if (kraKpiOutcomeData.KPI_AVG.HasValue && kraKpiOutcomeData.Rating_Achieved.HasValue)
+                                {
+                                    ratingAvg = (int)kraKpiOutcomeData.Rating_Achieved.Value;
+                                }
+                            }
+
+                        }
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
                         <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
                                value="@Model.StepMaster.Rating_Achieved"
                                class="tab" disabled type="text">
@@ -343,6 +374,48 @@
 
 @section scripts {
     <script>
+<<<<<<< HEAD
+=======
+        $(function () {
+            $('#taxPeriodDropdownMV').change(function () {
+                var selectedSession = $(this).val();
+                console.log(selectedSession);
+
+                $.ajax({
+                    url: '@Url.Action("GetFilteredMarksData", "Home")',
+                    type: 'GET',
+                    data: { selectedSession: selectedSession },
+                    success: function (response) {
+                        $('tbody').empty();
+                        var totalMarks = 0;
+                        var count = 0;
+
+                        response.forEach(function (item) {
+                            var newRow = '<tr>' +
+                                '<td>' + item.KPI_OUTCOME + '</td>' +
+                                '<td>' + item.Marks_Achieved + '</td>' +
+                                '<td></td>' +
+                                '</tr>';
+
+                            totalMarks += item.Marks_Achieved;
+                            console.log(totalMarks);
+                            count++;
+                            $('tbody').append(newRow);
+                        });
+
+                        var average = totalMarks / count;
+                        $('#averageMarks').text(average.toFixed(2));
+                        console.log(average);
+                        $('tfoot td:nth-child(3)').text(average.toFixed(2));
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 
           $(function() {
               $('#HRForm').submit(function (event) {
@@ -382,6 +455,10 @@
             }
         }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
         // next year table toggle
 
         function toggleTableNY() {
@@ -396,6 +473,11 @@
             }
         }
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
         // export to excel
 
          $(function () {

@@ -120,7 +120,19 @@
                             }
                         }
                         <tr>
+<<<<<<< HEAD
                             <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white;">
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
                                 <strong>
                                     Average Cumulative Score of KRA’s / @totalKraCount
                                 </strong>
@@ -244,7 +256,23 @@
                 <td colspan="5" align="center" style="color:Highlight;">
                     <h5>
                         1.5 Overall Performance Rating Achieved:
+<<<<<<< HEAD
                        
+=======
+<<<<<<< HEAD
+                       
+=======
+                        @{
+                            decimal? ratingAvg = null;
+                            decimal defaultAvg = 0;
+                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null && Model.KraKpiOutcomeData[0].KPI_AVG.HasValue)
+                            {
+                                ratingAvg = Model.KraKpiOutcomeData[0].Rating_Achieved.HasValue ?
+                                            (int)Model.KraKpiOutcomeData[0].Rating_Achieved.Value : defaultAvg;
+                            }
+                        }
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
                         <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
                                 value="@Model.StepMaster.Rating_Achieved"
                                class="tab" disabled type="text">
@@ -322,7 +350,11 @@
 
 @section scripts {
     <script>
+<<<<<<< HEAD
 
+=======
+       
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
 
         // table toggle
 
@@ -352,6 +384,7 @@
             }
         }
 
+<<<<<<< HEAD
         $(function() {
             $('#reportSuperForm').submit(function (event) {
                 event.preventDefault();
@@ -376,6 +409,8 @@
             });
         });
 
+=======
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
     </script>
 }
 
