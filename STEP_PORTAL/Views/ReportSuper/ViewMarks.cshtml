@@ -8,6 +8,12 @@
 
 <body>
 
+    @{
+        decimal sumOfAverages = 0;
+        int totalKraCount = Model.GroupedData.Count();
+
+    }
+
     <h3>View Marks and Comment</h3>
     <br />
 
@@ -26,12 +32,18 @@
             display: inline-block;
             margin-left: 45px;
         }
+
+        .tab3 {
+            display: inline-block;
+            margin-left: 66px;
+        }
     </style>
 
     <br />
     <div>
-        <p><strong>Employee Code: <span class="tab2"></span> @Session["EmployeeCode"]</strong></p>
-        <p><strong>Employee Name: <span class="tab"></span> @Session["Name"]</strong></p>
+        <p><strong>Employee Code: <span class="tab2"></span> @Model.EmployeeInfo.EmployeeCode</strong></p>
+        <p><strong>Employee Name: <span class="tab"></span> @Model.EmployeeInfo.Name</strong></p>
+        <p><strong>Designation: <span class="tab3"></span> @Model.EmployeeInfo.Designation</strong></p>
     </div>
     <br />
 
@@ -44,6 +56,7 @@
                         <th>KRA</th>
                         <th>KPI</th>
                         <th>Outcome</th>
+                        <th>Remarks</th>
                         <th>Performance Marks</th>
                         <th>Total Average</th>
                     </tr>
@@ -66,16 +79,32 @@
                                 }
                                 <td>@kpi</td>
                                 <td>@outcome</td>
+                                <td>@item.AllRemarks[i]</td>
                                 <td style="text-align:center">@mark</td>
                                 @if (i == 0)
                                 {
                                     <td rowspan=@kpiCount style="text-align:center">
                                         @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
+                                        @{
+                                            decimal MarskAverage = Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count;
+                                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null && Model.KraKpiOutcomeData[0].KPI_AVG.HasValue)
+                                            {
+                                                sumOfAverages = Model.KraKpiOutcomeData[0].KPI_AVG.Value;
+                                            }
+                                        }
                                     </td>
                                 }
                             </tr>
                         }
                     }
+                    <tr>
+                        <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+                            <strong>
+                                Average Cumulative Score of KRA’s / @totalKraCount
+                            </strong>
+                        </td>
+                        <td style="text-align: center; background-color: Highlight; color: white;"><strong>@sumOfAverages</strong></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -88,11 +117,101 @@
     }
 
 
+
+    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <table border="1">
+            <tr>
+                <td colspan="5" align="center" style="color:Highlight;">
+                    <h5>
+                        1.2 Performance Assessment:
+                        @{
+                            decimal? totalAvg = null;
+                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null && Model.KraKpiOutcomeData[0].KPI_AVG.HasValue)
+                            {
+                                sumOfAverages = Model.KraKpiOutcomeData[0].KPI_AVG.Value;
+                            }
+                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null)
+                            {
+                                totalAvg = (Model.KraKpiOutcomeData[0].Attendance + Model.KraKpiOutcomeData[0].Discipline) / 2;
+                            }
+                            else
+                            {
+                                totalAvg = 0;
+                            }
+
+                        }
+                        <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
+                               value="@(totalAvg ?? 0)"
+                               class="tab" disabled type="text">
+                    </h5>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <h6>
+                        1.	Attendance: <input style="text-align:center; width:30px;"
+                                                value="@(Model.StepMaster.Attendance ?? 0)"
+                                                class="tab" disabled type="text">
+                    </h6>
+                </td>
+                <td>
+                    <h6>
+                        2.	Discipline: <input style="text-align:center; width:30px;"
+                                                value="@(Model.StepMaster.Discipline ?? 0)"
+                                                class="tab" disabled type="text">
+                    </h6>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <table border="1">
+            <tr>
+                <td colspan="5" align="center" style="color:Highlight;">
+                    <h5>
+                        1.5 Overall Performance Rating Achieved:
+
+                        <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
+                               value="@(Model.StepMaster.Rating_Achieved ?? 0)"
+                               class="tab" disabled type="text">
+                    </h5>
+                </td>
+
+            </tr>
+            <tr>
+                <td style="text-align: left; vertical-align: top;">
+                    <h6 style="margin-top: 0;">5 - OUTSTANDING</h6>
+                    <p>Exceeded performance in all agreed upon objectives /KRAs and have gone far beyond what is expected.</p>
+                </td>
+                <td style="text-align: left; vertical-align: top;">
+                    <h6 style="margin-top: 0;">4 - ABOVE TARGET</h6>
+                    <p>Consistently accomplished objectives/KRAs and also have delivered results that exceeded some targets.</p>
+                </td>
+                <td style="text-align: left; vertical-align: top;">
+                    <h6 style="margin-top: 0;">3 - ON TARGET</h6>
+                    <p>Achieved all objectives /KRAs or has exceeded target in some critical KRAs with one less critical area under achieved.</p>
+                </td>
+                <td style="text-align: left; vertical-align: top;">
+                    <h6 style="margin-top: 0;">2 - NEARLY THERE</h6>
+                    <p>Achieved most of the objectives/KRAs but not all.</p>
+                </td>
+                <td style="text-align: left; vertical-align: top;">
+                    <h6 style="margin-top: 0;">1 - UNDER PERFORMING</h6>
+                    <p>Could not achieve a number of agreed objectives/KRAs.</p>
+                </td>
+            </tr>
+        </table>
+    </div>
     <br /><br />
+
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
-        <input type="text" disabled id="comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.StepMaster.Supervisor_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
         <br>
+        <label for="comment" style="font-weight: bold; color: #333;">HOD's Comment:</label><br>
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.StepMaster.HOD_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
     </div>
     <br />
 
@@ -114,44 +233,6 @@
 
 @section scripts {
     <script>
-        $(function () {
-            $('#taxPeriodDropdownMV').change(function () {
-                var selectedSession = $(this).val();
-                console.log(selectedSession);
-
-                $.ajax({
-                    url: '@Url.Action("GetFilteredMarksData", "Home")',
-                    type: 'GET',
-                    data: { selectedSession: selectedSession },
-                    success: function (response) {
-                        $('tbody').empty();
-                        var totalMarks = 0;
-                        var count = 0;
-
-                        response.forEach(function (item) {
-                            var newRow = '<tr>' +
-                                '<td>' + item.KPI_OUTCOME + '</td>' +
-                                '<td>' + item.Marks_Achieved + '</td>' +
-                                '<td></td>' +
-                                '</tr>';
-
-                            totalMarks += item.Marks_Achieved;
-                            console.log(totalMarks);
-                            count++;
-                            $('tbody').append(newRow);
-                        });
-
-                        var average = totalMarks / count;
-                        $('#averageMarks').text(average.toFixed(2));
-                        console.log(average);
-                        $('tfoot td:nth-child(3)').text(average.toFixed(2));
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            });
-        });
 
         $.ajax({
         url: '@Url.Action("GetReportSuperComment", "ReportSuper")',
@@ -165,7 +246,7 @@
         }
         });
 
-        $.ajax({
+       @* $.ajax({
         url: '@Url.Action("GetUserComment", "ReportSuper")',
         type: 'GET',
         dataType: 'json',
@@ -175,7 +256,7 @@
         error: function() {
             console.error('Error fetching employee comment!');
         }
-    });
+    });*@
 
         $(function() {
             $('form').submit(function(event) {

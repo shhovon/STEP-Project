@@ -11,7 +11,7 @@
 
         background: linear-gradient(to right, #d9e8f5, #e6f1fb);
         padding: 8px;
-        tblSpecial_Factor border-radius: 8px;
+        border-radius: 8px;
         height: 70px;
     }
 
@@ -82,7 +82,11 @@
         <div></div>
 
         <input id="3" name="r" type="radio" />
-        <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("DisplayALlData", "Employee")">4. Preview & Submit</a></label>
+        <label class="collapse" for="1"><a href="@Url.Action("KraKpiNextYear", "Home")">4. Next Year's Entry</a></label>
+        <div></div>
+
+        <input id="4" name="r" type="radio" />
+        <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("DisplayAllData", "Employee")">5. Preview & Submit</a></label>
         <div></div>
     </div>
 </div>
@@ -126,6 +130,7 @@
 
 <div id="userAddedInfo">
     <h3>Added Special Factors</h3>
+    <hr />
     @if (ViewBag.AddedDescriptions != null && ViewBag.AddedDescriptions.Count > 0)
     {
         <table class="table">
