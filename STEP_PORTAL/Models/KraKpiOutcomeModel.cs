@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class KraKpiOutcomeModel
     {
@@ -31,5 +32,24 @@ public class KraKpiOutcomeModel
         public decimal? Discipline { get; set; }
         public int Marks { get; set; }
         public int? SelectedMarks { get; set; }
+        public string Supervisor_Comment { get; set; }
+        public string User_Comment { get; set; }
+        public string HOD_Comment { get; set; }
+        public string HOD_Propose_Promotion { get; set; }
+        public int? HOD_Propose_Incr { get; set; }
+        public string Final_Comment { get; set; }
+        public string Final_Propose_Promotion { get; set; }
+        public int? Final_Propose_Incr { get; set; }
+        public DateTime? Effect_Date { get; set; }
+        public List<DateTime?> Durations { get; set; }
+        public DateTime? Duration { get; set; }
+
+    // public string Remarks { get; set; }
+    public string Remarks { get; set; }
+
+/*    public KraKpiOutcomeModel()
+    {
+        Remarks = new List<string>();
+    }*/
 
 }

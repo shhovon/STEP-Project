@@ -23,12 +23,23 @@
         int totalKraCount = Model.GroupedData.Count();
     }
 
-    <h3>View Employee Marks and Report Supervisor Comment</h3>
+    <h3>View Employee Marks and HOD Comment</h3>
     <br />
 
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
     {
         <script>alert('@ViewBag.ErrorMessage');</script>
+    }
+
+    @if (ViewBag.AuthorizationMessage != null)
+    {
+        <script>
+        setTimeout(function() {
+            alert('@Html.Raw(ViewBag.AuthorizationMessage)');
+            window.location.href = '@Url.Action("Dashboard", "Home")';
+        }, 2000);
+        </script>
+        return;
     }
 
     <style>
@@ -50,16 +61,16 @@
 
     <br />
     <div>
-        <p><strong>Employee Code: <span class="tab2"></span> @Session["EmployeeCodeInd"]</strong></p>
-        <p><strong>Employee Name: <span class="tab"></span> @Session["NameInd"]</strong></p>
-        <p><strong>Designation: <span class="tab3"></span>  @Session["DesignationInd"]</strong></p>
+        <p><strong>Employee Code: <span class="tab2"></span> @Model.EmployeeInfo.EmployeeCode</strong></p>
+        <p><strong>Employee Name: <span class="tab"></span> @Model.EmployeeInfo.Name</strong></p>
+        <p><strong>Designation: <span class="tab3"></span> @Model.EmployeeInfo.Designation</strong></p>
     </div>
     <br />
 
     @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
     {
         <div>
-            <button id="toggleButton" class="btn btn-primary" onclick="toggleTable()">View Marks</button>
+            <button id="toggleButton" class="btn btn-primary" onclick="toggleTable()">View Current Year Data</button>
             <div id="tableContainer" style="display: none;">
                 <table class="user-info-table">
                     <thead>
@@ -67,6 +78,7 @@
                             <th>KRA</th>
                             <th>KPI</th>
                             <th>Outcome</th>
+                            <th>Remarks</th>
                             <th>Performance Marks</th>
                             <th>Total Average</th>
                         </tr>
@@ -89,6 +101,7 @@
                                     }
                                     <td>@kpi</td>
                                     <td>@outcome</td>
+                                    <td>@item.AllRemarks[i]</td>
                                     <td style="text-align:center">@mark</td>
                                     @if (i == 0)
                                     {
@@ -107,7 +120,7 @@
                             }
                         }
                         <tr>
-                            <td colspan="4" style="text-align: center; background-color: Highlight; color: white;">
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
                                 <strong>
                                     Average Cumulative Score of KRA’s / @totalKraCount
                                 </strong>
@@ -125,6 +138,62 @@
             <i class="fas fa-info-circle"></i>No marks data available
         </div>
     }
+
+
+    @*next year data*@
+
+    @if (Model != null && Model.NextYearKraKpiOutcomeData.Count > 0)
+    {
+        <div>
+            <button id="toggleButtonNY" class="btn btn-primary" onclick="toggleTableNY()">View Next Year Data</button>
+            <div id="tableContainerNY" style="display: none;">
+                <table class="user-info-table">
+                    <thead>
+                        <tr>
+                            <th>Next Year's KRA</th>
+                            <th>Next Year's KPI</th>
+                            <th>Completion Deadline</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.NextYearGroupedData)
+                        {
+                            var kpiCount = item.KPIIs.Count;
+                            for (var i = 0; i < kpiCount; i++)
+                            {
+                                var kpi = item.KPIIs[i];
+
+                                <tr>
+                                    @if (i == 0)
+                                    {
+                                        <td rowspan=@kpiCount>@item.KRA</td>
+                                    }
+                                    <td>@kpi</td>
+
+                                    @if (i == 0 && item.Durations != null && item.Durations.Count > 0)
+                                    {
+                                        <td rowspan=@kpiCount>@(item.Durations.First().Value.Date.ToString("dd-MM-yyyy"))</td>
+                                    }
+                                    else
+                                    {
+                                        <td rowspan=@kpiCount></td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="fas fa-info-circle"></i>The employee has not yet submitted Next Year's data
+        </div>
+    }
+    @*<button id="revertEmployeeButton" class="btn btn-primary" data-regid="@ViewBag.RegId">Revert Employee</button>*@
+    <button id="revertEmployeeButton" class="btn btn-primary @(Model.ApprovalSent == false ? "disabled" : "")" data-regid="@ViewBag.RegId">Revert Employee</button>
 
     <br /><br />
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
@@ -154,30 +223,16 @@
             </tr>
             <tr>
                 <td>
-                    @{
-                        decimal? attendance = null;
-                        if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0)
-                        {
-                            attendance = (int)Model.KraKpiOutcomeData[0].Attendance;
-                        }
-                    }
                     <h6>
                         1.	Attendance: <input style="text-align:center; width:30px;"
-                                                value="@attendance"
+                                                value="@Model.StepMaster.Attendance"
                                                 class="tab" disabled type="text">
                     </h6>
                 </td>
                 <td>
-                    @{
-                        decimal? discipline = null;
-                        if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0)
-                        {
-                            discipline = (int)Model.KraKpiOutcomeData[0].Discipline;
-                        }
-                    }
                     <h6>
                         2.	Discipline: <input style="text-align:center; width:30px;"
-                                                value="@discipline"
+                                                value="@Model.StepMaster.Discipline"
                                                 class="tab" disabled type="text">
                     </h6>
                 </td>
@@ -191,15 +246,9 @@
                 <td colspan="5" align="center" style="color:Highlight;">
                     <h5>
                         1.5 Overall Performance Rating Achieved:
-                        @{
-                            decimal? ratingAvg = null;
-                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null && Model.KraKpiOutcomeData[0].KPI_AVG.HasValue)
-                            {
-                                ratingAvg = (int)Model.KraKpiOutcomeData[0].Rating_Achieved;
-                            }
-                        }
+
                         <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
-                               value="@ratingAvg"
+                               value="@Model.StepMaster.Rating_Achieved"
                                class="tab" disabled type="text">
                     </h5>
                 </td>
@@ -233,14 +282,14 @@
 
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
-        <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.SupervisorComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.StepMaster.Supervisor_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
         <br>
     </div>
     <br />
 
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <label for="comment" style="font-weight: bold; color: #333;">User's Comment:</label><br>
-        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.UserComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.StepMaster.User_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
         <br>
     </div>
     <br />
@@ -252,20 +301,20 @@
 
         <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <label for="comment" style="font-weight: bold; color: #333;">HOD Comment:</label><br>
-            <input type="text" id="HODComment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <input type="text" id="HODComment" name="comment" value="@Model.StepMaster.HOD_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
             <br>
-            <p style="color:Highlight;"><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
-            <p style="color:Highlight;"><strong>Service of Length:  @Session["ServiceOfLength"]</strong></p>
+            <p style="color:Highlight;"><strong>Current Designation:  @Model.EmployeeInfo.Designation</strong></p>
+            <p style="color:Highlight;"><strong>Length of Service:   @Model.EmployeeInfo.Service_Length</strong></p>
             <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
             <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
                 @foreach (var designation in Model.Designations)
                 {
-                    <option value="@designation.Designation">@designation.Designation</option>
+                    <option value="@designation.Designation" @(designation.Designation == Model.StepMaster.HOD_Propose_Promotion ? "selected" : "")>@designation.Designation</option>
                 }
             </select>
             <br>
             <label for="comment" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
-            <input type="number" id="incrementValue" name="incrementValue" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <input type="number" id="incrementValue" name="incrementValue" value="@Model.StepMaster.HOD_Propose_Incr" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
             <br>
             <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
         </div>
@@ -275,82 +324,61 @@
 
 @section scripts {
     <script>
-        $(function () {
-            $('#taxPeriodDropdownMV').change(function () {
-                var selectedSession = $(this).val();
-                console.log(selectedSession);
+
+
+        $("#revertEmployeeButton").click(function () {
+            if ($(this).hasClass("disabled")) {
+                return;
+            }
+                var regId = $(this).data("regid");
 
                 $.ajax({
-                    url: '@Url.Action("GetFilteredMarksData", "Home")',
-                    type: 'GET',
-                    data: { selectedSession: selectedSession },
-                    success: function (response) {
-                        $('tbody').empty();
-                        var totalMarks = 0;
-                        var count = 0;
-
-                        response.forEach(function (item) {
-                            var newRow = '<tr>' +
-                                '<td>' + item.KPI_OUTCOME + '</td>' +
-                                '<td>' + item.Marks_Achieved + '</td>' +
-                                '<td></td>' +
-                                '</tr>';
-
-                            totalMarks += item.Marks_Achieved;
-                            console.log(totalMarks);
-                            count++;
-                            $('tbody').append(newRow);
-                        });
-
-                        var average = totalMarks / count;
-                        $('#averageMarks').text(average.toFixed(2));
-                        console.log(average);
-                        $('tfoot td:nth-child(3)').text(average.toFixed(2));
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            });
-        });
-
-        $.ajax({
-        url: '@Url.Action("GetReportSuperComment", "ReportSuper")',
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            $('#comment').val(data.SupervisorComment);
-        },
-        error: function() {
-            console.error('Error fetching supervisor comment!');
-        }
-        });
-
-@*        $(function() {
-            $('form').submit(function(event) {
-                event.preventDefault();
-
-                var formData = $(this).serialize();
-
-                $.ajax({
-                    url: '@Url.Action("SaveHODComment", "DeptHead")',
+                    url: '@Url.Action("RevertEmployee", "ReportSuper")',
                     type: 'POST',
-                    data: formData,
-                    success: function(response) {
+                    data: { regId: regId },
+                    success: function (response) {
                         if (response.success) {
                             alert(response.message);
+                            location.reload();
                         } else {
                             alert(response.message);
                         }
                     },
-                    error: function() {
-                        alert('An error occurred while saving the comment!');
+                    error: function () {
+                        alert('An error occurred while reverting the approval!');
                     }
                 });
             });
-        });*@
 
-           $(function() {
+        // table toggle
+
+        function toggleTable() {
+            var tableContainer = document.getElementById("tableContainer");
+            var toggleButton = document.getElementById("toggleButton");
+            if (tableContainer.style.display === "none") {
+                tableContainer.style.display = "block";
+                toggleButton.textContent = "Minimize Marks";
+            } else {
+                tableContainer.style.display = "none";
+                toggleButton.textContent = "View Current Year Data";
+            }
+        }
+
+        // next year table toggle
+
+        function toggleTableNY() {
+            var tableContainer = document.getElementById("tableContainerNY");
+            var toggleButton = document.getElementById("toggleButtonNY");
+            if (tableContainer.style.display === "none") {
+                tableContainer.style.display = "block";
+                toggleButton.textContent = "Minimize Data";
+            } else {
+                tableContainer.style.display = "none";
+                toggleButton.textContent = "View Next Year Data";
+            }
+        }
+
+        $(function() {
             $('#reportSuperForm').submit(function (event) {
                 event.preventDefault();
                 var formData = $(this).serialize();
@@ -366,7 +394,6 @@
                         } else {
                             alert(response.message);
                         }
-/*                        alert(JSON.stringify(response));*/
                     },
                     error: function() {
                         alert('An error occurred while saving the comment!');
@@ -374,20 +401,6 @@
                 });
             });
         });
-
-        // table toggle
-
-        function toggleTable() {
-            var tableContainer = document.getElementById("tableContainer");
-            var toggleButton = document.getElementById("toggleButton");
-            if (tableContainer.style.display === "none") {
-                tableContainer.style.display = "block";
-                toggleButton.textContent = "Minimize Marks";
-            } else {
-                tableContainer.style.display = "none";
-                toggleButton.textContent = "View Marks";
-            }
-        }
 
     </script>
 }
