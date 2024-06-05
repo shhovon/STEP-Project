@@ -235,6 +235,13 @@ namespace STEP_PORTAL.Controllers
         [HttpGet]
         public ActionResult ViewEmpMarks(string regId)
         {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
             STEP_DEMO.Controllers.DataController DC = new STEP_DEMO.Controllers.DataController();
 
             int EmpRegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
@@ -242,6 +249,7 @@ namespace STEP_PORTAL.Controllers
             int deptHeadValue = int.Parse(Session["RegID"].ToString());
           
 
+<<<<<<< HEAD
             using (var db = new DB_STEPEntities())
             {
                 var authResult = DC.CheckAuth(deptHeadValue, sessionID, "AddMarksHOD", EmpRegId);
@@ -257,6 +265,70 @@ namespace STEP_PORTAL.Controllers
                 ViewBag.RegId = EmpRegId;
                 int nextyearSessionID = sessionID + 1;
 
+=======
+<<<<<<< HEAD
+            using (var db = new DB_STEPEntities())
+            {
+                var authResult = DC.CheckAuth(deptHeadValue, sessionID, "AddMarksHOD", EmpRegId);
+
+                if (authResult == null || !authResult.Status)
+                {
+                    ViewBag.AuthorizationMessage = authResult?.Message ?? "Unauthorized access";
+                    return RedirectToAction("Dashboard", "Home");
+                }
+              
+
+                ViewBag.TopTaxPeriods = DC.GetTax_Period();
+                ViewBag.RegId = EmpRegId;
+                int nextyearSessionID = sessionID + 1;
+
+=======
+            using (var db = new DB_STEPEntities())
+            {
+                var authResult = DC.CheckAuth(deptHeadValue, sessionID, "AddMarksHOD", EmpRegId);
+
+                if (authResult == null || !authResult.Status)
+                {
+                    ViewBag.AuthorizationMessage = authResult?.Message ?? "Unauthorized access";
+                    return RedirectToAction("Dashboard", "Home");
+                }
+              
+=======
+            int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+            int deptHeadValue = int.Parse(Session["RegID"].ToString());
+
+            List<KraKpiOutcomeModel> kraKpiOutcomeData;
+            using (var db = new DB_STEPEntities())
+            {
+                var authResult = db.Database.SqlQuery<StatusResult>(
+                        "exec prc_CheckAuth @RegId, @SESSION_ID, @Type, @EmpRegId",
+                        new SqlParameter("@RegId", deptHeadValue),
+                        new SqlParameter("@SESSION_ID", sessionID),
+                        new SqlParameter("@Type", "AddMarksHOD"),
+                        new SqlParameter("@EmpRegId", RegId)
+                    ).FirstOrDefault();
+
+                if (authResult == null || !authResult.Status)
+                {
+                    ViewBag.AuthorizationMessage = authResult?.Message ?? "Unauthorized access";
+                    return RedirectToAction("Dashboard", "Home");
+                }
+
+                var last2session = (db.New_Tax_Period
+                                   .OrderByDescending(t => t.TaxPeriod)
+                                   .Select(t => t.TaxPeriod).Take(2).ToList());
+
+                ViewBag.TopTaxPeriods = last2session;
+
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+
+                ViewBag.TopTaxPeriods = DC.GetTax_Period();
+                ViewBag.RegId = EmpRegId;
+                int nextyearSessionID = sessionID + 1;
+
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
                 var EmployeeInfo = DC.GetEmployeeInfoByRegID(EmpRegId);
                 List<KraKpiOutcomeModel> kraKpiOutcomeData = DC.GetKraKpiOutcomeData(EmpRegId, sessionID);
                 List<KraKpiOutcomeModel> nextYearkraKpiOutcomeData = DC.GetKraKpiData(EmpRegId, nextyearSessionID);
@@ -299,10 +371,14 @@ namespace STEP_PORTAL.Controllers
                            .ToList();
 
 
+<<<<<<< HEAD
                 var approvalSent = db.tbl_StepMaster
                  .Where(x => x.RegId == EmpRegId)
                  .Select(x => x.ApprovalSent)
                  .FirstOrDefault();
+=======
+
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
 
                 var viewModel = new DisplayAllDataViewModel
                 {
@@ -312,8 +388,12 @@ namespace STEP_PORTAL.Controllers
                     GroupedData = groupedData,
                     NextYearGroupedData = nextYeargroupedData,
                     StepMaster = StepMaster,
+<<<<<<< HEAD
                     Designations = designations,
                     ApprovalSent = approvalSent.HasValue ? approvalSent.Value : false
+=======
+                    Designations = designations
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
                 };
 
                 return View(viewModel);

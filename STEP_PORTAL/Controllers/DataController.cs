@@ -167,6 +167,10 @@ namespace STEP_DEMO.Controllers
         }
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
         public StatusResult UpdateRating(int regId, int sessionID)
         {
 
@@ -190,6 +194,7 @@ namespace STEP_DEMO.Controllers
 
             return StatusResult;
 
+<<<<<<< HEAD
         }        
         
         public List<tblSpecial_Factor> getSpecialFactors(int regId, int sessionID)
@@ -234,11 +239,18 @@ namespace STEP_DEMO.Controllers
 
             return getTrainingData;
 
+=======
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
         }
 
 
 
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
 
     }
 }

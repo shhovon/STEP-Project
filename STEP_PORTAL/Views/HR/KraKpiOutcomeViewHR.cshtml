@@ -53,6 +53,20 @@
 </style>
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+@*@if (firstItem != null)
+    {
+        <div>
+            <p><strong>Employee Code: <span class="tab2"></span> @firstItem.EmployeeCode</strong></p>
+            <p><strong>Employee Name: <span class="tab"></span>  @firstItem.Name</strong></p>
+        </div>
+    }*@
+
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
 <p><strong>Employee Code: <span class="tab2"></span> @Session["EmployeeCodeInd"]</strong></p>
 <p><strong>Employee Name: <span class="tab"></span> @Session["NameInd"]</strong></p>
 <p><strong>Designation: <span class="tab3"></span>  @Session["DesignationInd"]</strong></p>
@@ -61,12 +75,58 @@
 @if (Model != null && Model.Count > 0)
 {
     <div class="table-responsive">
+<<<<<<< HEAD
         @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
         {
             <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
 
             @*@Html.HiddenFor(m => m[0].REG_ID)*@
 
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+>>>>>>> 2fb5633e7882b0cde4cce6838b80756d8d12b3e8
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
@@ -163,6 +223,22 @@
                                         }
 
                                     </select>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+                                    @* <input type="hidden" name="@("marksUpdateModel[" + i + "].Outcome")" value="@Model[i].Outcome" />*@
+>>>>>>> 2fb5633e7882b0cde4cce6838b80756d8d12b3e8
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
                                     <input type="hidden" name="@("model[" + i + "].Outcome")" value="@Model[i].Outcome" />
                                     <input type="hidden" name="@("model[" + i + "].KPI_ID")" value="@Model[i].KPI_ID" />
                                 </td>
@@ -176,6 +252,16 @@
                             i++;
                         }
                     }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
 
                     <tr>
                         <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
@@ -185,6 +271,21 @@
                         </td>
                         <td style="text-align: center; background-color: Highlight; color: white;"><strong>@averageKpiAvg</strong></td>
                     </tr>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+                    @*                    <tr>
+                            <td colspan="4" style="text-align:center"><strong>Total Average:</strong></td>
+                            <td style="text-align:center"><strong>@(sumOfAverages)</strong></td>
+                        </tr>*@
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
                 </tbody>
             </table>
             <input type="submit" value="Save Marks" />
@@ -358,6 +459,22 @@ else
             alert(successMessage);
         }
         });
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2fb5633e7882b0cde4cce6838b80756d8d12b3e8
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
 
         // filter data function
         $(function () {

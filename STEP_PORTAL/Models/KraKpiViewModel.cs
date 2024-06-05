@@ -8,14 +8,48 @@ using System.Collections.Generic;
 
         public List<string> KPIList { get; set; }
         public string KRA { get; set; }
+<<<<<<< HEAD
         public string KRA1 { get; set; }
+=======
+<<<<<<< HEAD
+        public string KRA1 { get; set; }
+=======
+<<<<<<< HEAD
+        public string KRA1 { get; set; }
+=======
+<<<<<<< HEAD
+        public string KRA1 { get; set; }
+=======
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
         public List<DateTime?> Durations { get; set; }
         public int KRA_ID { get; set; }
         public List<KPIViewModel> KPIIIs { get; set; }
         public List<int> KRA_IDs { get; set; }
         public List<List<int>> KPI_IDs { get; set; }
+<<<<<<< HEAD
     public int SessionId { get; set; }
     public int KPI_ID { get; set; }
+=======
+<<<<<<< HEAD
+    public int SessionId { get; set; }
+    public int KPI_ID { get; set; }
+=======
+<<<<<<< HEAD
+    public int SessionId { get; set; }
+    public int KPI_ID { get; set; }
+=======
+<<<<<<< HEAD
+    public int SessionId { get; set; }
+    public int KPI_ID { get; set; }
+=======
+        public int KPI_ID { get; set; }
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
         public int kraId { get; set; }
         public int kpiId { get; set; }
         public string KPI { get; set; }
@@ -29,15 +63,51 @@ using System.Collections.Generic;
         public List<List<string>> KPIs { get; set; }
         public string Section_Name { get; set; }
         public string Remarks { get; set; }
+<<<<<<< HEAD
         public DateTime? Duration { get; set; }
+=======
+<<<<<<< HEAD
+        public DateTime? Duration { get; set; }
+=======
+<<<<<<< HEAD
+        public DateTime? Duration { get; set; }
+=======
+<<<<<<< HEAD
+        public DateTime? Duration { get; set; }
+=======
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
         public List<string> AllRemarks { get; set; }
 
         public List<string> DefaultKRAs { get; set; }
         public List<List<string>> DefaultKPIs { get; set; }
         public List<DateTime?> DefaultDurations { get; set; }
+<<<<<<< HEAD
         public List<KraKpiData> KraKpiData { get; set; }
 
 
+=======
+<<<<<<< HEAD
+        public List<KraKpiData> KraKpiData { get; set; }
+
+
+=======
+<<<<<<< HEAD
+        public List<KraKpiData> KraKpiData { get; set; }
+
+
+=======
+<<<<<<< HEAD
+        public List<KraKpiData> KraKpiData { get; set; }
+
+
+=======
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
     public KraKpiViewModel()
         {
             KRAs = new List<string>();
