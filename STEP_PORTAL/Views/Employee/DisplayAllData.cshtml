@@ -40,8 +40,12 @@
         <label class="collapse" for="1"><a href="@Url.Action("TrainingNeed", "Employee")"> 3. Training</a></label>
         <div></div>
 
-        <input id="3" name="r" type="radio" checked />
-        <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("DisplayALlData", "Employee")">4. Preview & Submit</a></label>
+        <input id="3" name="r" type="radio" />
+        <label class="collapse" for="1"><a href="@Url.Action("KraKpiNextYear", "Home")">4. Next Year's Entry</a></label>
+        <div></div>
+
+        <input id="4" name="r" type="radio" checked/>
+        <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("DisplayAllData", "Employee")">5. Preview & Submit</a></label>
         <div></div>
     </div>
 </div>
@@ -173,7 +177,8 @@
                         success: function (response) {
                             if (response.success) {
                                 alert(response.message);
-                                window.location.href = '@Url.Action("DisplayAllData", "Employee")';
+@*                                window.location.href = '@Url.Action("DisplayAllData", "Employee")';*@
+                                location.reload();
                             } else {
                                 alert(response.message);
                             }

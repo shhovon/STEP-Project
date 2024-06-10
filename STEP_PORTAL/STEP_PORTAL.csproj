@@ -47,11 +47,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="Microsoft.CSharp" />
@@ -156,6 +162,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DataController.cs" />
     <Compile Include="Controllers\DeptHeadController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -175,6 +182,7 @@
     <Compile Include="Models\DeptSecViewModel.cs" />
     <Compile Include="Models\DesignationModel.cs" />
     <Compile Include="Models\DisplayAllDataViewModel.cs" />
+    <Compile Include="Models\EmployeeReportModel.cs" />
     <Compile Include="Models\KPI.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
@@ -182,6 +190,8 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KraKpiCombinedModel.cs" />
+    <Compile Include="Models\KraKpiData.cs" />
+    <Compile Include="Models\KraKpiViewModelCollection.cs" />
     <Compile Include="Models\MarksUpdateModel.cs" />
     <Compile Include="Models\New_Tax_Period.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
@@ -205,6 +215,12 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_GetEmployeeListByDeptHead_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetEmployeeServiceLength_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetEmployeeSummary_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_GetHODTeamMember_Result.cs">
@@ -2113,13 +2129,13 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Outcome.cshtml" />
+    <Content Include="Views\Home\ViewKraKpi.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Shared\_NewLayout.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
-    <Content Include="Views\DeptHead\ViewEmpList.cshtml" />
-    <Content Include="Views\ReportSuper\AddMarks.cshtml" />
+    <Content Include="Views\DeptHead\ViewEmpListRS.cshtml" />
+    <Content Include="Views\ReportSuper\AddMarksRS.cshtml" />
     <Content Include="Views\ReportSuper\KraKpiOutcomeView.cshtml" />
     <Content Include="Views\Employee\SpecialFactors.cshtml" />
     <Content Include="Views\Employee\TrainingNeed.cshtml" />
@@ -2139,6 +2155,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

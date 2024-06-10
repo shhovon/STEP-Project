@@ -15,8 +15,11 @@
     @Html.Hidden("regID", null, new { id = "viewregIDField" })
 }
 
+
+
 <body>
 
+    @*    <button class="btn btn-primary" style="float:right;" id="exportToExcelBtn">Export to Excel</button>*@
 
     @{
         decimal sumOfAverages = 0;
@@ -30,6 +33,8 @@
     {
         <script>alert('@ViewBag.ErrorMessage');</script>
     }
+
+
 
     <style>
         .tab {
@@ -48,18 +53,29 @@
         }
     </style>
 
+    @if (ViewBag.AuthorizationMessage != null)
+    {
+        <script>
+        setTimeout(function() {
+            alert('@Html.Raw(ViewBag.AuthorizationMessage)');
+            window.location.href = '@Url.Action("Dashboard", "Home")';
+        }, 2000);
+        </script>
+        return;
+    }
+
     <br />
     <div>
-        <p><strong>Employee Code: <span class="tab2"></span> @Session["EmployeeCodeInd"]</strong></p>
-        <p><strong>Employee Name: <span class="tab"></span> @Session["NameInd"]</strong></p>
-        <p><strong>Designation: <span class="tab3"></span>  @Session["DesignationInd"]</strong></p>
+        <p><strong>Employee Code: <span class="tab2"></span> @Model.EmployeeInfo.EmployeeCode</strong></p>
+        <p><strong>Employee Name: <span class="tab"></span> @Model.EmployeeInfo.Name</strong></p>
+        <p><strong>Designation: <span class="tab3"></span> @Model.EmployeeInfo.Designation</strong></p>
     </div>
     <br />
 
     @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
     {
         <div>
-            <button id="toggleButton" class="btn btn-primary" onclick="toggleTable()">View Marks</button>
+            <button id="toggleButton" class="btn btn-primary" onclick="toggleTable()">View Current Year Data</button>
             <div id="tableContainer" style="display: none;">
                 <table class="user-info-table">
                     <thead>
@@ -67,6 +83,7 @@
                             <th>KRA</th>
                             <th>KPI</th>
                             <th>Outcome</th>
+                            <th>Report Super Remarks</th>
                             <th>Performance Marks</th>
                             <th>Total Average</th>
                         </tr>
@@ -89,6 +106,7 @@
                                     }
                                     <td>@kpi</td>
                                     <td>@outcome</td>
+                                    <td>@item.AllRemarks[i]</td>
                                     <td style="text-align:center">@mark</td>
                                     @if (i == 0)
                                     {
@@ -107,7 +125,7 @@
                             }
                         }
                         <tr>
-                            <td colspan="4" style="text-align: center; background-color: Highlight; color: white;">
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
                                 <strong>
                                     Average Cumulative Score of KRA’s / @totalKraCount
                                 </strong>
@@ -122,7 +140,60 @@
     else
     {
         <div class="alert alert-danger" role="alert">
-            <i class="fas fa-info-circle"></i>No marks data available
+            <i class="fas fa-info-circle"></i>No Current Year data found
+        </div>
+    }
+
+    @*next year data*@
+
+    @if (Model != null && Model.NextYearKraKpiOutcomeData.Count > 0)
+    {
+        <div>
+            <button id="toggleButtonNY" class="btn btn-primary" onclick="toggleTableNY()">View Next Year Data</button>
+            <div id="tableContainerNY" style="display: none;">
+                <table class="user-info-table">
+                    <thead>
+                        <tr>
+                            <th>Next Year's KRA</th>
+                            <th>Next Year's KPI</th>
+                            <th>Completion Deadline</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.NextYearGroupedData)
+                        {
+                            var kpiCount = item.KPIIs.Count;
+                            for (var i = 0; i < kpiCount; i++)
+                            {
+                                var kpi = item.KPIIs[i];
+
+                                <tr>
+                                    @if (i == 0)
+                                    {
+                                        <td rowspan=@kpiCount>@item.KRA</td>
+                                    }
+                                    <td>@kpi</td>
+
+                                    @if (i == 0 && item.Durations != null && item.Durations.Count > 0)
+                                    {
+                                        <td rowspan=@kpiCount>@(item.Durations.First().Value.Date.ToString("dd-MM-yyyy"))</td>
+                                    }
+                                    else
+                                    {
+                                        <td rowspan=@kpiCount></td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="fas fa-info-circle"></i>The employee has not yet submitted Next Year's data
         </div>
     }
 
@@ -154,30 +225,16 @@
             </tr>
             <tr>
                 <td>
-                    @{
-                        decimal? attendance = null;
-                        if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0)
-                        {
-                            attendance = (int)Model.KraKpiOutcomeData[0].Attendance;
-                        }
-                    }
                     <h6>
                         1.	Attendance: <input style="text-align:center; width:30px;"
-                                                value="@attendance"
+                                                value="@Model.StepMaster.Attendance"
                                                 class="tab" disabled type="text">
                     </h6>
                 </td>
                 <td>
-                    @{
-                        decimal? discipline = null;
-                        if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0)
-                        {
-                            discipline = (int)Model.KraKpiOutcomeData[0].Discipline;
-                        }
-                    }
                     <h6>
                         2.	Discipline: <input style="text-align:center; width:30px;"
-                                                value="@discipline"
+                                                value="@Model.StepMaster.Discipline"
                                                 class="tab" disabled type="text">
                     </h6>
                 </td>
@@ -191,15 +248,9 @@
                 <td colspan="5" align="center" style="color: Highlight;">
                     <h5>
                         1.5 Overall Performance Rating Achieved:
-                        @{
-                            decimal? ratingAvg = null;
-                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null && Model.KraKpiOutcomeData[0].KPI_AVG.HasValue)
-                            {
-                                ratingAvg = (int)Model.KraKpiOutcomeData[0].Rating_Achieved;
-                            }
-                        }
+
                         <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
-                               value="@ratingAvg"
+                               value="@Model.StepMaster.Rating_Achieved"
                                class="tab" disabled type="text">
                     </h5>
                 </td>
@@ -233,54 +284,55 @@
 
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
-        <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.SupervisorComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
-        <br>
-    </div>
-    <br />
-
-    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.StepMaster.Supervisor_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br />
         <label for="comment" style="font-weight: bold; color: #333;">User's Comment:</label><br>
-        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.UserComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.StepMaster.User_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
         <br>
-    </div>
-    <br />
-    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <label for="comment" style="font-weight: bold; color: #333;">HOD's Comment:</label><br>
-        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.HOOcomment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.StepMaster.HOD_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
         <br>
         <label for="comment" style="font-weight: bold; color: #333;">HOD's Proposed Promotion:</label><br>
-        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.HOOpromotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.StepMaster.HOD_Propose_Promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
         <br>
         <label for="comment" style="font-weight: bold; color: #333;">HOD's Proposed Increment:</label><br>
-        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.HOOincrement" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.StepMaster.HOD_Propose_Incr" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
     </div>
 
 
     <br />
     <br />
+
+    @{
+        string effectiveDate = Model.StepMaster.Effect_Date.HasValue
+            ? Model.StepMaster.Effect_Date.Value.ToString("yyyy-MM-dd")
+            : DateTime.Now.ToString("yyyy-MM-dd");
+    }
+
+
     @using (Html.BeginForm("SaveHRComment", "HR", new { regId = ViewBag.RegId }, FormMethod.Post, new { id = "HRForm" }))
     {
         <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
 
         <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <label for="HRComment" style="font-weight: bold; color: #333;">Final Comment:</label><br>
-            <input type="text" id="HRComment" name="HRComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <input type="text" id="HRComment" value="@Model.StepMaster.Final_Comment" name="HRComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
             <br />
-            <p style="color:Highlight;"><strong>Current Designation:  @Session["DesignationInd"]</strong></p>
-            <p style="color:Highlight;"><strong>Service of Length:  @Session["ServiceOfLength"]</strong></p>
+            <p style="color:Highlight;"><strong>Current Designation:  @Model.EmployeeInfo.Designation</strong></p>
+            <p style="color:Highlight;"><strong>Length of Service:   @Model.EmployeeInfo.Service_Length</strong></p>
             <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
             <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
                 @foreach (var designation in Model.Designations)
                 {
-                    <option value="@designation.Designation">@designation.Designation</option>
+                    <option value="@designation.Designation" @(designation.Designation == Model.StepMaster.Final_Propose_Promotion ? "selected" : "")>@designation.Designation</option>
                 }
             </select>
             <br>
             <label for="incrementValue" style="font-weight: bold; color: #333;">Proceed with annual increment of BDT:</label><br>
-            <input type="number" id="incrementValue" name="incrementValue" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <input type="number" id="incrementValue" value="@Model.StepMaster.Final_Propose_Incr" name="incrementValue" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
             <br>
             <label for="effdate" style="font-weight: bold; color: #333;">Effective date:</label><br>
-            <input type="date" id="effdate" value="@DateTime.Now.ToString("dd/MM/yyyy")" name="effdate" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <input type="date" id="effdate" value=@effectiveDate name="effdate" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
             <br>
             <input type="submit" value="Submit" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
         </div>
@@ -288,58 +340,10 @@
 
 </body>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+
 @section scripts {
     <script>
-        $(function () {
-            $('#taxPeriodDropdownMV').change(function () {
-                var selectedSession = $(this).val();
-                console.log(selectedSession);
-
-                $.ajax({
-                    url: '@Url.Action("GetFilteredMarksData", "Home")',
-                    type: 'GET',
-                    data: { selectedSession: selectedSession },
-                    success: function (response) {
-                        $('tbody').empty();
-                        var totalMarks = 0;
-                        var count = 0;
-
-                        response.forEach(function (item) {
-                            var newRow = '<tr>' +
-                                '<td>' + item.KPI_OUTCOME + '</td>' +
-                                '<td>' + item.Marks_Achieved + '</td>' +
-                                '<td></td>' +
-                                '</tr>';
-
-                            totalMarks += item.Marks_Achieved;
-                            console.log(totalMarks);
-                            count++;
-                            $('tbody').append(newRow);
-                        });
-
-                        var average = totalMarks / count;
-                        $('#averageMarks').text(average.toFixed(2));
-                        console.log(average);
-                        $('tfoot td:nth-child(3)').text(average.toFixed(2));
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            });
-        });
-
-        $.ajax({
-        url: '@Url.Action("GetReportSuperComment", "ReportSuper")',
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            $('#comment').val(data.SupervisorComment);
-        },
-        error: function() {
-            console.error('Error fetching supervisor comment!');
-        }
-        });
 
           $(function() {
               $('#HRForm').submit(function (event) {
@@ -375,8 +379,52 @@
                 toggleButton.textContent = "Minimize Marks";
             } else {
                 tableContainer.style.display = "none";
-                toggleButton.textContent = "View Marks";
+                toggleButton.textContent = "View Current Year Data";
             }
+        }
+
+        // next year table toggle
+
+        function toggleTableNY() {
+            var tableContainer = document.getElementById("tableContainerNY");
+            var toggleButton = document.getElementById("toggleButtonNY");
+            if (tableContainer.style.display === "none") {
+                tableContainer.style.display = "block";
+                toggleButton.textContent = "Minimize Data";
+            } else {
+                tableContainer.style.display = "none";
+                toggleButton.textContent = "View Next Year Data";
+            }
+        }
+
+        // export to excel
+
+         $(function () {
+            $('#exportToExcelBtn').click(function () {
+                exportToExcel();
+            });
+        });
+
+        function exportToExcel() {
+
+            var regId = @ViewBag.RegId;
+            var sessionId = @Session["SelectedTaxPeriod"];
+
+            $.ajax({
+                url: '@Url.Action("GetEmployeeReport", "HR")',
+                type: 'GET',
+                data: { regId: regId, sessionId: sessionId },
+                success: function (data) {
+                    var worksheet = XLSX.utils.json_to_sheet(data);
+                    var workbook = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+                    XLSX.writeFile(workbook, 'EmployeeSummaryReport.xlsx');
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
         }
 
     </script>

@@ -81,6 +81,14 @@
                     {
                         <td>--</td>
                     }*@
+@*                    @if(@employee.EmpStatus == "ApprovalSent")
+                    {*@
+@*                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>*@
+@*                    }
+                    else
+                    {
+                        <td>--</td>
+                    }*@
                 </tr>
                 }
             </tbody>
@@ -130,6 +138,5 @@
             submitButton.disabled = true;
         }
     }
-
 
 </script>

@@ -1,0 +1,43 @@
+﻿@model List<EmployeeViewModel>
+
+<h3>View Employees and Add Marks</h3>
+<br />
+
+@*@using (Html.BeginForm("AddMarks", "ReportSuper", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.DropDownList("employeeCode", new SelectList(Model, "EmployeeCode", "FullNameWithCodeAndDesignation"), "Select Employee", new { @class = "form-control" })
+        <br />
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
+}*@
+
+<div id="kraKpiOutcomeTable">
+
+    @*    kra kpi and outcome population    *@
+
+</div>
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+}
+
+<script>
+    $(document).ready(function () {
+        $('#selectedEmployee').change(function () {
+            var selectedEmployeeCode = $(this).val();
+            $.ajax({
+                url: '@Url.Action("AddMarks", "ReportSuper")',
+                type: 'POST',
+                data: { employeeCode: selectedEmployeeCode },
+                success: function (response) {
+                    $('#kraKpiOutcomeTable').html(response);
+                },
+                error: function () {
+                    alert('Error occurred while fetching data');
+                }
+            });
+        });
+    });
+</script>

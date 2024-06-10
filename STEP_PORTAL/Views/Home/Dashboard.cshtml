@@ -13,7 +13,7 @@
     .main-panel {
         position: relative;
         z-index: 1;
-        height: calc(100vh - 64px); /* Adjust this value based on the height of your navbar and footer */
+        height: calc(100vh - 64px);
     }
 
     .bg {
@@ -33,9 +33,16 @@
         }
 </style>
 
+<script>
+        window.onload = function() {
+            var message = '@ViewBag.TagMessage';
+            if (message) {
+                alert(message);
+            }
+        };
+</script>
 
 <body>
-
 
     <div class="bg">
         <img src="~/Content/images/kpi_1.jpg" alt="">
