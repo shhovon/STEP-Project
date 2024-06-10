@@ -48,7 +48,15 @@ namespace STEP_PORTAL.Controllers
                         db.tblSpecial_Factor.Add(specialFactor);
                         db.SaveChanges();
                         int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+<<<<<<< HEAD
                         bool success = true;
+=======
+
+                        //var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionID).Select(t => t.TaxPeriod).FirstOrDefault();
+                      //  Session["TaxPeriod"] = taxPeriod;
+
+                                                bool success = true;
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
                         TempData["SuccessMessage"] = success ? "Special Factor saved successfully!" : "";
 
                         return RedirectToAction("TrainingNeed", "Employee");

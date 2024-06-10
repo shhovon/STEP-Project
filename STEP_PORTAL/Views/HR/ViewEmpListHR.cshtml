@@ -15,7 +15,31 @@
     @Html.Hidden("regID", null, new { id = "viewregIDField" })
 }
 
+<<<<<<< HEAD
 <h3 style="text-align:center;">All Employees List (Unit HR)</h3>
+=======
+<<<<<<< HEAD
+<h3 style="text-align:center;">All Employees List (Unit HR)</h3>
+=======
+<<<<<<< HEAD
+<h3 style="text-align:center;">All Employees List (Unit HR)</h3>
+=======
+<<<<<<< HEAD
+<h3 style="text-align:center;">All Employees List (Unit HR)</h3>
+=======
+<<<<<<< HEAD
+<h3 style="text-align:center;">All Employees List (Unit HR)</h3>
+=======
+<<<<<<< HEAD
+<h3 style="text-align:center;">All Employees List (Unit HR)</h3>
+=======
+<h3 style="text-align:center;">View Employee List(Unit HR)</h3>
+>>>>>>> 2fb5633e7882b0cde4cce6838b80756d8d12b3e8
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 
 @using (Html.BeginForm("ViewEmpListHR", "HR", FormMethod.Post, new { id = "viewEmpListForm" }))
 {
@@ -72,8 +96,33 @@
                         <td>@employee.Name</td>
                         <td>@employee.EmployeeCode</td>
                         <td>@employee.EmpStatus</td>
+<<<<<<< HEAD
                         <td><a target="_blank" href="../HR/AddMarksHR?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
                         @*                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>*@
+=======
+<<<<<<< HEAD
+                        <td><a target="_blank" href="../HR/AddMarksHR?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
+                        @*                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>*@
+=======
+<<<<<<< HEAD
+                        <td><a target="_blank" href="../HR/AddMarksHR?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
+                        @*                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>*@
+=======
+<<<<<<< HEAD
+                         <td><a target="_blank" href="../HR/AddMarksHR?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
+@*                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>*@
+=======
+<<<<<<< HEAD
+                         <td><a target="_blank" href="../HR/AddMarksHR?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
+@*                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>*@
+=======
+                        @* <td><a target="_blank" href="../HR/AddMarksHR?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>*@
+                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
                     </tr>
                 }
             </tbody>
@@ -141,6 +190,45 @@
         }
     });
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    // check auth
+
+    function checkAuthAndRedirect(regId, empRegId) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckAuth", "ReportSuper")',
+            data: {
+                regId: regId,
+                empRegId: empRegId,
+                sessionId: $('#selectedTaxPeriod').val(),
+                type: 'AddMarksHR'
+            },
+            success: function(response) {
+                if (response.status) {
+                    window.open('../HR/AddMarksHR?regId=' + encodeURIComponent(response.encryptedRegId), '_blank');
+                } else {
+                    alert('You do not have authorization to access this page!');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking authorization!');
+            }
+        });
+    }
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 
         // generate pdf
 
@@ -151,5 +239,16 @@
             form.submit();
         });
     });
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 </script>

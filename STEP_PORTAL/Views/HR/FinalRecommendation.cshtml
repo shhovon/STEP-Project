@@ -19,7 +19,15 @@
 
 <body>
 
+<<<<<<< HEAD
     @*    <button class="btn btn-primary" style="float:right;" id="exportToExcelBtn">Export to Excel</button>*@
+=======
+<<<<<<< HEAD
+@*    <button class="btn btn-primary" style="float:right;" id="exportToExcelBtn">Export to Excel</button>*@
+=======
+    <button class="btn btn-primary" style="float:right;" id="exportToExcelBtn">Export to Excel</button>
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 
     @{
         decimal sumOfAverages = 0;
@@ -35,7 +43,10 @@
     }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
     <style>
         .tab {
             display: inline-block;
@@ -125,7 +136,27 @@
                             }
                         }
                         <tr>
+<<<<<<< HEAD
                             <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white;">
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
                                 <strong>
                                     Average Cumulative Score of KRA’s / @totalKraCount
                                 </strong>
@@ -141,6 +172,59 @@
     {
         <div class="alert alert-danger" role="alert">
             <i class="fas fa-info-circle"></i>No Current Year data found
+        </div>
+    }
+
+    @*next year data*@
+
+    @if (Model != null && Model.NextYearKraKpiOutcomeData.Count > 0)
+    {
+        <div>
+            <button id="toggleButtonNY" class="btn btn-primary" onclick="toggleTableNY()">View Next Year Data</button>
+            <div id="tableContainerNY" style="display: none;">
+                <table class="user-info-table">
+                    <thead>
+                        <tr>
+                            <th>Next Year's KRA</th>
+                            <th>Next Year's KPI</th>
+                            <th>Completion Deadline</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.NextYearGroupedData)
+                        {
+                            var kpiCount = item.KPIIs.Count;
+                            for (var i = 0; i < kpiCount; i++)
+                            {
+                                var kpi = item.KPIIs[i];
+
+                                <tr>
+                                    @if (i == 0)
+                                    {
+                                        <td rowspan=@kpiCount>@item.KRA</td>
+                                    }
+                                    <td>@kpi</td>
+
+                                    @if (i == 0 && item.Durations != null && item.Durations.Count > 0)
+                                    {
+                                        <td rowspan=@kpiCount>@(item.Durations.First().Value.Date.ToString("dd-MM-yyyy"))</td>
+                                    }
+                                    else
+                                    {
+                                        <td rowspan=@kpiCount></td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="fas fa-info-circle"></i>The employee has not yet submitted Next Year's data
         </div>
     }
 
@@ -248,7 +332,34 @@
                 <td colspan="5" align="center" style="color: Highlight;">
                     <h5>
                         1.5 Overall Performance Rating Achieved:
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+                        @{
+                            decimal? ratingAvg = null;
+                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null)
+                            {
+                                var kraKpiOutcomeData = Model.KraKpiOutcomeData[0];
+                                if (kraKpiOutcomeData.KPI_AVG.HasValue && kraKpiOutcomeData.Rating_Achieved.HasValue)
+                                {
+                                    ratingAvg = (int)kraKpiOutcomeData.Rating_Achieved.Value;
+                                }
+                            }
+
+                        }
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
                         <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
                                value="@Model.StepMaster.Rating_Achieved"
                                class="tab" disabled type="text">
@@ -319,7 +430,15 @@
             <input type="text" id="HRComment" value="@Model.StepMaster.Final_Comment" name="HRComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
             <br />
             <p style="color:Highlight;"><strong>Current Designation:  @Model.EmployeeInfo.Designation</strong></p>
+<<<<<<< HEAD
             <p style="color:Highlight;"><strong>Length of Service:   @Model.EmployeeInfo.Service_Length</strong></p>
+=======
+<<<<<<< HEAD
+            <p style="color:Highlight;"><strong>Length of Service:   @Model.EmployeeInfo.Service_Length</strong></p>
+=======
+            <p style="color:Highlight;"><strong>Service of Length:   @Model.EmployeeInfo.Service_Length</strong></p>
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
             <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
             <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
                 @foreach (var designation in Model.Designations)
@@ -344,6 +463,54 @@
 
 @section scripts {
     <script>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+        $(function () {
+            $('#taxPeriodDropdownMV').change(function () {
+                var selectedSession = $(this).val();
+                console.log(selectedSession);
+
+                $.ajax({
+                    url: '@Url.Action("GetFilteredMarksData", "Home")',
+                    type: 'GET',
+                    data: { selectedSession: selectedSession },
+                    success: function (response) {
+                        $('tbody').empty();
+                        var totalMarks = 0;
+                        var count = 0;
+
+                        response.forEach(function (item) {
+                            var newRow = '<tr>' +
+                                '<td>' + item.KPI_OUTCOME + '</td>' +
+                                '<td>' + item.Marks_Achieved + '</td>' +
+                                '<td></td>' +
+                                '</tr>';
+
+                            totalMarks += item.Marks_Achieved;
+                            console.log(totalMarks);
+                            count++;
+                            $('tbody').append(newRow);
+                        });
+
+                        var average = totalMarks / count;
+                        $('#averageMarks').text(average.toFixed(2));
+                        console.log(average);
+                        $('tfoot td:nth-child(3)').text(average.toFixed(2));
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 
           $(function() {
               $('#HRForm').submit(function (event) {
@@ -383,6 +550,16 @@
             }
         }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
         // next year table toggle
 
         function toggleTableNY() {
@@ -397,6 +574,17 @@
             }
         }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
         // export to excel
 
          $(function () {

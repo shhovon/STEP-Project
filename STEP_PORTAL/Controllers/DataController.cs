@@ -38,6 +38,10 @@ namespace STEP_DEMO.Controllers
                     StatusResult = data;
                 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
             }
 
             return StatusResult;
@@ -166,6 +170,13 @@ namespace STEP_DEMO.Controllers
         }
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
         public StatusResult UpdateRating(int regId, int sessionID)
         {
 
@@ -189,6 +200,10 @@ namespace STEP_DEMO.Controllers
 
             return StatusResult;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
         }        
         
         public List<tblSpecial_Factor> getSpecialFactors(int regId, int sessionID)
@@ -233,11 +248,24 @@ namespace STEP_DEMO.Controllers
 
             return getTrainingData;
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
         }
 
 
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 
     }
 }

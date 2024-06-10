@@ -2,11 +2,37 @@
 @model DisplayAllDataViewModel
 
 @{
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
     var firstItem = Model.KraKpiOutcomeData.FirstOrDefault();
     decimal averageKpiAvg = 0;
     if (Model != null && Model.KraKpiOutcomeData.Any())
     {
         averageKpiAvg = Model.KraKpiOutcomeData.Average(m => m.KPI_AVG ?? 0);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+    var firstItem = Model.FirstOrDefault();
+    decimal averageKpiAvg = 0;
+    if (Model != null && Model.Any())
+    {
+        averageKpiAvg = Model.Average(m => m.KPI_AVG ?? 0);
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
     }
 }
 
@@ -62,6 +88,16 @@
     </div>
 }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 
 @*next year data*@
 
@@ -116,6 +152,10 @@ else
     </div>
 }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 @*    special factors and training data*@
 
 @if ((Model.SpecialFactors != null && Model.SpecialFactors.Count > 0) || (Model.TrainingNeed != null && Model.TrainingNeed.Count > 0))
@@ -187,6 +227,20 @@ else
 <br />
 <br />
 
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+<button id="revertEmployeeButton" class="btn btn-primary" data-regid="@ViewBag.RegId">Revert Employee</button>
+<br />
+<br />
+
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 @if (Model != null && Model.KraKpiOutcomeData.Count > 0)
 {
     <div class="table-responsive">
@@ -224,6 +278,7 @@ else
                                 {
                                     <td rowspan="@kraCount">@Model.KraKpiOutcomeData[i].KRA</td>
                                 }
+<<<<<<< HEAD
                                 <td>@Model.KraKpiOutcomeData[i].KPI</td>
                                 <td>@Model.KraKpiOutcomeData[i].Outcome</td>
                                 <td>
@@ -237,6 +292,120 @@ else
                                         <option value="3" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 3 ? "selected" : "")>3</option>
                                         <option value="4" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 4 ? "selected" : "")>4</option>
                                         <option value="5" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 5 ? "selected" : "")>5</option>
+=======
+<<<<<<< HEAD
+                                <td>@Model.KraKpiOutcomeData[i].KPI</td>
+                                <td>@Model.KraKpiOutcomeData[i].Outcome</td>
+                                <td>
+                                    <input type="text" name="model[@i].Remarks" value="@Model.KraKpiOutcomeData[i].Remarks" />
+                                </td>
+                                <td>
+                                    <select name="model[@i].SelectedMarks" class="marks-select" data-kra="@Model.KraKpiOutcomeData[i].KRA" data-outcome="@Model.KraKpiOutcomeData[i].Outcome">
+                                        <option value="0" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 0 ? "selected" : "")>0</option>
+                                        <option value="1" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 1 ? "selected" : "")>1</option>
+                                        <option value="2" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 2 ? "selected" : "")>2</option>
+                                        <option value="3" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 3 ? "selected" : "")>3</option>
+                                        <option value="4" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 4 ? "selected" : "")>4</option>
+                                        <option value="5" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 5 ? "selected" : "")>5</option>
+=======
+<<<<<<< HEAD
+                                <td>@Model.KraKpiOutcomeData[i].KPI</td>
+                                <td>@Model.KraKpiOutcomeData[i].Outcome</td>
+                                <td>
+                                    <input type="text" name="model[@i].Remarks" value="@Model.KraKpiOutcomeData[i].Remarks" />
+                                </td>
+                                <td>
+                                    <select name="model[@i].SelectedMarks" class="marks-select" data-kra="@Model.KraKpiOutcomeData[i].KRA" data-outcome="@Model.KraKpiOutcomeData[i].Outcome">
+                                        <option value="0" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 0 ? "selected" : "")>0</option>
+                                        <option value="1" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 1 ? "selected" : "")>1</option>
+                                        <option value="2" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 2 ? "selected" : "")>2</option>
+                                        <option value="3" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 3 ? "selected" : "")>3</option>
+                                        <option value="4" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 4 ? "selected" : "")>4</option>
+                                        <option value="5" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 5 ? "selected" : "")>5</option>
+=======
+<<<<<<< HEAD
+                                <td>@Model.KraKpiOutcomeData[i].KPI</td>
+                                <td>@Model.KraKpiOutcomeData[i].Outcome</td>
+                                <td>
+                                    <input type="text" name="model[@i].Remarks" value="@Model.KraKpiOutcomeData[i].Remarks" />
+                                </td>
+                                <td>
+                                    <select name="model[@i].SelectedMarks" class="marks-select" data-kra="@Model.KraKpiOutcomeData[i].KRA" data-outcome="@Model.KraKpiOutcomeData[i].Outcome">
+                                        <option value="0" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 0 ? "selected" : "")>0</option>
+                                        <option value="1" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 1 ? "selected" : "")>1</option>
+                                        <option value="2" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 2 ? "selected" : "")>2</option>
+                                        <option value="3" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 3 ? "selected" : "")>3</option>
+                                        <option value="4" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 4 ? "selected" : "")>4</option>
+                                        <option value="5" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 5 ? "selected" : "")>5</option>
+=======
+                                <td>@Model[i].KPI</td>
+                                <td>@Model[i].Outcome</td>
+                                <td><input type="text" name="@("model[" + i + "].Remarks")" value="@Model[i].Remarks" /></td>
+                                <td>
+                                    <select name="@("model[" + i + "].SelectedMarks")" class="marks-select" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome">
+                                        @if (@Model[i].Marks_Achieved == 0)
+                                        {
+                                            <option value="0" selected>0</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="0">0</option>
+                                        }
+
+
+                                        @if (@Model[i].Marks_Achieved == 1)
+                                        {
+                                            <option value="1" selected>1</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="1">1</option>
+                                        }
+
+                                        @if (@Model[i].Marks_Achieved == 2)
+                                        {
+                                            <option value="2" selected>2</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="2">2</option>
+                                        }
+
+                                        @if (@Model[i].Marks_Achieved == 3)
+                                        {
+                                            <option value="3" selected>3</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="3">3</option>
+                                        }
+
+                                        @if (@Model[i].Marks_Achieved == 4)
+                                        {
+                                            <option value="4" selected>4</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="4">4</option>
+                                        }
+
+                                        @if (@Model[i].Marks_Achieved == 5)
+                                        {
+                                            <option value="5" selected>5</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="5">5</option>
+                                        }
+
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
                                     </select>
                                     <input type="hidden" name="model[@i].Outcome" value="@Model.KraKpiOutcomeData[i].Outcome" />
                                     <input type="hidden" name="model[@i].KPI_ID" value="@Model.KraKpiOutcomeData[i].KPI_ID" />
@@ -251,6 +420,16 @@ else
                             i++;
                         }
                     }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 
                     <tr>
                         <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height:30px;">
@@ -259,6 +438,28 @@ else
                         <td style="text-align: center; background-color: Highlight; color: white;">
                             <strong>@averageKpiAvg</strong>
                         </td>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+                    <tr>
+<<<<<<< HEAD
+                        <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height:30px;">
+=======
+                        <td colspan="5" style="text-align: center; background-color: Highlight; color: white;">
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+                            <strong>
+                                Average Cumulative Score of KRA’s
+                            </strong>
+                        </td>
+                        <td style="text-align: center; background-color: Highlight; color: white;"><strong>@averageKpiAvg</strong></td>
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
                     </tr>
                 </tbody>
             </table>
@@ -295,10 +496,19 @@ else
         $(document).ready(function () {
 
             $("#revertEmployeeButton").click(function () {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 
                 if ($(this).hasClass("disabled")) {
                     return;
                 }
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
                 var regId = $(this).data("regid");
 
                 $.ajax({
@@ -398,6 +608,10 @@ else
                 toggleButton.textContent = "View Next Year Data";
             }
         }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 
         // other data table toggle
 
@@ -412,5 +626,10 @@ else
                 toggleButton.textContent = "View Other Data";
             }
         }
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
     </script>
 }
