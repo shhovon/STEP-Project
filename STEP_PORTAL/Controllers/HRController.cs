@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 ﻿/*using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.tool.xml;*/
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+=======
+﻿
+
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
 using STEP_PORTAL.Models;
 using System;
 using System.Collections.Generic;
@@ -191,6 +196,7 @@ namespace STEP_PORTAL.Controllers
         [CustomAuthorize]
         public ActionResult AddMarksHR(string regId)
         {
+<<<<<<< HEAD
             int RegId = int.Parse(Session["RegID"].ToString());
             int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
             int EmpRegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
@@ -226,6 +232,71 @@ namespace STEP_PORTAL.Controllers
                 }
 
                 var last2session = (db.New_Tax_Period
+=======
+<<<<<<< HEAD
+            int RegId = int.Parse(Session["RegID"].ToString());
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+            int EmpRegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+=======
+<<<<<<< HEAD
+            int RegId = int.Parse(Session["RegID"].ToString());
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+            int EmpRegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+=======
+<<<<<<< HEAD
+            int RegId = int.Parse(Session["RegID"].ToString());
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+            int EmpRegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+=======
+<<<<<<< HEAD
+            int RegId = int.Parse(Session["RegID"].ToString());
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+            int EmpRegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+=======
+<<<<<<< HEAD
+            int RegId = int.Parse(Session["RegID"].ToString());
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+            int EmpRegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+=======
+/*            int RegId;
+            try
+            {
+                RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+            }
+            catch (FormatException)
+            {
+                RegId = 0;
+            }*/
+            int RegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
+            int deptHeadValue;
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+
+                using (DB_STEPEntities db = new DB_STEPEntities())
+                {
+                    var authResult = db.Database.SqlQuery<StatusResult>(
+                                        "exec prc_CheckAuth @RegId, @SESSION_ID, @Type, @EmpRegId",
+                                        new SqlParameter("@RegId", RegId),
+                                        new SqlParameter("@SESSION_ID", sessionID),
+                                        new SqlParameter("@Type", "AddMarksHR"),
+                                        new SqlParameter("@EmpRegId", EmpRegId)
+                                    ).FirstOrDefault();
+
+                    if (authResult == null || !authResult.Status)
+                    {
+                        ViewBag.AuthorizationMessage = authResult?.Message ?? "Unauthorized access";
+<<<<<<< HEAD
+                        TempData["Tag"] = "Unauthorized access";
+=======
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+                        return RedirectToAction("Dashboard", "Home");
+                    }
+
+                    var last2session = (db.New_Tax_Period
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
                                  .OrderByDescending(t => t.TaxPeriod)
                                  .Select(t => t.TaxPeriod).Take(2).ToList());
 
@@ -236,6 +307,7 @@ namespace STEP_PORTAL.Controllers
                 string employeeID = Request.Form["employeeCode"];
                 int regID = (int)Session["RegID"];
 
+<<<<<<< HEAD
                 // insert marks history
                 tblMarksEntryHistory logEntry = new tblMarksEntryHistory
                 {
@@ -243,15 +315,54 @@ namespace STEP_PORTAL.Controllers
                     EmployeeID = employeeID,
                     UpdateTime = DateTime.Now,
                     UserIP = GetIPAddress(),
+=======
+                    // insert marks history
+                    tblMarksEntryHistory logEntry = new tblMarksEntryHistory
+                    {
+                        SupervisorID = RegId,
+                        EmployeeID = employeeID,
+                        UpdateTime = DateTime.Now,
+                        UserIP = GetIPAddress(),
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
 
                 };
                 db.tblMarksEntryHistories.Add(logEntry);
                 db.SaveChanges();
 
 
+<<<<<<< HEAD
                 var userInfo = db.Database.SqlQuery<EmployeeInfo>(
                       "prc_EmployeeInfoByRegID @RegID",
                       new SqlParameter("@RegID", EmpRegId)).FirstOrDefault();
+=======
+                    var userInfo = db.Database.SqlQuery<EmployeeInfo>(
+                          "prc_EmployeeInfoByRegID @RegID",
+<<<<<<< HEAD
+                          new SqlParameter("@RegID", EmpRegId)).FirstOrDefault();
+=======
+<<<<<<< HEAD
+                          new SqlParameter("@RegID", EmpRegId)).FirstOrDefault();
+=======
+<<<<<<< HEAD
+                          new SqlParameter("@RegID", EmpRegId)).FirstOrDefault();
+=======
+<<<<<<< HEAD
+                          new SqlParameter("@RegID", EmpRegId)).FirstOrDefault();
+=======
+<<<<<<< HEAD
+                          new SqlParameter("@RegID", EmpRegId)).FirstOrDefault();
+=======
+                          new SqlParameter("@RegID", RegId)).FirstOrDefault();
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+
+                    Session["EmployeeCodeInd"] = userInfo.EmployeeCode;
+                    Session["NameInd"] = userInfo.Name;
+                    Session["DesignationInd"] = userInfo.Designation;
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
 
                 Session["EmployeeCodeInd"] = userInfo.EmployeeCode;
                 Session["NameInd"] = userInfo.Name;
@@ -274,9 +385,24 @@ namespace STEP_PORTAL.Controllers
                 ViewBag.RegId = EmpRegId;
                 return View("KraKpiOutcomeViewHR", kraKpiOutcomeData);
 
+<<<<<<< HEAD
 
 
             }
+=======
+                    var kraKpiOutcomeData = db.Database.SqlQuery<KraKpiOutcomeModel>
+                        ("exec prc_GetKraKpiOutcomeData @RegId, @SESSION_ID",
+                         new SqlParameter("@RegId", EmpRegId),
+                         new SqlParameter("@SESSION_ID", Session["SelectedTaxPeriod"])).ToList();
+
+                    ViewBag.KraKpiOutcomeData = kraKpiOutcomeData;
+                    ViewBag.RegId = EmpRegId;
+                    return View("KraKpiOutcomeViewHR", kraKpiOutcomeData);
+
+                }
+
+
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
             return null;
 
         }
@@ -287,10 +413,31 @@ namespace STEP_PORTAL.Controllers
         {
             int regId = Convert.ToInt32(Request.Form["regId"]);
             int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
 
 
             STEP_DEMO.Controllers.DataController DC = new STEP_DEMO.Controllers.DataController();
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
             if (model != null)
             {
                 using (DB_STEPEntities db = new DB_STEPEntities())
@@ -304,7 +451,25 @@ namespace STEP_PORTAL.Controllers
                             db.Entry(outcomeEntity).State = EntityState.Modified;
                         }
                     }
-                    db.SaveChanges();
+                    db.SaveChanges();                  
+
+<<<<<<< HEAD
+                    var status = DC.UpdateRating(regId, sessionID);
+
+=======
+
+                    var status = DC.UpdateRating(regId, sessionID);
+
+<<<<<<< HEAD
+=======
+
+                    db.Database.ExecuteSqlCommand(
+                            "exec prc_UpdateRating @RegId, @SESSION_ID",
+                            new SqlParameter("@RegId", regId),
+                            new SqlParameter("@SESSION_ID", sessionID)
+                        );
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
 
                     var status = DC.UpdateRating(regId, sessionID);
 
@@ -432,6 +597,7 @@ namespace STEP_PORTAL.Controllers
 
                     db.tbl_StepMaster.Add(newRecord);
                 }
+<<<<<<< HEAD
                 db.SaveChanges();
                 var status = DC.UpdateRating(RegId, sessionID);
             }
@@ -439,6 +605,39 @@ namespace STEP_PORTAL.Controllers
             TempData["AttendanceValue"] = attendance;
             return RedirectToAction("AddMarksHR", new { regId = regId });
             /*            return RedirectToAction("ViewEmpListHR", "HR");*/
+=======
+                    db.SaveChanges();
+                    var status = DC.UpdateRating(RegId, sessionID);
+            }
+            TempData["SuccessMessage"] = "Attendance marks saved successfully!";
+
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            //string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+=======
+<<<<<<< HEAD
+            //string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+=======
+<<<<<<< HEAD
+            //string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+=======
+<<<<<<< HEAD
+            //string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+=======
+<<<<<<< HEAD
+            //string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+=======
+           // string encryptedRegId = STEP_PORTAL.Helpers.PasswordHelper.Encrypt(regId.ToString());
+>>>>>>> 2fb5633e7882b0cde4cce6838b80756d8d12b3e8
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+            return RedirectToAction("AddMarksHR", new { regId = regId });
+/*            return RedirectToAction("ViewEmpListHR", "HR");*/
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
         }
 
         [HttpPost]
@@ -523,7 +722,10 @@ namespace STEP_PORTAL.Controllers
                 TopTaxPeriods = topTaxPeriods
             };
 
-            ViewBag.SuccessMessage = TempData["SuccessMessage"];
+            if (TempData["SuccessMessage"] != null)
+            {
+                ViewBag.SuccessMessage = TempData["SuccessMessage"].ToString();
+            }
 
             return View(model);
         }
@@ -539,7 +741,11 @@ namespace STEP_PORTAL.Controllers
             }
 
 
+<<<<<<< HEAD
             if (companyId != null && Session["RegID"] != null)
+=======
+                if (companyId != null && Session["RegID"] != null)
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
             {
                 int deptHeadValue;
                 if (int.TryParse(Session["RegID"].ToString(), out deptHeadValue))
@@ -579,12 +785,52 @@ namespace STEP_PORTAL.Controllers
         [CustomAuthorize]
         public ActionResult FinalRecommendation(string regId)
         {
+<<<<<<< HEAD
             STEP_DEMO.Controllers.DataController DC = new STEP_DEMO.Controllers.DataController();
             int RegId = int.Parse(Session["RegID"].ToString());
             int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
             int EmpRegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));
 
             //List<KraKpiOutcomeModel> kraKpiOutcomeData;
+=======
+<<<<<<< HEAD
+            STEP_DEMO.Controllers.DataController DC = new STEP_DEMO.Controllers.DataController();
+=======
+<<<<<<< HEAD
+            STEP_DEMO.Controllers.DataController DC = new STEP_DEMO.Controllers.DataController();
+=======
+<<<<<<< HEAD
+            STEP_DEMO.Controllers.DataController DC = new STEP_DEMO.Controllers.DataController();
+=======
+<<<<<<< HEAD
+            STEP_DEMO.Controllers.DataController DC = new STEP_DEMO.Controllers.DataController();
+=======
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+            int RegId = int.Parse(Session["RegID"].ToString());
+            int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+            int EmpRegId = int.Parse(STEP_PORTAL.Helpers.PasswordHelper.Decrypt(regId));         
+          
+<<<<<<< HEAD
+            //List<KraKpiOutcomeModel> kraKpiOutcomeData;
+=======
+<<<<<<< HEAD
+            //List<KraKpiOutcomeModel> kraKpiOutcomeData;
+=======
+<<<<<<< HEAD
+            //List<KraKpiOutcomeModel> kraKpiOutcomeData;
+=======
+<<<<<<< HEAD
+            //List<KraKpiOutcomeModel> kraKpiOutcomeData;
+=======
+            List<KraKpiOutcomeModel> kraKpiOutcomeData;
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
             using (var db = new DB_STEPEntities())
             {
                 var authResult = db.Database.SqlQuery<StatusResult>(
@@ -598,7 +844,14 @@ namespace STEP_PORTAL.Controllers
                 if (authResult == null || !authResult.Status)
                 {
                     ViewBag.AuthorizationMessage = authResult?.Message ?? "Unauthorized access";
+<<<<<<< HEAD
                     TempData["Tag"] = "Unauthorized access";
+=======
+<<<<<<< HEAD
+                    TempData["Tag"] = "Unauthorized access";
+=======
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
                     return RedirectToAction("Dashboard", "Home");
                 }
 
@@ -607,6 +860,19 @@ namespace STEP_PORTAL.Controllers
                                    .Select(t => t.TaxPeriod).Take(2).ToList());
 
                 ViewBag.TopTaxPeriods = last2session;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
 
                 int nextyearSessionID = sessionID + 1;
 
@@ -614,6 +880,20 @@ namespace STEP_PORTAL.Controllers
                 List<KraKpiOutcomeModel> kraKpiOutcomeData = DC.GetKraKpiOutcomeData(EmpRegId, sessionID);
                 List<KraKpiOutcomeModel> nextYearkraKpiOutcomeData = DC.GetKraKpiData(EmpRegId, nextyearSessionID);
                 var StepMaster = DC.GetStepMaster(EmpRegId, sessionID);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
 
                 var userInfo = db.Database.SqlQuery<EmployeeInfo>(
                                 "prc_EmployeeInfoByRegID @RegID",
@@ -638,9 +918,12 @@ namespace STEP_PORTAL.Controllers
                                        })
                                        .ToList();
 
+<<<<<<< HEAD
                 var specialFactors = db.tblSpecial_Factor.Where(m => m.Reg_Id == EmpRegId && m.Session_Id == sessionID).ToList();
                 var trainingNeed = db.tblTraining_Need.Where(m => m.Reg_Id == EmpRegId && m.Session_Id == sessionID).ToList();
 
+=======
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
                 var comments = from step in db.tbl_StepMaster
                                where step.RegId == EmpRegId
                                select new
@@ -654,9 +937,11 @@ namespace STEP_PORTAL.Controllers
 
                 var comment = comments.FirstOrDefault();
 
+<<<<<<< HEAD
                 var userSL = db.Database.SqlQuery<EmployeeInfo>(
                                 "prc_GetEmployeeServiceLength @RegID",
                                 new SqlParameter("@RegID", EmpRegId)).FirstOrDefault();
+<<<<<<< HEAD
                 Session["ServiceOfLength"] = userSL.Service_Length;
                 ViewBag.RegId = EmpRegId;
 
@@ -670,6 +955,38 @@ namespace STEP_PORTAL.Controllers
                                         AllRemarks = g.Select(x => x.Remarks).ToList()
                                     })
                                     .ToList();
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+                var userSL = db.Database.SqlQuery<EmployeeInfo>("prc_GetEmployeeServiceLength @RegID",
+                                new SqlParameter("@RegID", RegId)).FirstOrDefault();
+
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+                Session["ServiceOfLength"] = userSL.Service_Length;
+                ViewBag.RegId = EmpRegId;
+
+                var groupedData = kraKpiOutcomeData.GroupBy(x => x.KRA)
+                                                .Select(g => new KraKpiViewModel
+                                                {
+                                                    KRA = g.Key,
+                                                    KPIIs = g.Select(x => x.KPI).ToList(),
+                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList(),
+                                                    AllRemarks = g.Select(x => x.Remarks).ToList()
+                                                })
+                                                .ToList();
+
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
                 var designations = db.Database.SqlQuery<DesignationModel>("prc_GetDesignations").ToList();
 
                 var viewModel = new DisplayAllDataViewModel
@@ -680,8 +997,11 @@ namespace STEP_PORTAL.Controllers
                     GroupedData = groupedData,
                     NextYearGroupedData = nextYeargroupedData,
                     StepMaster = StepMaster,
+<<<<<<< HEAD
                     SpecialFactors = specialFactors,
                     TrainingNeed = trainingNeed,
+=======
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
                     Designations = designations
                 };
 
@@ -749,7 +1069,11 @@ namespace STEP_PORTAL.Controllers
                 var EmpReportData = db.Database.SqlQuery<EmployeeReportModel>(
                     "exec prc_SearchEmployeeByHR @RegID, @CompID, @DepartmentName, @SectionName, @SESSION_ID",
                     new SqlParameter("@RegID", regId),
+<<<<<<< HEAD
                     new SqlParameter("@CompID", comID),
+=======
+                    new SqlParameter("@CompID", comID), 
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
                     new SqlParameter("@DepartmentName", DepartmentDropdown),
                     new SqlParameter("@SectionName", SectionDropdown),
                     new SqlParameter("@SESSION_ID", sessionId)).ToList();
@@ -759,6 +1083,7 @@ namespace STEP_PORTAL.Controllers
             }
         }
 
+<<<<<<< HEAD
         [CustomAuthorize]
         public ActionResult StepReportPdf(string regId)
         {
@@ -1064,3 +1389,7 @@ namespace STEP_PORTAL.Controllers
         }
 }
 }  
+=======
+    }
+}
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede

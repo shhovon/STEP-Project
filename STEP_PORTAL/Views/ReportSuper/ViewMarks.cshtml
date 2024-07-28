@@ -72,11 +72,31 @@
                             string outcome = outcomeItem != null ? outcomeItem.Outcome : null;
                             var mark = outcomeItem != null ? outcomeItem.Marks_Achieved : 0;
 
-                            <tr>
-                                @if (i == 0)
-                                {
-                                    <td rowspan=@kpiCount>@item.KRA</td>
+                    <tr>
+                        @if (i == 0)
+                        {
+                            <td rowspan=@kpiCount>@item.KRA</td>
+                        }
+                        <td>@kpi</td>
+                        <td>@outcome</td>
+                        <td>@item.AllRemarks[i]</td>
+                        <td style="text-align:center">@mark</td>
+                        @if (i == 0)
+                        {
+                            <td rowspan=@kpiCount style="text-align:center">
+                                @(Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count)
+                                @{
+                                    decimal MarskAverage = Model.KraKpiOutcomeData.Where(m => m.KRA == item.KRA).Sum(m => m.AVG_Marks_Achieved) / item.KPIIs.Count;
+                                    if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null && Model.KraKpiOutcomeData[0].KPI_AVG.HasValue)
+                                    {
+                                        sumOfAverages = Model.KraKpiOutcomeData[0].KPI_AVG.Value;
+                                    }
                                 }
+<<<<<<< HEAD
+                            </td>
+                        }
+                    </tr>
+=======
                                 <td>@kpi</td>
                                 <td>@outcome</td>
                                 <td>@item.AllRemarks[i]</td>
@@ -95,6 +115,7 @@
                                     </td>
                                 }
                             </tr>
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
                         }
                     }
                     <tr>
@@ -111,13 +132,20 @@
     }
     else
     {
+<<<<<<< HEAD
         <div class="alert alert-danger" role="alert">
             <i class="fas fa-info-circle"></i>No Current Year data found
         </div>
+=======
+<div class="alert alert-danger" role="alert">
+    <i class="fas fa-info-circle"></i>No Current Year data found
+</div>
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
     }
 
 
 
+<<<<<<< HEAD
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <table border="1">
             <tr>
@@ -209,6 +237,102 @@
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <label for="SupervisorComment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
         <textarea disabled id="SupervisorComment" name="SupervisorComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; min-height: 80px; resize: vertical;">@Model.StepMaster.Supervisor_Comment</textarea>
+=======
+    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <table border="1">
+            <tr>
+                <td colspan="5" align="center" style="color:Highlight;">
+                    <h5>
+                        1.2 Performance Assessment:
+                        @{
+                            decimal? totalAvg = null;
+                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null && Model.KraKpiOutcomeData[0].KPI_AVG.HasValue)
+                            {
+                                sumOfAverages = Model.KraKpiOutcomeData[0].KPI_AVG.Value;
+                            }
+                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null)
+                            {
+                                totalAvg = (Model.KraKpiOutcomeData[0].Attendance + Model.KraKpiOutcomeData[0].Discipline) / 2;
+                            }
+                            else
+                            {
+                                totalAvg = 0;
+                            }
+
+                        }
+                        <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
+                               value="@(totalAvg ?? 0)"
+                               class="tab" disabled type="text">
+                    </h5>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <h6>
+                        1.	Attendance: <input style="text-align:center; width:30px;"
+                                                value="@(Model.StepMaster.Attendance ?? 0)"
+                                                class="tab" disabled type="text">
+                    </h6>
+                </td>
+                <td>
+                    <h6>
+                        2.	Discipline: <input style="text-align:center; width:30px;"
+                                                value="@(Model.StepMaster.Discipline ?? 0)"
+                                                class="tab" disabled type="text">
+                    </h6>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <table border="1">
+            <tr>
+                <td colspan="5" align="center" style="color:Highlight;">
+                    <h5>
+                        1.5 Overall Performance Rating Achieved:
+
+                        <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
+                               value="@(Model.StepMaster.Rating_Achieved ?? 0)"
+                               class="tab" disabled type="text">
+                    </h5>
+                </td>
+
+            </tr>
+            <tr>
+                <td style="text-align: left; vertical-align: top;">
+                    <h6 style="margin-top: 0;">5 - OUTSTANDING</h6>
+                    <p>Exceeded performance in all agreed upon objectives /KRAs and have gone far beyond what is expected.</p>
+                </td>
+                <td style="text-align: left; vertical-align: top;">
+                    <h6 style="margin-top: 0;">4 - ABOVE TARGET</h6>
+                    <p>Consistently accomplished objectives/KRAs and also have delivered results that exceeded some targets.</p>
+                </td>
+                <td style="text-align: left; vertical-align: top;">
+                    <h6 style="margin-top: 0;">3 - ON TARGET</h6>
+                    <p>Achieved all objectives /KRAs or has exceeded target in some critical KRAs with one less critical area under achieved.</p>
+                </td>
+                <td style="text-align: left; vertical-align: top;">
+                    <h6 style="margin-top: 0;">2 - NEARLY THERE</h6>
+                    <p>Achieved most of the objectives/KRAs but not all.</p>
+                </td>
+                <td style="text-align: left; vertical-align: top;">
+                    <h6 style="margin-top: 0;">1 - UNDER PERFORMING</h6>
+                    <p>Could not achieve a number of agreed objectives/KRAs.</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br /><br />
+
+    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
+        <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.StepMaster.Supervisor_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br>
+        <label for="comment" style="font-weight: bold; color: #333;">HOD's Comment:</label><br>
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.StepMaster.HOD_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
     </div>
     <br />
 
@@ -220,8 +344,12 @@
 
         <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <label for="comment" style="font-weight: bold; color: #333;">Comment:</label><br>
+<<<<<<< HEAD
             <input type="text" id="UserComment" value="@Model.StepMaster.User_Comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; height:80px;">
             @*@(string.IsNullOrEmpty(Model.StepMaster.User_Comment) ? "" : "disabled")*@
+=======
+            <input type="text" id="UserComment" value="@Model.StepMaster.User_Comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
             <br>
             <input type="submit" value="Submit"
                    style="color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; @(string.IsNullOrWhiteSpace(Model.StepMaster.User_Comment) ? "" : "opacity: 0.5; cursor: not-allowed;")"
@@ -257,6 +385,7 @@
             console.error('Error fetching employee comment!');
         }
     });*@
+<<<<<<< HEAD
 
         function validateUserComment() {
             var comment = document.getElementById('UserComment').value.trim();
@@ -266,6 +395,8 @@
             }
             return true;
         }
+=======
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
 
         $(function() {
             $('form').submit(function(event) {

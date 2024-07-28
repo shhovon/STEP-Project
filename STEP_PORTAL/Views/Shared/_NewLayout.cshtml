@@ -92,6 +92,7 @@
                     @*                    NEW NAVBAR                *@
 
                     @{
+<<<<<<< HEAD
                         var userMenus = Session["AssignedMenuItems"] as List<UserMenu>;
                         foreach (var menu in userMenus)
                         {
@@ -131,6 +132,47 @@
                                 }
                             }
                         }
+=======
+                            var userMenus = Session["AssignedMenuItems"] as List<UserMenu>;
+                            foreach (var menu in userMenus)
+                            {
+                                if (menu.Main_Menu_Id == "0")
+                                {
+                                    var subMenus = userMenus.Where(p => p.Main_Menu_Id == menu.ID.ToString()).ToList();
+                                    if (subMenus.Count > 0)
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="collapse" href="#menu-@menu.ID" aria-expanded="false" aria-controls="menu-@menu.ID">
+                                                <i class="icon-layout menu-icon"></i>
+                                                <span class="menu-title">@menu.Menu_Name</span>
+                                                <i class="menu-arrow"></i>
+                                            </a>
+                                            <div class="collapse" id="menu-@menu.ID">
+                                                <ul class="nav flex-column sub-menu">
+                                                    @{
+                                                        foreach (var subMenu in subMenus)
+                                                        {
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="@Url.Action(subMenu.Menu_URL)">@subMenu.Menu_Name</a>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="@Url.Action(menu.Menu_URL)">
+                                                <i class="icon-layout menu-icon"></i>
+                                                <span class="menu-title">@menu.Menu_Name</span>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                            }
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
                     }
 
                 </ul>
@@ -166,6 +208,7 @@
 
         .table-form {
             width: 400%;
+<<<<<<< HEAD
             margin: 0 auto;
         }
 
@@ -195,6 +238,9 @@
 
         .sidebar-offcanvas .collapse .sub-menu {
             padding-left: 20px;
+=======
+            margin: 0 auto; 
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
         }
     </style>
     <script src="~/Content/vendors/js/vendor.bundle.base.js"></script>
