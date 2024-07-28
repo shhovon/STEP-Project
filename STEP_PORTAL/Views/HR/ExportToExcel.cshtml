@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "ExportToExcel";
+}
+
+<h2>ExportToExcel</h2>
+
+@using (Html.BeginForm("ExportToExcel", "HR", FormMethod.Get))
+{
+    <input type="text" name="regId" placeholder="Enter RegId" />
+    <input type="text" name="sessionId" placeholder="Enter SessionId" />
+    <button type="submit">Export to Excel</button>
+}
+

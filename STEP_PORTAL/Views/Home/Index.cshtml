@@ -16,12 +16,6 @@
             display: inline-block;
         }
 
-@*        .submit-btn {
-            width: auto;
-            padding: 10px 20px;
-            font-size: 16px;
-        }*@
-
         #kra-kpi-table {
             margin-top: 20px;
         }
@@ -30,6 +24,24 @@
             width: 100%;
             margin: auto;
         }
+
+        .alert {
+            display: none; /* Hidden by default */
+            padding: 20px;
+            background-color: #f44336; /* Red background */
+            color: white; /* White text */
+            margin-top: 60px;
+            border-radius: 5px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .alert.show {
+                display: block; /* Show the alert */
+            }
     </style>
 </head>
 <body>
@@ -37,7 +49,7 @@
         <h4>New KRA and KPI Entry</h4>
         <br />
 
-        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { onsubmit = "return validateForm();" }))
         {
             <table class="table table-bordered">
                 <thead>
@@ -90,9 +102,9 @@
                 <input type="submit" value="Save" class="btn btn-primary submit-btn" />
             }
 
-@*            <div class="form-group" style=" text-align: center;">
-                <input type="submit" value="Save" class="btn btn-primary submit-btn" />
-            </div>*@
+            @*            <div class="form-group" style=" text-align: center;">
+                    <input type="submit" value="Save" class="btn btn-primary submit-btn" />
+                </div>*@
         }
     </div>
     <hr />
@@ -136,5 +148,51 @@
         </table>
     </div>-->
 
+    <div id="alertMessage" class="alert">
+        Please provide 3 KPIs.
+    </div>
+
+
 </body>
 </html>
+
+<script>
+        function validateForm() {
+            var kpiCount = 0;
+            var kpiInputs = document.querySelectorAll('.kpi-textarea');
+            kpiInputs.forEach(function (input) {
+                if (input.value.trim() !== "") {
+                    kpiCount++;
+                }
+            });
+            if (kpiCount < 3) {
+                alert("Please provide 3 KPIs");
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+@*<script>
+    function validateForm() {
+        var kpiCount = 0;
+        var kpiInputs = document.querySelectorAll('.kpi-textarea');
+        kpiInputs.forEach(function (input) {
+            if (input.value.trim() !== "") {
+                kpiCount++;
+            }
+        });
+
+        var alertMessage = document.getElementById('alertMessage');
+
+        if (kpiCount < 2) {
+            alertMessage.classList.add('show');
+            return false;
+        } else {
+            alertMessage.classList.remove('show');
+        }
+
+        return true;
+    }
+</script>*@
+

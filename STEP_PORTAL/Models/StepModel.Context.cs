@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace STEP_DEMO.Models
+namespace STEP_PORTAL.Models
 {
     using System;
     using System.Data.Entity;
@@ -237,17 +237,17 @@ namespace STEP_DEMO.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetHODTeamMember_Result>("prc_GetHODTeamMember", regIDParameter, compIDParameter, sESSION_IDParameter);
         }
     
-        public virtual ObjectResult<prc_GetKraKpiData_Result> prc_GetKraKpiData(Nullable<int> regID, Nullable<int> selectedTaxPeriod)
+        public virtual ObjectResult<prc_GetKraKpiData_Result> prc_GetKraKpiData(Nullable<int> regID, Nullable<int> sessionID)
         {
             var regIDParameter = regID.HasValue ?
                 new ObjectParameter("RegID", regID) :
                 new ObjectParameter("RegID", typeof(int));
     
-            var selectedTaxPeriodParameter = selectedTaxPeriod.HasValue ?
-                new ObjectParameter("SelectedTaxPeriod", selectedTaxPeriod) :
-                new ObjectParameter("SelectedTaxPeriod", typeof(int));
+            var sessionIDParameter = sessionID.HasValue ?
+                new ObjectParameter("SessionID", sessionID) :
+                new ObjectParameter("SessionID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKraKpiData_Result>("prc_GetKraKpiData", regIDParameter, selectedTaxPeriodParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetKraKpiData_Result>("prc_GetKraKpiData", regIDParameter, sessionIDParameter);
         }
     
         public virtual ObjectResult<prc_GetkrakpiID_Result> prc_GetkrakpiID(Nullable<int> regId, string selectedKRA, string selectedKPI)
@@ -336,6 +336,28 @@ namespace STEP_DEMO.Models
                 new ObjectParameter("Updated_by", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("prc_UpdateStatus", regIdParameter, sESSION_IDParameter, statusTypeParameter, statusValueParameter, statusMessageParameter, updated_dateParameter, updated_byParameter);
+        }
+    
+        public virtual ObjectResult<prc_GetEmployeeServiceLength_Result> prc_GetEmployeeServiceLength(Nullable<int> regId)
+        {
+            var regIdParameter = regId.HasValue ?
+                new ObjectParameter("RegId", regId) :
+                new ObjectParameter("RegId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetEmployeeServiceLength_Result>("prc_GetEmployeeServiceLength", regIdParameter);
+        }
+    
+        public virtual ObjectResult<prc_GetEmployeeSummary_Result> prc_GetEmployeeSummary(Nullable<int> regId, Nullable<int> sESSION_ID)
+        {
+            var regIdParameter = regId.HasValue ?
+                new ObjectParameter("RegId", regId) :
+                new ObjectParameter("RegId", typeof(int));
+    
+            var sESSION_IDParameter = sESSION_ID.HasValue ?
+                new ObjectParameter("SESSION_ID", sESSION_ID) :
+                new ObjectParameter("SESSION_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<prc_GetEmployeeSummary_Result>("prc_GetEmployeeSummary", regIdParameter, sESSION_IDParameter);
         }
     }
 }
