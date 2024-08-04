@@ -1,9 +1,4 @@
-﻿@*@{
-        bool? showMenuItems = Session["ShowMenuItems"] as bool?;
-        bool? showMenuItemsForRS = Session["ShowMenuItemsForRS"] as bool?;
-    }*@
-
-@using STEP_PORTAL.Models;
+﻿@using STEP_PORTAL.Models;
 
 
 <!DOCTYPE html>
@@ -90,221 +85,53 @@
                         </div>
                     </div>
                 </div>*@
+
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
 
                     @*                    NEW NAVBAR                *@
 
                     @{
-@*                            var userMenus = ViewBag.UserMenus as IEnumerable<STEP_PORTAL.Models.UserMenu>;*@
-                            var userMenus = Session["AssignedMenuItems"] as List<UserMenu>;
-                            foreach (var menu in userMenus)
-                            {
-                                if (menu.Main_Menu_Id == "0")
-                                {
-                                    var subMenus = userMenus.Where(p => p.Main_Menu_Id == menu.ID.ToString()).ToList();
-                                    if (subMenus.Count > 0)
-                                    {
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="collapse" href="#menu-@menu.ID" aria-expanded="false" aria-controls="menu-@menu.ID">
-                                                <i class="icon-layout menu-icon"></i>
-                                                <span class="menu-title">@menu.Menu_Name</span>
-                                                <i class="menu-arrow"></i>
-                                            </a>
-                                            <div class="collapse" id="menu-@menu.ID">
-                                                <ul class="nav flex-column sub-menu">
-                                                    @{
-                                                        foreach (var subMenu in subMenus)
-                                                        {
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="@Url.Action(subMenu.Menu_URL)">@subMenu.Menu_Name</a>
-                                                            </li>
-                                                        }
-                                                    }
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="@Url.Action(menu.Menu_URL)">
-                                                <i class="icon-layout menu-icon"></i>
-                                                <span class="menu-title">@menu.Menu_Name</span>
-                                            </a>
-                                        </li>
-                                    }
-                                }
-                            }
-                    }
-
-
-
-                    @*                    OLD NAVBAR                *@
-
-                    @*@if (Session["AssignedMenuItems"] != null)
-        {
-            var assignedMenuItems = Session["AssignedMenuItems"] as List<tblMenu>;
-
-            if (assignedMenuItems != null && assignedMenuItems.Any())
-            {
-                <ul class="nav flex-column">
-                    @foreach (var menuItem in assignedMenuItems)
-                    {
-                        var menuUrlParts = menuItem.Menu_URL.Split('/');
-                        if (menuUrlParts.Length >= 2)
+                        var userMenus = Session["AssignedMenuItems"] as List<UserMenu>;
+                        foreach (var menu in userMenus)
                         {
-                            var controller = menuUrlParts[0];
-                            var view = menuUrlParts[1];
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action(view, controller)">
-                                    <i class="icon-layout menu-icon"></i>
-                                    <span class="menu-title">@menuItem.Menu_Name</span>
-                                </a>
-                                @{
-                                    var UserMenus = ViewBag.UserMenus as IEnumerable<STEP_PORTAL.Models.UserMenu>;
-                                    if (UserMenus != null)
-                                    {
-                                        var SubMenus = UserMenus.Where(p => p.Main_Menu_Id == menuItem.ID.ToString()).ToList();
-                                        if (SubMenus != null && SubMenus.Any())
-                                        {
+                            if (menu.Main_Menu_Id == "0")
+                            {
+                                var subMenus = userMenus.Where(p => p.Main_Menu_Id == menu.ID.ToString()).ToList();
+                                if (subMenus.Count > 0)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="collapse" href="#menu-@menu.ID" aria-expanded="false" aria-controls="menu-@menu.ID">
+                                            <i class="icon-layout menu-icon"></i>
+                                            <span class="menu-title">@menu.Menu_Name</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                        <div class="collapse" id="menu-@menu.ID">
                                             <ul class="nav flex-column sub-menu">
-                                                @foreach (var subMenuItem in SubMenus)
-                                                {
-                                                    var submenuUrlParts = subMenuItem.Menu_URL.Split('/');
-                                                    if (submenuUrlParts.Length >= 2)
+                                                @{
+                                                    foreach (var subMenu in subMenus)
                                                     {
-                                                        var submenuController = submenuUrlParts[0];
-                                                        var submenuView = submenuUrlParts[1];
-
                                                         <li class="nav-item">
-                                                            <a class="nav-link" href="@Url.Action(submenuView, submenuController)">
-                                                                <i class="icon-layout menu-icon"></i>
-                                                                <span class="menu-title">@subMenuItem.Menu_Name</span>
-                                                            </a>
+                                                            <a class="nav-link" href="@Url.Action(subMenu.Menu_URL)">@subMenu.Menu_Name</a>
                                                         </li>
-                                                    }
-                                                    else
-                                                    {
-                                                        <li>view or controller not found</li>
                                                     }
                                                 }
                                             </ul>
-                                        }
-                                    }
+                                        </div>
+                                    </li>
                                 }
-                            </li>
-                        }
-                        else
-                        {
-                            <li>Invalid menu URL format</li>
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="@Url.Action(menu.Menu_URL)">
+                                            <i class="icon-layout menu-icon"></i>
+                                            <span class="menu-title">@menu.Menu_Name</span>
+                                        </a>
+                                    </li>
+                                }
+                            }
                         }
                     }
-                </ul>
-            }
-            else
-            {
-                <li>No assigned menus found</li>
-            }
-        }
-        else
-        {
-            <li>Error: AssignedMenuItems session variable is null</li>
-        }
-                    *@
-
-
-
-
-
-                    @*STATIC LAYOUT*@
-
-                    <!--<li class="nav-item">
-        <a class="nav-link" href="Url.Action("Dashboard", "Home")">
-            <i class="icon-grid menu-icon"></i>
-            <span class="menu-title">Dashboard</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-            <i class="icon-layout menu-icon"></i>
-            <span class="menu-title">KRA/KPI Entry</span>
-            <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="ui-basic">
-            <ul class="nav flex-column sub-menu">-->
-                    @*<li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "Home")">Master Data Entry</a></li>*@
-                    <!--<li class="nav-item"> <a class="nav-link" href="Url.Action("Outcome", "Home")">View List of KRA/KPI</a></li>
-            </ul>
-        </div>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-            <i class="icon-columns menu-icon"></i>
-            <span class="menu-title">KPI Outcome Entry</span>
-            <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="form-elements">
-            <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="Url.Action("DisplayKrasAndKpis", "Home")">Current Year</a></li>-->
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("DisplayKrasAndKpis", "Home")">Next Year</a></li>*@
-                    <!--</ul>
-        </div>
-    </li>-->
-                    @*        <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("SpecialFactors", "Employee")">
-                <i class="icon-paper menu-icon"></i>
-                <span class="menu-title">Add Special Factors</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("TrainingNeed", "Employee")">
-                <i class="icon-paper menu-icon"></i>
-                <span class="menu-title">Add Training Data</span>
-            </a>
-        </li>*@
-
-                    @*                    <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("ViewEmpList", "DeptHead")">
-                <i class="icon-paper menu-icon"></i>
-                <span class="menu-title">Add Performance Marks</span>
-            </a>
-        </li>*@
-                    @*        <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("AddMarks", "ReportSuper")">
-                <i class="icon-paper menu-icon"></i>
-                <span class="menu-title">Add Performance Marks</span>
-            </a>
-        </li>*@
-                    @*           <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("ViewMarks", "ReportSuper")">
-                <i class="icon-paper menu-icon"></i>
-                <span class="menu-title">View Performance Marks</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("ViewEmpListHR", "HR")">
-                <i class="icon-paper menu-icon"></i>
-                <span class="menu-title">HR Add Performance Marks</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("ViewEmpListHOD", "DeptHead")">
-                <i class="icon-paper menu-icon"></i>
-                <span class="menu-title">HOD View Employees</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("CorpHR", "HR")">
-                <i class="icon-paper menu-icon"></i>
-                <span class="menu-title">Corporate HR</span>
-            </a>
-        </li>*@
-
 
                 </ul>
             </nav>
@@ -338,8 +165,36 @@
         }
 
         .table-form {
-            width: 400%; /* Adjust the width as needed */
-            margin: 0 auto; /* Center the table */
+            width: 400%;
+            margin: 0 auto;
+        }
+
+        .nav-link {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+        }
+
+        .menu-title {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            min-width: 100px; 
+            padding-right: 20px; 
+        }
+
+        .sidebar-offcanvas .collapse .sub-menu .nav-link {
+            white-space: normal;
+            overflow: visible;
+            display: block;
+            text-overflow: ellipsis;
+            padding-right: 20px;
+        }
+
+        .sidebar-offcanvas .collapse .sub-menu {
+            padding-left: 20px;
         }
     </style>
     <script src="~/Content/vendors/js/vendor.bundle.base.js"></script>
@@ -354,6 +209,7 @@
     <script src="~/Content/js/todolist.js"></script>
     <script src="~/Content/js/dashboard.js"></script>
     <script src="~/Content/js/Chart.roundedBarCharts.js"></script>
+    <script src="~/Content/js/jquery-3.4.1.min.js"></script>
 
     @RenderSection("scripts", required: false)
 </body>

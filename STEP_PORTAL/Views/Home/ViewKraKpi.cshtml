@@ -1,0 +1,199 @@
+﻿@model STEP_PORTAL.Models.OutcomeViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
+    <title>Outcome</title>
+
+    <style>
+        .hide-link {
+            display: none !important;
+        }
+        .action-buttons {
+            width: 1%;
+            white-space: nowrap;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+            .button-container .btn {
+                flex: 0 0 auto;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                height: 38px; /* Adjust this value as needed */
+                padding: 0.375rem 0.75rem;
+                font-size: 1rem;
+                line-height: 1.5;
+                border-radius: 0.25rem;
+            }
+
+                .button-container .btn i {
+                    font-size: 1rem; /* Adjust icon size if needed */
+                }
+
+    </style>
+</head>
+<body>
+
+    @if (TempData["AlertMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["AlertMessage"]
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (@ViewBag.ApprovalSent)
+    {
+        <div class="alert alert-danger" role="alert">
+            <div style=" text-align: center;">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary submit-btn hide-link">New</a>
+                <i class="fas fa-info-circle"></i> Already Sent for Approval
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="form-group" style="float:right;">
+            <div class="col-md-offset-3 col-md-10">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary submit-btn">New</a>
+            </div>
+        </div>
+    }
+
+    <br />
+    <br />
+
+ <table id="numberInputTable" border="1">
+        <tr>
+            <th>SL</th>
+            <th>KEY RESULT AREAS (KRA)</th>
+            <th>KEY PERFORMANCE INDICATORS (KPI)</th>
+            <th>Action</th>
+        </tr>
+        <tbody>
+            @if (ViewBag.KraKpiData != null)
+            {
+                int sl = 1;
+                foreach (var item in ViewBag.KraKpiData)
+                {
+                    var kpiCount = item.KPIIs.Count;
+                    <tr class="kra-row" data-kra-id="@item.KRA_ID">
+                        <td rowspan="@kpiCount">@sl</td>
+                        <td rowspan="@kpiCount">
+                            <span class="kra-text">@item.KRA</span>
+                            <input type="text" class="kra-input" style="display:none;" value="@item.KRA" />
+                        </td>
+                        <td>
+                            <span class="kpi-text">@item.KPIIs[0]</span>
+                            <input type="text" class="kpi-input" style="display:none;" value="@item.KPIIs[0]" />
+                        </td>
+                        <td rowspan="@kpiCount" class="action-buttons">
+                            @if (!ViewBag.ApprovalSent)
+                            {
+                            <div class="button-container" >
+                                <button class="btn btn-primary edit-btn"><i class="ti-pencil"></i></button>
+                                <button class="btn btn-primary save-btn" style="display:none;"><i class="ti-save-alt"></i></button>
+                                @*<button class="btn btn-primary cancel-btn" style="display:none;"><i class="ti-eraser"></i></button>*@
+                                <a href="@Url.Action("DeleteKRA", "Home", new { kraId = item.KRA_ID })" class="btn btn-danger delete-btn" onclick="return confirm('Are you sure you want to delete this KRA and its associated KPIs?')"><i class="ti-trash"></i></a>
+                            </div>
+                            }
+                            else
+                            {
+                                <span style="color:red">Data cannot be edited or deleted!</span>
+                            }
+                        </td>
+                    </tr>
+                    for (var i = 1; i < kpiCount; i++)
+                    {
+                        <tr class="kpi-row" data-kra-id="@item.KRA_ID">
+                            <td>
+                                <span class="kpi-text">@item.KPIIs[i]</span>
+                                <input type="text" class="kpi-input" style="display:none;" value="@item.KPIIs[i]" />
+                            </td>
+                        </tr>
+                    }
+                    sl++;
+                }
+            }
+        </tbody>
+    </table>
+
+    <script src="~/Content/js/jquery-3.4.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.edit-btn').click(function() {
+                var kraRow = $(this).closest('.kra-row');
+                var kraId = kraRow.data('kra-id');
+                var allRows = $('.kra-row[data-kra-id="' + kraId + '"], .kpi-row[data-kra-id="' + kraId + '"]');
+
+                allRows.find('.kra-text, .kpi-text').hide();
+                allRows.find('.kra-input, .kpi-input').show();
+                $(this).hide();
+                kraRow.find('.save-btn, .cancel-btn').show();
+            });
+
+            $('.cancel-btn').click(function() {
+                var kraRow = $(this).closest('.kra-row');
+                var kraId = kraRow.data('kra-id');
+                var allRows = $('.kra-row[data-kra-id="' + kraId + '"], .kpi-row[data-kra-id="' + kraId + '"]');
+
+                allRows.find('.kra-text, .kpi-text').show();
+                allRows.find('.kra-input, .kpi-input').hide();
+                kraRow.find('.edit-btn').show();
+                kraRow.find('.save-btn, .cancel-btn').hide();
+            });
+
+            $('.save-btn').click(function() {
+                var kraRow = $(this).closest('.kra-row');
+                var kraId = kraRow.data('kra-id');
+                var allRows = $('.kra-row[data-kra-id="' + kraId + '"], .kpi-row[data-kra-id="' + kraId + '"]');
+
+                var kra = kraRow.find('.kra-input').val();
+                var kpis = allRows.find('.kpi-input').map(function() {
+                    return $(this).val();
+                }).get();
+
+                $.ajax({
+                    url: '@Url.Action("UpdateKraKpi", "Home")',
+                    type: 'POST',
+                    data: JSON.stringify({ kraId: kraId, kra: kra, kpis: kpis }),
+                    contentType: 'application/json',
+                    success: function(result) {
+                        if (result.success) {
+                            kraRow.find('.kra-text').text(kra);
+                            allRows.find('.kpi-text').each(function(index) {
+                                $(this).text(kpis[index]);
+                            });
+                            allRows.find('.kra-text, .kpi-text').show();
+                            allRows.find('.kra-input, .kpi-input').hide();
+                            kraRow.find('.edit-btn').show();
+                            kraRow.find('.save-btn, .cancel-btn').hide();
+                        } else {
+                            alert('Error updating data');
+                        }
+                    },
+                    error: function() {
+                        alert('Error updating data');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

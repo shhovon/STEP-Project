@@ -67,11 +67,15 @@
 
                     @if (i == 0)
                     {
-                        @*                <td rowspan=@kpiCount>
-                <a href="@Url.Action("DeleteKRA", "Home", new { kraId = item.KRA_ID })" class="btn btn-danger delete-btn" onclick="return confirm('Are you sure you want to delete this KRA and its corresponding KPIs?')"><i class="ti-trash"></i></a>
-            </td>*@
                         <td rowspan=@kpiCount>
-                            <a href="@Url.Action("DeleteKRA", "Home", new { kraId = item.KRA_ID })" class="btn btn-danger delete-btn" onclick="return confirm('Are you sure you want to delete this KRA and its associated KPIs?')"><i class="ti-trash"></i></a>
+                            @if (@ViewBag.ApprovalSent)
+                            {
+                                <span style="color:red">Data cannot be deleted!</span>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("DeleteKRA", "Home", new { kraId = item.KRA_ID })" class="btn btn-danger delete-btn" onclick="return confirm('Are you sure you want to delete this KRA and its associated KPIs?')"><i class="ti-trash"></i></a>
+                            }
                         </td>
                     }
 
