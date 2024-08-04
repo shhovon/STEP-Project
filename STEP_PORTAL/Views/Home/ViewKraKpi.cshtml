@@ -12,6 +12,7 @@
         .hide-link {
             display: none !important;
         }
+<<<<<<< HEAD
         .action-buttons {
             width: 1%;
             white-space: nowrap;
@@ -38,12 +39,19 @@
                 .button-container .btn i {
                     font-size: 1rem; /* Adjust icon size if needed */
                 }
+=======
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
 
     </style>
 </head>
 <body>
 
+<<<<<<< HEAD
     @if (TempData["AlertMessage"] != null)
+=======
+<<<<<<< HEAD
+ @if (TempData["AlertMessage"] != null)
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
     {
         <div class="alert alert-danger" role="alert">
             @TempData["AlertMessage"]
@@ -55,6 +63,11 @@
             @TempData["SuccessMessage"]
         </div>
     }
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
 
     @if (@ViewBag.ApprovalSent)
     {
@@ -77,6 +90,7 @@
     <br />
     <br />
 
+<<<<<<< HEAD
  <table id="numberInputTable" border="1">
         <tr>
             <th>SL</th>
@@ -194,6 +208,58 @@
             });
         });
     </script>
+=======
+    <form method="post" action="@Url.Action("Outcome", "Home")">
+        <table id="numberInputTable" border="1">
+            <tr>
+                <th>SL</th>
+                <th>KEY RESULT AREAS (KRA)<br />(Task and Personal Objectives)</th>
+                <th>KEY PERFORMANCE<br /> INDICATORS (KPI) <br /> (Determine how KRA's to be<br />measured)</th>
+                <th>Action</th>
+            </tr>
+            <tbody>
+                @if (ViewBag.KraKpiData != null)
+                {
+                    int sl = 1;
+                    foreach (var item in ViewBag.KraKpiData)
+                    {
+                        var kpiCount = item.KPIIs.Count;
+
+                        for (var i = 0; i < kpiCount; i++)
+                        {
+                <tr>
+                    @if (i == 0)
+                    {
+                        <td rowspan=@kpiCount>@sl</td>
+                        <td rowspan=@kpiCount>@item.KRA</td>
+                    }
+                    <td>@item.KPIIs[i]</td>
+
+                    @if (i == 0)
+                    {
+                        <td rowspan=@kpiCount>
+                            @if (@ViewBag.ApprovalSent)
+                            {
+                                <span style="color:red">Data cannot be deleted!</span>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("DeleteKRA", "Home", new { kraId = item.KRA_ID })" class="btn btn-danger delete-btn" onclick="return confirm('Are you sure you want to delete this KRA and its associated KPIs?')"><i class="ti-trash"></i></a>
+                            }
+                        </td>
+                    }
+
+                </tr>
+                        }
+
+                        sl++;
+                    }
+                }
+            </tbody>
+        </table>
+        <br />
+    </form>
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
 
 </body>
 </html>
