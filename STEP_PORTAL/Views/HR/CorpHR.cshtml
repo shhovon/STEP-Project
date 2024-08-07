@@ -40,7 +40,19 @@
     </div>
 
     <button type="submit" class="btn btn-primary" id="submitButton">Search</button>
+<<<<<<< HEAD
 @*<button class="btn btn-primary" style="float:right; display:none;" id="exportToExcelBtn">Export to Excel</button>*@
+=======
+<<<<<<< HEAD
+@*<button class="btn btn-primary" style="float:right; display:none;" id="exportToExcelBtn">Export to Excel</button>*@
+=======
+<<<<<<< HEAD
+@*<button class="btn btn-primary" style="float:right; display:none;" id="exportToExcelBtn">Export to Excel</button>*@
+=======
+    //<button class="btn btn-primary" style="float:right; display:none;" id="exportToExcelBtn">Export to Excel</button>
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
     <button type="button" class="btn btn-primary" id="generatePdfButton" style="display:none;">Generate PDF</button>
 }
 
@@ -73,8 +85,37 @@
                         <td>@employee.Name</td>
                         <td>@employee.EmployeeCode</td>
                         <td>@employee.EmpStatus</td>
+<<<<<<< HEAD
                         <td><a target="_blank" href="../HR/FinalRecommendation?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
+<<<<<<< HEAD
                         <td><a target="_blank" href="../HR/StepReportPdf?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">View Report</a></td>
+=======
+<<<<<<< HEAD
+                        <td><a target="_blank" href="../HR/StepReportPdf?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">View Report</a></td>
+=======
+<<<<<<< HEAD
+                        <td><a target="_blank" href="../HR/StepReportPdf?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">View Report</a></td>
+=======
+                        @*<td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>*@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+                        @*<td><a target="_blank" href="../HR/FinalRecommendation?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>*@
+                        <td><a href="javascript:void(0);" onclick="checkAuthAndRedirect(@Session["RegID"], @employee.RegId)">Marks Entry</a></td>
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
                     </tr>
                 }
             </tbody>
@@ -90,9 +131,26 @@
     }
 </div>
 
+<<<<<<< HEAD
 
 <script src="~/Content/js/jquery-3.4.1.min.js"></script>
 <script src="~/Content/js/xlsx.full.min.js"></script>
+=======
+<<<<<<< HEAD
+
+<script src="~/Content/js/jquery-3.4.1.min.js"></script>
+<script src="~/Content/js/xlsx.full.min.js"></script>
+=======
+<<<<<<< HEAD
+
+<script src="~/Content/js/jquery-3.4.1.min.js"></script>
+<script src="~/Content/js/xlsx.full.min.js"></script>
+=======
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
 
 <script>
 
@@ -128,6 +186,7 @@
     }
 
 
+<<<<<<< HEAD
     $('#DepartmentDropdown').change(function () {
         var selectedDepartment = $(this).val();
         var departments = @Html.Raw(Json.Encode(ViewBag.Departments));
@@ -145,6 +204,55 @@
 
     // Export to Excel
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+        // check auth
+
+    function checkAuthAndRedirect(regId, empRegId) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckAuth", "ReportSuper")',
+            data: {
+                regId: regId,
+                empRegId: empRegId,
+                sessionId: $('#selectedTaxPeriod').val(),
+                type: 'AddMarksCHR'
+            },
+            success: function(response) {
+                if (response.status) {
+                    window.open('../HR/FinalRecommendation?regId=' + encodeURIComponent(response.encryptedRegId), '_blank');
+                } else {
+                    alert('You do not have authorization to access this page!');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking authorization!');
+            }
+        });
+    }
+
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
     // generate pdf
 
     $(document).ready(function () {
@@ -156,4 +264,44 @@
     });
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+   $('#DepartmentDropdown').change(function () {
+    var selectedDepartment = $(this).val();
+    var departments = @Html.Raw(Json.Encode(ViewBag.Departments));
+    var selectedDepartmentData = departments.find(d => d.DepartmentName === selectedDepartment);
+
+    $('#SectionDropdown').empty();
+    //$('#SectionDropdown').append($('<option>').text('Select Section').val(''));
+
+    if (selectedDepartmentData && selectedDepartmentData.Sections) {
+        $.each(selectedDepartmentData.Sections, function (index, section) {
+            $('#SectionDropdown').append($('<option>').text(section).val(section));
+        });
+    }
+});
+>>>>>>> 2fb5633e7882b0cde4cce6838b80756d8d12b3e8
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
 </script>

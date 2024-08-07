@@ -19,7 +19,27 @@
 
 <body>
 
+<<<<<<< HEAD
     @*    <button class="btn btn-primary" style="float:right;" id="exportToExcelBtn">Export to Excel</button>*@
+=======
+<<<<<<< HEAD
+    @*    <button class="btn btn-primary" style="float:right;" id="exportToExcelBtn">Export to Excel</button>*@
+=======
+<<<<<<< HEAD
+    @*    <button class="btn btn-primary" style="float:right;" id="exportToExcelBtn">Export to Excel</button>*@
+=======
+<<<<<<< HEAD
+    @*    <button class="btn btn-primary" style="float:right;" id="exportToExcelBtn">Export to Excel</button>*@
+=======
+<<<<<<< HEAD
+@*    <button class="btn btn-primary" style="float:right;" id="exportToExcelBtn">Export to Excel</button>*@
+=======
+    <button class="btn btn-primary" style="float:right;" id="exportToExcelBtn">Export to Excel</button>
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
 
     @{
         decimal sumOfAverages = 0;
@@ -35,7 +55,22 @@
     }
 
 
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
     <style>
         .tab {
             display: inline-block;
@@ -125,7 +160,39 @@
                             }
                         }
                         <tr>
+<<<<<<< HEAD
                             <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+<<<<<<< HEAD
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
+=======
+                            <td colspan="5" style="text-align: center; background-color: Highlight; color: white;">
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
                                 <strong>
                                     Average Cumulative Score of KRA’s / @totalKraCount
                                 </strong>
@@ -141,6 +208,14 @@
     {
         <div class="alert alert-danger" role="alert">
             <i class="fas fa-info-circle"></i>No Current Year data found
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
         </div>
     }
 
@@ -197,6 +272,119 @@
         </div>
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    @*next year data*@
+
+    @if (Model != null && Model.NextYearKraKpiOutcomeData.Count > 0)
+    {
+        <div>
+            <button id="toggleButtonNY" class="btn btn-primary" onclick="toggleTableNY()">View Next Year Data</button>
+            <div id="tableContainerNY" style="display: none;">
+                <table class="user-info-table">
+                    <thead>
+                        <tr>
+                            <th>Next Year's KRA</th>
+                            <th>Next Year's KPI</th>
+                            <th>Completion Deadline</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.NextYearGroupedData)
+                        {
+                            var kpiCount = item.KPIIs.Count;
+                            for (var i = 0; i < kpiCount; i++)
+                            {
+                                var kpi = item.KPIIs[i];
+
+                                <tr>
+                                    @if (i == 0)
+                                    {
+                                        <td rowspan=@kpiCount>@item.KRA</td>
+                                    }
+                                    <td>@kpi</td>
+
+                                    @if (i == 0 && item.Durations != null && item.Durations.Count > 0)
+                                    {
+                                        <td rowspan=@kpiCount>@(item.Durations.First().Value.Date.ToString("dd-MM-yyyy"))</td>
+                                    }
+                                    else
+                                    {
+                                        <td rowspan=@kpiCount></td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="fas fa-info-circle"></i>The employee has not yet submitted Next Year's data
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+        </div>
+    }
+
+    @*next year data*@
+
+    @if (Model != null && Model.NextYearKraKpiOutcomeData.Count > 0)
+    {
+        <div>
+            <button id="toggleButtonNY" class="btn btn-primary" onclick="toggleTableNY()">View Next Year Data</button>
+            <div id="tableContainerNY" style="display: none;">
+                <table class="user-info-table">
+                    <thead>
+                        <tr>
+                            <th>Next Year's KRA</th>
+                            <th>Next Year's KPI</th>
+                            <th>Completion Deadline</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.NextYearGroupedData)
+                        {
+                            var kpiCount = item.KPIIs.Count;
+                            for (var i = 0; i < kpiCount; i++)
+                            {
+                                var kpi = item.KPIIs[i];
+
+                                <tr>
+                                    @if (i == 0)
+                                    {
+                                        <td rowspan=@kpiCount>@item.KRA</td>
+                                    }
+                                    <td>@kpi</td>
+
+                                    @if (i == 0 && item.Durations != null && item.Durations.Count > 0)
+                                    {
+                                        <td rowspan=@kpiCount>@(item.Durations.First().Value.Date.ToString("dd-MM-yyyy"))</td>
+                                    }
+                                    else
+                                    {
+                                        <td rowspan=@kpiCount></td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="fas fa-info-circle"></i>The employee has not yet submitted Next Year's data
+        </div>
+    }
+
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
     @*    sf and training data*@
 
     @if ((Model.SpecialFactors != null && Model.SpecialFactors.Count > 0) || (Model.TrainingNeed != null && Model.TrainingNeed.Count > 0))
@@ -283,14 +471,38 @@
             <tr>
                 <td>
                     <h6>
+<<<<<<< HEAD
                         1.	Attendance: <input style="text-align:center; width:50px;"
+=======
+<<<<<<< HEAD
+                        1.	Attendance: <input style="text-align:center; width:50px;"
+=======
+<<<<<<< HEAD
+                        1.	Attendance: <input style="text-align:center; width:50px;"
+=======
+                        1.	Attendance: <input style="text-align:center; width:30px;"
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
                                                 value="@Model.StepMaster.Attendance"
                                                 class="tab" disabled type="text">
                     </h6>
                 </td>
                 <td>
                     <h6>
+<<<<<<< HEAD
                         2.	Discipline: <input style="text-align:center; width:50px;"
+=======
+<<<<<<< HEAD
+                        2.	Discipline: <input style="text-align:center; width:50px;"
+=======
+<<<<<<< HEAD
+                        2.	Discipline: <input style="text-align:center; width:50px;"
+=======
+                        2.	Discipline: <input style="text-align:center; width:30px;"
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
                                                 value="@Model.StepMaster.Discipline"
                                                 class="tab" disabled type="text">
                     </h6>
@@ -305,7 +517,46 @@
                 <td colspan="5" align="center" style="color: Highlight;">
                     <h5>
                         1.5 Overall Performance Rating Achieved:
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+                        @{
+                            decimal? ratingAvg = null;
+                            if (Model.KraKpiOutcomeData != null && Model.KraKpiOutcomeData.Count > 0 && Model.KraKpiOutcomeData[0] != null)
+                            {
+                                var kraKpiOutcomeData = Model.KraKpiOutcomeData[0];
+                                if (kraKpiOutcomeData.KPI_AVG.HasValue && kraKpiOutcomeData.Rating_Achieved.HasValue)
+                                {
+                                    ratingAvg = (int)kraKpiOutcomeData.Rating_Achieved.Value;
+                                }
+                            }
+
+                        }
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
                         <input style="text-align: center; width: 50px; background-color: Highlight; color: white;"
                                value="@Model.StepMaster.Rating_Achieved"
                                class="tab" disabled type="text">
@@ -339,6 +590,13 @@
     </div>
     <br /><br />
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
           <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
               <label for="SupervisorComment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
               <textarea disabled id="SupervisorComment" name="SupervisorComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; min-height: 80px; resize: vertical;">@Model.StepMaster.Supervisor_Comment</textarea>
@@ -355,6 +613,30 @@
               <label for="HODProposedIncrement" style="font-weight: bold; color: #333;">HOD's Proposed Increment:</label><br>
               <textarea disabled id="HODProposedIncrement" name="HODProposedIncrement" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">@Model.StepMaster.HOD_Propose_Incr</textarea>
           </div>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+    <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <label for="comment" style="font-weight: bold; color: #333;">Supervisor's Comment:</label><br>
+        <input type="text" disabled id="SupervisorComment" name="SupervisorComment" value="@Model.StepMaster.Supervisor_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br />
+        <label for="comment" style="font-weight: bold; color: #333;">User's Comment:</label><br>
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.StepMaster.User_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br>
+        <label for="comment" style="font-weight: bold; color: #333;">HOD's Comment:</label><br>
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.StepMaster.HOD_Comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br>
+        <label for="comment" style="font-weight: bold; color: #333;">HOD's Proposed Promotion:</label><br>
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.StepMaster.HOD_Propose_Promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <br>
+        <label for="comment" style="font-weight: bold; color: #333;">HOD's Proposed Increment:</label><br>
+        <input type="text" disabled id="UserComment" name="UserComment" value="@Model.StepMaster.HOD_Propose_Incr" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+    </div>
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
 
 
     <br />
@@ -373,10 +655,37 @@
 
         <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <label for="HRComment" style="font-weight: bold; color: #333;">Final Comment:</label><br>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
             <input type="text" id="HRComment" value="@Model.StepMaster.Final_Comment" name="HRComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; min-height: 80px; resize: vertical; ">
             <br />
             <p style="color:Highlight;"><strong>Current Designation:  @Model.EmployeeInfo.Designation</strong></p>
             <p style="color:Highlight;"><strong>Length of Service:   @Model.EmployeeInfo.Service_Length</strong></p>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+            <input type="text" id="HRComment" value="@Model.StepMaster.Final_Comment" name="HRComment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            <br />
+            <p style="color:Highlight;"><strong>Current Designation:  @Model.EmployeeInfo.Designation</strong></p>
+<<<<<<< HEAD
+            <p style="color:Highlight;"><strong>Length of Service:   @Model.EmployeeInfo.Service_Length</strong></p>
+=======
+<<<<<<< HEAD
+            <p style="color:Highlight;"><strong>Length of Service:   @Model.EmployeeInfo.Service_Length</strong></p>
+=======
+            <p style="color:Highlight;"><strong>Service of Length:   @Model.EmployeeInfo.Service_Length</strong></p>
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
             <label for="comment" style="font-weight: bold; color: #333;">Promote as:</label><br>
             <select id="promotion" name="promotion" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
                 @foreach (var designation in Model.Designations)
@@ -401,6 +710,63 @@
 
 @section scripts {
     <script>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+        $(function () {
+            $('#taxPeriodDropdownMV').change(function () {
+                var selectedSession = $(this).val();
+                console.log(selectedSession);
+
+                $.ajax({
+                    url: '@Url.Action("GetFilteredMarksData", "Home")',
+                    type: 'GET',
+                    data: { selectedSession: selectedSession },
+                    success: function (response) {
+                        $('tbody').empty();
+                        var totalMarks = 0;
+                        var count = 0;
+
+                        response.forEach(function (item) {
+                            var newRow = '<tr>' +
+                                '<td>' + item.KPI_OUTCOME + '</td>' +
+                                '<td>' + item.Marks_Achieved + '</td>' +
+                                '<td></td>' +
+                                '</tr>';
+
+                            totalMarks += item.Marks_Achieved;
+                            console.log(totalMarks);
+                            count++;
+                            $('tbody').append(newRow);
+                        });
+
+                        var average = totalMarks / count;
+                        $('#averageMarks').text(average.toFixed(2));
+                        console.log(average);
+                        $('tfoot td:nth-child(3)').text(average.toFixed(2));
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
 
           $(function() {
               $('#HRForm').submit(function (event) {
@@ -440,6 +806,25 @@
             }
         }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
         // next year table toggle
 
         function toggleTableNY() {
@@ -454,6 +839,13 @@
             }
         }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
         // sf and training data toggle
 
         function toggleTableOD() {
@@ -468,6 +860,25 @@
             }
         }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
         // export to excel
 
          $(function () {
