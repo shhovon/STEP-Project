@@ -16,6 +16,7 @@ namespace STEP_PORTAL.Models
         public string MobileNoPerson { get; set; }
         public int Role { get; set; }
         public DateTime JoiningDate { get; set; }
+        public DateTime ConfirmDate { get; set; }
         public string Service_Length { get; set; }
         public string Department { get; set; }
         public string Section { get; set; }
