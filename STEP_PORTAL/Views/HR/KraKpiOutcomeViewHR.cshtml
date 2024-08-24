@@ -53,6 +53,35 @@
 </style>
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+@*@if (firstItem != null)
+    {
+        <div>
+            <p><strong>Employee Code: <span class="tab2"></span> @firstItem.EmployeeCode</strong></p>
+            <p><strong>Employee Name: <span class="tab"></span>  @firstItem.Name</strong></p>
+        </div>
+    }*@
+
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
 <p><strong>Employee Code: <span class="tab2"></span> @Session["EmployeeCodeInd"]</strong></p>
 <p><strong>Employee Name: <span class="tab"></span> @Session["NameInd"]</strong></p>
 <p><strong>Designation: <span class="tab3"></span>  @Session["DesignationInd"]</strong></p>
@@ -61,12 +90,103 @@
 @if (Model != null && Model.Count > 0)
 {
     <div class="table-responsive">
+<<<<<<< HEAD
         @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
         {
             <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
 
             @*@Html.HiddenFor(m => m[0].REG_ID)*@
 
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+<<<<<<< HEAD
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+=======
+
+        @using (Html.BeginForm("UpdateMarks", "HR", new { regId = ViewBag.RegId }, FormMethod.Post))
+        {
+            <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
+
+            @*@Html.HiddenFor(m => m[0].REG_ID)*@
+
+>>>>>>> 2fb5633e7882b0cde4cce6838b80756d8d12b3e8
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
@@ -163,6 +283,37 @@
                                         }
 
                                     </select>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+                                    @* <input type="hidden" name="@("marksUpdateModel[" + i + "].Outcome")" value="@Model[i].Outcome" />*@
+>>>>>>> 2fb5633e7882b0cde4cce6838b80756d8d12b3e8
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
                                     <input type="hidden" name="@("model[" + i + "].Outcome")" value="@Model[i].Outcome" />
                                     <input type="hidden" name="@("model[" + i + "].KPI_ID")" value="@Model[i].KPI_ID" />
                                 </td>
@@ -176,6 +327,31 @@
                             i++;
                         }
                     }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
 
                     <tr>
                         <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height: 30px;">
@@ -185,6 +361,36 @@
                         </td>
                         <td style="text-align: center; background-color: Highlight; color: white;"><strong>@averageKpiAvg</strong></td>
                     </tr>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+                    @*                    <tr>
+                            <td colspan="4" style="text-align:center"><strong>Total Average:</strong></td>
+                            <td style="text-align:center"><strong>@(sumOfAverages)</strong></td>
+                        </tr>*@
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
                 </tbody>
             </table>
             <input type="submit" value="Save Marks" />
@@ -217,6 +423,16 @@ else
                 }
 
                 <label for="attendance" style="font-weight: bold; color: #333;"></label><br>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
                 @*<select id="attendance" name="attendance" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
 
         @if (firstItem != null)
@@ -238,12 +454,84 @@ else
             <option value="5">5</option>
             }
         </select>*@
+<<<<<<< HEAD
 
             <select id="attendance" name="attendance" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
                 @for (int i = 0; i <= 5; i++)
                 {
             <option value="@i" @((ViewBag.AttendanceValue != null && (int)ViewBag.AttendanceValue == i) ? "selected" : "")>@i</option>}
             </select>
+=======
+<<<<<<< HEAD
+
+            <select id="attendance" name="attendance" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+                @for (int i = 0; i <= 5; i++)
+                {
+            <option value="@i" @((ViewBag.AttendanceValue != null && (int)ViewBag.AttendanceValue == i) ? "selected" : "")>@i</option>}
+            </select>
+=======
+<<<<<<< HEAD
+
+            <select id="attendance" name="attendance" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+                @for (int i = 0; i <= 5; i++)
+                {
+            <option value="@i" @((ViewBag.AttendanceValue != null && (int)ViewBag.AttendanceValue == i) ? "selected" : "")>@i</option>}
+            </select>
+=======
+
+            <select id="attendance" name="attendance" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+                @for (int i = 0; i <= 5; i++)
+                {
+            <option value="@i" @((ViewBag.AttendanceValue != null && (int)ViewBag.AttendanceValue == i) ? "selected" : "")>@i</option>}
+            </select>
+=======
+                <select id="attendance" name="attendance" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+
+                @if (firstItem != null)
+                {
+                    <option value="0" @(firstItem.Attendance != null && Convert.ToInt32(firstItem.Attendance) == 0 ? "selected" : "")>0</option>
+                    <option value="1" @(firstItem.Attendance != null && Convert.ToInt32(firstItem.Attendance) == 1 ? "selected" : "")>1</option>
+                    <option value="2" @(firstItem.Attendance != null && Convert.ToInt32(firstItem.Attendance) == 2 ? "selected" : "")>2</option>
+                    <option value="3" @(firstItem.Attendance != null && Convert.ToInt32(firstItem.Attendance) == 3 ? "selected" : "")>3</option>
+                    <option value="4" @(firstItem.Attendance != null && Convert.ToInt32(firstItem.Attendance) == 4 ? "selected" : "")>4</option>
+                    <option value="5" @(firstItem.Attendance != null && Convert.ToInt32(firstItem.Attendance) == 5 ? "selected" : "")>5</option>
+                }
+                else
+                {
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    }
+<<<<<<< HEAD
+=======
+                    else
+                    {
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    }
+
+@*                    @{
+                    int? attendanceValue = firstItem != null ? (int?)firstItem.Attendance : (int?)null;
+                    }
+
+                    @for (int i = 0; i <= 5; i++)
+                    {
+                        <option value="@i" @(attendanceValue.HasValue && attendanceValue.Value == i ? "selected" : "")>@i</option>
+                    }*@
+
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+                </select>
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
                 <br>
                 <input type="submit" value="Save" style="background-color: #007bff; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer;">
             </form>
@@ -272,7 +560,23 @@ else
                     @Html.Hidden("regId", null)
                 }
                 <label for="discipline" style="font-weight: bold; color: #333;"></label><br>
+<<<<<<< HEAD
                 @* <select id="discipline" name="discipline" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+=======
+<<<<<<< HEAD
+                @* <select id="discipline" name="discipline" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+=======
+<<<<<<< HEAD
+                @* <select id="discipline" name="discipline" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+=======
+<<<<<<< HEAD
+                @* <select id="discipline" name="discipline" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+=======
+                <select id="discipline" name="discipline" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
 
             @if (firstItem != null)
             {
@@ -359,6 +663,37 @@ else
             alert(successMessage);
         }
         });
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2fb5633e7882b0cde4cce6838b80756d8d12b3e8
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
 
         // filter data function
         $(function () {

@@ -10,7 +10,10 @@ using System.Web.Security;
 using System.Globalization;
 using System.Data.SqlClient;
 using STEP_PORTAL.Models;
+<<<<<<< HEAD
 using STEP_DEMO.Models;
+=======
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
 
 namespace STEP_PORTAL.Controllers
 {
@@ -49,7 +52,31 @@ namespace STEP_PORTAL.Controllers
                         db.tblSpecial_Factor.Add(specialFactor);
                         db.SaveChanges();
                         int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
+<<<<<<< HEAD
                         bool success = true;
+=======
+<<<<<<< HEAD
+                        bool success = true;
+=======
+<<<<<<< HEAD
+                        bool success = true;
+=======
+<<<<<<< HEAD
+                        bool success = true;
+=======
+<<<<<<< HEAD
+                        bool success = true;
+=======
+
+                        //var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionID).Select(t => t.TaxPeriod).FirstOrDefault();
+                      //  Session["TaxPeriod"] = taxPeriod;
+
+                                                bool success = true;
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
                         TempData["SuccessMessage"] = success ? "Special Factor saved successfully!" : "";
 
                         return RedirectToAction("TrainingNeed", "Employee");

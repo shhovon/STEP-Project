@@ -7,7 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+<<<<<<< HEAD
 namespace STEP_DEMO.Models
+=======
+namespace STEP_PORTAL.Models
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
 {
     using System;
     

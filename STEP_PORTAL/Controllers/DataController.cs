@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 ﻿using STEP_DEMO.Models;
 using STEP_PORTAL.Models;
+=======
+﻿using STEP_PORTAL.Models;
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -39,6 +43,22 @@ namespace STEP_DEMO.Controllers
                     StatusResult = data;
                 }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
             }
 
             return StatusResult;
@@ -167,6 +187,25 @@ namespace STEP_DEMO.Controllers
         }
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
         public StatusResult UpdateRating(int regId, int sessionID)
         {
 
@@ -190,6 +229,22 @@ namespace STEP_DEMO.Controllers
 
             return StatusResult;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
         }        
         
         public List<tblSpecial_Factor> getSpecialFactors(int regId, int sessionID)
@@ -234,11 +289,48 @@ namespace STEP_DEMO.Controllers
 
             return getTrainingData;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
         }
 
 
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
 
     }
 }

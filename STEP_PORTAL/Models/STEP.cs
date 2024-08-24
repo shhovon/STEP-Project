@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace STEP_DEMO.Models
+namespace STEP_PORTAL.Models
 {
     using System;
     using System.Collections.Generic;
@@ -27,5 +27,6 @@ namespace STEP_DEMO.Models
         public Nullable<System.DateTime> Updated_date { get; set; }
         public string Updated_by { get; set; }
         public Nullable<bool> YsnUpdate { get; set; }
+        public string Remarks { get; set; }
     }
 }

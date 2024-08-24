@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace STEP_DEMO.Models
+namespace STEP_PORTAL.Models
 {
     using System;
     using System.Collections.Generic;
@@ -24,5 +24,10 @@ namespace STEP_DEMO.Models
         public string Created_By { get; set; }
         public Nullable<System.DateTime> Updated_date { get; set; }
         public string Updated_by { get; set; }
+<<<<<<< HEAD
+=======
+        public Nullable<int> SessionId { get; set; }
+        public Nullable<System.DateTime> Duration { get; set; }
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
     }
 }
