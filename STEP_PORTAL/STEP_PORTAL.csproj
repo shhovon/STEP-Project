@@ -47,16 +47,229 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.4.0\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="itext.barcodes, Version=8.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.8.0.4\lib\net461\itext.barcodes.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.bouncy-castle-connector, Version=8.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.8.0.4\lib\net461\itext.bouncy-castle-connector.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.commons, Version=8.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.commons.8.0.4\lib\net461\itext.commons.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.forms, Version=8.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.8.0.4\lib\net461\itext.forms.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.html2pdf, Version=5.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.pdfhtml.5.0.4\lib\net461\itext.html2pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.io, Version=8.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.8.0.4\lib\net461\itext.io.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.kernel, Version=8.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.8.0.4\lib\net461\itext.kernel.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.layout, Version=8.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.8.0.4\lib\net461\itext.layout.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.pdfa, Version=8.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.8.0.4\lib\net461\itext.pdfa.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.pdfua, Version=8.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.8.0.4\lib\net461\itext.pdfua.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.sign, Version=8.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.8.0.4\lib\net461\itext.sign.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.styledxmlparser, Version=8.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.8.0.4\lib\net461\itext.styledxmlparser.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.svg, Version=8.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext.8.0.4\lib\net461\itext.svg.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.13.4\lib\net461\itextsharp.xmlworker.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.DevOps.Comments.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.Azure.DevOps.Comments.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Pipelines.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.Azure.Pipelines.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.5.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.5.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.5.0.0\lib\net461\Microsoft.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.5.0.0\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.5.0.0\lib\net461\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.5.0.0\lib\net461\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Identity.Client, Version=4.54.1.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Identity.Client.4.54.1\lib\net461\Microsoft.Identity.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Identity.Client.Extensions.Msal, Version=2.23.0.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Identity.Client.Extensions.Msal.2.23.0\lib\net45\Microsoft.Identity.Client.Extensions.Msal.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Abstractions, Version=6.30.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Abstractions.6.30.1\lib\net472\Microsoft.IdentityModel.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.30.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.30.1\lib\net472\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.30.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.30.1\lib\net472\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.30.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.30.1\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Build.Client, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.Build.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Build.Common, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.Build.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Build2.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.Build2.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Client, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Common, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Services.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Core.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.Core.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Dashboards.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.Dashboards.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.DeleteTeamProject, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.DeleteTeamProject.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Diff, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.Diff.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Discussion.Client, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.Discussion.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.DistributedTask.Common.Contracts, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundation.DistributedTask.Common.Contracts.19.225.1\lib\net472\Microsoft.TeamFoundation.DistributedTask.Common.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Git.Client, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.Git.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Pipelines.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.Pipelines.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Policy.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.Policy.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.ProjectManagement, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.ProjectManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.SharePointReporting.Integration, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.SharePointReporting.Integration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.SourceControl.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.SourceControl.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Test.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.Test.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.TestImpact.Client, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.TestImpact.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.TestManagement.Client, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.TestManagement.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.TestManagement.Common, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.TestManagement.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.TestManagement.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.TestManagement.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.VersionControl.Client, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.VersionControl.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.VersionControl.Common, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.VersionControl.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.VersionControl.Common.Integration, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.VersionControl.Common.Integration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Wiki.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.Wiki.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Work.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.Work.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.WorkItemTracking.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client.QueryLanguage, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.WorkItemTracking.Client.QueryLanguage.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Common, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.WorkItemTracking.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Process.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.WorkItemTracking.Process.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Proxy, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\lib\net472\Microsoft.TeamFoundation.WorkItemTracking.Proxy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.TeamFoundation.WorkItemTracking.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Services.Client.Interactive, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Services.InteractiveClient.19.225.1\lib\net472\Microsoft.VisualStudio.Services.Client.Interactive.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Services.Common, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Services.Client.19.225.1\lib\net472\Microsoft.VisualStudio.Services.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Services.TestManagement.TestPlanning.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.VisualStudio.Services.TestManagement.TestPlanning.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Services.TestResults.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TeamFoundationServer.Client.19.225.1\lib\net472\Microsoft.VisualStudio.Services.TestResults.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Services.WebApi, Version=19.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Services.Client.19.225.1\lib\net472\Microsoft.VisualStudio.Services.WebApi.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json.Bson, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.Bson.1.0.2\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
@@ -66,7 +279,14 @@
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.5.0.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.30.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.30.1\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -77,13 +297,22 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encodings.Web, Version=4.0.5.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.4.7.2\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.4.7.2\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -94,6 +323,10 @@
     <Reference Include="System.Web.Http, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.3.0\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.3.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -156,6 +389,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DataController.cs" />
     <Compile Include="Controllers\DeptHeadController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -175,6 +409,10 @@
     <Compile Include="Models\DeptSecViewModel.cs" />
     <Compile Include="Models\DesignationModel.cs" />
     <Compile Include="Models\DisplayAllDataViewModel.cs" />
+    <Compile Include="Models\EmployeeReportModel.cs" />
+    <Compile Include="Models\fnSplitString_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\KPI.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
@@ -182,8 +420,14 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KraKpiCombinedModel.cs" />
+    <Compile Include="Models\KraKpiData.cs" />
+    <Compile Include="Models\KraKpiUpdateModel.cs" />
+    <Compile Include="Models\KraKpiViewModelCollection.cs" />
     <Compile Include="Models\MarksUpdateModel.cs" />
     <Compile Include="Models\New_Tax_Period.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_CheckAuth_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_EmployeeInfoByEmpCode_Result.cs">
@@ -193,6 +437,9 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_EmployeeInfoByRegID_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetCompanyByRegID_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_GetDeptAndSec_Result.cs">
@@ -205,6 +452,12 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_GetEmployeeListByDeptHead_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetEmployeeServiceLength_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetEmployeeSummary_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_GetHODTeamMember_Result.cs">
@@ -223,6 +476,15 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_GetKraKpiOutcomeData_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetKraKpiOutcomeEntry_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetStepMaster_Result.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\prc_GetTax_Period_Result.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\prc_GetTeamMember_Result.cs">
@@ -262,6 +524,9 @@
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblMenu.cs">
+      <DependentUpon>StepModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblNotification.cs">
       <DependentUpon>StepModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblRole.cs">
@@ -2113,13 +2378,13 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Outcome.cshtml" />
+    <Content Include="Views\Home\ViewKraKpi.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Shared\_NewLayout.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
-    <Content Include="Views\DeptHead\ViewEmpList.cshtml" />
-    <Content Include="Views\ReportSuper\AddMarks.cshtml" />
+    <Content Include="Views\DeptHead\ViewEmpListRS.cshtml" />
+    <Content Include="Views\ReportSuper\AddMarksRS.cshtml" />
     <Content Include="Views\ReportSuper\KraKpiOutcomeView.cshtml" />
     <Content Include="Views\Employee\SpecialFactors.cshtml" />
     <Content Include="Views\Employee\TrainingNeed.cshtml" />
@@ -2139,6 +2404,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -2194,7 +2460,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\build\Microsoft.TeamFoundationServer.ExtendedClient.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\build\Microsoft.TeamFoundationServer.ExtendedClient.targets'))" />
   </Target>
+  <Import Project="..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\build\Microsoft.TeamFoundationServer.ExtendedClient.targets" Condition="Exists('..\packages\Microsoft.TeamFoundationServer.ExtendedClient.19.225.1\build\Microsoft.TeamFoundationServer.ExtendedClient.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

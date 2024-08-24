@@ -13,8 +13,17 @@ namespace STEP_DEMO.Models
     
     public partial class prc_GetKraKpiData_Result
     {
+        public Nullable<int> RegId { get; set; }
+        public Nullable<int> SESSIONID { get; set; }
+        public int KRA_ID { get; set; }
+        public int KPI_ID { get; set; }
         public string KRA { get; set; }
+        public string Section_Name { get; set; }
         public string KPI { get; set; }
-        public string KPIOutcome { get; set; }
+        public Nullable<System.DateTime> Duration { get; set; }
+        public Nullable<System.DateTime> Created_date { get; set; }
+        public string Created_By { get; set; }
+        public Nullable<System.DateTime> Updated_date { get; set; }
+        public string Updated_by { get; set; }
     }
 }

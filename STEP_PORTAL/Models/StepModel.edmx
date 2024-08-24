@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DB_STEPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DB_STEPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'DB_STEP.dbo.Company_Information' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Company_Information">
@@ -68,12 +68,13 @@ warning 6002: The table/view 'DB_STEP.dbo.Company_Information' does not have a p
           <Property Name="KRA_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="KRA" Type="nvarchar" MaxLength="2000" />
           <Property Name="RegId" Type="int" />
+          <Property Name="SessionId" Type="int" />
           <Property Name="Section_Name" Type="nvarchar" MaxLength="150" />
+          <Property Name="Duration" Type="datetime" />
           <Property Name="Created_date" Type="datetime" />
           <Property Name="Created_By" Type="varchar" MaxLength="50" />
           <Property Name="Updated_date" Type="datetime" />
           <Property Name="Updated_by" Type="varchar" MaxLength="50" />
-          <Property Name="SessionId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'DB_STEP.dbo.New_Tax_Period' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -100,6 +101,7 @@ warning 6002: The table/view 'DB_STEP.dbo.New_Tax_Period' does not have a primar
           <Property Name="KRA_ID" Type="int" />
           <Property Name="KPI_ID" Type="int" />
           <Property Name="KPI_OUTCOME" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="2000" />
           <Property Name="Marks_Achieved" Type="int" />
           <Property Name="Created_date" Type="datetime" />
           <Property Name="Created_By" Type="varchar" MaxLength="50" />
@@ -109,11 +111,12 @@ warning 6002: The table/view 'DB_STEP.dbo.New_Tax_Period' does not have a primar
         </EntityType>
         <EntityType Name="tbl_StepMaster">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="SESSION_ID" />
+            <PropertyRef Name="RegId" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SESSION_ID" Type="int" />
-          <Property Name="RegId" Type="int" />
+          <Property Name="SESSION_ID" Type="int" Nullable="false" />
+          <Property Name="RegId" Type="int" Nullable="false" />
           <Property Name="ApprovalSent" Type="bit" />
           <Property Name="Lock" Type="bit" />
           <Property Name="KPI_AVG" Type="decimal" Precision="18" Scale="2" />
@@ -157,6 +160,18 @@ warning 6002: The table/view 'DB_STEP.dbo.tblMenu' does not have a primary key d
           <Property Name="Menu_URL" Type="varchar" MaxLength="50" />
           <Property Name="Menu_Icon" Type="varchar" MaxLength="50" />
           <Property Name="YsnActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tblNotifications">
+          <Key>
+            <PropertyRef Name="NotificationId" />
+          </Key>
+          <Property Name="NotificationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeRegId" Type="int" Nullable="false" />
+          <Property Name="SupervisorRegId" Type="int" Nullable="false" />
+          <Property Name="NotificationMessage" Type="nvarchar(max)" />
+          <Property Name="IsRead" Type="bit" />
+          <Property Name="RedirectUrl" Type="nvarchar" MaxLength="255" />
+          <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="tblRole">
           <Key>
@@ -273,6 +288,12 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
             </CollectionType>
           </ReturnType>
         </Function>
+        <Function Name="prc_CheckAuth" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegId" Type="int" Mode="In" />
+          <Parameter Name="SESSION_ID" Type="int" Mode="In" />
+          <Parameter Name="Type" Type="varchar" Mode="In" />
+          <Parameter Name="EmpRegId" Type="int" Mode="In" />
+        </Function>
         <Function Name="prc_EmployeeInfoByEmpCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompID" Type="int" Mode="In" />
           <Parameter Name="EmpCode" Type="varchar" Mode="In" />
@@ -282,6 +303,9 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
         </Function>
         <Function Name="prc_EmployeeInfoByRegIDs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RegID" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="prc_GetCompanyByRegID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegID" Type="int" Mode="In" />
         </Function>
         <Function Name="prc_GetDeptAndSec" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
@@ -296,6 +320,13 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
         </Function>
         <Function Name="prc_GetEmployeesByCompany" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prc_GetEmployeeServiceLength" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prc_GetEmployeeSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegId" Type="int" Mode="In" />
+          <Parameter Name="SESSION_ID" Type="int" Mode="In" />
         </Function>
         <Function Name="prc_GetHODTeamMember" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RegID" Type="int" Mode="In" />
@@ -312,7 +343,7 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
         </Function>
         <Function Name="prc_GetKraKpiData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RegID" Type="int" Mode="In" />
-          <Parameter Name="SelectedTaxPeriod" Type="int" Mode="In" />
+          <Parameter Name="SessionID" Type="int" Mode="In" />
         </Function>
         <Function Name="prc_GetkrakpiID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="regId" Type="int" Mode="In" />
@@ -323,6 +354,15 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Parameter Name="RegId" Type="int" Mode="In" />
           <Parameter Name="SESSION_ID" Type="int" Mode="In" />
         </Function>
+        <Function Name="prc_GetKraKpiOutcomeEntry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegId" Type="int" Mode="In" />
+          <Parameter Name="SESSION_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prc_GetStepMaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RegId" Type="int" Mode="In" />
+          <Parameter Name="SESSION_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="prc_GetTax_Period" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="prc_GetTeamMember" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompID" Type="int" Mode="In" />
           <Parameter Name="RegID" Type="int" Mode="In" />
@@ -364,6 +404,7 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <EntitySet Name="STEP" EntityType="Self.STEP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_StepMaster" EntityType="Self.tbl_StepMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblMarksEntryHistory" EntityType="Self.tblMarksEntryHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblNotifications" EntityType="Self.tblNotifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRole" EntityType="Self.tblRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSpecial_Factor" EntityType="Self.tblSpecial_Factor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTraining_Need" EntityType="Self.tblTraining_Need" Schema="dbo" store:Type="Tables" />
@@ -443,10 +484,14 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
     FROM [dbo].[View_StepDetails] AS [View_StepDetails]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DB_STEPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <ComplexType Name="fnSplitString_Result">
+          <Property Name="splitdata" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </ComplexType>
         <EntityType Name="KPI">
           <Key>
             <PropertyRef Name="KPI_ID" />
@@ -466,12 +511,13 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Property Name="KRA_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="KRA1" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="RegId" Type="Int32" />
+          <Property Name="SessionId" Type="Int32" />
           <Property Name="Section_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Duration" Type="DateTime" Precision="3" />
           <Property Name="Created_date" Type="DateTime" Precision="3" />
           <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Updated_date" Type="DateTime" Precision="3" />
           <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="SessionId" Type="Int32" />
         </EntityType>
         <EntityType Name="STEP">
           <Key>
@@ -483,6 +529,7 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Property Name="KRA_ID" Type="Int32" />
           <Property Name="KPI_ID" Type="Int32" />
           <Property Name="KPI_OUTCOME" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="Marks_Achieved" Type="Int32" />
           <Property Name="Created_date" Type="DateTime" Precision="3" />
           <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -492,11 +539,12 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
         </EntityType>
         <EntityType Name="tbl_StepMaster">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="SESSION_ID" />
+            <PropertyRef Name="RegId" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SESSION_ID" Type="Int32" />
-          <Property Name="RegId" Type="Int32" />
+          <Property Name="SESSION_ID" Type="Int32" Nullable="false" />
+          <Property Name="RegId" Type="Int32" Nullable="false" />
           <Property Name="ApprovalSent" Type="Boolean" />
           <Property Name="Lock" Type="Boolean" />
           <Property Name="KPI_AVG" Type="Decimal" Precision="18" Scale="2" />
@@ -527,6 +575,18 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Property Name="UpdateTime" Type="DateTime" Precision="3" />
           <Property Name="UserIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tblNotification">
+          <Key>
+            <PropertyRef Name="NotificationId" />
+          </Key>
+          <Property Name="NotificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeRegId" Type="Int32" Nullable="false" />
+          <Property Name="SupervisorRegId" Type="Int32" Nullable="false" />
+          <Property Name="NotificationMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsRead" Type="Boolean" />
+          <Property Name="RedirectUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="tblRole">
           <Key>
@@ -590,6 +650,20 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Property Name="LoginTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UserIP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ComputerName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tblUserRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RegId" Type="Int32" />
+          <Property Name="Role" Type="Int32" />
+          <Property Name="ComIDs" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="YSNActive" Type="Boolean" />
+          <Property Name="Created_date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated_date" Type="DateTime" Precision="3" />
+          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Company_Information">
           <Key>
@@ -688,62 +762,39 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <EntitySet Name="STEPs" EntityType="Self.STEP" />
           <EntitySet Name="tbl_StepMaster" EntityType="Self.tbl_StepMaster" />
           <EntitySet Name="tblMarksEntryHistories" EntityType="Self.tblMarksEntryHistory" />
+          <EntitySet Name="tblNotifications" EntityType="Self.tblNotification" />
           <EntitySet Name="tblRoles" EntityType="Self.tblRole" />
           <EntitySet Name="tblSpecial_Factor" EntityType="Self.tblSpecial_Factor" />
           <EntitySet Name="tblTraining_Need" EntityType="Self.tblTraining_Need" />
           <EntitySet Name="tblUser_LogInfo" EntityType="Self.tblUser_LogInfo" />
           <EntitySet Name="tblUserLogHistories" EntityType="Self.tblUserLogHistory" />
+          <EntitySet Name="tblUserRoles" EntityType="Self.tblUserRole" />
           <EntitySet Name="Company_Information" EntityType="Self.Company_Information" />
           <EntitySet Name="New_Tax_Period" EntityType="Self.New_Tax_Period" />
           <EntitySet Name="tblMenus" EntityType="Self.tblMenu" />
           <EntitySet Name="View_StepDetails" EntityType="Self.View_StepDetails" />
+          <FunctionImport Name="fnSplitString" IsComposable="true" ReturnType="Collection(DB_STEPModel.fnSplitString_Result)">
+            <Parameter Name="string" Mode="In" Type="String" />
+            <Parameter Name="delimiter" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prc_CheckAuth" ReturnType="Collection(DB_STEPModel.prc_CheckAuth_Result)">
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
+            <Parameter Name="Type" Mode="In" Type="String" />
+            <Parameter Name="EmpRegId" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="prc_EmployeeInfoByEmpCode" ReturnType="Collection(DB_STEPModel.prc_EmployeeInfoByEmpCode_Result)">
             <Parameter Name="CompID" Mode="In" Type="Int32" />
             <Parameter Name="EmpCode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="prc_EmployeeInfoByRegID" ReturnType="Collection(DB_STEPModel.prc_EmployeeInfoByRegID_Result)">
-          <Parameter Name="RegID" Mode="In" Type="Int32" />
+            <Parameter Name="RegID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_EmployeeInfoByRegIDs" ReturnType="Collection(DB_STEPModel.prc_EmployeeInfoByRegIDs_Result)">
-          <Parameter Name="RegID" Mode="In" Type="String" />
+            <Parameter Name="RegID" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="prc_GetEmployeeListByDeptHead" ReturnType="Collection(DB_STEPModel.prc_GetEmployeeListByDeptHead_Result)">
-          <Parameter Name="DeptHeadValue" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="prc_GetEmployeesByCompany">
-          <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="prc_GetKPIOutcomeByRegIdOrSectionName" ReturnType="Collection(DB_STEPModel.prc_GetKPIOutcomeByRegIdOrSectionName_Result)">
-            <Parameter Name="RegId" Mode="In" Type="Int32" />
-            <Parameter Name="SectionName" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="prc_GetKraKpiByRegIdOrSectionName" ReturnType="Collection(DB_STEPModel.prc_GetKraKpiByRegIdOrSectionName_Result)">
-            <Parameter Name="RegId" Mode="In" Type="Int32" />
-            <Parameter Name="SectionName" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="prc_GetKraKpiOutcomeData" ReturnType="Collection(DB_STEPModel.prc_GetKraKpiOutcomeData_Result)">
-            <Parameter Name="RegId" Mode="In" Type="Int32" />
-            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="prc_GetTeamMember" ReturnType="Collection(DB_STEPModel.prc_GetTeamMember_Result)">
-            <Parameter Name="CompID" Mode="In" Type="Int32" />
+          <FunctionImport Name="prc_GetCompanyByRegID" ReturnType="Collection(DB_STEPModel.prc_GetCompanyByRegID_Result)">
             <Parameter Name="RegID" Mode="In" Type="Int32" />
-            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="prc_UpdateOutcomeMarks">
-            <Parameter Name="KpiOutcome" Mode="In" Type="String" />
-            <Parameter Name="MarksAchieved" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="prc_User_Registration" ReturnType="Collection(DB_STEPModel.prc_User_Registration_Result)">
-          <Parameter Name="RegID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="prc_UserMenu" ReturnType="Collection(DB_STEPModel.prc_UserMenu_Result)">
-          <Parameter Name="RegId" Mode="In" Type="String" />
-          </FunctionImport>
-          <EntitySet Name="tblUserRoles" EntityType="DB_STEPModel.tblUserRole" />
-          <FunctionImport Name="fnSplitString" IsComposable="true" ReturnType="Collection(String)">
-            <Parameter Name="string" Mode="In" Type="String" />
-            <Parameter Name="delimiter" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="prc_GetDeptAndSec" ReturnType="Collection(DB_STEPModel.prc_GetDeptAndSec_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
@@ -753,19 +804,58 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
             <Parameter Name="RegID" Mode="In" Type="Int32" />
             <Parameter Name="CompID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="prc_GetEmployeeListByDeptHead" ReturnType="Collection(DB_STEPModel.prc_GetEmployeeListByDeptHead_Result)">
+            <Parameter Name="DeptHeadValue" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetEmployeesByCompany">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetEmployeeServiceLength" ReturnType="Collection(DB_STEPModel.prc_GetEmployeeServiceLength_Result)">
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetEmployeeSummary" ReturnType="Collection(DB_STEPModel.prc_GetEmployeeSummary_Result)">
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="prc_GetHODTeamMember" ReturnType="Collection(DB_STEPModel.prc_GetHODTeamMember_Result)">
             <Parameter Name="RegID" Mode="In" Type="Int32" />
             <Parameter Name="CompID" Mode="In" Type="Int32" />
             <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="prc_GetKPIOutcomeByRegIdOrSectionName" ReturnType="Collection(DB_STEPModel.prc_GetKPIOutcomeByRegIdOrSectionName_Result)">
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="SectionName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetKraKpiByRegIdOrSectionName" ReturnType="Collection(DB_STEPModel.prc_GetKraKpiByRegIdOrSectionName_Result)">
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="SectionName" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="prc_GetKraKpiData" ReturnType="Collection(DB_STEPModel.prc_GetKraKpiData_Result)">
             <Parameter Name="RegID" Mode="In" Type="Int32" />
-            <Parameter Name="SelectedTaxPeriod" Mode="In" Type="Int32" />
+            <Parameter Name="SessionID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_GetkrakpiID" ReturnType="Collection(DB_STEPModel.prc_GetkrakpiID_Result)">
             <Parameter Name="regId" Mode="In" Type="Int32" />
             <Parameter Name="selectedKRA" Mode="In" Type="String" />
             <Parameter Name="selectedKPI" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetKraKpiOutcomeData" ReturnType="Collection(DB_STEPModel.prc_GetKraKpiOutcomeData_Result)">
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetKraKpiOutcomeEntry" ReturnType="Collection(DB_STEPModel.prc_GetKraKpiOutcomeEntry_Result)">
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetStepMaster" ReturnType="Collection(DB_STEPModel.prc_GetStepMaster_Result)">
+            <Parameter Name="RegId" Mode="In" Type="Int32" />
+            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_GetTax_Period" ReturnType="Collection(DB_STEPModel.prc_GetTax_Period_Result)" />
+          <FunctionImport Name="prc_GetTeamMember" ReturnType="Collection(DB_STEPModel.prc_GetTeamMember_Result)">
+            <Parameter Name="CompID" Mode="In" Type="Int32" />
+            <Parameter Name="RegID" Mode="In" Type="Int32" />
+            <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_SearchEmployeeByHR" ReturnType="Collection(DB_STEPModel.prc_SearchEmployeeByHR_Result)">
             <Parameter Name="RegID" Mode="In" Type="Int32" />
@@ -773,6 +863,10 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
             <Parameter Name="DepartmentName" Mode="In" Type="String" />
             <Parameter Name="SectionName" Mode="In" Type="String" />
             <Parameter Name="SESSION_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_UpdateOutcomeMarks">
+            <Parameter Name="KpiOutcome" Mode="In" Type="String" />
+            <Parameter Name="MarksAchieved" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="prc_UpdateRating">
             <Parameter Name="RegId" Mode="In" Type="Int32" />
@@ -787,7 +881,17 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
             <Parameter Name="Updated_date" Mode="In" Type="DateTime" />
             <Parameter Name="Updated_by" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="prc_User_Registration" ReturnType="Collection(DB_STEPModel.prc_User_Registration_Result)">
+            <Parameter Name="RegID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="prc_UserMenu" ReturnType="Collection(DB_STEPModel.prc_UserMenu_Result)">
+            <Parameter Name="RegId" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="prc_CheckAuth_Result">
+          <Property Type="Boolean" Name="Status" Nullable="true" />
+          <Property Type="String" Name="Message" Nullable="true" MaxLength="250" />
+        </ComplexType>
         <ComplexType Name="prc_EmployeeInfoByEmpCode_Result">
           <Property Type="Int32" Name="RegId" Nullable="false" />
           <Property Type="Int32" Name="ComID" Nullable="false" />
@@ -822,6 +926,7 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="District" Nullable="false" MaxLength="25" />
           <Property Type="DateTime" Name="JoiningDate" Nullable="false" Precision="16" />
+          <Property Type="String" Name="Service_Length" Nullable="true" MaxLength="74" />
           <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
@@ -848,41 +953,25 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Property Type="String" Name="DesigAddi" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="WStatus" Nullable="true" MaxLength="1" />
         </ComplexType>
-        <ComplexType Name="prc_GetEmployeeListByDeptHead_Result">
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
-          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+        <ComplexType Name="prc_GetCompanyByRegID_Result">
+          <Property Type="Int32" Name="ID" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="150" />
         </ComplexType>
-        <ComplexType Name="prc_GetKPIOutcomeByRegIdOrSectionName_Result">
-          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
-          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
-          <Property Type="String" Name="KPI_OUTCOME" Nullable="true" MaxLength="2000" />
+        <ComplexType Name="prc_GetDeptAndSec_Result">
+          <Property Type="String" Name="DepartmentName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="SectionName" Nullable="false" MaxLength="50" />
         </ComplexType>
-        <ComplexType Name="prc_GetKraKpiByRegIdOrSectionName_Result">
-          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
-          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
+        <ComplexType Name="prc_GetDesignations_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Byte" Name="ComID" Nullable="false" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="Status" Nullable="false" />
+          <Property Type="String" Name="wstatus" Nullable="true" MaxLength="1" />
         </ComplexType>
-        <ComplexType Name="prc_GetKraKpiOutcomeData_Result">
-          <Property Type="Int32" Name="SESSION_ID" Nullable="true" />
-          <Property Type="String" Name="SESSION_Name" Nullable="true" MaxLength="15" />
+        <ComplexType Name="prc_GetEmployeeByHR_Result">
           <Property Type="Int32" Name="RegId" Nullable="true" />
-          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
-          <Property Type="Int32" Name="KRA_ID" Nullable="true" />
-          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
-          <Property Type="Int32" Name="KPI_ID" Nullable="true" />
-          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
-          <Property Type="String" Name="Outcome" Nullable="false" MaxLength="2000" />
-          <Property Type="Int32" Name="Marks_Achieved" Nullable="false" />
-          <Property Type="Decimal" Name="AVG_Marks_Achieved" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Boolean" Name="ApprovalSent" Nullable="true" />
-          <Property Type="Boolean" Name="Lock" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="prc_GetTeamMember_Result">
-          <Property Type="Int32" Name="RegId" Nullable="false" />
           <Property Type="Int32" Name="ComID" Nullable="false" />
           <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
@@ -900,6 +989,219 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="DesigAddi" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="WStatus" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="EmpStatus" Nullable="false" MaxLength="23" />
+        </ComplexType>
+        <ComplexType Name="prc_GetEmployeeListByDeptHead_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="prc_GetEmployeeServiceLength_Result">
+          <Property Type="Int32" Name="RegId" Nullable="false" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="NAME" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Service_Length" Nullable="true" MaxLength="74" />
+        </ComplexType>
+        <ComplexType Name="prc_GetEmployeeSummary_Result">
+          <Property Type="Int32" Name="SESSION_ID" Nullable="false" />
+          <Property Type="String" Name="SESSION_Name" Nullable="false" MaxLength="15" />
+          <Property Type="Int32" Name="RegId" Nullable="true" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
+          <Property Type="Decimal" Name="Attendance" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Discipline" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="Outcome" Nullable="false" MaxLength="2000" />
+          <Property Type="Int32" Name="Marks_Achieved" Nullable="false" />
+          <Property Type="Decimal" Name="AVG_Marks_Achieved" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="KPI_AVG" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Rating_Achieved" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="Supervisor_Comment" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="User_Comment" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="HOD_Comment" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="HOD_Propose_Promotion" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="HOD_Propose_Incr" Nullable="true" />
+          <Property Type="String" Name="HOD_Propose_Incr1" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="Final_Propose_Promotion" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="Final_Propose_Incr" Nullable="true" />
+          <Property Type="DateTime" Name="Effect_Date" Nullable="true" Precision="16" />
+        </ComplexType>
+        <ComplexType Name="prc_GetHODTeamMember_Result">
+          <Property Type="Int32" Name="RegId" Nullable="true" />
+          <Property Type="Int32" Name="ComID" Nullable="true" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="FathersName" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Religion" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="PreAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="PerAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="NID" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="District" Nullable="false" MaxLength="25" />
+          <Property Type="DateTime" Name="JoiningDate" Nullable="false" Precision="16" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DesigAddi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WStatus" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="EmpStatus" Nullable="false" MaxLength="6" />
+          <Property Type="String" Name="StatusValue" Nullable="false" MaxLength="6" />
+        </ComplexType>
+        <ComplexType Name="prc_GetKPIOutcomeByRegIdOrSectionName_Result">
+          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="KPI_OUTCOME" Nullable="true" MaxLength="2000" />
+        </ComplexType>
+        <ComplexType Name="prc_GetKraKpiByRegIdOrSectionName_Result">
+          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
+        </ComplexType>
+        <ComplexType Name="prc_GetKraKpiData_Result">
+          <Property Type="Int32" Name="RegId" Nullable="true" />
+          <Property Type="Int32" Name="SESSIONID" Nullable="true" />
+          <Property Type="Int32" Name="KRA_ID" Nullable="false" />
+          <Property Type="Int32" Name="KPI_ID" Nullable="false" />
+          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="Section_Name" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
+          <Property Type="DateTime" Name="Duration" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="Created_date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Created_By" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="Updated_date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Updated_by" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="prc_GetkrakpiID_Result">
+          <Property Type="Int32" Name="kraId" Nullable="false" />
+          <Property Type="Int32" Name="kpiId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="prc_GetKraKpiOutcomeData_Result">
+          <Property Type="Int32" Name="SESSION_ID" Nullable="false" />
+          <Property Type="String" Name="SESSION_Name" Nullable="false" MaxLength="15" />
+          <Property Type="Int32" Name="RegId" Nullable="true" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Remarks" Nullable="false" MaxLength="2000" />
+          <Property Type="Int32" Name="KRA_ID" Nullable="true" />
+          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
+          <Property Type="Int32" Name="KPI_ID" Nullable="true" />
+          <Property Type="Decimal" Name="Attendance" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Discipline" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="Outcome" Nullable="false" MaxLength="2000" />
+          <Property Type="Int32" Name="Marks_Achieved" Nullable="false" />
+          <Property Type="Decimal" Name="AVG_Marks_Achieved" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Boolean" Name="ApprovalSent" Nullable="false" />
+          <Property Type="Boolean" Name="Lock" Nullable="false" />
+          <Property Type="Decimal" Name="KPI_AVG" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Rating_Achieved" Nullable="true" Precision="18" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="prc_GetKraKpiOutcomeEntry_Result">
+          <Property Type="Int32" Name="SESSION_ID" Nullable="false" />
+          <Property Type="String" Name="SESSION_Name" Nullable="false" MaxLength="15" />
+          <Property Type="Int32" Name="RegId" Nullable="true" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="KRA_ID" Nullable="true" />
+          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
+          <Property Type="Int32" Name="KPI_ID" Nullable="true" />
+          <Property Type="Decimal" Name="Attendance" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Discipline" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="Outcome" Nullable="false" MaxLength="2000" />
+          <Property Type="Int32" Name="Marks_Achieved" Nullable="false" />
+          <Property Type="Decimal" Name="AVG_Marks_Achieved" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Boolean" Name="ApprovalSent" Nullable="false" />
+          <Property Type="Boolean" Name="Lock" Nullable="false" />
+          <Property Type="Decimal" Name="KPI_AVG" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Rating_Achieved" Nullable="true" Precision="18" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="prc_GetStepMaster_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="SESSION_ID" Nullable="false" />
+          <Property Type="Int32" Name="RegId" Nullable="false" />
+          <Property Type="Boolean" Name="ApprovalSent" Nullable="true" />
+          <Property Type="Boolean" Name="Lock" Nullable="true" />
+          <Property Type="Decimal" Name="KPI_AVG" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Attendance" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Discipline" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Rating_Achieved" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="Supervisor_Comment" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="User_Comment" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="HOD_Comment" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="HOD_Propose_Promotion" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="HOD_Propose_Incr" Nullable="true" />
+          <Property Type="String" Name="Final_Comment" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="Final_Propose_Promotion" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="Final_Propose_Incr" Nullable="true" />
+          <Property Type="DateTime" Name="Effect_Date" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="Created_date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Created_By" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="Updated_date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Updated_by" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="YsnUpdate" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="prc_GetTax_Period_Result">
+          <Property Type="Int16" Name="TaxPerID" Nullable="false" />
+          <Property Type="String" Name="TaxPeriod" Nullable="false" MaxLength="15" />
+          <Property Type="DateTime" Name="BeginDate" Nullable="false" Precision="16" />
+          <Property Type="DateTime" Name="EndDate" Nullable="false" Precision="16" />
+          <Property Type="Boolean" Name="KPI_Enty" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="prc_GetTeamMember_Result">
+          <Property Type="Int32" Name="RegId" Nullable="true" />
+          <Property Type="Int32" Name="ComID" Nullable="true" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="FathersName" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Religion" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="PreAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="PerAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="NID" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="District" Nullable="false" MaxLength="25" />
+          <Property Type="DateTime" Name="JoiningDate" Nullable="false" Precision="16" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DesigAddi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WStatus" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="EmpStatus" Nullable="false" MaxLength="6" />
+          <Property Type="String" Name="StatusValue" Nullable="false" MaxLength="6" />
+        </ComplexType>
+        <ComplexType Name="prc_SearchEmployeeByHR_Result">
+          <Property Type="Int32" Name="RegId" Nullable="true" />
+          <Property Type="Int32" Name="ComID" Nullable="true" />
+          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="FathersName" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
+          <Property Type="String" Name="Religion" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="PreAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="PerAddress" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="NID" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="District" Nullable="false" MaxLength="25" />
+          <Property Type="DateTime" Name="JoiningDate" Nullable="false" Precision="16" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DesigAddi" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WStatus" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="EmpStatus" Nullable="false" MaxLength="6" />
+          <Property Type="String" Name="StatusValue" Nullable="false" MaxLength="6" />
         </ComplexType>
         <ComplexType Name="prc_User_Registration_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
@@ -934,105 +1236,6 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <Property Type="String" Name="Menu_Icon" Nullable="true" MaxLength="50" />
           <Property Type="Boolean" Name="YsnActive" Nullable="true" />
         </ComplexType>
-        <EntityType Name="tblUserRole">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RegId" Type="Int32" />
-          <Property Name="Role" Type="Int32" />
-          <Property Name="ComIDs" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="YSNActive" Type="Boolean" />
-          <Property Name="Created_date" Type="DateTime" Precision="3" />
-          <Property Name="Created_By" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Updated_date" Type="DateTime" Precision="3" />
-          <Property Name="Updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <ComplexType Name="prc_GetDeptAndSec_Result">
-          <Property Type="String" Name="DepartmentName" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="SectionName" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="prc_GetDesignations_Result">
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="Byte" Name="ComID" Nullable="false" />
-          <Property Type="String" Name="Designation" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Category" Nullable="true" MaxLength="50" />
-          <Property Type="Byte" Name="Status" Nullable="false" />
-          <Property Type="String" Name="wstatus" Nullable="true" MaxLength="1" />
-        </ComplexType>
-        <ComplexType Name="prc_GetEmployeeByHR_Result">
-          <Property Type="Int32" Name="RegId" Nullable="true" />
-          <Property Type="Int32" Name="ComID" Nullable="false" />
-          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="FathersName" Nullable="true" MaxLength="100" />
-          <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
-          <Property Type="String" Name="Religion" Nullable="true" MaxLength="15" />
-          <Property Type="String" Name="PreAddress" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="PerAddress" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="NID" Nullable="true" MaxLength="25" />
-          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="District" Nullable="false" MaxLength="25" />
-          <Property Type="DateTime" Name="JoiningDate" Nullable="false" Precision="16" />
-          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="DesigAddi" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="WStatus" Nullable="true" MaxLength="1" />
-        </ComplexType>
-        <ComplexType Name="prc_GetHODTeamMember_Result">
-          <Property Type="Int32" Name="RegId" Nullable="true" />
-          <Property Type="Int32" Name="ComID" Nullable="true" />
-          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="FathersName" Nullable="true" MaxLength="100" />
-          <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
-          <Property Type="String" Name="Religion" Nullable="true" MaxLength="15" />
-          <Property Type="String" Name="PreAddress" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="PerAddress" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="NID" Nullable="true" MaxLength="25" />
-          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="District" Nullable="false" MaxLength="25" />
-          <Property Type="DateTime" Name="JoiningDate" Nullable="false" Precision="16" />
-          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="DesigAddi" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="WStatus" Nullable="true" MaxLength="1" />
-          <Property Type="String" Name="EmpStatus" Nullable="false" MaxLength="23" />
-          <Property Type="String" Name="StatusValue" Nullable="true" MaxLength="4000" />
-        </ComplexType>
-        <ComplexType Name="prc_GetKraKpiData_Result">
-          <Property Type="String" Name="KRA" Nullable="true" MaxLength="2000" />
-          <Property Type="String" Name="KPI" Nullable="true" MaxLength="2000" />
-          <Property Type="String" Name="KPIOutcome" Nullable="true" MaxLength="2000" />
-        </ComplexType>
-        <ComplexType Name="prc_GetkrakpiID_Result">
-          <Property Type="Int32" Name="kraId" Nullable="false" />
-          <Property Type="Int32" Name="kpiId" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="prc_SearchEmployeeByHR_Result">
-          <Property Type="Int32" Name="RegId" Nullable="true" />
-          <Property Type="Int32" Name="ComID" Nullable="false" />
-          <Property Type="String" Name="EmployeeCode" Nullable="false" MaxLength="15" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="FathersName" Nullable="true" MaxLength="100" />
-          <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
-          <Property Type="String" Name="Religion" Nullable="true" MaxLength="15" />
-          <Property Type="String" Name="PreAddress" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="PerAddress" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="NID" Nullable="true" MaxLength="25" />
-          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="District" Nullable="false" MaxLength="25" />
-          <Property Type="DateTime" Name="JoiningDate" Nullable="false" Precision="16" />
-          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Section" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="DesigAddi" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="WStatus" Nullable="true" MaxLength="1" />
-          <Property Type="String" Name="EmpStatus" Nullable="false" MaxLength="23" />
-          <Property Type="String" Name="StatusValue" Nullable="true" MaxLength="4000" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1055,11 +1258,12 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
           <EntitySetMapping Name="KRAs">
             <EntityTypeMapping TypeName="DB_STEPModel.KRA">
               <MappingFragment StoreEntitySet="KRA">
-                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
                 <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
                 <ScalarProperty Name="KRA1" ColumnName="KRA" />
                 <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
                 <ScalarProperty Name="Section_Name" ColumnName="Section_Name" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
                 <ScalarProperty Name="Created_date" ColumnName="Created_date" />
                 <ScalarProperty Name="Created_By" ColumnName="Created_By" />
                 <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
@@ -1076,6 +1280,7 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
                 <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
                 <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
                 <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
                 <ScalarProperty Name="Created_date" ColumnName="Created_date" />
                 <ScalarProperty Name="Created_By" ColumnName="Created_By" />
@@ -1122,6 +1327,19 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="UserIP" ColumnName="UserIP" />
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblNotifications">
+            <EntityTypeMapping TypeName="DB_STEPModel.tblNotification">
+              <MappingFragment StoreEntitySet="tblNotifications">
+                <ScalarProperty Name="NotificationId" ColumnName="NotificationId" />
+                <ScalarProperty Name="EmployeeRegId" ColumnName="EmployeeRegId" />
+                <ScalarProperty Name="SupervisorRegId" ColumnName="SupervisorRegId" />
+                <ScalarProperty Name="NotificationMessage" ColumnName="NotificationMessage" />
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+                <ScalarProperty Name="RedirectUrl" ColumnName="RedirectUrl" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1189,6 +1407,21 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
                 <ScalarProperty Name="LoginTime" ColumnName="LoginTime" />
                 <ScalarProperty Name="UserIP" ColumnName="UserIP" />
                 <ScalarProperty Name="ComputerName" ColumnName="ComputerName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserRoles">
+            <EntityTypeMapping TypeName="DB_STEPModel.tblUserRole">
+              <MappingFragment StoreEntitySet="tblUserRole">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="ComIDs" ColumnName="ComIDs" />
+                <ScalarProperty Name="YSNActive" ColumnName="YSNActive" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1272,6 +1505,21 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionName="DB_STEPModel.Store.fnSplitString" FunctionImportName="fnSplitString">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.fnSplitString_Result">
+                <ScalarProperty Name="splitdata" ColumnName="splitdata" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_CheckAuth" FunctionName="DB_STEPModel.Store.prc_CheckAuth">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_CheckAuth_Result">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="prc_EmployeeInfoByEmpCode" FunctionName="DB_STEPModel.Store.prc_EmployeeInfoByEmpCode">
             <ResultMapping>
               <ComplexTypeMapping TypeName="DB_STEPModel.prc_EmployeeInfoByEmpCode_Result">
@@ -1312,6 +1560,7 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="District" ColumnName="District" />
                 <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="Service_Length" ColumnName="Service_Length" />
                 <ScalarProperty Name="Department" ColumnName="Department" />
                 <ScalarProperty Name="Section" ColumnName="Section" />
                 <ScalarProperty Name="Designation" ColumnName="Designation" />
@@ -1344,138 +1593,15 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="prc_GetEmployeeListByDeptHead" FunctionName="DB_STEPModel.Store.prc_GetEmployeeListByDeptHead">
+          <FunctionImportMapping FunctionImportName="prc_GetCompanyByRegID" FunctionName="DB_STEPModel.Store.prc_GetCompanyByRegID">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetEmployeeListByDeptHead_Result">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
-                <ScalarProperty Name="Department" ColumnName="Department" />
-                <ScalarProperty Name="Section" ColumnName="Section" />
-                <ScalarProperty Name="Designation" ColumnName="Designation" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="prc_GetEmployeesByCompany" FunctionName="DB_STEPModel.Store.prc_GetEmployeesByCompany" />
-          <FunctionImportMapping FunctionImportName="prc_GetKPIOutcomeByRegIdOrSectionName" FunctionName="DB_STEPModel.Store.prc_GetKPIOutcomeByRegIdOrSectionName">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetKPIOutcomeByRegIdOrSectionName_Result">
-                <ScalarProperty Name="KRA" ColumnName="KRA" />
-                <ScalarProperty Name="KPI" ColumnName="KPI" />
-                <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="prc_GetKraKpiByRegIdOrSectionName" FunctionName="DB_STEPModel.Store.prc_GetKraKpiByRegIdOrSectionName">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetKraKpiByRegIdOrSectionName_Result">
-                <ScalarProperty Name="KRA" ColumnName="KRA" />
-                <ScalarProperty Name="KPI" ColumnName="KPI" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="prc_GetKraKpiOutcomeData" FunctionName="DB_STEPModel.Store.prc_GetKraKpiOutcomeData">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetKraKpiOutcomeData_Result">
-                <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
-                <ScalarProperty Name="SESSION_Name" ColumnName="SESSION_Name" />
-                <ScalarProperty Name="RegId" ColumnName="RegId" />
-                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Designation" ColumnName="Designation" />
-                <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
-                <ScalarProperty Name="KRA" ColumnName="KRA" />
-                <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
-                <ScalarProperty Name="KPI" ColumnName="KPI" />
-                <ScalarProperty Name="Outcome" ColumnName="Outcome" />
-                <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
-                <ScalarProperty Name="AVG_Marks_Achieved" ColumnName="AVG_Marks_Achieved" />
-                <ScalarProperty Name="ApprovalSent" ColumnName="ApprovalSent" />
-                <ScalarProperty Name="Lock" ColumnName="Lock" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="prc_GetTeamMember" FunctionName="DB_STEPModel.Store.prc_GetTeamMember">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetTeamMember_Result">
-                <ScalarProperty Name="RegId" ColumnName="RegId" />
-                <ScalarProperty Name="ComID" ColumnName="ComID" />
-                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="FathersName" ColumnName="FathersName" />
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="Religion" ColumnName="Religion" />
-                <ScalarProperty Name="PreAddress" ColumnName="PreAddress" />
-                <ScalarProperty Name="PerAddress" ColumnName="PerAddress" />
-                <ScalarProperty Name="NID" ColumnName="NID" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="District" ColumnName="District" />
-                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
-                <ScalarProperty Name="Department" ColumnName="Department" />
-                <ScalarProperty Name="Section" ColumnName="Section" />
-                <ScalarProperty Name="Designation" ColumnName="Designation" />
-                <ScalarProperty Name="DesigAddi" ColumnName="DesigAddi" />
-                <ScalarProperty Name="WStatus" ColumnName="WStatus" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="prc_UpdateOutcomeMarks" FunctionName="DB_STEPModel.Store.prc_UpdateOutcomeMarks" />
-          <FunctionImportMapping FunctionImportName="prc_User_Registration" FunctionName="DB_STEPModel.Store.prc_User_Registration">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_STEPModel.prc_User_Registration_Result">
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetCompanyByRegID_Result">
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="RegId" ColumnName="RegId" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="DeptHead" ColumnName="DeptHead" />
-                <ScalarProperty Name="ReportSuper" ColumnName="ReportSuper" />
-                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
-                <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
-                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
-                <ScalarProperty Name="EmailID2" ColumnName="EmailID2" />
-                <ScalarProperty Name="MobileNoPerson" ColumnName="MobileNoPerson" />
-                <ScalarProperty Name="MobileNoHome" ColumnName="MobileNoHome" />
-                <ScalarProperty Name="PhoneExt" ColumnName="PhoneExt" />
-                <ScalarProperty Name="Picture" ColumnName="Picture" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="Registerd" ColumnName="Registerd" />
-                <ScalarProperty Name="LoginReq" ColumnName="LoginReq" />
-                <ScalarProperty Name="YsnActive" ColumnName="YsnActive" />
-                <ScalarProperty Name="last_login_date" ColumnName="last_login_date" />
-                <ScalarProperty Name="last_login_Mac" ColumnName="last_login_Mac" />
-                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
-                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
-                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
-                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="prc_UserMenu" FunctionName="DB_STEPModel.Store.prc_UserMenu">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_STEPModel.prc_UserMenu_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Main_Menu_Id" ColumnName="Main_Menu_Id" />
-                <ScalarProperty Name="Menu_Name" ColumnName="Menu_Name" />
-                <ScalarProperty Name="Menu_URL" ColumnName="Menu_URL" />
-                <ScalarProperty Name="Menu_Icon" ColumnName="Menu_Icon" />
-                <ScalarProperty Name="YsnActive" ColumnName="YsnActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <EntitySetMapping Name="tblUserRoles">
-            <EntityTypeMapping TypeName="DB_STEPModel.tblUserRole">
-              <MappingFragment StoreEntitySet="tblUserRole">
-                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
-                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
-                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
-                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
-                <ScalarProperty Name="YSNActive" ColumnName="YSNActive" />
-                <ScalarProperty Name="ComIDs" ColumnName="ComIDs" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="RegId" ColumnName="RegId" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="fnSplitString" FunctionName="DB_STEPModel.Store.fnSplitString" />
           <FunctionImportMapping FunctionImportName="prc_GetDeptAndSec" FunctionName="DB_STEPModel.Store.prc_GetDeptAndSec">
             <ResultMapping>
               <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetDeptAndSec_Result">
@@ -1517,6 +1643,64 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
                 <ScalarProperty Name="Designation" ColumnName="Designation" />
                 <ScalarProperty Name="DesigAddi" ColumnName="DesigAddi" />
                 <ScalarProperty Name="WStatus" ColumnName="WStatus" />
+                <ScalarProperty Name="EmpStatus" ColumnName="EmpStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetEmployeeListByDeptHead" FunctionName="DB_STEPModel.Store.prc_GetEmployeeListByDeptHead">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetEmployeeListByDeptHead_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetEmployeesByCompany" FunctionName="DB_STEPModel.Store.prc_GetEmployeesByCompany" />
+          <FunctionImportMapping FunctionImportName="prc_GetEmployeeServiceLength" FunctionName="DB_STEPModel.Store.prc_GetEmployeeServiceLength">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetEmployeeServiceLength_Result">
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="Service_Length" ColumnName="Service_Length" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetEmployeeSummary" FunctionName="DB_STEPModel.Store.prc_GetEmployeeSummary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetEmployeeSummary_Result">
+                <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+                <ScalarProperty Name="SESSION_Name" ColumnName="SESSION_Name" />
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="KRA" ColumnName="KRA" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="Discipline" ColumnName="Discipline" />
+                <ScalarProperty Name="KPI" ColumnName="KPI" />
+                <ScalarProperty Name="Outcome" ColumnName="Outcome" />
+                <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
+                <ScalarProperty Name="AVG_Marks_Achieved" ColumnName="AVG_Marks_Achieved" />
+                <ScalarProperty Name="KPI_AVG" ColumnName="KPI_AVG" />
+                <ScalarProperty Name="Rating_Achieved" ColumnName="Rating_Achieved" />
+                <ScalarProperty Name="Supervisor_Comment" ColumnName="Supervisor_Comment" />
+                <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
+                <ScalarProperty Name="HOD_Comment" ColumnName="HOD_Comment" />
+                <ScalarProperty Name="HOD_Propose_Promotion" ColumnName="HOD_Propose_Promotion" />
+                <ScalarProperty Name="HOD_Propose_Incr" ColumnName="HOD_Propose_Incr" />
+                <ScalarProperty Name="HOD_Propose_Incr1" ColumnName="HOD_Propose_Incr1" />
+                <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
+                <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
+                <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -1546,12 +1730,38 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetKPIOutcomeByRegIdOrSectionName" FunctionName="DB_STEPModel.Store.prc_GetKPIOutcomeByRegIdOrSectionName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetKPIOutcomeByRegIdOrSectionName_Result">
+                <ScalarProperty Name="KRA" ColumnName="KRA" />
+                <ScalarProperty Name="KPI" ColumnName="KPI" />
+                <ScalarProperty Name="KPI_OUTCOME" ColumnName="KPI_OUTCOME" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetKraKpiByRegIdOrSectionName" FunctionName="DB_STEPModel.Store.prc_GetKraKpiByRegIdOrSectionName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetKraKpiByRegIdOrSectionName_Result">
+                <ScalarProperty Name="KRA" ColumnName="KRA" />
+                <ScalarProperty Name="KPI" ColumnName="KPI" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="prc_GetKraKpiData" FunctionName="DB_STEPModel.Store.prc_GetKraKpiData">
             <ResultMapping>
               <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetKraKpiData_Result">
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="SESSIONID" ColumnName="SESSIONID" />
+                <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+                <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
                 <ScalarProperty Name="KRA" ColumnName="KRA" />
+                <ScalarProperty Name="Section_Name" ColumnName="Section_Name" />
                 <ScalarProperty Name="KPI" ColumnName="KPI" />
-                <ScalarProperty Name="KPIOutcome" ColumnName="KPIOutcome" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -1560,6 +1770,123 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
               <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetkrakpiID_Result">
                 <ScalarProperty Name="kraId" ColumnName="kraId" />
                 <ScalarProperty Name="kpiId" ColumnName="kpiId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetKraKpiOutcomeData" FunctionName="DB_STEPModel.Store.prc_GetKraKpiOutcomeData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetKraKpiOutcomeData_Result">
+                <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+                <ScalarProperty Name="SESSION_Name" ColumnName="SESSION_Name" />
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+                <ScalarProperty Name="KRA" ColumnName="KRA" />
+                <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="Discipline" ColumnName="Discipline" />
+                <ScalarProperty Name="KPI" ColumnName="KPI" />
+                <ScalarProperty Name="Outcome" ColumnName="Outcome" />
+                <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
+                <ScalarProperty Name="AVG_Marks_Achieved" ColumnName="AVG_Marks_Achieved" />
+                <ScalarProperty Name="ApprovalSent" ColumnName="ApprovalSent" />
+                <ScalarProperty Name="Lock" ColumnName="Lock" />
+                <ScalarProperty Name="KPI_AVG" ColumnName="KPI_AVG" />
+                <ScalarProperty Name="Rating_Achieved" ColumnName="Rating_Achieved" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetKraKpiOutcomeEntry" FunctionName="DB_STEPModel.Store.prc_GetKraKpiOutcomeEntry">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetKraKpiOutcomeEntry_Result">
+                <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+                <ScalarProperty Name="SESSION_Name" ColumnName="SESSION_Name" />
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="KRA_ID" ColumnName="KRA_ID" />
+                <ScalarProperty Name="KRA" ColumnName="KRA" />
+                <ScalarProperty Name="KPI_ID" ColumnName="KPI_ID" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="Discipline" ColumnName="Discipline" />
+                <ScalarProperty Name="KPI" ColumnName="KPI" />
+                <ScalarProperty Name="Outcome" ColumnName="Outcome" />
+                <ScalarProperty Name="Marks_Achieved" ColumnName="Marks_Achieved" />
+                <ScalarProperty Name="AVG_Marks_Achieved" ColumnName="AVG_Marks_Achieved" />
+                <ScalarProperty Name="ApprovalSent" ColumnName="ApprovalSent" />
+                <ScalarProperty Name="Lock" ColumnName="Lock" />
+                <ScalarProperty Name="KPI_AVG" ColumnName="KPI_AVG" />
+                <ScalarProperty Name="Rating_Achieved" ColumnName="Rating_Achieved" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetStepMaster" FunctionName="DB_STEPModel.Store.prc_GetStepMaster">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetStepMaster_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="ApprovalSent" ColumnName="ApprovalSent" />
+                <ScalarProperty Name="Lock" ColumnName="Lock" />
+                <ScalarProperty Name="KPI_AVG" ColumnName="KPI_AVG" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="Discipline" ColumnName="Discipline" />
+                <ScalarProperty Name="Rating_Achieved" ColumnName="Rating_Achieved" />
+                <ScalarProperty Name="Supervisor_Comment" ColumnName="Supervisor_Comment" />
+                <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
+                <ScalarProperty Name="HOD_Comment" ColumnName="HOD_Comment" />
+                <ScalarProperty Name="HOD_Propose_Promotion" ColumnName="HOD_Propose_Promotion" />
+                <ScalarProperty Name="HOD_Propose_Incr" ColumnName="HOD_Propose_Incr" />
+                <ScalarProperty Name="Final_Comment" ColumnName="Final_Comment" />
+                <ScalarProperty Name="Final_Propose_Promotion" ColumnName="Final_Propose_Promotion" />
+                <ScalarProperty Name="Final_Propose_Incr" ColumnName="Final_Propose_Incr" />
+                <ScalarProperty Name="Effect_Date" ColumnName="Effect_Date" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+                <ScalarProperty Name="YsnUpdate" ColumnName="YsnUpdate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetTax_Period" FunctionName="DB_STEPModel.Store.prc_GetTax_Period">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetTax_Period_Result">
+                <ScalarProperty Name="TaxPerID" ColumnName="TaxPerID" />
+                <ScalarProperty Name="TaxPeriod" ColumnName="TaxPeriod" />
+                <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="KPI_Enty" ColumnName="KPI_Enty" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_GetTeamMember" FunctionName="DB_STEPModel.Store.prc_GetTeamMember">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_GetTeamMember_Result">
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="ComID" ColumnName="ComID" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FathersName" ColumnName="FathersName" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Religion" ColumnName="Religion" />
+                <ScalarProperty Name="PreAddress" ColumnName="PreAddress" />
+                <ScalarProperty Name="PerAddress" ColumnName="PerAddress" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="DesigAddi" ColumnName="DesigAddi" />
+                <ScalarProperty Name="WStatus" ColumnName="WStatus" />
+                <ScalarProperty Name="EmpStatus" ColumnName="EmpStatus" />
+                <ScalarProperty Name="StatusValue" ColumnName="StatusValue" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -1589,8 +1916,50 @@ warning 6002: The table/view 'DB_STEP.dbo.View_StepDetails' does not have a prim
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_UpdateOutcomeMarks" FunctionName="DB_STEPModel.Store.prc_UpdateOutcomeMarks" />
           <FunctionImportMapping FunctionImportName="prc_UpdateRating" FunctionName="DB_STEPModel.Store.prc_UpdateRating" />
           <FunctionImportMapping FunctionImportName="prc_UpdateStatus" FunctionName="DB_STEPModel.Store.prc_UpdateStatus" />
+          <FunctionImportMapping FunctionImportName="prc_User_Registration" FunctionName="DB_STEPModel.Store.prc_User_Registration">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_User_Registration_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="DeptHead" ColumnName="DeptHead" />
+                <ScalarProperty Name="ReportSuper" ColumnName="ReportSuper" />
+                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
+                <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="EmailID2" ColumnName="EmailID2" />
+                <ScalarProperty Name="MobileNoPerson" ColumnName="MobileNoPerson" />
+                <ScalarProperty Name="MobileNoHome" ColumnName="MobileNoHome" />
+                <ScalarProperty Name="PhoneExt" ColumnName="PhoneExt" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Registerd" ColumnName="Registerd" />
+                <ScalarProperty Name="LoginReq" ColumnName="LoginReq" />
+                <ScalarProperty Name="YsnActive" ColumnName="YsnActive" />
+                <ScalarProperty Name="last_login_date" ColumnName="last_login_date" />
+                <ScalarProperty Name="last_login_Mac" ColumnName="last_login_Mac" />
+                <ScalarProperty Name="Created_date" ColumnName="Created_date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Updated_date" ColumnName="Updated_date" />
+                <ScalarProperty Name="Updated_by" ColumnName="Updated_by" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="prc_UserMenu" FunctionName="DB_STEPModel.Store.prc_UserMenu">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_STEPModel.prc_UserMenu_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Main_Menu_Id" ColumnName="Main_Menu_Id" />
+                <ScalarProperty Name="Menu_Name" ColumnName="Menu_Name" />
+                <ScalarProperty Name="Menu_URL" ColumnName="Menu_URL" />
+                <ScalarProperty Name="Menu_Icon" ColumnName="Menu_Icon" />
+                <ScalarProperty Name="YsnActive" ColumnName="YsnActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

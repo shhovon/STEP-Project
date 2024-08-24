@@ -14,7 +14,7 @@ namespace STEP_DEMO.Models
     public partial class prc_SearchEmployeeByHR_Result
     {
         public Nullable<int> RegId { get; set; }
-        public int ComID { get; set; }
+        public Nullable<int> ComID { get; set; }
         public string EmployeeCode { get; set; }
         public string Name { get; set; }
         public string FathersName { get; set; }

@@ -1,7 +1,13 @@
-﻿@model List<KraKpiOutcomeModel>
+﻿@*@model List<KraKpiOutcomeModel>*@
+@model DisplayAllDataViewModel
 
 @{
-    var firstItem = Model.FirstOrDefault();
+    var firstItem = Model.KraKpiOutcomeData.FirstOrDefault();
+    decimal averageKpiAvg = 0;
+    if (Model != null && Model.KraKpiOutcomeData.Any())
+    {
+        averageKpiAvg = Model.KraKpiOutcomeData.Average(m => m.KPI_AVG ?? 0);
+    }
 }
 
 @{
@@ -9,15 +15,13 @@
 }
 
 
+
 <head>
     <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
 </head>
 
-@*@{
-    int sumOfAverages = 0;
-}*@
 
-<a href="@Url.Action("ViewEmpList", "DeptHead")" class="btn btn-primary" style="text-decoration: none;">
+<a href="@Url.Action("ViewEmpListRS", "DeptHead")" class="btn btn-primary" style="text-decoration: none;">
     <span>Search Again</span>
 </a>
 <br />
@@ -34,6 +38,11 @@
         display: inline-block;
         margin-left: 45px;
     }
+
+    .tab3 {
+        display: inline-block;
+        margin-left: 66px;
+    }
 </style>
 
 @if (ViewBag.SuccessMessage != null)
@@ -47,20 +56,142 @@
 @if (firstItem != null)
 {
     <div>
-        <p><strong>Employee Code: <span class="tab2"></span> @firstItem.EmployeeCode</strong></p>
-        <p><strong>Employee Name: <span class="tab"></span>  @firstItem.Name</strong></p>
+        <p><strong>Employee Code: <span class="tab2"></span> @Model.EmployeeInfo.EmployeeCode</strong></p>
+        <p><strong>Employee Name: <span class="tab"></span> @Model.EmployeeInfo.Name</strong></p>
+        <p><strong>Designation: <span class="tab3"></span> @Model.EmployeeInfo.Designation</strong></p>
     </div>
 }
+
+
+@*next year data*@
+
+@if (Model != null && Model.NextYearKraKpiOutcomeData.Count > 0)
+{
+    <div>
+        <button id="toggleButtonNY" class="btn btn-primary" onclick="toggleTableNY()">View Next Year Data</button>
+        <div id="tableContainerNY" style="display: none;">
+            <table class="user-info-table">
+                <thead>
+                    <tr>
+                        <th>Next Year's KRA</th>
+                        <th>Next Year's KPI</th>
+                        <th>Completion Deadline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.NextYearGroupedData)
+                    {
+                        var kpiCount = item.KPIIs.Count;
+                        for (var i = 0; i < kpiCount; i++)
+                        {
+                            var kpi = item.KPIIs[i];
+
+                            <tr>
+                                @if (i == 0)
+                                {
+                                    <td rowspan=@kpiCount>@item.KRA</td>
+                                }
+                                <td>@kpi</td>
+
+                                @if (i == 0 && item.Durations != null && item.Durations.Count > 0)
+                                {
+                                    <td rowspan=@kpiCount>@(item.Durations.First().Value.Date.ToString("dd-MM-yyyy"))</td>
+                                }
+                                else
+                                {
+                                    <td rowspan=@kpiCount></td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        <i class="fas fa-info-circle"></i>The employee has not yet submitted Next Year's data
+    </div>
+}
+
+@*    special factors and training data*@
+
+@if ((Model.SpecialFactors != null && Model.SpecialFactors.Count > 0) || (Model.TrainingNeed != null && Model.TrainingNeed.Count > 0))
+{
+    <button id="toggleButtonSF" class="btn btn-primary" onclick="toggleTableSF()">View Other Data</button>
+    <div id="tableContainerSF" style="display: none;">
+        @if (Model.SpecialFactors != null && Model.SpecialFactors.Count > 0)
+        {
+            <table class="user-info-table">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;">Special Factors</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var specialFactorItem in Model.SpecialFactors)
+                    {
+                        <tr>
+                            <td style="text-align: center;">@specialFactorItem.Description</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <br />
+
+        @if (Model.TrainingNeed != null && Model.TrainingNeed.Count > 0)
+        {
+            <table class="user-info-table">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;" colspan="4">Training Data</th>
+                    </tr>
+                    <tr>
+                        <th>Title</th>
+                        <th>By When</th>
+                        <th>Training Type</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var trainingNeedItem in Model.TrainingNeed)
+                    {
+                        <tr>
+                            <td>@trainingNeedItem.Title</td>
+                            <td>@(trainingNeedItem.By_When.HasValue ? trainingNeedItem.By_When.Value.Date.ToString("dd-MM-yyyy") : "")</td>
+                            <td>@Html.DisplayFor(model => trainingNeedItem.Train_Type)</td>
+                            <td>@trainingNeedItem.Status</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+}
+
+@*else
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="fas fa-info-circle"></i>No other data found
+        </div>
+    }*@
+
 <br />
 
-@if (Model != null && Model.Count > 0)
+@*<button id="revertEmployeeButton" class="btn btn-primary @(Model.ApprovalSent == false ? "disabled" : "")" data-regid="@ViewBag.RegId">Revert Employee</button>*@
+<br />
+<br />
+
+@if (Model != null && Model.KraKpiOutcomeData.Count > 0)
 {
     <div class="table-responsive">
         @using (Html.BeginForm("UpdateMarks", "ReportSuper", new { regId = ViewBag.RegId }, FormMethod.Post))
         {
             <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
-
-            @*@Html.HiddenFor(m => m[0].REG_ID)*@
 
             <table class="table table-striped table-bordered">
                 <thead>
@@ -68,20 +199,21 @@
                         <th>KRA</th>
                         <th>KPI</th>
                         <th>Outcome</th>
+                        <th>Remarks</th>
                         <th>Performance Marks</th>
                         <th>Average</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < Model.Count;)
+                    @for (int i = 0; i < Model.KraKpiOutcomeData.Count;)
                     {
-                        var kra = Model[i].KRA;
-                        var kraCount = Model.Count(m => m.KRA == kra);
+                        var kra = Model.KraKpiOutcomeData[i].KRA;
+                        var kraCount = Model.KraKpiOutcomeData.Count(m => m.KRA == kra);
                         for (int j = 0; j < kraCount; j++)
                         {
                             var marksModel = new KraKpiOutcomeModel
                             {
-                                Outcome = Model[i].Outcome,
+                                Outcome = Model.KraKpiOutcomeData[i].Outcome,
                                 Marks = 0
                             };
                             marksUpdateModel.Add(marksModel);
@@ -89,91 +221,44 @@
                             <tr>
                                 @if (j == 0)
                                 {
-                                    <td rowspan="@kraCount">@Model[i].KRA</td>
+                                    <td rowspan="@kraCount">@Model.KraKpiOutcomeData[i].KRA</td>
                                 }
-                                <td>@Model[i].KPI</td>
-                                <td>@Model[i].Outcome</td>
+                                <td>@Model.KraKpiOutcomeData[i].KPI</td>
+                                <td>@Model.KraKpiOutcomeData[i].Outcome</td>
                                 <td>
-                                    @* <select name="@("marksUpdateModel[" + (marksUpdateModel.Count - 1) + "].Marks")" class="marks-select" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome">*@
-                                    <select name="@("model[" + i + "].SelectedMarks")" class="marks-select" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome">
-                                        @if (@Model[i].Marks_Achieved == 0)
-                                        {
-                                            <option value="0" selected>0</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="0">0</option>
-                                        }
-
-
-                                        @if (@Model[i].Marks_Achieved == 1)
-                                        {
-                                            <option value="1" selected>1</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="1">1</option>
-                                        }
-
-                                        @if (@Model[i].Marks_Achieved == 2)
-                                        {
-                                            <option value="2" selected>2</option>
-                                        }
-
-                                        else
-                                        {
-                                            <option value="2">2</option>
-                                        }
-
-                                        @if (@Model[i].Marks_Achieved == 3)
-                                        {
-                                            <option value="3" selected>3</option>
-                                        }
-
-                                        else
-                                        {
-                                            <option value="3">3</option>
-                                        }
-
-                                        @if (@Model[i].Marks_Achieved == 4)
-                                        {
-                                            <option value="4" selected>4</option>
-                                        }
-
-                                        else
-                                        {
-                                            <option value="4">4</option>
-                                        }
-
-                                        @if (@Model[i].Marks_Achieved == 5)
-                                        {
-                                            <option value="5" selected>5</option>
-                                        }
-
-                                        else
-                                        {
-                                            <option value="5">5</option>
-                                        }
-
+                                    <input type="text" name="model[@i].Remarks" value="@Model.KraKpiOutcomeData[i].Remarks" />
+                                </td>
+                                <td>
+                                    <select name="model[@i].SelectedMarks" class="marks-select" data-kra="@Model.KraKpiOutcomeData[i].KRA" data-outcome="@Model.KraKpiOutcomeData[i].Outcome">
+                                        <option value="0" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 0 ? "selected" : "")>0</option>
+                                        <option value="1" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 1 ? "selected" : "")>1</option>
+                                        <option value="2" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 2 ? "selected" : "")>2</option>
+                                        <option value="3" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 3 ? "selected" : "")>3</option>
+                                        <option value="4" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 4 ? "selected" : "")>4</option>
+                                        <option value="5" @(Model.KraKpiOutcomeData[i].Marks_Achieved == 5 ? "selected" : "")>5</option>
                                     </select>
-                                    @* <input type="hidden" name="@("marksUpdateModel[" + i + "].Outcome")" value="@Model[i].Outcome" />*@
-                                    <input type="hidden" name="@("model[" + i + "].Outcome")" value="@Model[i].Outcome" />
-                                    <input type="hidden" name="@("model[" + i + "].KPI_ID")" value="@Model[i].KPI_ID" />
+                                    <input type="hidden" name="model[@i].Outcome" value="@Model.KraKpiOutcomeData[i].Outcome" />
+                                    <input type="hidden" name="model[@i].KPI_ID" value="@Model.KraKpiOutcomeData[i].KPI_ID" />
                                 </td>
                                 @if (j == 0)
                                 {
                                     <td rowspan="@kraCount">
-                                        <input type="text" class="average-input" value="@Model[i].AVG_Marks_Achieved" data-kra="@Model[i].KRA" data-outcome="@Model[i].Outcome" readonly />
+                                        <input type="text" class="average-input" value="@Model.KraKpiOutcomeData[i].AVG_Marks_Achieved" data-kra="@Model.KraKpiOutcomeData[i].KRA" data-outcome="@Model.KraKpiOutcomeData[i].Outcome" readonly />
                                     </td>
                                 }
                             </tr>
                             i++;
                         }
                     }
-@*                    <tr>
-                        <td colspan="4" style="text-align:center"><strong>Total Average:</strong></td>
-                        <td style="text-align:center"><strong>@(sumOfAverages)</strong></td>
-                    </tr>*@
+
+                    <tr>
+                        <td colspan="5" style="text-align: center; background-color: Highlight; color: white; height:30px;">
+                            <strong>Average Cumulative Score of KRA’s</strong>
+                        </td>
+                        <td style="text-align: center; background-color: Highlight; color: white;">
+                            <strong>@averageKpiAvg</strong>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <input type="submit" value="Save Marks" />
@@ -182,9 +267,7 @@
 }
 else
 {
-    <div class="alert alert-danger" role="alert">
-        No data found!
-    </div>
+    <div class="alert alert-danger" role="alert">No data found!</div>
 }
 
 <br />
@@ -193,14 +276,12 @@ else
 @using (Html.BeginForm("SaveReportSuperComment", "ReportSuper", new { regId = ViewBag.RegId }, FormMethod.Post, new { id = "reportSuperForm" }))
 {
     <input type="hidden" id="regId" name="regId" value="@ViewBag.RegId" />
-
     @*@Html.HiddenFor(m => m[0].REG_ID)*@
-
     <div style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <label for="comment" style="font-weight: bold; color: #333;">Comment:</label><br>
-        <input type="text" id="comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+        <textarea id="comment" name="comment" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; min-height: 80px; resize: vertical;"></textarea>
         <br>
-        <input type="submit" id="reportSuperForm" value="Submit & Lock" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+        <input type="submit" value="Submit & Lock" style=" color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;" onclick="return validateForm()">
     </div>
 }
 
@@ -209,6 +290,32 @@ else
 @section scripts {
     <script>
         $(document).ready(function () {
+
+            $("#revertEmployeeButton").click(function () {
+
+                if ($(this).hasClass("disabled")) {
+                    return;
+                }
+                var regId = $(this).data("regid");
+
+                $.ajax({
+                    url: '@Url.Action("RevertEmployee", "ReportSuper")',
+                    type: 'POST',
+                    data: { regId: regId },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            location.reload();
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred while reverting the approval!');
+                    }
+                });
+            });
+
             var kraAverages = {};
             $(".marks-select").on("change", function () {
                 var kra = $(this).data("kra");
@@ -250,54 +357,6 @@ else
         }
         });
 
-        // filter data function
-        $(function () {
-            $('#taxPeriodDropdownMV').change(function () {
-                var selectedSession = $(this).val();
-
-                $.ajax({
-                    url: '@Url.Action("GetFilteredMarksData", "Home")',
-                    type: 'GET',
-                    data: { selectedSession: selectedSession },
-                    success: function (response) {
-                        $('tbody').empty();
-
-                        response.forEach(function (item) {
-                            var newRow = '<tr>' +
-                                '<td>' + item.KPI_OUTCOME + '</td>' +
-                                '<td>' + item.Marks_Achieved + '</td>' +
-                                '<td></td>' +
-                                '</tr>';
-
-                            $('tbody').append(newRow);
-                        });
-
-                        if (response.length > 0) {
-                            $('table thead').show();
-                        } else {
-                            $('table thead').hide();
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            });
-        });
-
-@*        $.ajax({
-        url: '@Url.Action("GetReportSuperOwnComment", "ReportSuper")',
-        type: 'POST',
-        dataType: 'json',
-        data: { regId: regId },
-        success: function(data) {
-            $('#comment').val(data.SupervisorComment);
-        },
-        error: function() {
-            console.error('Error fetching supervisor comment!');
-        }
-        });*@
-
         $(function() {
             $('#reportSuperForm').submit(function (event) {
                 event.preventDefault();
@@ -322,5 +381,44 @@ else
                 });
             });
         });
+
+        // comment valudation
+
+        function validateForm() {
+            var comment = document.getElementById('comment').value.trim();
+            if (comment === "") {
+                alert("Comment cannot be empty");
+                return false;
+            }
+            return true;
+        }
+
+        // next year table toggle
+
+        function toggleTableNY() {
+            var tableContainer = document.getElementById("tableContainerNY");
+            var toggleButton = document.getElementById("toggleButtonNY");
+            if (tableContainer.style.display === "none") {
+                tableContainer.style.display = "block";
+                toggleButton.textContent = "Minimize Data";
+            } else {
+                tableContainer.style.display = "none";
+                toggleButton.textContent = "View Next Year Data";
+            }
+        }
+
+        // other data table toggle
+
+        function toggleTableSF() {
+            var tableContainer = document.getElementById("tableContainerSF");
+            var toggleButton = document.getElementById("toggleButtonSF");
+            if (tableContainer.style.display === "none") {
+                tableContainer.style.display = "block";
+                toggleButton.textContent = "Minimize Data";
+            } else {
+                tableContainer.style.display = "none";
+                toggleButton.textContent = "View Other Data";
+            }
+        }
     </script>
 }

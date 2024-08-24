@@ -11,11 +11,13 @@ namespace STEP_PORTAL.Models
         public int ComID { get; set; }
         public string EmployeeCode { get; set; }
         public string Name { get; set; }
-        public string DeptHead { get; set; }
+        public int DeptHead { get; set; }
+        public int ReportSuper { get; set; }
         public string EmailID { get; set; }
         public string MobileNoPerson { get; set; }
-        public int Role { get; set; }
+        public string Role { get; set; }
         public DateTime JoiningDate { get; set; }
+        public DateTime ConfirmDate { get; set; }
         public string Service_Length { get; set; }
         public string Department { get; set; }
         public string Section { get; set; }

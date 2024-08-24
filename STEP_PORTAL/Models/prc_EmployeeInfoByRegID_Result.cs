@@ -26,6 +26,7 @@ namespace STEP_DEMO.Models
         public string Phone { get; set; }
         public string District { get; set; }
         public System.DateTime JoiningDate { get; set; }
+        public string Service_Length { get; set; }
         public string Department { get; set; }
         public string Section { get; set; }
         public string Designation { get; set; }
