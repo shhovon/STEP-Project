@@ -12,12 +12,113 @@
         .hide-link {
             display: none !important;
         }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+        .action-buttons {
+            width: 1%;
+            white-space: nowrap;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 5px;
+<<<<<<< HEAD
+            justify-content: center;
+=======
+<<<<<<< HEAD
+            justify-content: center;
+=======
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+            align-items: center;
+        }
+
+            .button-container .btn {
+                flex: 0 0 auto;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+<<<<<<< HEAD
+                height: 38px;
+=======
+<<<<<<< HEAD
+                height: 38px;
+=======
+                height: 38px; /* Adjust this value as needed */
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+                padding: 0.375rem 0.75rem;
+                font-size: 1rem;
+                line-height: 1.5;
+                border-radius: 0.25rem;
+            }
+
+                .button-container .btn i {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+                    font-size: 1rem;
+                }
+
+        .kra-textarea, .kpi-textarea {
+            width: 100%;
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        td.action-buttons {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .button-container {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+<<<<<<< HEAD
+=======
+=======
+                    font-size: 1rem; /* Adjust icon size if needed */
+                }
+=======
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
 
     </style>
 </head>
 <body>
 
+<<<<<<< HEAD
  @if (TempData["AlertMessage"] != null)
+=======
+<<<<<<< HEAD
+    @if (TempData["AlertMessage"] != null)
+=======
+<<<<<<< HEAD
+    @if (TempData["AlertMessage"] != null)
+=======
+<<<<<<< HEAD
+    @if (TempData["AlertMessage"] != null)
+=======
+<<<<<<< HEAD
+ @if (TempData["AlertMessage"] != null)
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
     {
         <div class="alert alert-danger" role="alert">
             @TempData["AlertMessage"]
@@ -29,6 +130,20 @@
             @TempData["SuccessMessage"]
         </div>
     }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
 
     @if (@ViewBag.ApprovalSent)
     {
@@ -51,6 +166,210 @@
     <br />
     <br />
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<table id="numberInputTable" class="user-info-table" border="1">
+=======
+<<<<<<< HEAD
+<table id="numberInputTable" class="user-info-table" border="1">
+=======
+<<<<<<< HEAD
+ <table id="numberInputTable" border="1">
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+        <tr>
+            <th>SL</th>
+            <th>KEY RESULT AREAS (KRA)</th>
+            <th>KEY PERFORMANCE INDICATORS (KPI)</th>
+            <th>Action</th>
+        </tr>
+        <tbody>
+            @if (ViewBag.KraKpiData != null)
+            {
+                int sl = 1;
+                foreach (var item in ViewBag.KraKpiData)
+                {
+                    var kpiCount = item.KPIIs.Count;
+                    <tr class="kra-row" data-kra-id="@item.KRA_ID">
+                        <td rowspan="@kpiCount">@sl</td>
+                        <td rowspan="@kpiCount">
+                            <span class="kra-text">@item.KRA</span>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+                            <textarea class="kra-textarea" style="display:none;">@item.KRA</textarea>
+                        </td>
+                        <td>
+                            <span class="kpi-text">@item.KPIIs[0]</span>
+                            <textarea class="kpi-textarea" style="display:none;">@item.KPIIs[0]</textarea>
+                        </td>
+                        <td rowspan="@kpiCount" class="action-buttons">
+                            <div class="button-container">
+                                @if (!ViewBag.ApprovalSent)
+                                {
+                                    <button class="btn btn-primary edit-btn"><i class="ti-pencil-alt"></i></button>
+                                    <button class="btn btn-primary save-btn" style="display:none;"><i class="ti-save-alt"></i></button>
+                                    <a href="@Url.Action("DeleteKRA", "Home", new { kraId = item.KRA_ID })" class="btn btn-danger delete-btn" onclick="return confirm('Are you sure you want to delete this KRA and its associated KPIs?')"><i class="ti-trash"></i></a>
+                                }
+                                else
+                                {
+                                    <span style="color:red">Data cannot be edited or deleted!</span>
+                                }
+                            </div>
+<<<<<<< HEAD
+=======
+=======
+                            <input type="text" class="kra-input" style="display:none;" value="@item.KRA" />
+                        </td>
+                        <td>
+                            <span class="kpi-text">@item.KPIIs[0]</span>
+                            <input type="text" class="kpi-input" style="display:none;" value="@item.KPIIs[0]" />
+                        </td>
+                        <td rowspan="@kpiCount" class="action-buttons">
+                            @if (!ViewBag.ApprovalSent)
+                            {
+                            <div class="button-container" >
+                                <button class="btn btn-primary edit-btn"><i class="ti-pencil"></i></button>
+                                <button class="btn btn-primary save-btn" style="display:none;"><i class="ti-save-alt"></i></button>
+                                @*<button class="btn btn-primary cancel-btn" style="display:none;"><i class="ti-eraser"></i></button>*@
+                                <a href="@Url.Action("DeleteKRA", "Home", new { kraId = item.KRA_ID })" class="btn btn-danger delete-btn" onclick="return confirm('Are you sure you want to delete this KRA and its associated KPIs?')"><i class="ti-trash"></i></a>
+                            </div>
+                            }
+                            else
+                            {
+                                <span style="color:red">Data cannot be edited or deleted!</span>
+                            }
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+                        </td>
+                    </tr>
+                    for (var i = 1; i < kpiCount; i++)
+                    {
+                        <tr class="kpi-row" data-kra-id="@item.KRA_ID">
+                            <td>
+                                <span class="kpi-text">@item.KPIIs[i]</span>
+<<<<<<< HEAD
+                                <textarea class="kpi-textarea" style="display:none;">@item.KPIIs[i]</textarea>
+=======
+<<<<<<< HEAD
+                                <textarea class="kpi-textarea" style="display:none;">@item.KPIIs[i]</textarea>
+=======
+                                <input type="text" class="kpi-input" style="display:none;" value="@item.KPIIs[i]" />
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+                            </td>
+                        </tr>
+                    }
+                    sl++;
+                }
+            }
+        </tbody>
+    </table>
+
+    <script src="~/Content/js/jquery-3.4.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.edit-btn').click(function() {
+                var kraRow = $(this).closest('.kra-row');
+                var kraId = kraRow.data('kra-id');
+                var allRows = $('.kra-row[data-kra-id="' + kraId + '"], .kpi-row[data-kra-id="' + kraId + '"]');
+
+                allRows.find('.kra-text, .kpi-text').hide();
+<<<<<<< HEAD
+                allRows.find('.kra-textarea, .kpi-textarea').show();
+                $(this).hide();
+                kraRow.find('.save-btn').show();
+=======
+<<<<<<< HEAD
+                allRows.find('.kra-textarea, .kpi-textarea').show();
+                $(this).hide();
+                kraRow.find('.save-btn').show();
+=======
+                allRows.find('.kra-input, .kpi-input').show();
+                $(this).hide();
+                kraRow.find('.save-btn, .cancel-btn').show();
+            });
+
+            $('.cancel-btn').click(function() {
+                var kraRow = $(this).closest('.kra-row');
+                var kraId = kraRow.data('kra-id');
+                var allRows = $('.kra-row[data-kra-id="' + kraId + '"], .kpi-row[data-kra-id="' + kraId + '"]');
+
+                allRows.find('.kra-text, .kpi-text').show();
+                allRows.find('.kra-input, .kpi-input').hide();
+                kraRow.find('.edit-btn').show();
+                kraRow.find('.save-btn, .cancel-btn').hide();
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+            });
+
+            $('.save-btn').click(function() {
+                var kraRow = $(this).closest('.kra-row');
+                var kraId = kraRow.data('kra-id');
+                var allRows = $('.kra-row[data-kra-id="' + kraId + '"], .kpi-row[data-kra-id="' + kraId + '"]');
+
+<<<<<<< HEAD
+                var kra = kraRow.find('.kra-textarea').val();
+                var kpis = allRows.find('.kpi-textarea').map(function() {
+=======
+<<<<<<< HEAD
+                var kra = kraRow.find('.kra-textarea').val();
+                var kpis = allRows.find('.kpi-textarea').map(function() {
+=======
+                var kra = kraRow.find('.kra-input').val();
+                var kpis = allRows.find('.kpi-input').map(function() {
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+                    return $(this).val();
+                }).get();
+
+                $.ajax({
+                    url: '@Url.Action("UpdateKraKpi", "Home")',
+                    type: 'POST',
+                    data: JSON.stringify({ kraId: kraId, kra: kra, kpis: kpis }),
+                    contentType: 'application/json',
+                    success: function(result) {
+                        if (result.success) {
+                            kraRow.find('.kra-text').text(kra);
+                            allRows.find('.kpi-text').each(function(index) {
+                                $(this).text(kpis[index]);
+                            });
+                            allRows.find('.kra-text, .kpi-text').show();
+<<<<<<< HEAD
+                            allRows.find('.kra-textarea, .kpi-textarea').hide();
+                            kraRow.find('.edit-btn').show();
+                            kraRow.find('.save-btn').hide();
+=======
+<<<<<<< HEAD
+                            allRows.find('.kra-textarea, .kpi-textarea').hide();
+                            kraRow.find('.edit-btn').show();
+                            kraRow.find('.save-btn').hide();
+=======
+                            allRows.find('.kra-input, .kpi-input').hide();
+                            kraRow.find('.edit-btn').show();
+                            kraRow.find('.save-btn, .cancel-btn').hide();
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+                        } else {
+                            alert('Error updating data');
+                        }
+                    },
+                    error: function() {
+                        alert('Error updating data');
+                    }
+                });
+            });
+        });
+    </script>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
     <form method="post" action="@Url.Action("Outcome", "Home")">
         <table id="numberInputTable" border="1">
             <tr>
@@ -101,6 +420,12 @@
         </table>
         <br />
     </form>
+<<<<<<< HEAD
+=======
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
 
 </body>
 </html>

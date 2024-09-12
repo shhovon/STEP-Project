@@ -35,7 +35,47 @@
 
             <!-- Selected by default -->
 
+<<<<<<< HEAD
             <input id="1" name="r" type="radio" />
+=======
+<<<<<<< HEAD
+            <input id="1" name="r" type="radio" />
+=======
+<<<<<<< HEAD
+            <input id="1" name="r" type="radio" />
+=======
+<<<<<<< HEAD
+            <input id="1" name="r" type="radio" />
+=======
+<<<<<<< HEAD
+            <input id="1" name="r" type="radio" />
+=======
+<<<<<<< HEAD
+            <input id="1" name="r" type="radio" />
+=======
+<<<<<<< HEAD
+            <input id="1" name="r" type="radio" />
+=======
+<<<<<<< HEAD
+            <input id="1" name="r" type="radio" />
+=======
+<<<<<<< HEAD
+            <input id="1" name="r" type="radio" />
+=======
+<<<<<<< HEAD
+            <input id="1" name="r" type="radio" />
+=======
+            <input id="1" name="r" type="radio"  />
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
             <label class="collapse" for="1"><a href="@Url.Action("DisplayKrasAndKpis", "Home")"> 1. Outcome Entry</a></label>
             <div></div>
 
@@ -47,7 +87,47 @@
             <label class="collapse" for="1"><a id="trainingNeedBtn" href="@Url.Action("TrainingNeed", "Employee")"> 3. Training</a></label>
             <div></div>
 
+<<<<<<< HEAD
             <input id="3" name="r" type="radio" checked />
+=======
+<<<<<<< HEAD
+            <input id="3" name="r" type="radio" checked />
+=======
+<<<<<<< HEAD
+            <input id="3" name="r" type="radio" checked />
+=======
+<<<<<<< HEAD
+            <input id="3" name="r" type="radio" checked />
+=======
+<<<<<<< HEAD
+            <input id="3" name="r" type="radio" checked />
+=======
+<<<<<<< HEAD
+            <input id="3" name="r" type="radio" checked />
+=======
+<<<<<<< HEAD
+            <input id="3" name="r" type="radio" checked />
+=======
+<<<<<<< HEAD
+            <input id="3" name="r" type="radio" checked />
+=======
+<<<<<<< HEAD
+            <input id="3" name="r" type="radio" checked />
+=======
+<<<<<<< HEAD
+            <input id="3" name="r" type="radio" checked />
+=======
+            <input id="3" name="r" type="radio" checked/>
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
             <label class="collapse" for="1"><a href="@Url.Action("KraKpiNextYear", "Home")">4. Next Year's Entry</a></label>
             <div></div>
 
@@ -76,13 +156,109 @@
                 <tbody>
                     @for (int i = 0; i < 5; i++)
                     {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+                    <tr>
+                        <td style="vertical-align:middle">@(i + 1)</td>
+                        <td style="vertical-align:middle;">
+
+                            <input type="hidden" id="SessionId" name="SessionId" value="@Model.SessionId" />
+
+
+                            @if (i < Model.KRA_IDs.Count)
+                            {
+                                <input type="hidden" id="KRA_IDs_@(i)" name="KRA_IDs[@i]" value="@Model.KRA_IDs[i]" />
+                            }
+                            <input type="text" id="KRAs_@(i)" name="KRAs[@i]" class="form-control" value="@(i < Model.KRAs.Count ? Model.KRAs[i] : "")" />
+                        </td>
+                        <td>
+                            @if (i < Model.KPIs.Count)
+                            {
+                                for (int j = 0; j < 3; j++)
+                                {
+                                    <div>
+                                        @if (i < Model.KPI_IDs.Count && j < Model.KPI_IDs[i].Count)
+                                        {
+                                            <input type="hidden" id="KPI_IDs_@(i)_@(j)" name="KPI_IDs[@i][@j]" value="@Model.KPI_IDs[i][j]" />
+                                        }
+                                        <textarea id="KPIs_@(i)_@(j)" name="KPIs[@i][@j]" class="form-control kpi-textarea">@(i < Model.KPIs.Count && j < Model.KPIs[i].Count ? Model.KPIs[i][j] : "")</textarea>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                for (int j = 0; j < 3; j++)
+                                {
+                                    <div>
+                                        <textarea id="KPIs_@(i)_@(j)" name="KPIs[@i][@j]" class="form-control kpi-textarea"></textarea>
+                                    </div>
+                                }
+                            }
+                        </td>
+                        @*                            <td style="vertical-align:middle">
+            <input type="date" id="Durations_@(i)" name="Durations[@i]" class="form-control" value="@(i < Model.Durations.Count && Model.Durations[i] != null ? Model.Durations[i].Value.ToString("yyyy-MM-dd") : "")" />
+        </td>*@
+                    <td style="vertical-align:middle">
+                        <input type="date" id="Durations_@(i)" name="Durations[@i]" class="form-control" value="@(i < Model.Durations.Count && Model.Durations[i] != null ? Model.Durations[i].Value.ToString("yyyy-MM-dd") : "")" />
+                    </td>
+
+                    </tr>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
                         <tr>
                             <td style="vertical-align:middle">@(i + 1)</td>
                             <td style="vertical-align:middle;">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
 
                                 <input type="hidden" id="SessionId" name="SessionId" value="@Model.SessionId" />
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
                                 @if (i < Model.KRA_IDs.Count)
                                 {
                                     <input type="hidden" id="KRA_IDs_@(i)" name="KRA_IDs[@i]" value="@Model.KRA_IDs[i]" />
@@ -92,7 +268,35 @@
                             <td>
                                 @if (i < Model.KPIs.Count)
                                 {
+<<<<<<< HEAD
                                     for (int j = 0; j < 3; j++)
+=======
+<<<<<<< HEAD
+                                    for (int j = 0; j < 3; j++)
+=======
+<<<<<<< HEAD
+                                    for (int j = 0; j < 3; j++)
+=======
+<<<<<<< HEAD
+                                    for (int j = 0; j < 3; j++)
+=======
+<<<<<<< HEAD
+                                    for (int j = 0; j < 3; j++)
+=======
+<<<<<<< HEAD
+                                    for (int j = 0; j < 3; j++)
+=======
+<<<<<<< HEAD
+                                    for (int j = 0; j < 3; j++)
+=======
+                                    for (int j = 0; j < Model.KPIs[i].Count; j++)
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
                                     {
                                         <div>
                                             @if (i < Model.KPI_IDs.Count && j < Model.KPI_IDs[i].Count)
@@ -112,7 +316,29 @@
                                         </div>
                                     }
                                 }
+<<<<<<< HEAD
                             </td>
+=======
+<<<<<<< HEAD
+                            </td>
+=======
+<<<<<<< HEAD
+                            </td>
+=======
+<<<<<<< HEAD
+                            </td>
+=======
+<<<<<<< HEAD
+=======
+                            </td>
+                            <td style="vertical-align:middle">
+                                <input type="date" id="Durations_@(i)" name="Durations[@i]" class="form-control" value="@(i < Model.Durations.Count && Model.Durations[i] != null ? Model.Durations[i].Value.ToString("yyyy-MM-dd") : "")" />
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+                            </td>
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
                             @*                            <td style="vertical-align:middle">
                                 <input type="date" id="Durations_@(i)" name="Durations[@i]" class="form-control" value="@(i < Model.Durations.Count && Model.Durations[i] != null ? Model.Durations[i].Value.ToString("yyyy-MM-dd") : "")" />
                             </td>*@
@@ -121,12 +347,43 @@
                             </td>
 
                         </tr>
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
                     }
                 </tbody>
             </table>
 
             <br />
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
             if (ViewBag.ApprovalSent != null && (bool)ViewBag.ApprovalSent)
             {
                 <div class="alert alert-danger" role="alert">
@@ -145,11 +402,46 @@
         }
     </div>
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
     <hr />
 </body>
 </html>
 
 <script>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce
         function validateForm() {
             var isValid = true;
             var rows = document.querySelectorAll("#kra-kpi-table tbody tr");
@@ -179,3 +471,52 @@
 
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+    function validateForm() {
+        var isValid = true;
+        var rows = document.querySelectorAll("#kra-kpi-table tbody tr");
+        rows.forEach(function (row, index) {
+            var kra = row.querySelector('input[name="KRAs[' + index + ']"]').value;
+            var duration = row.querySelector('input[name="Durations[' + index + ']"]').value;
+            if (kra.trim() !== "" && duration.trim() === "") {
+                isValid = false;
+                alert("Please provide a deadline for KRA no. " + (index + 1));
+            }
+        });
+        return isValid;
+    }
+</script>
+
+
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+=======
+=======
+            <input type="submit" value="Save" class="btn btn-primary submit-btn" />
+        }
+    </div>
+>>>>>>> b2b30358692f5e62f581fbf040a7526cf4477f93
+>>>>>>> 9137fd13b8647680fe231d4a419dc66726002065
+    <hr />
+</body>
+</html>
+>>>>>>> 9eef72775c1358dcd3be9836d37cf6dc56b6e5c9
+>>>>>>> e23d7850cc7b2ead710a29effff713f83be27a86
+>>>>>>> d9006b5ac04096af6a96775f4d6667f2d621d430
+>>>>>>> cd15dc3f4cb7dd500e30d1acd2bff531d2316ede
+>>>>>>> 5a2d9da693a1e9b71812f71ec6aaa58543fb7baf
+>>>>>>> db326d8cd59dceab5db09537dfd01a74afa6f2df
+>>>>>>> 77ac0839bc36eaae374018c3b9f1a7c7b530dd51
+>>>>>>> 16c973996a25fd34500bf630f963ec9cb42136ce

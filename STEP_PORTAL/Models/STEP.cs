@@ -20,6 +20,7 @@ namespace STEP_PORTAL.Models
         public Nullable<int> KRA_ID { get; set; }
         public Nullable<int> KPI_ID { get; set; }
         public string KPI_OUTCOME { get; set; }
+        public string Remarks { get; set; }
         public Nullable<int> Marks_Achieved { get; set; }
         public Nullable<System.DateTime> Created_date { get; set; }
         public string Created_By { get; set; }
