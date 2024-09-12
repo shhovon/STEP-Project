@@ -8,8 +8,8 @@ using System.Web.Mvc;
 using STEP_PORTAL.Helpers;
 using System.Web.Security;
 using System.Globalization;
-using STEP_DEMO.Models;
 using System.Data.SqlClient;
+using STEP_PORTAL.Models;
 
 namespace STEP_PORTAL.Controllers
 {
@@ -47,13 +47,8 @@ namespace STEP_PORTAL.Controllers
 
                         db.tblSpecial_Factor.Add(specialFactor);
                         db.SaveChanges();
-
                         int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
-
-                        var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionID).Select(t => t.TaxPeriod).FirstOrDefault();
-                        Session["TaxPeriod"] = taxPeriod;
-
-                                                bool success = true;
+                        bool success = true;
                         TempData["SuccessMessage"] = success ? "Special Factor saved successfully!" : "";
 
                         return RedirectToAction("TrainingNeed", "Employee");
@@ -157,7 +152,7 @@ namespace STEP_PORTAL.Controllers
                         var taxPeriod = db.New_Tax_Period.Where(t => t.TaxPerID == sessionId).Select(t => t.TaxPeriod).FirstOrDefault();
                         Session["TaxPeriod"] = taxPeriod;
 
-                        return RedirectToAction("DisplayAllData");
+                        return RedirectToAction("KraKpiNextYear", "Home");
                     }
 
 /*                    return Json(new { success = true });*/
@@ -365,14 +360,15 @@ namespace STEP_PORTAL.Controllers
                    new SqlParameter("RegId", regId),
                    new SqlParameter("SESSION_ID", selectedTaxPeriod)).ToList();
 
-                var groupedData = kraKpiData.GroupBy(x => x.KRA)
-                                                .Select(g => new KraKpiViewModel
-                                                {
-                                                    KRA = g.Key,
-                                                    KPIIs = g.Select(x => x.KPI).ToList(),
-                                                    KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
-                                                })
-                                                .ToList();
+                var groupedData = kraKpiData.GroupBy(x => x.KRA_ID)
+                                    .Select(g => new KraKpiViewModel
+                                    {
+                                        KRA_ID = g.Key,
+                                        KRA = g.First().KRA,
+                                        KPIIs = g.Select(x => x.KPI).ToList(),
+                                        KPIOutcomes = g.Select(x => x.KPIOutcome).ToList()
+                                    })
+                                    .ToList();
 
                 var specialFactors = db.tblSpecial_Factor.Where(m => m.Reg_Id == regId && m.Session_Id == selectedTaxPeriod).ToList();
                 var trainingNeed = db.tblTraining_Need.Where(m => m.Reg_Id == regId && m.Session_Id == selectedTaxPeriod).ToList();
@@ -407,7 +403,6 @@ namespace STEP_PORTAL.Controllers
                 int RegID = int.Parse(Session["RegID"].ToString());
                 int updatedBy = (int)Session["RegID"];
                 int sessionID = int.Parse(Session["SelectedTaxPeriod"].ToString());
-
                 string statusType = "ApprovalSent";
                 string statusMessage = "";
                 DateTime updatedDate = DateTime.Now;
@@ -427,6 +422,8 @@ namespace STEP_PORTAL.Controllers
                 {
                     if (result.Status)
                     {
+                        Session["ApprovalSent"] = true;
+                        //ViewBag.ApprovalSent = true;
                         return Json(new { success = true, message = result.Message });
                     }
                     else

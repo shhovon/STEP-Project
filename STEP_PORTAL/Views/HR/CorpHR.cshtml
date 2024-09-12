@@ -40,6 +40,8 @@
     </div>
 
     <button type="submit" class="btn btn-primary" id="submitButton">Search</button>
+@*<button class="btn btn-primary" style="float:right; display:none;" id="exportToExcelBtn">Export to Excel</button>*@
+    <button type="button" class="btn btn-primary" id="generatePdfButton" style="display:none;">Generate PDF</button>
 }
 
 
@@ -58,6 +60,7 @@
                     <th>Employee Code</th>
                     <th>Status</th>
                     <th>View Marks</th>
+                    <th>View Report</th>
                 </tr>
             </thead>
             <tbody>
@@ -71,11 +74,15 @@
                         <td>@employee.EmployeeCode</td>
                         <td>@employee.EmpStatus</td>
                         <td><a target="_blank" href="../HR/FinalRecommendation?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
+                        <td><a target="_blank" href="../HR/StepReportPdf?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">View Report</a></td>
                     </tr>
                 }
             </tbody>
 
         </table>
+        <script>
+            document.getElementById("generatePdfButton").style.display = "inline-block";
+        </script>
     }
     else
     {
@@ -83,7 +90,9 @@
     }
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script src="~/Content/js/jquery-3.4.1.min.js"></script>
+<script src="~/Content/js/xlsx.full.min.js"></script>
 
 <script>
 
@@ -121,23 +130,30 @@
 
     $('#DepartmentDropdown').change(function () {
         var selectedDepartment = $(this).val();
-        //alert(selectedDepartment);
         var departments = @Html.Raw(Json.Encode(ViewBag.Departments));
         var selectedDepartmentData = departments.find(d => d.DepartmentName === selectedDepartment);
-        //console.log(selectedDepartmentData);
-        var currentlySelectedSection = $('#SectionDropdown').val();
-        console.log(currentlySelectedSection);
 
         $('#SectionDropdown').empty();
+        //$('#SectionDropdown').append($('<option>').text('Select Section').val(''));
 
         if (selectedDepartmentData && selectedDepartmentData.Sections) {
             $.each(selectedDepartmentData.Sections, function (index, section) {
-                $('#SectionDropdown').append($('<option>').text(section).attr('value', section));
-                if (section === currentlySelectedSection) {
-                    option.attr('selected', 'selected');
-                }
-                $('#SectionDropdown').append(option);
+                $('#SectionDropdown').append($('<option>').text(section).val(section));
             });
         }
     });
+
+    // Export to Excel
+
+    // generate pdf
+
+    $(document).ready(function () {
+        $('#generatePdfButton').on('click', function () {
+            var form = $('#viewEmpListForm');
+            form.attr('action', '@Url.Action("GeneratePdf", "ReportSuper")');
+            form.submit();
+        });
+    });
+
+
 </script>

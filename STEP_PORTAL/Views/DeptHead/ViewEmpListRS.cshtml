@@ -1,0 +1,171 @@
+﻿@*@model List<STEP_PORTAL.Models.EmployeeInfo>*@
+@model EmployeeSessionViewModelClass
+
+<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/CustomStyles.css">
+</head>
+
+@using (Html.BeginForm("AddMarks", "ReportSuper", FormMethod.Post, new { id = "employeeForm", target = "_blank" }))
+{
+    @Html.Hidden("regID", null, new { id = "regIDField" })
+}
+
+@using (Html.BeginForm("ViewMarks", "ReportSuper", FormMethod.Post, new { id = "viewMarksForm" }))
+{
+    @Html.Hidden("regID", null, new { id = "viewregIDField" })
+}
+
+<h3 style="text-align:center;">Team Member List</h3>
+<br />
+<br />
+
+@using (Html.BeginForm("ViewEmpListRS", "DeptHead", FormMethod.Post, new { id = "viewEmpListForm" }))
+{
+    <div class="dropdown-container">
+        <label class="dropdown-label" for="taxPeriodDropdownMV">Choose Session:</label>
+        <br />
+
+        <select id="taxPeriodDropdownMV" class="form-control custom-select">
+            <option value="" @(ViewBag.SelectedTaxPeriod == null ? "selected" : "")>Choose a Session</option>
+            @foreach (var taxPeriod in ViewBag.TopTaxPeriods)
+            {
+                <option value="@taxPeriod.TaxPerID">@taxPeriod.TaxPeriod</option>
+            }
+        </select>
+        <input type="hidden" id="selectedTaxPeriod" name="selectedTaxPeriod" value="@ViewBag.SelectedTaxPeriod" />
+
+
+    </div>
+    <div class="form-group">
+        @Html.DropDownList("companyId", ViewBag.Companies as SelectList, "Select an unit", new { @class = "form-control" })
+        @Html.ValidationMessage("companyId", "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-primary" id="submitButton">Search</button>
+@*    <button type="button" class="btn btn-primary" id="generatePdfButton" style="display:none;">Generate PDF</button>*@
+}
+
+
+<br />
+<br />
+<div class="user-info-container">
+    @if (Model != null && Model.Employees.Count > 0)
+    {
+        <table class="user-info-table">
+            <thead>
+                <tr>
+                    <th style="width: 100% ">Department</th>
+                    <th>Section</th>
+                    <th>Designation</th>
+                    <th style="width:100%">Name</th>
+                    <th>Employee Code</th>
+                    <th>Status</th>
+                    <th>View Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model.Employees)
+                {
+                    <tr>
+                        <td>@employee.Department</td>
+                        <td>@employee.Section</td>
+                        <td>@employee.Designation</td>
+                        <td>@employee.Name</td>
+                        <td>@employee.EmployeeCode</td>
+                        <td>@employee.EmpStatus</td>
+                        @if (@employee.EmpStatus == "ApprovalSent")
+                        {
+                            <td><a target="_blank" href="../ReportSuper/AddMarksRS?regId=@HttpUtility.UrlEncode(STEP_PORTAL.Helpers.PasswordHelper.Encrypt(employee.RegId.ToString()))">Marks Entry</a></td>
+                        }
+                        else
+                        {
+                            <td>--</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <script>
+            document.getElementById("generatePdfButton").style.display = "inline-block";
+        </script>
+    }
+    else
+    {
+        <p>No employees found</p>
+    }
+</div>
+
+<script src="~/Content/js/jquery-3.4.1.min.js"></script>
+
+
+<script>
+
+    $(document).ready(function () {
+        var session_id = $('#selectedTaxPeriod').val();
+        //alert(session_id);
+        $('#taxPeriodDropdownMV').val(session_id);
+    });
+
+    function setRegId(regID) {
+        document.getElementById("viewregIDField").value = regID;
+        document.getElementById("viewMarksForm").submit();
+    }
+
+    // store session value
+
+    var dropdown = document.getElementById("taxPeriodDropdownMV");
+    var companyDropdown = document.querySelector("select[name='companyId']");
+    var submitButton = document.getElementById("submitButton");
+
+    dropdown.addEventListener("change", enableSubmitButton);
+    companyDropdown.addEventListener("change", enableSubmitButton);
+
+    function enableSubmitButton() {
+        var selectedSession = dropdown.value;
+        var selectedCompany = companyDropdown.value;
+
+        if (selectedSession && selectedCompany) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;        }
+    }
+
+    // check auth
+
+    function checkAuthAndRedirect(regId, empRegId) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckAuth", "ReportSuper")',
+            data: {
+                regId: regId,
+                empRegId: empRegId,
+                sessionId: $('#selectedTaxPeriod').val(),
+                type: 'AddMarksRS'
+            },
+            success: function(response) {
+                if (response.status) {
+                    window.open('../DeptHead/ViewEmpListRS');
+                } else {
+                    alert(response.message);
+                    setTimeout(function() {
+                        window.location.href = '@Url.Action("Dashboard", "Home")';
+                    }, 3000);
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking authorization!');
+            }
+        });
+    }
+
+    // generate pdf
+
+    $(document).ready(function () {
+        $('#generatePdfButton').on('click', function () {
+            var form = $('#viewEmpListForm');
+            form.attr('action', '@Url.Action("GeneratePdf", "ReportSuper")');
+            form.submit();
+        });
+    });
+
+
+</script>
